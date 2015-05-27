@@ -13,6 +13,7 @@
 		CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA511B1640C0003F01F6 /* Images.xcassets */; };
 		CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */; };
 		CE79DA611B1640C0003F01F6 /* Spark_InsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */; };
+		CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6A1B1650AA003F01F6 /* DemoData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		CE79DA5A1B1640C0003F01F6 /* Spark InsightsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Spark InsightsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA5F1B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spark_InsightsTests.swift; sourceTree = "<group>"; };
+		CE79DA6A1B1650AA003F01F6 /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
+				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
 			);
 			path = "Spark Insights";
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* ViewController.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
 			);
