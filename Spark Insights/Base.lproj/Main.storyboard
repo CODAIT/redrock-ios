@@ -13,7 +13,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="800" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <userGuides>
                             <userLayoutGuide location="46" affinity="minY"/>
@@ -64,9 +64,6 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
-                                        <variation key="widthClass=regular" misplaced="YES">
-                                            <rect key="frame" x="214" y="28" width="121" height="21"/>
-                                        </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35m-HU-aOs">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -168,9 +165,6 @@
                                 <exclude reference="l6b-Ns-gk2"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="5RO-b7-Qr7"/>
-                                <exclude reference="99f-gp-CcQ"/>
-                                <exclude reference="yjR-6z-qoJ"/>
                                 <exclude reference="3xo-tS-8K8"/>
                                 <exclude reference="G1Y-bK-36x"/>
                                 <exclude reference="n6S-ik-dzr"/>
@@ -180,6 +174,9 @@
                                 <exclude reference="DyO-2l-umQ"/>
                                 <exclude reference="VzU-JL-eXu"/>
                                 <exclude reference="lBs-wN-DxX"/>
+                                <exclude reference="5RO-b7-Qr7"/>
+                                <exclude reference="99f-gp-CcQ"/>
+                                <exclude reference="yjR-6z-qoJ"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=regular">
@@ -190,9 +187,6 @@
                                 <include reference="l6b-Ns-gk2"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="5RO-b7-Qr7"/>
-                                <include reference="99f-gp-CcQ"/>
-                                <include reference="yjR-6z-qoJ"/>
                                 <include reference="3xo-tS-8K8"/>
                                 <include reference="G1Y-bK-36x"/>
                                 <include reference="n6S-ik-dzr"/>
@@ -202,9 +196,14 @@
                                 <include reference="DyO-2l-umQ"/>
                                 <include reference="VzU-JL-eXu"/>
                                 <include reference="lBs-wN-DxX"/>
+                                <include reference="5RO-b7-Qr7"/>
+                                <include reference="99f-gp-CcQ"/>
+                                <include reference="yjR-6z-qoJ"/>
                             </mask>
                         </variation>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="800" height="600"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
