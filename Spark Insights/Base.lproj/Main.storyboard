@@ -106,13 +106,26 @@
                                             <rect key="frame" x="325" y="64" width="699" height="94"/>
                                         </variation>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRv-zE-Rs9">
+                                        <rect key="frame" x="0.0" y="103" width="699" height="541"/>
+                                        <subviews>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="at8-Vv-AL8">
+                                                <rect key="frame" x="0.0" y="0.0" width="699" height="541"/>
+                                            </scrollView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="VRv-zE-Rs9" firstAttribute="top" secondItem="xSs-G1-UdG" secondAttribute="top" constant="103" id="0sn-cH-358"/>
                                     <constraint firstItem="vdt-b7-Yln" firstAttribute="top" secondItem="xSs-G1-UdG" secondAttribute="top" id="1Hi-7R-zPf"/>
                                     <constraint firstItem="l6b-Ns-gk2" firstAttribute="leading" secondItem="xSs-G1-UdG" secondAttribute="leading" id="1da-dw-QYj"/>
                                     <constraint firstItem="vdt-b7-Yln" firstAttribute="leading" secondItem="xSs-G1-UdG" secondAttribute="leading" id="63e-KP-UyE"/>
                                     <constraint firstAttribute="trailing" secondItem="vdt-b7-Yln" secondAttribute="trailing" id="Dky-eo-IXD"/>
+                                    <constraint firstAttribute="trailing" secondItem="VRv-zE-Rs9" secondAttribute="trailing" id="Ywu-jK-JUk"/>
+                                    <constraint firstAttribute="bottom" secondItem="VRv-zE-Rs9" secondAttribute="bottom" constant="60" id="heG-fH-7kN"/>
+                                    <constraint firstItem="VRv-zE-Rs9" firstAttribute="leading" secondItem="xSs-G1-UdG" secondAttribute="leading" id="nPL-hN-YNM"/>
                                     <constraint firstAttribute="bottom" secondItem="l6b-Ns-gk2" secondAttribute="bottom" id="rn2-Tw-JK1"/>
                                     <constraint firstAttribute="trailing" secondItem="l6b-Ns-gk2" secondAttribute="trailing" id="xPK-2d-nmB"/>
                                 </constraints>
@@ -139,6 +152,11 @@
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <connections>
+                        <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
+                        <outlet property="footerView" destination="l6b-Ns-gk2" id="oCM-re-xwZ"/>
+                        <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
