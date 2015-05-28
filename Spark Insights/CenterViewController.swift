@@ -8,8 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+@objc
+protocol CenterViewControllerDelegate {
+    optional func toggleRightPanel()
+    optional func collapseSidePanels()
+}
 
+class CenterViewController: UIViewController {
+
+    var delegate: CenterViewControllerDelegate?
+    
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var footerView: UIView!
@@ -41,5 +49,11 @@ class ViewController: UIViewController {
         
         self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(numberOfViews), self.dummyView.frame.size.height)
     }
+    
+    
+    @IBAction func searchClicked(sender: UIButton) {
+        delegate?.toggleRightPanel?()
+    }
+    
 }
 

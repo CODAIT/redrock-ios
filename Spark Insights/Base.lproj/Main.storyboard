@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Center View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CenterViewController" id="BYZ-38-t0r" customClass="CenterViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,14 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <userGuides>
-                            <userLayoutGuide location="46" affinity="minY"/>
+                            <userLayoutGuide location="51" affinity="minY"/>
                         </userGuides>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAh-OB-wZF">
                                 <rect key="frame" x="0.0" y="0.0" width="325" height="768"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Twitter Data Stream" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeG-AJ-Yf0">
-                                        <rect key="frame" x="87" y="22" width="151" height="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Twitter Data Stream" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QeG-AJ-Yf0">
+                                        <rect key="frame" x="87" y="30" width="151" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -35,7 +35,7 @@
                                 <color key="backgroundColor" red="0.83529411764705885" green="0.83921568627450982" blue="0.85098039215686272" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="centerX" secondItem="QeG-AJ-Yf0" secondAttribute="centerX" id="Gj3-B4-ZlD"/>
-                                    <constraint firstItem="QeG-AJ-Yf0" firstAttribute="top" secondItem="zAh-OB-wZF" secondAttribute="top" constant="22" id="Uii-9D-9wq"/>
+                                    <constraint firstItem="QeG-AJ-Yf0" firstAttribute="top" secondItem="zAh-OB-wZF" secondAttribute="top" constant="30" id="Uii-9D-9wq"/>
                                     <constraint firstAttribute="width" constant="325" id="cTM-ZP-qEp"/>
                                 </constraints>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
@@ -48,17 +48,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2qF-XA-JiK">
                                 <rect key="frame" x="325" y="0.0" width="699" height="64"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35m-HU-aOs">
-                                        <rect key="frame" x="626" y="25" width="64" height="30"/>
-                                        <state key="normal" title="Search">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
-                                            <rect key="frame" x="643" y="23" width="48" height="30"/>
-                                        </variation>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="#SparkInsights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wq-vq-vCv">
-                                        <rect key="frame" x="257" y="29" width="174" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#SparkInsights" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1wq-vq-vCv">
+                                        <rect key="frame" x="292" y="29" width="114.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -66,20 +57,32 @@
                                             <rect key="frame" x="292" y="26" width="114.5" height="20.5"/>
                                         </variation>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35m-HU-aOs">
+                                        <rect key="frame" x="643" y="24" width="48" height="30"/>
+                                        <state key="normal" title="Search">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="643" y="23" width="48" height="30"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZRL-la-Dyo"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.58823529411764708" green="0.60392156862745094" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="35m-HU-aOs" secondAttribute="trailing" constant="9" id="16J-zJ-mzv"/>
-                                    <constraint firstItem="35m-HU-aOs" firstAttribute="top" secondItem="2qF-XA-JiK" secondAttribute="top" constant="25" id="QM3-vo-Ub6"/>
+                                    <constraint firstAttribute="trailing" secondItem="35m-HU-aOs" secondAttribute="trailing" constant="8" id="16J-zJ-mzv"/>
+                                    <constraint firstItem="35m-HU-aOs" firstAttribute="top" secondItem="2qF-XA-JiK" secondAttribute="top" constant="24" id="QM3-vo-Ub6"/>
                                     <constraint firstAttribute="height" constant="64" id="UvG-Vi-Tlm"/>
                                     <constraint firstItem="1wq-vq-vCv" firstAttribute="top" secondItem="2qF-XA-JiK" secondAttribute="top" constant="29" id="Y1K-3Z-n5Q"/>
-                                    <constraint firstAttribute="centerX" secondItem="1wq-vq-vCv" secondAttribute="centerX" id="hTe-md-YGj"/>
+                                    <constraint firstAttribute="centerX" secondItem="1wq-vq-vCv" secondAttribute="centerX" constant="0.25" id="hTe-md-YGj"/>
                                 </constraints>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="325" y="0.0" width="699" height="64"/>
                                     <mask key="subviews">
-                                        <include reference="35m-HU-aOs"/>
                                         <include reference="1wq-vq-vCv"/>
+                                        <include reference="35m-HU-aOs"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -161,6 +164,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="276" y="401"/>
+        </scene>
+        <!--Right View Controller-->
+        <scene sceneID="eb2-ha-XHF">
+            <objects>
+                <viewController storyboardIdentifier="RightViewController" id="Pkp-zW-FqT" customClass="RightViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="X5S-C8-Gca"/>
+                        <viewControllerLayoutGuide type="bottom" id="Jnz-Sc-MaC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ShA-Tc-WRd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JsH-7E-dOv">
+                                <rect key="frame" x="275" y="0.0" width="325" height="600"/>
+                                <color key="backgroundColor" red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="325" id="zaf-7S-D98"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="JsH-7E-dOv" secondAttribute="bottom" id="ANe-W6-Ywl"/>
+                            <constraint firstAttribute="trailing" secondItem="JsH-7E-dOv" secondAttribute="trailing" id="yL6-Kc-ns7"/>
+                            <constraint firstItem="JsH-7E-dOv" firstAttribute="top" secondItem="ShA-Tc-WRd" secondAttribute="top" id="ycT-Vl-5Ug"/>
+                        </constraints>
+                    </view>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GzK-1m-KK4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1140" y="317"/>
         </scene>
     </scenes>
 </document>

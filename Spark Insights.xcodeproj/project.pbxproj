@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */; };
-		CE79DA4D1B1640C0003F01F6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA4C1B1640C0003F01F6 /* ViewController.swift */; };
+		CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */; };
 		CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA4E1B1640C0003F01F6 /* Main.storyboard */; };
 		CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA511B1640C0003F01F6 /* Images.xcassets */; };
 		CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */; };
 		CE79DA611B1640C0003F01F6 /* Spark_InsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */; };
 		CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6A1B1650AA003F01F6 /* DemoData.swift */; };
+		CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */; };
+		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +32,7 @@
 		CE79DA451B1640C0003F01F6 /* Spark Insights.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spark Insights.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA491B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CE79DA4C1B1640C0003F01F6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterViewController.swift; sourceTree = "<group>"; };
 		CE79DA4F1B1640C0003F01F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE79DA511B1640C0003F01F6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE79DA541B1640C0003F01F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -38,6 +40,8 @@
 		CE79DA5F1B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spark_InsightsTests.swift; sourceTree = "<group>"; };
 		CE79DA6A1B1650AA003F01F6 /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
+		CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,9 +84,11 @@
 			isa = PBXGroup;
 			children = (
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
-				CE79DA4C1B1640C0003F01F6 /* ViewController.swift */,
-				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
+				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
+				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
+				CE79DA711B177901003F01F6 /* RightViewController.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
+				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
@@ -215,8 +221,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */,
-				CE79DA4D1B1640C0003F01F6 /* ViewController.swift in Sources */,
+				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
+				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +423,7 @@
 				CE79DA661B1640C0003F01F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CE79DA671B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "Spark InsightsTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +432,7 @@
 				CE79DA691B1640C0003F01F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
