@@ -27,6 +27,7 @@
 		CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA751B17E19A003F01F6 /* SearchViewController.swift */; };
 		CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA791B18B9BA003F01F6 /* Config.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
+		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		CE79DA751B17E19A003F01F6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CE79DA791B18B9BA003F01F6 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
+		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
 				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
 				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
+				F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */,
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
 				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
+				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
 				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,

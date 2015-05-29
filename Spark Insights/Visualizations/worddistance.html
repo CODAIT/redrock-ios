@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <script src='http://d3js.org/d3.v3.min.js'></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
   var width = 675, height = 500;
@@ -16,11 +16,15 @@
   var centerColor = "#7CC7FF";
   var color = ["#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"];
 
-// there's one parent node and multiple children
+// there is one parent node and multiple children
 // the parent is in the center
 // each child has degrees away from the parent
 
   function renderChart(data){
+    //document.getElementById("test").innerHTML = "heyo"
+      
+    var data = JSON.parse(data); //jsonify the data
+    
     var numberOfCircles = data.children.length;
     var twopi = 2*Math.PI;
     var arc = twopi/numberOfCircles;
@@ -119,11 +123,9 @@
     }
   }
 
-  var data = '{"name": "cat","children": [{"name": "feline", "distance": 0.6, "size": 44},{"name": "dog", "distance": 0.4, "size": 22},{"name": "bunny", "distance": 0.0, "size": 10},{"name": "gif", "distance": 1.0, "size": 55},{"name": "tail", "distance": 0.2, "size": 88},{"name": "fur", "distance": 0.7, "size": 50}]}'
+  //var data = '{"name": "cat","children": [{"name": "feline", "distance": 0.6, "size": 44},{"name": "dog", "distance": 0.4, "size": 22},{"name": "bunny", "distance": 0.0, "size": 10},{"name": "gif", "distance": 1.0, "size": 55},{"name": "tail", "distance": 0.2, "size": 88},{"name": "fur", "distance": 0.7, "size": 50}]}'
 
-  var dataAsJSON = JSON.parse(data);
-
-  renderChart(dataAsJSON);
+  //renderChart(data);
 
 
 </script>
