@@ -4,6 +4,37 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
+        <!--Search View Controller-->
+        <scene sceneID="hl8-6R-1gB">
+            <objects>
+                <viewController storyboardIdentifier="SearchViewController" id="k4c-cg-gwj" customClass="SearchViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aQm-6b-v5n"/>
+                        <viewControllerLayoutGuide type="bottom" id="N7N-vg-1kn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8dH-T6-yUP">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GH2-sA-slE">
+                                <rect key="frame" x="708" y="330" width="48" height="30"/>
+                                <state key="normal" title="Search">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="searchClicked:" destination="k4c-cg-gwj" eventType="touchUpInside" id="Tlb-VK-5Do"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oLT-Bw-m5d" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="276" y="-447"/>
+        </scene>
         <!--Center View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
