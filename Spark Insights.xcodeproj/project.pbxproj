@@ -7,17 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94041B179DC400A80447 /* TweetsTableViewController.swift */; };
+		41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94081B17AA6700A80447 /* ContextLabel.swift */; };
+		41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41ED940A1B17AA7100A80447 /* TweetCell.xib */; };
+		41ED940D1B17AA7100A80447 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED940B1B17AA7100A80447 /* TweetTableViewCell.swift */; };
+		41ED940F1B17ABB400A80447 /* DisplayUrlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */; };
+		41ED94141B17D49F00A80447 /* TwitterTweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94131B17D49F00A80447 /* TwitterTweet.swift */; };
+		41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */; };
+		41ED94191B17DCB100A80447 /* ReadTweetsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94181B17DCB100A80447 /* ReadTweetsData.swift */; };
+		41ED941B1B17E20000A80447 /* Tweets.json in Resources */ = {isa = PBXBuildFile; fileRef = 41ED941A1B17E20000A80447 /* Tweets.json */; };
 		CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */; };
 		CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */; };
 		CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA4E1B1640C0003F01F6 /* Main.storyboard */; };
 		CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA511B1640C0003F01F6 /* Images.xcassets */; };
 		CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */; };
 		CE79DA611B1640C0003F01F6 /* Spark_InsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */; };
-		CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6A1B1650AA003F01F6 /* DemoData.swift */; };
 		CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */; };
 		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
 		CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA751B17E19A003F01F6 /* SearchViewController.swift */; };
 		CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA791B18B9BA003F01F6 /* Config.swift */; };
+		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +40,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		41ED94041B179DC400A80447 /* TweetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTableViewController.swift; sourceTree = "<group>"; };
+		41ED94081B17AA6700A80447 /* ContextLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextLabel.swift; sourceTree = "<group>"; };
+		41ED940A1B17AA7100A80447 /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
+		41ED940B1B17AA7100A80447 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
+		41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayUrlViewController.swift; sourceTree = "<group>"; };
+		41ED94131B17D49F00A80447 /* TwitterTweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterTweet.swift; sourceTree = "<group>"; };
+		41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		41ED94181B17DCB100A80447 /* ReadTweetsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTweetsData.swift; sourceTree = "<group>"; };
+		41ED941A1B17E20000A80447 /* Tweets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tweets.json; sourceTree = "<group>"; };
 		CE79DA451B1640C0003F01F6 /* Spark Insights.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Spark Insights.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA491B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -46,6 +64,7 @@
 		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
 		CE79DA751B17E19A003F01F6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CE79DA791B18B9BA003F01F6 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +85,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		41DE4C6A1B18E5A9002BD66A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				41ED941A1B17E20000A80447 /* Tweets.json */,
+				41ED94081B17AA6700A80447 /* ContextLabel.swift */,
+				41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		41ED94101B17C2EB00A80447 /* TweetCells */ = {
+			isa = PBXGroup;
+			children = (
+				41ED940A1B17AA7100A80447 /* TweetCell.xib */,
+				41ED940B1B17AA7100A80447 /* TweetTableViewCell.swift */,
+			);
+			name = TweetCells;
+			sourceTree = "<group>";
+		};
+		41ED94151B17DC4500A80447 /* Tweets */ = {
+			isa = PBXGroup;
+			children = (
+				41ED94131B17D49F00A80447 /* TwitterTweet.swift */,
+				41ED94181B17DCB100A80447 /* ReadTweetsData.swift */,
+			);
+			name = Tweets;
+			sourceTree = "<group>";
+		};
 		CE79DA3C1B1640C0003F01F6 = {
 			isa = PBXGroup;
 			children = (
@@ -87,14 +134,20 @@
 		CE79DA471B1640C0003F01F6 /* Spark Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F3222DF91B179FE700FDE3B1 /* Visualizations */,
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
 				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
 				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
+				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
+				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
 				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
+				41DE4C6A1B18E5A9002BD66A /* Utilities */,
+				41ED94151B17DC4500A80447 /* Tweets */,
+				41ED94101B17C2EB00A80447 /* TweetCells */,
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
 				CE79DA791B18B9BA003F01F6 /* Config.swift */,
@@ -210,6 +263,9 @@
 				CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */,
 				CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */,
 				CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */,
+				41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */,
+				41ED941B1B17E20000A80447 /* Tweets.json in Resources */,
+				F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,13 +283,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
+				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
+				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,
+				41ED94191B17DCB100A80447 /* ReadTweetsData.swift in Sources */,
 				CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */,
-				CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */,
 				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
+				41ED940F1B17ABB400A80447 /* DisplayUrlViewController.swift in Sources */,
+				41ED94141B17D49F00A80447 /* TwitterTweet.swift in Sources */,
+				41ED940D1B17AA7100A80447 /* TweetTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 675px;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.node {
+  border: solid 1px white;
+  font: 10px sans-serif;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+}
+
+</style>
+<form>
+</form>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 40, right: 10, bottom: 10, left: 10},
+    width = 675 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var color = d3.scale.ordinal().range(["#7CC7FF","#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"]);
+
+var treemap = d3.layout.treemap()
+    .size([width, height])
+    .sticky(true)
+    .value(function(d) { return d.size; });
+
+var div = d3.select("body").append("div")
+    .style("position", "relative")
+    .style("width", (width + margin.left + margin.right) + "px")
+    .style("height", (height + margin.top + margin.bottom) + "px")
+    .style("left", margin.left + "px")
+    .style("top", margin.top + "px");
+
+function renderChart(data) {
+    
+    //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
+    
+    var flareData = data;
+    
+    var flareDataAsJson = JSON.parse(flareData);
+    
+    function drawTreemap(root) {
+        var node = div.datum(root).selectAll(".node")
+        .data(treemap.nodes)
+        .enter().append("div")
+        .attr("class", "node")
+        .call(position)
+        .style("background", function(d) { return d.children ? color(d.name) : null; })
+        .text(function(d) { return d.children ? null : d.name; });
+        
+        /*
+        d3.selectAll("input").on("change", function change() {
+                                 var value = this.value === "count"
+                                 ? function() { return 1; }
+                                 : function(d) { return d.size; };
+                                 
+                                 node
+                                 .data(treemap.value(value).nodes)
+                                 .transition()
+                                 .duration(1500)
+                                 .call(position);
+                                 });*/
+    };
+    
+    drawTreemap(flareDataAsJson);
+}
+
+function position() {
+  this.style("left", function(d) { return d.x + "px"; })
+      .style("top", function(d) { return d.y + "px"; })
+      .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+      .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+}
+
+</script>
