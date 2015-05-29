@@ -16,6 +16,7 @@
 		CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6A1B1650AA003F01F6 /* DemoData.swift */; };
 		CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */; };
 		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
+		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		CE79DA6A1B1650AA003F01F6 /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
+		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		CE79DA471B1640C0003F01F6 /* Spark Insights */ = {
 			isa = PBXGroup;
 			children = (
+				F3222DF91B179FE700FDE3B1 /* Visualizations */,
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
 				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
 				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
@@ -204,6 +207,7 @@
 				CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */,
 				CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */,
 				CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */,
+				F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
