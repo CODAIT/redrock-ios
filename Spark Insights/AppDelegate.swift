@@ -9,18 +9,28 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDelegate {
 
     var window: UIWindow?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let containerViewController = ContainerViewController()
+        let storboard = UIStoryboard(name: "Main", bundle: nil)
+        var newVC: UIViewController
         
-        window!.rootViewController = containerViewController
+        if Config.skipSearchScreen {
+            newVC = ContainerViewController()
+        } else {
+            var searchViewController = storboard.instantiateViewControllerWithIdentifier("SearchViewController") as! SearchViewController
+            searchViewController.delegate = self
+            newVC = searchViewController
+        }
+        
+        window!.rootViewController = newVC
         window!.makeKeyAndVisible()
         
         return true
@@ -48,6 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    // MARK: SearchViewControllerDelegate
+    
+    func changeRootViewController(newRootVC: UIViewController) {
+        // By making the containerViewController root, searchViewController can be released
+        window!.rootViewController = newRootVC
+        window!.makeKeyAndVisible()
+    }
 }
 
