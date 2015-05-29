@@ -17,6 +17,8 @@
 		CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */; };
 		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
+		CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA751B17E19A003F01F6 /* SearchViewController.swift */; };
+		CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA791B18B9BA003F01F6 /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
+		CE79DA751B17E19A003F01F6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		CE79DA791B18B9BA003F01F6 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,11 +94,13 @@
 				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
 				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
+				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
+				CE79DA791B18B9BA003F01F6 /* Config.swift */,
 			);
 			path = "Spark Insights";
 			sourceTree = "<group>";
@@ -226,7 +232,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
+				CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */,
 				CE79DA6B1B1650AA003F01F6 /* DemoData.swift in Sources */,
+				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
