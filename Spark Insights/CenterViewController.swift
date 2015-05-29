@@ -21,17 +21,31 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var leftView: UIView!
+    @IBOutlet weak var headerView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-    
+        self.setupTweetsTableView()
         self.setupScrollView()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupTweetsTableView()
+    {
+        if let tweetsController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
+        {
+            addChildViewController(tweetsController)
+            let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height
+            tweetsController.view.frame = CGRectMake(0, headerView.frame.height , self.leftView.frame.width, height);
+            self.leftView.addSubview(tweetsController.view)
+            tweetsController.didMoveToParentViewController(self)
+        }
     }
 
     func setupScrollView() {

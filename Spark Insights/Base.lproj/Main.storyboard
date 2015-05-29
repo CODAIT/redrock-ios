@@ -2,8 +2,69 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Display Url View Controller-->
+        <scene sceneID="dta-eh-0YJ">
+            <objects>
+                <viewController storyboardIdentifier="TweetDisplayURL" id="iQx-C4-2GR" customClass="DisplayUrlViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XDf-Nk-8gm"/>
+                        <viewControllerLayoutGuide type="bottom" id="2a7-cZ-S1F"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BgT-b0-QGJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNa-ah-PM3">
+                                <rect key="frame" x="16" y="28" width="35" height="30"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="dismissViewController:" destination="iQx-C4-2GR" eventType="touchUpInside" id="da1-JS-KGd"/>
+                                </connections>
+                            </button>
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8o-Mf-baw">
+                                <rect key="frame" x="0.0" y="58" width="600" height="542"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="eNa-ah-PM3" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leadingMargin" id="PTb-KR-R6F"/>
+                            <constraint firstAttribute="trailing" secondItem="Z8o-Mf-baw" secondAttribute="trailing" id="Q9i-oJ-sDy"/>
+                            <constraint firstItem="2a7-cZ-S1F" firstAttribute="top" secondItem="Z8o-Mf-baw" secondAttribute="bottom" id="R2L-Nr-HnV"/>
+                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="eNa-ah-PM3" secondAttribute="bottom" constant="8" id="Xy2-DS-Lcw"/>
+                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leading" id="aTp-wX-0K9"/>
+                            <constraint firstItem="eNa-ah-PM3" firstAttribute="top" secondItem="XDf-Nk-8gm" secondAttribute="bottom" constant="8" id="nQQ-h4-VYB"/>
+                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="eNa-ah-PM3" secondAttribute="bottom" constant="8" id="p2T-S1-zuY"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="URLwebView" destination="Z8o-Mf-baw" id="Tah-Nw-lZr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fBD-SD-tLd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1211" y="-30"/>
+        </scene>
+        <!--Tweets Table View Controller-->
+        <scene sceneID="Cv1-aW-z6w">
+            <objects>
+                <tableViewController storyboardIdentifier="TweetsTableViewController" id="fLC-Uh-TSB" customClass="TweetsTableViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3aP-HM-Dht">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <connections>
+                            <outlet property="dataSource" destination="fLC-Uh-TSB" id="tNN-VI-EEA"/>
+                            <outlet property="delegate" destination="fLC-Uh-TSB" id="jDd-3x-roT"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f7Q-PO-tbY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-578" y="-30"/>
+        </scene>
         <!--Center View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -158,6 +219,8 @@
                     <connections>
                         <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="oCM-re-xwZ"/>
+                        <outlet property="headerView" destination="2qF-XA-JiK" id="hVc-Je-lrj"/>
+                        <outlet property="leftView" destination="zAh-OB-wZF" id="cCm-Os-oMR"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
                     </connections>
                 </viewController>
