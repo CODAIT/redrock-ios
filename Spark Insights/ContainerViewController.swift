@@ -19,14 +19,16 @@ class ContainerViewController: UIViewController {
     var rightViewController: UIViewController?
     
     var currentState: SlideOutState = .BothCollapsed
-    
     let centerPanelExpandedOffset: CGFloat = 325
+    
+    var searchText: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         centerViewController = UIStoryboard.centerViewController()
         centerViewController.delegate = self
+        centerViewController.searchText = searchText
         
         view.addSubview(centerViewController.view)
         addChildViewController(centerViewController)

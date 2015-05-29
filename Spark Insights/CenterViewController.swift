@@ -16,6 +16,7 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController {
 
+    var searchText: String?
     var delegate: CenterViewControllerDelegate?
     
     @IBOutlet weak var dummyView: UIView!

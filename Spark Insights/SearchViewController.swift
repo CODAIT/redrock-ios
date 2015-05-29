@@ -17,6 +17,10 @@ class SearchViewController: UIViewController {
 
     weak var delegate: SearchViewControllerDelegate?
     
+    @IBOutlet weak var searchHolderView: UIView!
+    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,10 +42,19 @@ class SearchViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: Actions
 
+    @IBAction func startedEditing(sender: UITextField) {
+        println("START")
+        searchHolderTopConstraint.constant = 0
+    }
+    
     @IBAction func searchClicked(sender: UIButton) {
         
         let containerViewController = ContainerViewController()
+        // TODO: need some validation here
+        containerViewController.searchText = textField.text
         
         // Animate the transition to the new view controller
         var tr = CATransition()
