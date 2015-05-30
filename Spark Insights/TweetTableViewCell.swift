@@ -52,6 +52,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         tweeText.textColor = UIColor.whiteColor()
         self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
         self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
+        self.userScreenName.textColor = Config.tweetsTableTextComponentsColor
         //ContextLabel delegate
         tweeText.delegate = self
         //Profile Image layout

@@ -29,6 +29,8 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchButtonView: UIView!
     @IBOutlet weak var searchImageView: UIImageView!
     
+    private var recalculateConstrainstsForSearchView = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setInsetTextField()
@@ -68,11 +70,15 @@ class SearchViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func startedEditing(sender: UITextField) {
-        recalculateConstraintsForAnimation()
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            }, completion: nil)
-        self.textField.font = UIFont (name: "Helvetica Neue", size: 17)
+        if self.recalculateConstrainstsForSearchView
+        {
+            recalculateConstraintsForAnimation()
+            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+                self.view.layoutIfNeeded()
+                }, completion: nil)
+            self.textField.font = UIFont (name: "Helvetica Neue", size: 17)
+            self.recalculateConstrainstsForSearchView = false
+        }
     }
     
     func recalculateConstraintsForAnimation()
