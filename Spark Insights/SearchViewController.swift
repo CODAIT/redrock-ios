@@ -17,14 +17,24 @@ class SearchViewController: UIViewController {
 
     weak var delegate: SearchViewControllerDelegate?
     
+    @IBOutlet weak var appImageTitle: UILabel!
+    @IBOutlet weak var appTitleTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var AppTitleView: UIView!
+    @IBOutlet weak var appTitleLabel: UILabel!
     @IBOutlet weak var searchHolderView: UIView!
-    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var topImageView: UIImageView!
+    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setInsetTextField()
+    }
+    
+    func setInsetTextField()
+    {
+        self.textField.layer.sublayerTransform = CATransform3DMakeTranslation(20, 0, 0);
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,8 +56,22 @@ class SearchViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func startedEditing(sender: UITextField) {
-        println("START")
-        searchHolderTopConstraint.constant = 0
+        recalculateConstraintsForAnimation()
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        self.textField.font = UIFont (name: "Helvetica Neue", size: 17)
+    }
+    
+    func recalculateConstraintsForAnimation()
+    {
+        self.topImageView.hidden = true
+        self.AppTitleView.hidden = false
+        self.appImageTitle.hidden = true
+        self.appTitleLabel.hidden = false
+        self.appTitleTopConstraint.constant = 0
+        self.searchHolderTopConstraint.constant = self.AppTitleView.frame.height
+        self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
     }
     
     @IBAction func searchClicked(sender: UIButton) {

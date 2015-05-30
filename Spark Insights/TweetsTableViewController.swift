@@ -15,6 +15,8 @@ class TweetsTableViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        self.tableView.backgroundColor = Config.tweetsTableBackgroundColor
         self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: nil), forCellReuseIdentifier: "TweetTableCellView")
     }
 
@@ -80,7 +82,6 @@ class TweetsTableViewController: UITableViewController{
         tweetCell.rowIndex = indexPath.row
         tweetCell.displayTappedURL = self.displayTweetTappedURL
         tweetCell.actionOnClickImageDetail = self.shareOnTwitter
-        println(tweetCell.backgroundColor)
         return tweetCell
     }
     
