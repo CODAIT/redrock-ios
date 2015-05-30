@@ -26,10 +26,22 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var topImageView: UIImageView!
     @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var searchButtonView: UIView!
+    @IBOutlet weak var searchImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setInsetTextField()
+        addGestureRecognizerSearchView()
+    }
+    
+    func addGestureRecognizerSearchView()
+    {
+        let tapGesture = UITapGestureRecognizer(target: self, action: "searchClicked:")
+        self.searchImageView.addGestureRecognizer(tapGesture)
+        self.searchImageView.userInteractionEnabled = true
+        self.searchButtonView.addGestureRecognizer(tapGesture)
+        self.searchButtonView.userInteractionEnabled = true
     }
     
     func setInsetTextField()
@@ -79,7 +91,7 @@ class SearchViewController: UIViewController {
         let containerViewController = ContainerViewController()
         // TODO: need some validation here
         containerViewController.searchText = textField.text
-        
+        //self.searchButtonView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         // Animate the transition to the new view controller
         var tr = CATransition()
         tr.duration = 0.2

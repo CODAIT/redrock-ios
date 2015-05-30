@@ -253,9 +253,11 @@
                         <outlet property="appImageTitle" destination="htg-vv-8iy" id="lnR-Jt-HQX"/>
                         <outlet property="appTitleLabel" destination="0pW-Ug-xaw" id="3b7-Qa-vjH"/>
                         <outlet property="appTitleTopConstraint" destination="AVd-RH-Dd8" id="YFb-2T-qtY"/>
+                        <outlet property="searchButtonView" destination="mNq-RN-Clv" id="YA9-Co-A55"/>
                         <outlet property="searchHolderBottomConstraint" destination="pgQ-ov-Q5D" id="6O3-fx-HcO"/>
                         <outlet property="searchHolderTopConstraint" destination="aLc-jO-eOP" id="Cme-ln-nXA"/>
                         <outlet property="searchHolderView" destination="F9B-OC-dc3" id="n5z-u8-UCb"/>
+                        <outlet property="searchImageView" destination="aEA-Yk-Sp6" id="oyg-IH-6bW"/>
                         <outlet property="textField" destination="LDJ-rt-AZZ" id="DLE-H4-X0o"/>
                         <outlet property="topImageView" destination="TNK-78-uCq" id="OEE-yd-Hwi"/>
                     </connections>
