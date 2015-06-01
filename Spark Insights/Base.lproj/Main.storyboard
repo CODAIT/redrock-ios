@@ -64,7 +64,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7Q-PO-tbY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-578" y="-30"/>
-	</scene>
+        </scene>
         <!--Search View Controller-->
         <scene sceneID="hl8-6R-1gB">
             <objects>
@@ -237,9 +237,17 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6b-Ns-gk2">
                                         <rect key="frame" x="0.0" y="644" width="699" height="60"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ifN-uh-2Nl" customClass="PageControlView" customModule="Spark_Insights" customModuleProvider="target">
+                                                <rect key="frame" x="167" y="0.0" width="364" height="60"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
                                         <color key="backgroundColor" red="0.25490196078431371" green="0.27450980392156865" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="9Dk-uG-xTp"/>
+                                            <constraint firstAttribute="centerX" secondItem="ifN-uh-2Nl" secondAttribute="centerX" id="AQH-hn-X8T"/>
+                                            <constraint firstAttribute="centerY" secondItem="ifN-uh-2Nl" secondAttribute="centerY" id="Z8N-aN-XVA"/>
                                         </constraints>
                                         <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                             <rect key="frame" x="325" y="64" width="699" height="94"/>
@@ -296,6 +304,7 @@
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="oCM-re-xwZ"/>
                         <outlet property="headerView" destination="2qF-XA-JiK" id="hVc-Je-lrj"/>
                         <outlet property="leftView" destination="zAh-OB-wZF" id="cCm-Os-oMR"/>
+                        <outlet property="pageControlView" destination="ifN-uh-2Nl" id="ca0-vT-6cT"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
                     </connections>
                 </viewController>

@@ -26,6 +26,7 @@
 		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
 		CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA751B17E19A003F01F6 /* SearchViewController.swift */; };
 		CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA791B18B9BA003F01F6 /* Config.swift */; };
+		CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA7B1B190081003F01F6 /* PageControlView.swift */; };
 		CE79DA831B19166C003F01F6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA801B19166C003F01F6 /* LICENSE */; };
 		CE79DA841B19166C003F01F6 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA811B19166C003F01F6 /* README.md */; };
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
@@ -67,6 +68,7 @@
 		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
 		CE79DA751B17E19A003F01F6 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CE79DA791B18B9BA003F01F6 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		CE79DA7B1B190081003F01F6 /* PageControlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageControlView.swift; sourceTree = "<group>"; };
 		CE79DA801B19166C003F01F6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CE79DA811B19166C003F01F6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
 				CE79DA791B18B9BA003F01F6 /* Config.swift */,
+				CE79DA7B1B190081003F01F6 /* PageControlView.swift */,
 			);
 			path = "Spark Insights";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
+				CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
 				CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */,
 				41ED940F1B17ABB400A80447 /* DisplayUrlViewController.swift in Sources */,

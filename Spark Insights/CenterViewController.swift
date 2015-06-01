@@ -14,10 +14,10 @@ protocol CenterViewControllerDelegate {
     optional func collapseSidePanels()
 }
 
-class CenterViewController: UIViewController, UIWebViewDelegate {
+class CenterViewController: UIViewController, UIWebViewDelegate, PageControlDelegate {
 
     var searchText: String?
-    var delegate: CenterViewControllerDelegate?
+    weak var delegate: CenterViewControllerDelegate?
     
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -25,11 +25,20 @@ class CenterViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var pageControlView: PageControlView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.setupTweetsTableView()
         self.setupScrollView()
+        
+        pageControlView.buttonData = [
+            PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
+            PageControlButtonData(imageName: "Tree_TEAL", selectedImageName: "Tree_WHITE"),
+            PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE")
+        ]
+        pageControlView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,6 +110,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate {
         
         //println("webViewDidFinishLoad")
     }
+    
+    // MARK: PageControlDelegate
+    
+    func pageChanged(index: Int) {
+        println("Page Changed to index: \(index)")
+    }
+    
+    // MARK: Actions
     
     @IBAction func searchClicked(sender: UIButton) {
         delegate?.toggleRightPanel?()
