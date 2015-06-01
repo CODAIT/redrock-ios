@@ -46,18 +46,26 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         println("open")
         if self.openedTweetCell.count == 1
         {
-            self.openedTweetCell[0].resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
             self.openedTweetCell.removeAtIndex(0)
         }
         self.openedTweetCell.append(openedCell)
     }
     
     func cellDidClose(closedCell: TweetTableViewCell) {
+        println("close")
         if self.openedTweetCell.count == 1
         {
             self.openedTweetCell.removeAtIndex(0)
         }
-        println("close")
+    }
+    
+    func cellDidBeginOpening(openingCell: TweetTableViewCell)
+    {
+        println("begin")
+        if self.openedTweetCell.count == 1
+        {
+            self.openedTweetCell[0].resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
+        }
     }
     
     
@@ -69,7 +77,9 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
             var tweetSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
             tweetSheet.setInitialText(tweetCell.userScreenName.text)
             //tweetSheet.addImage(self.screenShot())
-            self.presentViewController(tweetSheet, animated: true, completion: nil)
+            self.presentViewController(tweetSheet, animated: true, completion: {
+                tweetCell.twitterDetailImg.alpha = 1.0
+            })
         }
     }
     
