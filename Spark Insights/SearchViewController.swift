@@ -17,6 +17,8 @@ class SearchViewController: UIViewController {
 
     weak var delegate: SearchViewControllerDelegate?
     
+    @IBOutlet weak var imageTitleTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageSearchTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var appImageTitle: UILabel!
     @IBOutlet weak var appTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var AppTitleView: UIView!
@@ -83,9 +85,9 @@ class SearchViewController: UIViewController {
     
     func recalculateConstraintsForAnimation()
     {
-        self.topImageView.hidden = true
+        self.imageSearchTopConstraint.constant = -self.topImageView.frame.height
+        self.imageTitleTopConstraint.constant = -self.topImageView.frame.height
         self.AppTitleView.hidden = false
-        self.appImageTitle.hidden = true
         self.appTitleLabel.hidden = false
         self.appTitleTopConstraint.constant = -UIApplication.sharedApplication().statusBarFrame.height
         self.searchHolderTopConstraint.constant = self.AppTitleView.frame.height
