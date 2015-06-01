@@ -42,6 +42,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupWebViews()
         self.setupScrollView()
         
+        pageControlView.buttonSelectedBackgroundColor = Config.tealColor
         pageControlView.buttonData = [
             PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
             PageControlButtonData(imageName: "Tree_TEAL", selectedImageName: "Tree_WHITE"),

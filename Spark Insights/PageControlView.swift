@@ -22,11 +22,12 @@ class PageControlView: UIView {
     
     weak var delegate: PageControlDelegate?
     
+    // Defaults
     var buttonWidth = 50
     var buttonHeight = 60
     var buttonImageEdgeInsets = UIEdgeInsetsMake(20, 15, 20, 15)
-    var buttonBackgroundColor = UIColor.whiteColor() // White
-    var buttonSelectedBackgroundColor = UIColor(rgba: "#00B4A0") // Teal
+    var buttonBackgroundColor = UIColor.whiteColor()
+    var buttonSelectedBackgroundColor = UIColor.blueColor()
 
     var selectedIndex = 0 {
         didSet {
