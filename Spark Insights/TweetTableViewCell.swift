@@ -20,22 +20,26 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     @IBOutlet weak var countRetweet: UILabel!
     @IBOutlet weak var tweetDateTime: UILabel!
     
+    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
+    
     //Tweet cell swipeable
     @IBOutlet weak var twitterDetailImg: UIImageView!
-    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
+
     var panRecognizer = UIPanGestureRecognizer()
     var panStartPoint = CGPoint()
     var startingRightLayoutConstraintConstant = CGFloat()
     let kBounceValue = CGFloat(5.0)
     
     //Constants to calculate cell height
-    static let profileImageWidth = CGFloat(36)
-    static let profileImageHeight = CGFloat(36)
-    static let characWidth = CGFloat(7)
-    static let lineHeight = CGFloat(20)
-    static let tweetToolbarHeight = CGFloat(18)
-    static let blankSpaceHeight = CGFloat(40)
+    static let profileImageWidth = CGFloat(50)
+    static let profileImageHeight = CGFloat(50)
+    static let characWidth = CGFloat(9)
+    static let lineHeight = CGFloat(24)
+    static let tweetToolbarHeight = CGFloat(19)
+    static let blankSpaceHeight = CGFloat(70)
+    static let maxCellHeight = CGFloat(210)
     
     //Keep track of the row index of the cell
     var rowIndex:Int = 0
@@ -50,9 +54,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         tweeText.userHandleTextColor = UIColor.whiteColor()
         tweeText.linkTextColor = Config.tweetsTableTextComponentsColor
         tweeText.textColor = UIColor.whiteColor()
-        self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
-        self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
-        self.userScreenName.textColor = Config.tweetsTableTextComponentsColor
+        //self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        //self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
         //ContextLabel delegate
         tweeText.delegate = self
         //Profile Image layout
@@ -70,9 +73,9 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     // MARK - Profile Image style
     func changeImageLayout()
     {
-        self.userProfileImage.layer.cornerRadius = 10.0;
+        self.userProfileImage.layer.cornerRadius = 20.0;
         self.userProfileImage.layer.masksToBounds = true;
-        self.userProfileImage.layer.borderColor = Config.tweetsTableTextComponentsColor.CGColor
+        self.userProfileImage.layer.borderColor = Config.tweetsProfileImageBorderColor.CGColor
         self.userProfileImage.layer.borderWidth = 2.0;
     }
     
@@ -111,7 +114,15 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         let tweetTextWidth = tableWidth - self.profileImageWidth
         let characByLine = tweetTextWidth/self.characWidth
         let lineCount = textLength/characByLine
-        return (self.lineHeight*lineCount + self.profileImageHeight + self.tweetToolbarHeight + self.blankSpaceHeight)
+        let cellHeight = (self.lineHeight*lineCount + self.profileImageHeight + self.tweetToolbarHeight + self.blankSpaceHeight)
+        if cellHeight > self.maxCellHeight
+        {
+            return self.maxCellHeight
+        }
+        else
+        {
+            return cellHeight
+        }
     }
     
     // MARK - Context Label delegate
