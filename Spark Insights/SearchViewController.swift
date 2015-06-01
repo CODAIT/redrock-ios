@@ -99,7 +99,6 @@ class SearchViewController: UIViewController {
         let containerViewController = ContainerViewController()
         // TODO: need some validation here
         containerViewController.searchText = textField.text
-        //self.searchButtonView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
         // Animate the transition to the new view controller
         var tr = CATransition()
         tr.duration = 0.2
