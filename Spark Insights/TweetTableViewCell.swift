@@ -13,6 +13,7 @@ protocol TweetTableViewCellDelegate {
     func twitterBirdButtonClicked(clickedCell: TweetTableViewCell)
     optional func cellDidOpen(openedCell: TweetTableViewCell)
     optional func cellDidClose(closedCell: TweetTableViewCell)
+    optional func cellDidBeginOpening(openingCell: TweetTableViewCell)
 }
 
 class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextLabelDelegate{
@@ -173,6 +174,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         case UIGestureRecognizerState.Began:
             self.panStartPoint = gesture.translationInView(self.displayView)
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant
+            self.delegate?.cellDidBeginOpening!(self)
             break
         case UIGestureRecognizerState.Changed:
             swipeableCellChanged(gesture)
