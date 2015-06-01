@@ -87,7 +87,7 @@ class SearchViewController: UIViewController {
         self.AppTitleView.hidden = false
         self.appImageTitle.hidden = true
         self.appTitleLabel.hidden = false
-        self.appTitleTopConstraint.constant = 0
+        self.appTitleTopConstraint.constant = -UIApplication.sharedApplication().statusBarFrame.height
         self.searchHolderTopConstraint.constant = self.AppTitleView.frame.height
         self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
     }
