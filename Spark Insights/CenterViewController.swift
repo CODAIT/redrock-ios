@@ -14,10 +14,17 @@ protocol CenterViewControllerDelegate {
     optional func collapseSidePanels()
 }
 
-class CenterViewController: UIViewController, UIWebViewDelegate, PageControlDelegate {
+class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate {
 
     var searchText: String?
     weak var delegate: CenterViewControllerDelegate?
+    
+    var visualizationHandler: VisualizationHandler = VisualizationHandler()
+    
+    var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor()]
+
+    // last visited page
+    var previousPage = 0
     
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -31,6 +38,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, PageControlDele
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.setupTweetsTableView()
+        self.setupVisualizationHandler()
+        self.setupWebViews()
         self.setupScrollView()
         
         pageControlView.buttonData = [
@@ -58,57 +67,82 @@ class CenterViewController: UIViewController, UIWebViewDelegate, PageControlDele
         }
     }
 
-    func setupScrollView() {
-        var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor()]
-        
-        
-        // REQUESTS
-        let treeFilePath = NSBundle.mainBundle().URLForResource("Visualizations/treemap", withExtension: "html")
-        let treeRequest = NSURLRequest(URL: treeFilePath!)
-        
-        let greenFilePath = NSBundle.mainBundle().URLForResource("Visualizations/circlepacking", withExtension: "html")
-        let greenRequest = NSURLRequest(URL: greenFilePath!)
-        
-        let blueFilePath = NSBundle.mainBundle().URLForResource("Visualizations/blue", withExtension: "html")
-        let blueRequest = NSURLRequest(URL: blueFilePath!)
-        
-        var requests = [treeRequest, greenRequest, blueRequest]
-        
-        var numberOfViews = 3
-        
-        for i in 0..<numberOfViews {
+    /*
+        populates the visualizationHandler
+    */
+    func setupVisualizationHandler() {
+        // the name of the HTML file corresponding to a visualization in /Visualizations
+        visualizationHandler.visualizationNames = ["treemap", "circlepacking", "worddistance"]
+    }
+    
+    /*
+        creates the webviews
+    */
+    func setupWebViews() {
+        for i in 0..<visualizationHandler.getNumberOfVisualizations(){
+            let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+visualizationHandler.visualizationNames[i], withExtension: "html")
+            let request = NSURLRequest(URL: filePath!)
+            
             var myOrigin = CGFloat(i) * self.dummyView.frame.size.width
             
             var myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.dummyView.frame.size.width, self.dummyView.frame.size.height))
-            myWebView.backgroundColor = colors[i % numberOfViews]
+            myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
             
-            myWebView.loadRequest(requests[i])
+            myWebView.loadRequest(request)
             
+            // set the delegate so data can be loaded in
             myWebView.delegate = self
             
-            self.scrollView.addSubview(myWebView)
+            visualizationHandler.webViews.append(myWebView)
+            
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(numberOfViews), self.dummyView.frame.size.height)
     }
     
+    /*
+        sets up the scrollview that contains the webviews
+    */
+    func setupScrollView() {
+        for i in 0..<visualizationHandler.getNumberOfVisualizations() {
+            let myWebView = visualizationHandler.webViews[i]
+            self.scrollView.addSubview(myWebView)
+            self.scrollView.delegate = self
+        }
+        
+        self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
+    }
+    
+    //detect when the page was changed
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        var pageWidth = scrollView.frame.size.width
+        var fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
+        var page : Int = Int(round(fractionalPage))
+        if(previousPage != page){
+            println("page was changed to... \(page)")
+            previousPage = page
+            visualizationHandler.reloadAppropriateView(page)
+        }
+    }
+    
+    /*
+        When a page finishes loading, load in the javascript
+    */
     func webViewDidFinishLoad(webView: UIWebView) {
-        //var data = receiveData();
-        //println("data: \(data)")
+        //get the data in there somehow
+        println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
         
         // should tell it which webView I am with some property
-        
-        // SCRIPTS
-        var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
-                
-        //var greenScript = ""
-        //var blueScript = ""
-        //var scripts = [treeScript, greenScript, blueScript]
-        //var numberOfViews = 3
-
-        webView.stringByEvaluatingJavaScriptFromString(treeScript)
-        
-        //println("webViewDidFinishLoad")
+        // can do better than this
+        switch webView.request!.URL!.lastPathComponent!{
+        case visualizationHandler.visualizationNames[0]+".html":
+            visualizationHandler.transformDataForTreemapping(webView)
+        case visualizationHandler.visualizationNames[1]+".html":
+            visualizationHandler.transformDataForCirclepacking(webView)
+        case visualizationHandler.visualizationNames[2]+".html":
+            visualizationHandler.transformDataForWorddistance(webView)
+        default:
+            break
+        }
     }
     
     // MARK: PageControlDelegate

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <title>Force Layout Example 1</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>
+
+  var width = 675, height = 500;
+
+  var centerColor = "#7CC7FF";
+  var color = ["#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"];
+
+// there is one parent node and multiple children
+// the parent is in the center
+// each child has degrees away from the parent
+
+  function renderChart(data){
+    //document.getElementById("test").innerHTML = "heyo"
+      
+    var data = JSON.parse(data); //jsonify the data
+    
+    var numberOfCircles = data.children.length;
+    var twopi = 2*Math.PI;
+    var arc = twopi/numberOfCircles;
+
+    var centerx = width/2;
+    var centery = height/2;
+
+    var maxLengthAway = height/3;
+    var maxCircleRadius = width/15;
+    var minLengthAway = maxCircleRadius*2.5;
+
+    var maxSize = 0; var maxDistance = 0;
+    for(i = 0; i < numberOfCircles; i++){
+      if(data.children[i].size > maxSize){
+        maxSize = data.children[i].size;
+      }
+      if((1-data.children[i].distance) > maxDistance){
+        maxDistance = 1-data.children[i].distance;
+      }
+    }
+    console.log("maxSize is: "+maxSize+"... maxDistance is: "+maxDistance);
+
+    // the canvas
+    var svg = d3.select('body').append('svg').attr('width', width).attr('height', height);
+
+    //var elem = svg.selectAll("g").data(data.children); //the data for circles
+    //var elemEnter = elem.enter().append("g"); //the blocks for the circles and text
+
+    // print the lines
+    for(i = 0; i < numberOfCircles; i++){
+      var myRadius = (maxCircleRadius)*(data.children[i].size)/maxSize;
+      var myLengthAway = minLengthAway+(maxLengthAway)*(1-data.children[i].distance)/maxDistance;
+      var myCenterX = centerx+Math.sin(arc*i)*myLengthAway;
+      var myCenterY = centery+Math.cos(arc*i)*myLengthAway;
+      var textX = centerx+Math.sin(arc*i)*myLengthAway*0.6
+      var textY = centery+Math.cos(arc*i)*myLengthAway*0.6
+
+      svg.append("line")
+        .attr("x1",myCenterX)
+        .attr("x2",centerx)
+        .attr("y1",myCenterY)
+        .attr("y2",centery)
+        .attr("stroke-width",3)
+        .attr("stroke","grey");
+
+      svg.append("text")
+        .attr("x", textX)
+        .attr("y", textY)
+        .text(data.children[i].distance);
+    }
+
+    // print the center circle
+    svg.append("circle")
+      .attr("cx", centerx)
+      .attr("cy", centery)
+      .attr("r", maxCircleRadius*1.2)
+      .attr("fill", centerColor)
+      .attr("stroke", "black");
+    svg.append("text")
+      .attr("x", centerx-maxCircleRadius/2)
+      .attr("y", centery)
+      .style("font-size", "33px")
+      .text(data.name);
+
+    // print the child circle locations
+    for(i = 0; i < numberOfCircles; i++){
+      var mySizeRatio = (data.children[i].size)/maxSize
+      var myRadius = (maxCircleRadius)*mySizeRatio;
+      var myLengthAway = minLengthAway+(maxLengthAway)*(1-data.children[i].distance)/maxDistance;
+      var myCenterX = centerx+Math.sin(arc*i)*myLengthAway;
+      var myCenterY = centery+Math.cos(arc*i)*myLengthAway;
+      var myFontSize = 22*mySizeRatio+"px";
+      var myText = data.children[i].name+" ("+data.children[i].size+")";
+
+      svg.append("circle")
+        .attr("cx", myCenterX)
+        .attr("cy", myCenterY)
+        .attr("r", myRadius)
+        .attr("fill", color[i])
+        .attr("stroke", "black");
+
+      if(mySizeRatio >= 0.65){
+        svg.append("text")
+          .attr("x", myCenterX-myRadius/2)
+          .attr("y", myCenterY+5)
+          .style("font-size", myFontSize)
+          .text(myText);
+      }
+      else{
+        svg.append("text")
+          .attr("x", myCenterX+myRadius+3)
+          .attr("y", myCenterY+5)
+          .style("font-size", "20px")
+          .text(myText);
+      }
+    }
+  }
+
+  //var data = '{"name": "cat","children": [{"name": "feline", "distance": 0.6, "size": 44},{"name": "dog", "distance": 0.4, "size": 22},{"name": "bunny", "distance": 0.0, "size": 10},{"name": "gif", "distance": 1.0, "size": 55},{"name": "tail", "distance": 0.2, "size": 88},{"name": "fur", "distance": 0.7, "size": 50}]}'
+
+  //renderChart(data);
+
+
+</script>
+</body>
+</html>

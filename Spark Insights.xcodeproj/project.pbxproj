@@ -31,6 +31,7 @@
 		CE79DA841B19166C003F01F6 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA811B19166C003F01F6 /* README.md */; };
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
+		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		CE79DA811B19166C003F01F6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
+		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
 				CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */,
 				CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */,
+				F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */,
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
 				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
@@ -306,6 +309,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
+				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
 				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,

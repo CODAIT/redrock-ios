@@ -43,19 +43,16 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     var isURLTapped = false
     var actionOnClickImageDetail: ((tweetCell: TweetTableViewCell) -> ())!
     
-    //Colors
-    let cellBackgroundColor = UIColor(red: 29/255, green: 54/255, blue: 73/255, alpha: 1)
-    let detailsColor = UIColor(red: 226/255, green: 121/255, blue: 0, alpha: 1)
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         //Tweet text component colors
-        tweeText.hashtagTextColor = self.detailsColor
+        tweeText.hashtagTextColor = Config.tweetsTableTextComponentsColor
         tweeText.userHandleTextColor = UIColor.whiteColor()
-        tweeText.linkTextColor = self.detailsColor
+        tweeText.linkTextColor = Config.tweetsTableTextComponentsColor
         tweeText.textColor = UIColor.whiteColor()
-        self.backgroundView?.backgroundColor = self.cellBackgroundColor
-        self.displayView.backgroundColor = self.cellBackgroundColor
+        self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
+        self.userScreenName.textColor = Config.tweetsTableTextComponentsColor
         //ContextLabel delegate
         tweeText.delegate = self
         //Profile Image layout
@@ -75,7 +72,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     {
         self.userProfileImage.layer.cornerRadius = 10.0;
         self.userProfileImage.layer.masksToBounds = true;
-        self.userProfileImage.layer.borderColor = self.detailsColor.CGColor
+        self.userProfileImage.layer.borderColor = Config.tweetsTableTextComponentsColor.CGColor
         self.userProfileImage.layer.borderWidth = 2.0;
     }
     
@@ -93,7 +90,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
     }
     override func setHighlighted(highlighted: Bool, animated: Bool) {
-        self.displayView.backgroundColor = self.cellBackgroundColor
+        self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
     }
     
     
