@@ -112,6 +112,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
     }
     
+    // MARK: UIScrollViewDelegate
+    
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var pageWidth = scrollView.frame.size.width
@@ -121,8 +123,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             println("page was changed to... \(page)")
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
+            pageControlView.selectedIndex = page
         }
     }
+    
+    // MARK: UIWebViewDelegate
     
     /*
         When a page finishes loading, load in the javascript
@@ -149,6 +154,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func pageChanged(index: Int) {
         println("Page Changed to index: \(index)")
+        var offset = scrollView.frame.size.width * CGFloat(index)
+        scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
     
     // MARK: Actions
