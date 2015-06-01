@@ -11,7 +11,7 @@ import Social
 
 class TweetsTableViewController: UITableViewController{
 
-    var tweets = ReadTweetsData.readJSON()!
+    var tweets = Array<TwitterTweet>()
     
     override func viewDidLoad() {
         super.viewDidLoad()

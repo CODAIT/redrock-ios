@@ -64,6 +64,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height
             tweetsController.view.frame = CGRectMake(0, headerView.frame.height , self.leftView.frame.width, height);
             self.leftView.addSubview(tweetsController.view)
+            
+            // Simulating request delay
+            let delay = 2.0 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                tweetsController.tweets = ReadTweetsData.readJSON()!
+                tweetsController.tableView.reloadData()
+            }
+            //-----
+            
             tweetsController.didMoveToParentViewController(self)
         }
     }
