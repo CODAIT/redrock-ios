@@ -20,6 +20,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     weak var delegate: CenterViewControllerDelegate?
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
+    let visualizationNames = ["stackedbar", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
     
     var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor()]
 
@@ -41,7 +42,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupVisualizationHandler()
         self.setupWebViews()
         self.setupScrollView()
-        
+
+        // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
         pageControlView.buttonData = [
             PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
@@ -83,7 +85,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     */
     func setupVisualizationHandler() {
         // the name of the HTML file corresponding to a visualization in /Visualizations
-        visualizationHandler.visualizationNames = ["treemap", "circlepacking", "worddistance"]
+        visualizationHandler.visualizationNames = self.visualizationNames
     }
     
     /*
@@ -146,19 +148,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
-        
-        // should tell it which webView I am with some property
-        // can do better than this
-        switch webView.request!.URL!.lastPathComponent!{
-        case visualizationHandler.visualizationNames[0]+".html":
-            visualizationHandler.transformDataForTreemapping(webView)
-        case visualizationHandler.visualizationNames[1]+".html":
-            visualizationHandler.transformDataForCirclepacking(webView)
-        case visualizationHandler.visualizationNames[2]+".html":
-            visualizationHandler.transformDataForWorddistance(webView)
-        default:
-            break
-        }
+        visualizationHandler.transformData(webView)
     }
     
     // MARK: PageControlDelegate
