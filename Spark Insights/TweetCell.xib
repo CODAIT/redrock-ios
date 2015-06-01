@@ -12,11 +12,11 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mxV-VQ-x5j" id="8P7-0M-M9h">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitter_bird" translatesAutoresizingMaskIntoConstraints="NO" id="eq8-m2-ihT">
-                        <rect key="frame" x="246" y="0.5" width="79" height="160.5"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitter_logo_spark-01" translatesAutoresizingMaskIntoConstraints="NO" id="eq8-m2-ihT">
+                        <rect key="frame" x="220" y="0.5" width="105" height="160.5"/>
+                        <color key="backgroundColor" red="0.36862745099999999" green="0.57647058819999997" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="79" id="2Nu-5A-MzF"/>
+                            <constraint firstAttribute="width" constant="105" id="2Nu-5A-MzF"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fHe-na-c7f">
@@ -159,6 +159,6 @@
     <resources>
         <image name="Favorite_GRAY" width="24" height="24"/>
         <image name="Retweet_GRAY" width="40" height="24"/>
-        <image name="twitter_bird" width="128" height="128"/>
+        <image name="twitter_logo_spark-01" width="833" height="833"/>
     </resources>
 </document>
