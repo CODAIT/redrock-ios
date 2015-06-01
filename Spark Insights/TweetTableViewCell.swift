@@ -91,7 +91,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     
     // MARK - Select style
-    override func setSelected(selected: Bool, animated: Bool) {
+    /*override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if self.isURLTapped
         {
@@ -105,7 +105,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
-    }
+    }*/
     
     
     // MARK - Configure Tweet

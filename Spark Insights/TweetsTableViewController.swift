@@ -16,8 +16,8 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
-        self.tableView.backgroundColor = Config.tweetsTableBackgroundColor
+        //self.tableView.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        //self.tableView.backgroundColor = Config.tweetsTableBackgroundColor
         self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: nil), forCellReuseIdentifier: "TweetTableCellView")
     }
 
