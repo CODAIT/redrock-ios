@@ -382,7 +382,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRv-zE-Rs9">
                                         <rect key="frame" x="0.0" y="103" width="699" height="541"/>
                                         <subviews>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="at8-Vv-AL8">
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="at8-Vv-AL8">
                                                 <rect key="frame" x="0.0" y="0.0" width="699" height="541"/>
                                             </scrollView>
                                         </subviews>
