@@ -9,9 +9,10 @@
 import UIKit
 import Social
 
-class TweetsTableViewController: UITableViewController{
+class TweetsTableViewController: UITableViewController, TweetTableViewCellDelegate{
 
     var tweets = Array<TwitterTweet>()
+    var openedTweetCell = Array<TweetTableViewCell>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,31 @@ class TweetsTableViewController: UITableViewController{
             self.presentViewController(displayViewController, animated: true, completion: nil)
         }
     }
+    
+    //MARK - Tweet Cell delegate
+    
+    func twitterBirdButtonClicked(clickedCell: TweetTableViewCell) {
+        self.shareOnTwitter(clickedCell)
+    }
+    
+    func cellDidOpen(openedCell: TweetTableViewCell) {
+        println("open")
+        if self.openedTweetCell.count == 1
+        {
+            self.openedTweetCell[0].resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
+            self.openedTweetCell.removeAtIndex(0)
+        }
+        self.openedTweetCell.append(openedCell)
+    }
+    
+    func cellDidClose(closedCell: TweetTableViewCell) {
+        if self.openedTweetCell.count == 1
+        {
+            self.openedTweetCell.removeAtIndex(0)
+        }
+        println("close")
+    }
+    
     
     //MARK - Twitter integration
     func shareOnTwitter(tweetCell: TweetTableViewCell)
@@ -78,10 +104,9 @@ class TweetsTableViewController: UITableViewController{
             countRetweet: String(tweets[indexPath.row].getRetweetsCount()),
             dateTime: tweets[indexPath.row].getDateTimeToDisplay("MMM dd HH:mm:ss"))
         
-        
+        tweetCell.delegate = self
         tweetCell.rowIndex = indexPath.row
         tweetCell.displayTappedURL = self.displayTweetTappedURL
-        tweetCell.actionOnClickImageDetail = self.shareOnTwitter
         return tweetCell
     }
     

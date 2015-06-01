@@ -8,8 +8,18 @@
 
 import UIKit
 
+@objc
+protocol TweetTableViewCellDelegate {
+    func twitterBirdButtonClicked(clickedCell: TweetTableViewCell)
+    optional func cellDidOpen(openedCell: TweetTableViewCell)
+    optional func cellDidClose(closedCell: TweetTableViewCell)
+}
+
 class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextLabelDelegate{
 
+    // Delegate
+    weak var delegate: TweetTableViewCellDelegate?
+    
     // Tweet Cell outlets
     @IBOutlet weak var displayView: UIView!
     @IBOutlet weak var userProfileImage: UIImageView!
@@ -39,13 +49,12 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     static let lineHeight = CGFloat(24)
     static let tweetToolbarHeight = CGFloat(19)
     static let blankSpaceHeight = CGFloat(70)
-    static let maxCellHeight = CGFloat(210)
+    static let maxCellHeight = CGFloat(220)
     
     //Keep track of the row index of the cell
     var rowIndex:Int = 0
     var displayTappedURL: ((selectedURL: String) -> ())!
     var isURLTapped = false
-    var actionOnClickImageDetail: ((tweetCell: TweetTableViewCell) -> ())!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -54,7 +63,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         tweeText.userHandleTextColor = UIColor.whiteColor()
         tweeText.linkTextColor = Config.tweetsTableTextComponentsColor
         tweeText.textColor = UIColor.whiteColor()
-        //self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
+        self.backgroundColor = Config.tweetsTableBackgroundColor
         //self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
         //ContextLabel delegate
         tweeText.delegate = self
@@ -152,7 +162,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func twitterImageClicked(gesture: UIGestureRecognizer)
     {
-        self.actionOnClickImageDetail(tweetCell: self)
+        self.twitterDetailImg.alpha = 0.5
+        delegate?.twitterBirdButtonClicked(self)
     }
     
     // MARK - Swipeable
@@ -270,6 +281,11 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func resetConstraintContstantsToZero(animated: Bool, notifyDelegateDidClose: Bool)
     {
+        if notifyDelegateDidClose
+        {
+            self.delegate?.cellDidClose!(self)
+        }
+        
         if (self.startingRightLayoutConstraintConstant == 0 &&
             self.contentViewRightConstraint.constant == 0) {
                 //Already all the way closed, no bounce necessary
@@ -291,6 +307,11 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func setConstraintsToShowAllButtons(animated: Bool, notifyDelegateDidOpen:Bool)
     {
+        if notifyDelegateDidOpen
+        {
+            self.delegate?.cellDidOpen!(self)
+        }
+        
         if (self.startingRightLayoutConstraintConstant == self.twitterImageTotalWidth() &&
             self.contentViewRightConstraint.constant == self.twitterImageTotalWidth()) {
                 return;
