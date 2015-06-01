@@ -14,10 +14,10 @@ protocol CenterViewControllerDelegate {
     optional func collapseSidePanels()
 }
 
-class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
+class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate {
 
     var searchText: String?
-    var delegate: CenterViewControllerDelegate?
+    weak var delegate: CenterViewControllerDelegate?
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     
@@ -32,6 +32,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
+    @IBOutlet weak var pageControlView: PageControlView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -39,6 +41,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupVisualizationHandler()
         self.setupWebViews()
         self.setupScrollView()
+        
+        pageControlView.buttonSelectedBackgroundColor = Config.tealColor
+        pageControlView.buttonData = [
+            PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
+            PageControlButtonData(imageName: "Tree_TEAL", selectedImageName: "Tree_WHITE"),
+            PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE")
+        ]
+        pageControlView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -103,6 +113,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
     }
     
+    // MARK: UIScrollViewDelegate
+    
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
         var pageWidth = scrollView.frame.size.width
@@ -112,8 +124,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             println("page was changed to... \(page)")
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
+            pageControlView.selectedIndex = page
         }
     }
+    
+    // MARK: UIWebViewDelegate
     
     /*
         When a page finishes loading, load in the javascript
@@ -135,7 +150,17 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             break
         }
     }
-        
+    
+    // MARK: PageControlDelegate
+    
+    func pageChanged(index: Int) {
+        println("Page Changed to index: \(index)")
+        var offset = scrollView.frame.size.width * CGFloat(index)
+        scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
+    }
+    
+    // MARK: Actions
+    
     @IBAction func searchClicked(sender: UIButton) {
         delegate?.toggleRightPanel?()
     }
