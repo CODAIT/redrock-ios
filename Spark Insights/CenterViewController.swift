@@ -103,6 +103,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             myWebView.loadRequest(request)
             
+            // don't let webviews scroll
+            myWebView.scrollView.scrollEnabled = false;
+            myWebView.scrollView.bounces = false;
+            
             // set the delegate so data can be loaded in
             myWebView.delegate = self
             
