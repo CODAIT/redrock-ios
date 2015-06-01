@@ -26,6 +26,22 @@ class VisualizationHandler{
 
     }
     
+    func transformData(webView: UIWebView){
+        // should tell it which webView I am with some property
+        // can do better than this
+        switch webView.request!.URL!.lastPathComponent!{
+        case visualizationNames[0]+".html":
+            transformDataForTreemapping(webView)
+        case visualizationNames[1]+".html":
+            transformDataForCirclepacking(webView)
+        case visualizationNames[2]+".html":
+            transformDataForWorddistance(webView)
+        default:
+            break
+        }
+        
+    }
+    
     func transformDataForTreemapping(webView: UIWebView){
         println("transformDataForTreemapping: "+webView.request!.URL!.lastPathComponent!)
         
