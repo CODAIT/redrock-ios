@@ -38,7 +38,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     @IBOutlet weak var pageControlView: PageControlView!
     
-    @IBOutlet weak var lastUpdateTextLabel: UILabel!
+    @IBOutlet weak var tweetsFooterView: UIView!
+    @IBOutlet weak var tweetsFooterLabel: UILabel!
+    @IBOutlet weak var tweetsFooterSeparatorLine: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
