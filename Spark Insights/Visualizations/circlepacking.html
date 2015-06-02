@@ -39,7 +39,40 @@ var margin = 0,
     
     var w = 800, h = 500;
 
-var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
+//var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
+
+var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4"]);
+
+var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80", "#264a60", "#1c3648", "#142834", "#010205"]);
+
+var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632", "#204d25", "#1d3b1b", "#162815", "#030403"]);
+
+var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d", "#005448", "#003c32", "#002a21", "#010303"]);
+
+var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098", "#552f72", "#402255", "#301940", "#040304"]);
+
+function returnColor(parentColor, number){
+    
+    if(parentColor == "1"){
+        //return "#FF0000";
+        return color1(number);
+    }
+    else if(parentColor == "2"){
+        //return "#00FF00";
+        return color2(number);
+    }
+    else if(parentColor == "3"){
+        //return "#0000FF";
+        return color3(number);
+    }
+    else if(parentColor == "4"){
+        //return "#505050";
+        return color4(number);
+    }
+    else{
+        return "#FF69B4";
+    }
+}
 
 var pack = d3.layout.pack()
     .padding(8)
@@ -64,16 +97,15 @@ function renderChart(data){
 
   var root = JSON.parse(data);
 
-
   var focus = root,
       nodes = pack.nodes(root),
       view;
-
+      
   var circle = svg.selectAll("circle")
       .data(nodes)
     .enter().append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
-      .style("fill", function(d) { if(d.depth>=2){ return d.parent ? color(d.parent.name) : null; }else{return "rgba(0,0,0,0)"}})
+      .style("fill", function(d) { if(d.depth>=2){ return d.parent ? returnColor(parentColor(d.parent.name),d.size) : null; }else{return "rgba(0,0,0,0)"}})
       //.on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
 
   var text = svg.selectAll("text")
