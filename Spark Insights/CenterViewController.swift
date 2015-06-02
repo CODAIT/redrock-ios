@@ -21,7 +21,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
-    let visualizationNames = ["stackedbar", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
+    let visualizationNames = ["circlepacking", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
     
     var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor()]
 

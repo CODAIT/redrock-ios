@@ -8,20 +8,21 @@
 </head>
 
 <body>
+    <p id="test">blah</p>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
   var width = 675, height = 500;
 
   var centerColor = "#7CC7FF";
-  var color = ["#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"];
+  var color = ["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"];
 
 // there is one parent node and multiple children
 // the parent is in the center
 // each child has degrees away from the parent
 
-  function renderChart(data){
-    //document.getElementById("test").innerHTML = "heyo"
+  function renderChart(data, windowWidth, windowHeight){
+    document.getElementById("test").innerHTML = "windowWidth: "+windowWidth+"... windowHeight: "+windowHeight;
       
     var data = JSON.parse(data); //jsonify the data
     

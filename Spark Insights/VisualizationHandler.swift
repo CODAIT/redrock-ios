@@ -23,6 +23,12 @@ class VisualizationHandler{
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
         webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
+        if(viewNumber == 1){
+            webViews[viewNumber].scalesPageToFit = true
+        }
+        else{
+            webViews[viewNumber].scalesPageToFit = false
+        }
 
     }
     
@@ -63,11 +69,20 @@ class VisualizationHandler{
         
         //var script2 = "renderChart(\"blah\");"
         
-        var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; renderChart(myData);"
+        var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
         
         webView.stringByEvaluatingJavaScriptFromString(wordScript)
     }
-    
+
+    func transformDataForTimemap(webView: UIWebView){
+        
+        println("transformDataForTimemap: "+webView.request!.URL!.lastPathComponent!)
+        
+        var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
+        
+        webView.stringByEvaluatingJavaScriptFromString(timemapScript)
+    }
+
     
     
 }
