@@ -29,7 +29,6 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonView: UIView!
-    @IBOutlet weak var searchImageView: UIImageView!
     
     private var recalculateConstrainstsForSearchView = true
     
@@ -42,8 +41,6 @@ class SearchViewController: UIViewController {
     func addGestureRecognizerSearchView()
     {
         let tapGesture = UITapGestureRecognizer(target: self, action: "searchClicked:")
-        self.searchImageView.addGestureRecognizer(tapGesture)
-        self.searchImageView.userInteractionEnabled = true
         self.searchButtonView.addGestureRecognizer(tapGesture)
         self.searchButtonView.userInteractionEnabled = true
     }
@@ -94,13 +91,11 @@ class SearchViewController: UIViewController {
         self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
     }
     
-    @IBAction func searchClicked(sender: UIButton) {
-        
-        self.searchButtonView.alpha = 0.5
-        self.searchImageView.alpha = 0.5
+    func searchClicked(gesture: UIGestureRecognizer) {
         let containerViewController = ContainerViewController()
         // TODO: need some validation here
         containerViewController.searchText = textField.text
+        self.searchButtonView.backgroundColor = Config.darkBlueColor
         // Animate the transition to the new view controller
         var tr = CATransition()
         tr.duration = 0.2
