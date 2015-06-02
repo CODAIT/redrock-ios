@@ -45,9 +45,10 @@
             chart.y(function(d) {
                     return d.y
                     });
-            chart.color(["#94d9d1","#325d80"]); //,"rgba(0,0,0,0)",
+            chart.color(["#325d80","#94d9d1"]);
             chart.margin({left: 100, right:100,top:100,bottom:100});
             chart.tooltips(true);
+            chart.reduceXTicks(false);
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
@@ -60,7 +61,7 @@
                         // else {
                         //   return d;
                         // }
-            });;
+            });
             chart.xAxis.rotateLabels(-30);
             chart.yAxis
             //.axisLabel("Count")
@@ -79,18 +80,23 @@
 
     //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
 
+
+    /*
     var myData = [{
       "key": "Tweet Count",
       "values": [
-        {"x":"dog","y":43, "z": 33},
-        {"x":"cat","y":22, "z": 22},
-        {"x":"red","y":13, "z": 11},
-        {"x":"white","y":44, "z": 23},
-        {"x":"blue","y":55, "z": 44}
+        {"x":"11/17","y":43, "z": 33},
+        {"x":"11/18","y":22, "z": 22},
+        {"x":"11/19","y":22, "z": 22},
+        {"x":"11/20","y":33, "z": 11},
+        {"x":"11/21","y":51, "z": 15},
+        {"x":"11/22","y":44, "z": 23},
+        {"x":"11/23","y":55, "z": 44}
       ]
       }
     ];
-    renderChart(myData);
+     */
+    //renderChart(myData);
 
     function transformData(data){
         //Copy Object
