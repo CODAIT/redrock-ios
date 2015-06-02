@@ -32,23 +32,12 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-
-
-
-function renderChart(data){
 //d3.select("body").append("p").text("my text");
 
 var margin = 0,
     diameter = 550;
     
     var w = 800, h = 500;
-
-/*var color = d3.scale.linear()
-    .domain([-1, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);*/
-
-//var color = d3.scale.category20c();
 
 var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
 
@@ -63,12 +52,18 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + ((diameter / 2)+45) + "," + ((diameter / 2)-25) + ")");
 
-var data = '{"name": " ","children": [{"name": "1","children": [{"name": ":)", "size": 3938},{"name": "happy", "size": 3812},{"name": "birthday", "size": 60999},{"name": "good", "size": 6714},{"name": "cheers", "size": 3812},{"name": "congrats!", "size": 6714},{"name": "sweet!", "size": 2143}]},{"name": "2","children": [{"name": "love", "size": 3534},{"name": "iloveyou", "size": 5731},{"name": "justin", "size": 7840},{"name": "smiling", "size": 5914},{"name": "joy!", "size": 3416}]},{"name": "3","children": [{"name": ":(", "size": 3938},{"name": "sad", "size": 3812},{"name": "sorry", "size": 6714},{"name": "miss", "size": 6714},{"name": "bad", "size": 3812},{"name": "heartbroken", "size": 6714},{"name": "pain", "size": 2243},{"name": "sick", "size": 2443}]}]}'
+//var data = '{"name": " ","children": [{"name": "1","children": [{"name": ":)", "size": 3938},{"name": "happy", "size": 3812},{"name": "birthday", "size": 60999},{"name": "good", "size": 6714},{"name": "cheers", "size": 3812},{"name": "congrats!", "size": 6714},{"name": "sweet!", "size": 2143}]},{"name": "2","children": [{"name": "love", "size": 3534},{"name": "iloveyou", "size": 5731},{"name": "justin", "size": 7840},{"name": "smiling", "size": 5914},{"name": "joy!", "size": 3416}]},{"name": "3","children": [{"name": ":(", "size": 3938},{"name": "sad", "size": 3812},{"name": "sorry", "size": 6714},{"name": "miss", "size": 6714},{"name": "bad", "size": 3812},{"name": "heartbroken", "size": 6714},{"name": "pain", "size": 2243},{"name": "sick", "size": 2443}]}]}'
 
-var dataAsJSON = JSON.parse(data);
+//var dataAsJSON = JSON.parse(data);
 
-function draw(root){
-  //if (error) return console.error(error);
+function renderChart(data){
+
+//var blah = '{"name": " ","children": [{"name": "1","children": [{"name": ":)", "size": 3938},{"name": "happy", "size": 3812},{"name": "birthday", "size": 60999},{"name": "good", "size": 6714},{"name": "cheers", "size": 3812},{"name": "congrats!", "size": 6714},{"name": "sweet!", "size": 2143}]},{"name": "2","children": [{"name": "love", "size": 3534},{"name": "iloveyou", "size": 5731},{"name": "justin", "size": 7840},{"name": "smiling", "size": 5914},{"name": "joy!", "size": 3416}]},{"name": "3","children": [{"name": ":(", "size": 3938},{"name": "sad", "size": 3812},{"name": "sorry", "size": 6714},{"name": "miss", "size": 6714},{"name": "bad", "size": 3812},{"name": "heartbroken", "size": 6714},{"name": "pain", "size": 2243},{"name": "sick", "size": 2443}]}]}'
+
+//var root = JSON.parse(blah);
+
+  var root = JSON.parse(data);
+
 
   var focus = root,
       nodes = pack.nodes(root),
@@ -129,8 +124,6 @@ function draw(root){
 
 d3.select(self.frameElement).style("height", diameter + "px");
 
-draw(dataAsJSON);
-
-};
+//renderChart("blah");
 
 </script>

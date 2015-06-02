@@ -63,7 +63,7 @@ class VisualizationHandler{
     func transformDataForTreemapping(webView: UIWebView){
         println("transformDataForTreemapping: "+webView.request!.URL!.lastPathComponent!)
         
-        var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"zebra\",\"children\": [{\"name\": \"zebra\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+        var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
         webView.stringByEvaluatingJavaScriptFromString(treeScript)
     }
@@ -71,7 +71,11 @@ class VisualizationHandler{
     func transformDataForCirclepacking(webView: UIWebView){
         println("transformDataForCirclepacking: "+webView.request!.URL!.lastPathComponent!)
 
-        var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+        //var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+
+        var script = "var data7 = '{\"name\": \" \",\"children\": [{\"name\": \"1\",\"children\": [{\"name\": \":)\", \"size\": 3938},{\"name\": \"happy\", \"size\": 3812},{\"name\": \"mirthday\", \"size\": 40999},{\"name\": \"good\", \"size\": 6714},{\"name\": \"cheers\", \"size\": 3812},{\"name\": \"congrats!\", \"size\": 6714},{\"name\": \"sweet!\", \"size\": 2143}]},{\"name\": \"2\",\"children\": [{\"name\": \"love\", \"size\": 3534},{\"name\": \"iloveyou\", \"size\": 5731},{\"name\": \"justin\", \"size\": 7840},{\"name\": \"smiling\", \"size\": 5914},{\"name\": \"joy!\", \"size\": 3416}]},{\"name\": \"3\",\"children\": [{\"name\": \":(\", \"size\": 3938},{\"name\": \"sad\", \"size\": 3812},{\"name\": \"sorry\", \"size\": 6714},{\"name\": \"miss\", \"size\": 6714},{\"name\": \"bad\", \"size\": 3812},{\"name\": \"heartbroken\", \"size\": 6714},{\"name\": \"pain\", \"size\": 2243},{\"name\": \"sick\", \"size\": 2443}]}]}'; renderChart(data7);"
+        
+        //var script = "renderChart(\"blah\");"
         
         webView.stringByEvaluatingJavaScriptFromString(script)
     }
@@ -99,9 +103,14 @@ class VisualizationHandler{
         
         println("transformDataForStackedbar: "+webView.request!.URL!.lastPathComponent!)
         
-        var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
+        //var script = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
         
-        webView.stringByEvaluatingJavaScriptFromString(timemapScript)
+        var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
+        
+        //var script = "renderChart(myData);"
+
+        
+        webView.stringByEvaluatingJavaScriptFromString(script)
     }
 
     
