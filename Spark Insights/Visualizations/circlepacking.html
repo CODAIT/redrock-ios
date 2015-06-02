@@ -38,8 +38,8 @@
 function renderChart(data){
 //d3.select("body").append("p").text("my text");
 
-var margin = 20,
-    diameter = 675;
+var margin = 0,
+    diameter = 550;
 
 /*var color = d3.scale.linear()
     .domain([-1, 5])
@@ -48,7 +48,7 @@ var margin = 20,
 
 //var color = d3.scale.category20c();
 
-var color = d3.scale.ordinal().range(["#7CC7FF","#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"]);
+var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
 
 var pack = d3.layout.pack()
     .padding(8)
@@ -92,7 +92,7 @@ function draw(root){
   var node = svg.selectAll("circle,text");
 
   d3.select("body")
-      .style("background", color(-1))
+      .style("background", "#FFF")
       .on("click", function() { zoom(root); });
 
   zoomTo([root.x, root.y, root.r * 2 + margin]);
@@ -126,8 +126,5 @@ d3.select(self.frameElement).style("height", diameter + "px");
 draw(dataAsJSON);
 
 };
-
-
-renderChart("blah");
 
 </script>

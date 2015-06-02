@@ -166,13 +166,9 @@
         .data(worldJson.features)
         .enter().append("svg:path")
         .attr("d", path)
-        .on("mouseover", function(d) {
-          d3.select(this).style("fill","#6C0")
-          .append("svg:title")
-          .text(d.properties.name);})
-        .on("mouseout", function(d) {
-          d3.select(this).style("fill","#ccc");
-        });
+        //.on("mouseover", function(d) {d3.select(this).style("fill","#6C0").append("svg:title").text(d.properties.name);})
+        //.on("mouseout", function(d) {d3.select(this).style("fill","#ccc");})
+        ;
     }
 
     function renderChart(data) {
