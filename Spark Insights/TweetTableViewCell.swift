@@ -76,7 +76,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         self.panRecognizer.delegate = self
         self.displayView.addGestureRecognizer(self.panRecognizer)
         // User interaction Swipe image
-        let tapGesture = UITapGestureRecognizer(target: self, action: "twitterImageClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "twitterImageClicked:")
+        tapGesture.minimumPressDuration = 0.001
         twitterDetailImg.addGestureRecognizer(tapGesture)
         twitterDetailImg.userInteractionEnabled = true
     }
@@ -163,8 +164,15 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func twitterImageClicked(gesture: UIGestureRecognizer)
     {
-        self.twitterDetailImg.alpha = 0.5
-        delegate?.twitterBirdButtonClicked(self)
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.twitterDetailImg.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            delegate?.twitterBirdButtonClicked(self)
+            self.twitterDetailImg.alpha = 1.0
+        }
     }
     
     // MARK - Swipeable

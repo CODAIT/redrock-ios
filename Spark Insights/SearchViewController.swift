@@ -40,7 +40,8 @@ class SearchViewController: UIViewController {
     
     func addGestureRecognizerSearchView()
     {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "searchClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "searchClicked:")
+        tapGesture.minimumPressDuration = 0.001
         self.searchButtonView.addGestureRecognizer(tapGesture)
         self.searchButtonView.userInteractionEnabled = true
     }
@@ -92,17 +93,24 @@ class SearchViewController: UIViewController {
     }
     
     func searchClicked(gesture: UIGestureRecognizer) {
-        let containerViewController = ContainerViewController()
-        // TODO: need some validation here
-        containerViewController.searchText = textField.text
-        self.searchButtonView.backgroundColor = Config.darkBlueColor
-        // Animate the transition to the new view controller
-        var tr = CATransition()
-        tr.duration = 0.2
-        tr.type = kCATransitionFade
-        self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
-        self.presentViewController(containerViewController, animated: false, completion: {
-            self.delegate?.changeRootViewController?(containerViewController)
-        })
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.searchButtonView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            let containerViewController = ContainerViewController()
+            // TODO: need some validation here
+            containerViewController.searchText = textField.text
+            
+            // Animate the transition to the new view controller
+            var tr = CATransition()
+            tr.duration = 0.2
+            tr.type = kCATransitionFade
+            self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
+            self.presentViewController(containerViewController, animated: false, completion: {
+                self.delegate?.changeRootViewController?(containerViewController)
+            })
+        }
     }
 }
