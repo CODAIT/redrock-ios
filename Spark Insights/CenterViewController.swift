@@ -18,6 +18,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
     var searchText: String?
     weak var delegate: CenterViewControllerDelegate?
+    var lineSeparatorWidth = CGFloat(4)
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     let visualizationNames = ["stackedbar", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
@@ -27,6 +28,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // last visited page
     var previousPage = 0
     
+   
+    @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var footerView: UIView!
@@ -34,6 +37,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var headerView: UIView!
     
     @IBOutlet weak var pageControlView: PageControlView!
+    
+    @IBOutlet weak var lastUpdateTextLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +56,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE")
         ]
         pageControlView.delegate = self
+        self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,8 +69,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         if let tweetsController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
         {
             addChildViewController(tweetsController)
-            let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height
-            tweetsController.view.frame = CGRectMake(0, headerView.frame.height , self.leftView.frame.width, height);
+            let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth
+            tweetsController.view.frame = CGRectMake(0, headerView.frame.height + 1 , self.leftView.frame.width, height);
             self.leftView.addSubview(tweetsController.view)
             
             // Simulating request delay
@@ -96,9 +102,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+visualizationHandler.visualizationNames[i], withExtension: "html")
             let request = NSURLRequest(URL: filePath!)
             
-            var myOrigin = CGFloat(i) * self.dummyView.frame.size.width
+            var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             
-            var myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.dummyView.frame.size.width, self.dummyView.frame.size.height))
+            var myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
