@@ -22,26 +22,38 @@ class VisualizationHandler{
     
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
-        webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
-        if(viewNumber == 1){
+        
+        switch visualizationNames[viewNumber]{
+        case "treemap":
+            webViews[viewNumber].scalesPageToFit = false
+        case "circlepacking":
+            webViews[viewNumber].scalesPageToFit = false
+        case "worddistance":
+            webViews[viewNumber].scalesPageToFit = false
+        case "timemap":
             webViews[viewNumber].scalesPageToFit = true
-        }
-        else{
+        case "stackedbar":
+            webViews[viewNumber].scalesPageToFit = false
+        default:
             webViews[viewNumber].scalesPageToFit = false
         }
-
+        
+        webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
     }
-    
     func transformData(webView: UIWebView){
         // should tell it which webView I am with some property
         // can do better than this
         switch webView.request!.URL!.lastPathComponent!{
-        case visualizationNames[0]+".html":
+        case "treemap.html":
             transformDataForTreemapping(webView)
-        case visualizationNames[1]+".html":
+        case "circlepacking.html":
             transformDataForCirclepacking(webView)
-        case visualizationNames[2]+".html":
+        case "worddistance.html":
             transformDataForWorddistance(webView)
+        case "timemap.html":
+            transformDataForTimemap(webView)
+        case "stackedbar.html":
+            transformDataForStackedbar(webView)
         default:
             break
         }
@@ -77,6 +89,15 @@ class VisualizationHandler{
     func transformDataForTimemap(webView: UIWebView){
         
         println("transformDataForTimemap: "+webView.request!.URL!.lastPathComponent!)
+        
+        var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
+        
+        webView.stringByEvaluatingJavaScriptFromString(timemapScript)
+    }
+    
+    func transformDataForStackedbar(webView: UIWebView){
+        
+        println("transformDataForStackedbar: "+webView.request!.URL!.lastPathComponent!)
         
         var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
         

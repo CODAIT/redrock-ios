@@ -21,13 +21,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
-    let visualizationNames = ["circlepacking", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
+    let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
     
-    var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor()]
+    var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
 
     // last visited page
     var previousPage = 0
-    
    
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
@@ -53,9 +52,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
         pageControlView.buttonData = [
+            PageControlButtonData(imageName: "Bubble_TEAL", selectedImageName: "Bubble_WHITE"),
             PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
             PageControlButtonData(imageName: "Tree_TEAL", selectedImageName: "Tree_WHITE"),
-            PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE")
+            PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE"),
+            PageControlButtonData(imageName: "Network_TEAL", selectedImageName: "Network_WHITE")
         ]
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
@@ -92,8 +93,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         populates the visualizationHandler
     */
     func setupVisualizationHandler() {
-        // the name of the HTML file corresponding to a visualization in /Visualizations
-        visualizationHandler.visualizationNames = self.visualizationNames
+        visualizationHandler.visualizationNames = self.visualizationNames // the name of the HTML file corresponding to a visualization in /Visualizations
     }
     
     /*
