@@ -17,26 +17,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNa-ah-PM3">
-                                <rect key="frame" x="16" y="28" width="35" height="30"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <action selector="dismissViewController:" destination="iQx-C4-2GR" eventType="touchUpInside" id="da1-JS-KGd"/>
-                                </connections>
-                            </button>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z8o-Mf-baw">
-                                <rect key="frame" x="0.0" y="58" width="600" height="542"/>
+                                <rect key="frame" x="0.0" y="70" width="600" height="530"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mxE-pq-8rZ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNa-ah-PM3">
+                                        <rect key="frame" x="15" y="28" width="57" height="34"/>
+                                        <state key="normal" title="&lt; Back">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissViewController:" destination="iQx-C4-2GR" eventType="touchUpInside" id="da1-JS-KGd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="eNa-ah-PM3" secondAttribute="bottom" constant="8" id="hct-s7-Ffn"/>
+                                    <constraint firstItem="eNa-ah-PM3" firstAttribute="leading" secondItem="mxE-pq-8rZ" secondAttribute="leading" constant="15" id="sMp-Gf-uuo"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="mxE-pq-8rZ" secondAttribute="trailing" id="657-IA-Owd"/>
+                            <constraint firstItem="mxE-pq-8rZ" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leading" id="8Be-As-bpk"/>
+                            <constraint firstItem="mxE-pq-8rZ" firstAttribute="top" secondItem="BgT-b0-QGJ" secondAttribute="top" id="ELc-ov-IUa"/>
                             <constraint firstItem="Z8o-Mf-baw" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leading" id="PIF-FG-TO0"/>
-                            <constraint firstItem="eNa-ah-PM3" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leadingMargin" id="PTb-KR-R6F"/>
-                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="eNa-ah-PM3" secondAttribute="bottom" id="dpD-Ac-i5x"/>
-                            <constraint firstItem="eNa-ah-PM3" firstAttribute="top" secondItem="XDf-Nk-8gm" secondAttribute="bottom" constant="8" id="nQQ-h4-VYB"/>
+                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="BgT-b0-QGJ" secondAttribute="top" constant="70" id="Yjj-3W-nXv"/>
                             <constraint firstItem="2a7-cZ-S1F" firstAttribute="top" secondItem="Z8o-Mf-baw" secondAttribute="bottom" id="tQ0-tA-ERs"/>
                             <constraint firstAttribute="trailing" secondItem="Z8o-Mf-baw" secondAttribute="trailing" id="waP-iq-SQ5"/>
+                            <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="mxE-pq-8rZ" secondAttribute="bottom" id="zKI-Hr-jUm"/>
                         </constraints>
                     </view>
                     <connections>
