@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 IBM. All rights reserved.
 //
 
+// make some request
+// comes back as a JSON
+// parse the JSOn
+
 import UIKit
 
 @objc
@@ -21,7 +25,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
-    let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions
+    let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions //these are the names of the HTML files
     
     var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
 
@@ -64,10 +68,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
         
-        
         //Display time of last update
         self.configureGestureRecognizerForTweetFooterView()
         self.changeLastUpdated()
+
+        //makeARequestToGetTheData();
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -142,6 +148,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
 
     /*
+    func gotDataResponseHandler(String: data){
+        //var jsonData = jsonifyData(data)
+        visualizationHandler.reloadViewsWithData(jsonData)
+    }
+    */
+    
+    /*
         populates the visualizationHandler
     */
     func setupVisualizationHandler() {
@@ -173,7 +186,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             visualizationHandler.webViews.append(myWebView)
             
         }
-        
     }
     
     /*
@@ -200,6 +212,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             println("page was changed to... \(page)")
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
+            if((page+1)<visualizationHandler.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
+                visualizationHandler.reloadAppropriateView(page+1)
+            }
             pageControlView.selectedIndex = page
         }
     }

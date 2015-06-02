@@ -71,9 +71,9 @@ class VisualizationHandler{
     func transformDataForCirclepacking(webView: UIWebView){
         println("transformDataForCirclepacking: "+webView.request!.URL!.lastPathComponent!)
 
-        var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+        var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
-        webView.stringByEvaluatingJavaScriptFromString(treeScript)
+        webView.stringByEvaluatingJavaScriptFromString(script)
     }
     
     func transformDataForWorddistance(webView: UIWebView){
