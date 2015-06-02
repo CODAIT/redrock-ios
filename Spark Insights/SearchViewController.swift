@@ -96,6 +96,8 @@ class SearchViewController: UIViewController {
     
     @IBAction func searchClicked(sender: UIButton) {
         
+        self.searchButtonView.alpha = 0.5
+        self.searchImageView.alpha = 0.5
         let containerViewController = ContainerViewController()
         // TODO: need some validation here
         containerViewController.searchText = textField.text
