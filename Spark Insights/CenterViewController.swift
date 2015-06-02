@@ -28,6 +28,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // last visited page
     var previousPage = 0
    
+    //Can update search
+    var canUpdateSearch = false
+    
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -60,11 +63,60 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         ]
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
+        
+        
+        //Display time of last update
+        self.configureGestureRecognizerForTweetFooterView()
+        self.changeLastUpdated()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func configureGestureRecognizerForTweetFooterView()
+    {
+        let tapGesture = UITapGestureRecognizer(target: self, action: "updateSearchRequested:")
+        self.tweetsFooterView.addGestureRecognizer(tapGesture)
+        self.tweetsFooterView.userInteractionEnabled = true
+    }
+    
+    func updateSearchRequested(gesture: UIGestureRecognizer)
+    {
+        if self.canUpdateSearch
+        {
+            //Update all necessary data
+            self.tweetsFooterView.alpha = 0.5
+            self.changeLastUpdated()
+        }
+    }
+    
+    func changeLastUpdated()
+    {
+        var dateNow = NSDate()
+        var dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "hh:mm aa"
+        dateFormat.timeZone = NSTimeZone.localTimeZone()
+        self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
+        self.canUpdateSearch = false
+        self.tweetsFooterView.backgroundColor = Config.darkBlueColor
+        self.tweetsFooterSeparatorLine.hidden = false
+        self.tweetsFooterView.alpha = 1.0
+        self.waitToUpdateSearch()
+    }
+    
+    func waitToUpdateSearch()
+    {
+        // 5min until new update be available
+        let delay = 300.0 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.canUpdateSearch = true
+            self.tweetsFooterLabel.text = "Refresh Available"
+            self.tweetsFooterView.backgroundColor = Config.mediumGreen
+            self.tweetsFooterSeparatorLine.hidden = true
+        }
     }
     
     func setupTweetsTableView()
