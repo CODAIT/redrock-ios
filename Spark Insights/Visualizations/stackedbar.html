@@ -20,6 +20,12 @@
             height:  96%;
             width:   98%;
         }
+        .nvd3 .nv-axis.nv-x path.domain{
+              stroke-width: 4px;
+              stroke-opacity: 1.00;
+              stroke: #989898;
+              transform: translate(0px,10px);
+        }
 
     </style>
 </head>
@@ -62,7 +68,7 @@
                         //   return d;
                         // }
             });
-            chart.xAxis.rotateLabels(-30);
+            //chart.xAxis.rotateLabels(-30);
             chart.yAxis
             //.axisLabel("Count")
             .tickFormat(d3.format(',.0d'));
@@ -73,6 +79,21 @@
 
             nv.utils.windowResize(chart.update);
 
+            d3.select('body')
+            .selectAll('.nv-x.nv-axis > g')
+            .selectAll('g')
+            .selectAll('text')
+            .attr('transform', function(d) {return 'translate (0,20) rotate(-30 0,0)'});
+
+            //d3.select('body')
+            //.selectAll('rect.nv-bar.positive')
+            //.attr('transform', function(d) {return 'translate (-33,-33)'});
+            //.attr('stroke', 'white')
+            //.attr('stroke-width', '12px')
+            //.attr('stroke-opacity', 1);
+
+            //chart.selectAll('.axis line, .axis path').style({'stroke': 'Red', 'stroke-width': '20px'});
+
             return chart;
         });
 
@@ -81,7 +102,6 @@
     //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
 
 
-    /*
     var myData = [{
       "key": "Tweet Count",
       "values": [
@@ -95,8 +115,7 @@
       ]
       }
     ];
-     */
-    //renderChart(myData);
+    renderChart(myData);
 
     function transformData(data){
         //Copy Object
