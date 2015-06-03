@@ -542,26 +542,31 @@
                                             <rect key="frame" x="292" y="26" width="114.5" height="20.5"/>
                                         </variation>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yab-Uu-em2">
-                                        <rect key="frame" x="663" y="12" width="20" height="20"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SYb-Uf-iuG">
+                                        <rect key="frame" x="649" y="0.0" width="50" height="44"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search_WHITE" translatesAutoresizingMaskIntoConstraints="NO" id="HI1-6s-mYa">
+                                                <rect key="frame" x="14" y="12" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="20" id="BZT-Sw-X7x"/>
+                                                    <constraint firstAttribute="height" constant="20" id="Cia-PE-EV5"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.0" green="0.70588235290000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="3RW-So-kVp"/>
-                                            <constraint firstAttribute="width" constant="20" id="BbT-IE-yYP"/>
+                                            <constraint firstAttribute="centerY" secondItem="HI1-6s-mYa" secondAttribute="centerY" id="96m-CS-lp0"/>
+                                            <constraint firstAttribute="trailing" secondItem="HI1-6s-mYa" secondAttribute="trailing" constant="16" id="tsd-MO-Ox2"/>
+                                            <constraint firstAttribute="width" constant="50" id="uqE-Ns-Frr"/>
                                         </constraints>
-                                        <state key="normal" image="Search_WHITE">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="searchClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IB4-12-ES0"/>
-                                        </connections>
-                                    </button>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.70588235290000001" blue="0.62745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="SYb-Uf-iuG" secondAttribute="trailing" id="Zde-3D-KSs"/>
                                     <constraint firstAttribute="centerY" secondItem="1wq-vq-vCv" secondAttribute="centerY" id="b6g-uE-4aZ"/>
-                                    <constraint firstAttribute="bottom" secondItem="yab-Uu-em2" secondAttribute="bottom" constant="8" id="cL4-Mk-c1i"/>
-                                    <constraint firstAttribute="trailing" secondItem="yab-Uu-em2" secondAttribute="trailing" constant="16" id="cXj-n7-VDK"/>
-                                    <constraint firstAttribute="centerY" secondItem="yab-Uu-em2" secondAttribute="centerY" id="eLh-Mg-1Ef"/>
+                                    <constraint firstAttribute="bottom" secondItem="SYb-Uf-iuG" secondAttribute="bottom" id="hRh-71-I6U"/>
+                                    <constraint firstItem="SYb-Uf-iuG" firstAttribute="top" secondItem="2qF-XA-JiK" secondAttribute="top" id="jo2-eb-Z5S"/>
                                     <constraint firstAttribute="bottom" secondItem="1wq-vq-vCv" secondAttribute="bottom" constant="12" id="pXX-Oq-Bs4"/>
                                     <constraint firstAttribute="centerX" secondItem="1wq-vq-vCv" secondAttribute="centerX" id="sX2-Ri-sSW"/>
                                     <constraint firstAttribute="height" constant="44" id="sv8-uV-KQp"/>
@@ -569,7 +574,6 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="pXX-Oq-Bs4"/>
-                                        <exclude reference="cL4-Mk-c1i"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
@@ -613,6 +617,7 @@
                         <outlet property="pageControlView" destination="ifN-uh-2Nl" id="ca0-vT-6cT"/>
                         <outlet property="pageControlViewWidthConstraint" destination="AuT-wr-vPD" id="5bs-ZQ-ceb"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
+                        <outlet property="searchButtonView" destination="SYb-Uf-iuG" id="m5q-9m-077"/>
                         <outlet property="statusBarSeparator" destination="2jK-IF-SC5" id="Pev-sp-duV"/>
                         <outlet property="totalRetweetsNumberLabel" destination="TaT-Bc-iOj" id="O4B-q9-4CE"/>
                         <outlet property="totalTweetsNumberLabel" destination="Buv-yN-YAx" id="Yly-XF-Eqg"/>

@@ -54,6 +54,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var tweetsFooterLabel: UILabel!
     @IBOutlet weak var tweetsFooterSeparatorLine: UIView!
     
+    @IBOutlet weak var searchButtonView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -78,6 +80,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         //Display time of last update
         self.configureGestureRecognizerForTweetFooterView()
         self.changeLastUpdated()
+        
+        //search icon
+        self.configureGestureRecognizerForSearchIconView()
 
         //makeARequestToGetTheData();
         
@@ -88,9 +93,18 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // Dispose of any resources that can be recreated.
     }
     
+    func configureGestureRecognizerForSearchIconView()
+    {
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "searchClicked:")
+        tapGesture.minimumPressDuration = 0.001
+        self.searchButtonView.addGestureRecognizer(tapGesture)
+        self.searchButtonView.userInteractionEnabled = true
+    }
+    
     func configureGestureRecognizerForTweetFooterView()
     {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "updateSearchRequested:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "updateSearchRequested:")
+        tapGesture.minimumPressDuration = 0.001
         self.tweetsFooterView.addGestureRecognizer(tapGesture)
         self.tweetsFooterView.userInteractionEnabled = true
     }
@@ -99,9 +113,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     {
         if self.canUpdateSearch
         {
-            //Update all necessary data
-            self.tweetsFooterView.alpha = 0.5
-            self.changeLastUpdated()
+            if gesture.state == UIGestureRecognizerState.Began
+            {
+                self.tweetsFooterView.alpha = 0.5
+            }
+            else if gesture.state == UIGestureRecognizerState.Ended
+            {
+                //Update all necessary data
+                self.tweetsFooterView.alpha = 0.5
+                self.changeLastUpdated()
+            }
         }
     }
     
@@ -122,7 +143,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func waitToUpdateSearch()
     {
         // 5min until new update be available
-        let delay = 100.0 * Double(NSEC_PER_SEC)
+        let delay = 5.0 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.canUpdateSearch = true
@@ -142,7 +163,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             self.leftView.addSubview(tweetsController.view)
             
             // Simulating request delay
-            let delay = 2.0 * Double(NSEC_PER_SEC)
+            let delay = 1.0 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 tweetsController.tweets = ReadTweetsData.readJSON()!
@@ -293,9 +314,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
     
-    // MARK: Actions
-    @IBAction func searchClicked(sender: UIButton) {
-        delegate?.toggleRightPanel?()
+    func searchClicked(gesture: UIGestureRecognizer) {
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.searchButtonView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            delegate?.toggleRightPanel?()
+            self.searchButtonView.alpha = 1.0
+        }
     }
     
     // MARK - Share by email action
