@@ -22,7 +22,11 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate {
 
-    var searchText: String?
+    var searchText: String? {
+        didSet {
+            self.createRequest()
+        }
+    }
     weak var delegate: CenterViewControllerDelegate?
     var lineSeparatorWidth = CGFloat(4)
     
@@ -385,5 +389,91 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     
     
+    // MARK: - Network
+    
+    func createRequest() {
+        var search = self.searchText
+        var req = ""
+        
+        // TODO: build request string
+        
+        if (Config.useDummyData) {
+            let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                self.onDummyRequestSuccess(nil)
+            }
+        } else {
+            executeRequest(req)
+        }
+    }
+    
+    func executeRequest(req: String) {
+        let urlPath :String = "\(Config.serverAddress)/\(req)"
+
+        println("Sending Request: " + urlPath)
+        let url: NSURL = NSURL(string: urlPath)!
+        let session = NSURLSession.sharedSession()
+        session.configuration.timeoutIntervalForRequest = 300
+        
+        // TODO: LoadingView
+        // Display loading view
+        // loadingView = LoadingView(frame: view.frame)
+        // view.addSubview(loadingView!)
+        
+        let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
+            dispatch_async(dispatch_get_main_queue(), {
+                // TODO: LoadingView
+                // self.loadingView.removeFromSuperview()
+            })
+            
+            if error != nil {
+                // If there is an error in the web request, print it to the console
+                // TODO: handle request error
+                println(error.localizedDescription)
+                return
+            }
+            
+            //println(NSString(data: data, encoding: NSUTF8StringEncoding))
+            
+            var err: NSError?
+            var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+            if err != nil {
+                // If there is an error parsing JSON, print it to the console
+                // TODO: handle parsing error
+                println("JSON Error \(err!.localizedDescription)")
+                return
+            }
+            
+            let json = JSON(jsonResult)
+            let status = json["status"].intValue
+            
+            if( status == 1 ) {
+                let msg = json["message"].stringValue
+                // TODO: handle error message
+                println("Error: " + msg)
+                return
+            }
+            
+            // Success
+            println("Request completed: Status = OK")
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                // Success on main thread
+                self.onRequestSuccess(json)
+            })
+        })
+        task.resume()
+    }
+    
+    func onRequestSuccess(json: JSON) {
+        println(__FUNCTION__)
+        // Populate UI
+    }
+    
+    func onDummyRequestSuccess(json: JSON) {
+        println(__FUNCTION__)
+        // Populate UI with Dummy Data
+    }
 }
 
