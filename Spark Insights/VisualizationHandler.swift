@@ -16,10 +16,18 @@ class VisualizationHandler{
     var visualizationNames: [String] = [String]()
     var webViews : [UIWebView] = [UIWebView]()
     
+    //var dataForViews : JSON = JSON(["name", "age"])
+    
+    var treemapData : JSON       = nil
+    var circlepackingData : JSON = nil
+    var worddistanceData : JSON  = nil
+    var timemapData : JSON       = nil
+    var stackedbarData : JSON    = nil
+    
     func getNumberOfVisualizations()->Int{
         return visualizationNames.count;
     }
-    
+        
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
         
@@ -63,6 +71,8 @@ class VisualizationHandler{
     func transformDataForTreemapping(webView: UIWebView){
         println("transformDataForTreemapping: "+webView.request!.URL!.lastPathComponent!)
         
+        println(treemapData)
+        
         var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
         webView.stringByEvaluatingJavaScriptFromString(treeScript)
@@ -70,6 +80,8 @@ class VisualizationHandler{
     
     func transformDataForCirclepacking(webView: UIWebView){
         println("transformDataForCirclepacking: "+webView.request!.URL!.lastPathComponent!)
+
+        println(circlepackingData)
 
         //var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
 
@@ -83,6 +95,8 @@ class VisualizationHandler{
     func transformDataForWorddistance(webView: UIWebView){
         println("transformDataForWorddistance: "+webView.request!.URL!.lastPathComponent!)
         
+        println(worddistanceData)
+
         //var script2 = "renderChart(\"blah\");"
         
         var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
@@ -94,6 +108,8 @@ class VisualizationHandler{
         
         println("transformDataForTimemap: "+webView.request!.URL!.lastPathComponent!)
         
+        println(timemapData)
+        
         var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
         
         webView.stringByEvaluatingJavaScriptFromString(timemapScript)
@@ -102,6 +118,8 @@ class VisualizationHandler{
     func transformDataForStackedbar(webView: UIWebView){
         
         println("transformDataForStackedbar: "+webView.request!.URL!.lastPathComponent!)
+        
+        println(stackedbarData)
         
         //var script = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
         

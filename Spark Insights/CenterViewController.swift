@@ -28,7 +28,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions //these are the names of the HTML files
-    
+        
     var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
 
     // last visited page
@@ -61,12 +61,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // Do any additional setup after loading the view, typically from a nib.
         self.setupTweetsTableView()
         self.setupVisualizationHandler()
-        self.setupWebViews()
+        self.setupWebViews() // we will move this to the handler
         self.setupScrollView()
         self.setupMetricsNumber()
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
+        
         pageControlView.buttonData = [
             PageControlButtonData(imageName: "Bubble_TEAL", selectedImageName: "Bubble_WHITE"),
             PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
@@ -183,6 +184,21 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(metrics.tweetsPerHour)
     }
 
+    func gotDataResponseHandler(rawData: NSDictionary){
+        var jsonData = JSON(rawData)
+        
+        /* //something like this maybe
+        visualizationHandler.treemapData = rawData[0]
+        visualizationHandler.circlepackingData = rawData[1]
+        visualizationHandler.stackedbarData = rawData[2]
+        visualizationHandler.timemapData = rawData[3]
+        visualizationHandler.worddistanceData = rawData[4]
+        */
+        
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+        // other pages will get loaded when they are swiped to
+    }
+
     func getMetricsNumber() -> (totalTweets: Int64, totalRetweets: Int64, tweetsPerHour: Int64)
     {
         //get metric values
@@ -223,18 +239,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         return String(format: "%.1f", div) + String(letter)
     }
-    /*
-    func gotDataResponseHandler(String: data){
-        //var jsonData = jsonifyData(data)
-        visualizationHandler.reloadViewsWithData(jsonData)
-    }
-    */
     
     /*
         populates the visualizationHandler
     */
     func setupVisualizationHandler() {
-        visualizationHandler.visualizationNames = self.visualizationNames // the name of the HTML file corresponding to a visualization in /Visualizations
+        visualizationHandler.visualizationNames = self.visualizationNames // the names of the HTML files corresponding to a visualization in /Visualizations
     }
     
     /*
@@ -247,7 +257,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             
-            var myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+            var myWebView : UIWebView
+
+            
+            myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+            
             myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
@@ -291,6 +305,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             if((page+1)<visualizationHandler.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
                 visualizationHandler.reloadAppropriateView(page+1)
             }
+            // we might also want to load the page before this page
             pageControlView.selectedIndex = page
         }
     }
