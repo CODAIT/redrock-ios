@@ -110,15 +110,27 @@ function renderChart(data){
 
   var text = svg.selectAll("text")
       .data(nodes)
-    .enter().append("text")
+      .enter();
+      
+      text.append("text")
       .attr("class", "label")
-      .attr("dy", ".3em")
+      .attr("dy", "-0.2em")
       .style("text-anchor", "middle")
-      .style("fill-opacity", function(d) { return 1;/* d.parent === root ? 1 : 0; */})
-      .style("display", function(d) { return 1;/*d.parent === root ? null : "none"; */})
-      .style("font-size", function(d){return Math.round(d.r/4)+"px"})
-      .text(function(d) { if(d.depth>=2){ return (d.name+" (" + d.size + ")");}else{return " ";} });
-
+      .style("fill-opacity", function(d) { return 1;})
+      //.style("fill", "white")
+      .style("display", function(d) { return 1;})
+      .style("font-size", function(d){return Math.round(d.r*0.43)+"px"})
+      .text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
+      
+      text.append("text")
+      .attr("class", "label")
+      .attr("dy", "0.75em")
+      .style("text-anchor", "middle")
+      .style("fill-opacity", function(d) { return 1;})
+      //.style("fill", "white")
+      .style("display", function(d) { return 1;d.parent === root ? null : "none"; })
+      .style("font-size", function(d){return Math.round(d.r*0.43)+"px"})
+      .text(function(d) { if(d.depth>=2){ return (" (" + d.size + ")");}else{return " ";} });
 
   var node = svg.selectAll("circle,text");
   
