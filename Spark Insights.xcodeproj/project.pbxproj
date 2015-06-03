@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		419E85A01B1FA0DD009847B9 /* SearchMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419E859F1B1FA0DD009847B9 /* SearchMenuTableViewCell.swift */; };
 		41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94041B179DC400A80447 /* TweetsTableViewController.swift */; };
 		41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94081B17AA6700A80447 /* ContextLabel.swift */; };
 		41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41ED940A1B17AA7100A80447 /* TweetCell.xib */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		419E859F1B1FA0DD009847B9 /* SearchMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMenuTableViewCell.swift; sourceTree = "<group>"; };
 		41ED94041B179DC400A80447 /* TweetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTableViewController.swift; sourceTree = "<group>"; };
 		41ED94081B17AA6700A80447 /* ContextLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextLabel.swift; sourceTree = "<group>"; };
 		41ED940A1B17AA7100A80447 /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
 				CE79DA791B18B9BA003F01F6 /* Config.swift */,
+				419E859F1B1FA0DD009847B9 /* SearchMenuTableViewCell.swift */,
 			);
 			path = "Spark Insights";
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				41ED94191B17DCB100A80447 /* ReadTweetsData.swift in Sources */,
 				CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */,
 				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
+				419E85A01B1FA0DD009847B9 /* SearchMenuTableViewCell.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
 				CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */,

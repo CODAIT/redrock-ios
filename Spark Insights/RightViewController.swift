@@ -14,7 +14,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBOutlet weak var tableA: UITableView!
     @IBOutlet weak var tableB: UITableView!
-    @IBOutlet weak var doneButton: UIButton!
+    
+    @IBOutlet weak var goView: UIView!
+    @IBOutlet weak var editView: UIView!
     
     private var listA: RefArray?
     private var listB: RefArray?
@@ -83,6 +85,55 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         // Set TextFieldDelegate
         self.textField.delegate = self
+        
+        //toolbar
+        self.configureTapGestureEdit()
+        self.configureTapGestureGo()
+    }
+    
+    // MARK: Gesture reconizer and actions
+    func configureTapGestureEdit()
+    {
+        var tapGesture = UILongPressGestureRecognizer(target: self, action: "editClicked:")
+        tapGesture.minimumPressDuration = 0.001
+        self.editView.addGestureRecognizer(tapGesture)
+        self.editView.userInteractionEnabled = true
+    }
+    
+    func configureTapGestureGo()
+    {
+        var tapGesture = UILongPressGestureRecognizer(target: self, action: "goClicked:")
+        tapGesture.minimumPressDuration = 0.001
+        self.goView.addGestureRecognizer(tapGesture)
+        self.goView.userInteractionEnabled = true
+    }
+    
+    func editClicked(gesture: UIGestureRecognizer)
+    {
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.editView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            self.tableA.setEditing(true, animated: true)
+            self.tableB.setEditing(true, animated: true)
+            self.editView.alpha = 1.0
+        }
+    }
+    
+    func goClicked(gesture: UIGestureRecognizer)
+    {
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.goView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            //Reload data here
+            //call delegate
+            self.goView.alpha = 1.0
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -107,7 +158,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         var label = cell.viewWithTag(100) as! UILabel
         var cellText = list?[indexPath.row] as! String
         label.text = cellText
-
+        cell.backgroundColor = Config.darkBlueColor
         return cell
     }
     
@@ -348,7 +399,21 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     // MARK: - Actions
     
     @IBAction func doneClicked(sender: AnyObject) {
+        self.tableA.setEditing(true, animated: true)
+        self.tableB.setEditing(true, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         
+        if tableView === tableA
+        {
+            listA?.array?.removeAtIndex(indexPath.row)
+        }
+        else
+        {
+            listB?.array?.removeAtIndex(indexPath.row)
+        }
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
     }
     
     
