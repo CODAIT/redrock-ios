@@ -192,7 +192,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var jsonData = JSON(rawData)
         
         /* //something like this maybe
-        visualizationHandler.treemapData = JSON(rawData[0])
+        visualizationHandler.tr
+eemapData = JSON(rawData[0])
         visualizationHandler.circlepackingData = JSON(rawData[1])
         visualizationHandler.stackedbarData = JSON(rawData[2])
         visualizationHandler.timemapData = JSON(rawData[3])
