@@ -37,6 +37,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     //Can update search
     var canUpdateSearch = false
     
+    @IBOutlet weak var tweetsPerHourNumberLabel: UILabel!
+    @IBOutlet weak var totalRetweetsNumberLabel: UILabel!
+    @IBOutlet weak var totalTweetsNumberLabel: UILabel!
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -58,6 +61,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupVisualizationHandler()
         self.setupWebViews()
         self.setupScrollView()
+        self.setupMetricsNumber()
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
@@ -149,7 +153,55 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             tweetsController.didMoveToParentViewController(self)
         }
     }
+    
+    func setupMetricsNumber()
+    {
+        let metrics = self.getMetricsNumber()
+        self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalTweets)
+        self.totalRetweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalRetweets)
+        self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(metrics.tweetsPerHour)
+    }
 
+    func getMetricsNumber() -> (totalTweets: Int64, totalRetweets: Int64, tweetsPerHour: Int64)
+    {
+        //get metric values
+        // strtoll - String to long long int
+        var tweets = strtoll("99780009800", nil,10)
+        var retweets = strtoll("547800", nil,10)
+        var tweetsHour = strtoll("6778000", nil,10)
+        
+        return (tweets, retweets, tweetsHour)
+    }
+    
+    func formatNumberToDisplay(number: Int64) -> String
+    {
+        let billion = Int64(999999999)
+        let million = Int64(999999)
+        let thousand = Int64(999)
+        var div = 0.0
+        var letter = ""
+        if number > billion
+        {
+            div = Double(number)/Double((billion+1))
+            letter = "B"
+        }
+        else if number > million
+        {
+            div = Double(number)/Double((million+1))
+            letter = "M"
+        }
+        else if number > thousand
+        {
+            div = Double(number)/Double((thousand+1))
+            letter = "K"
+        }
+        else
+        {
+            return String(number)
+        }
+        
+        return String(format: "%.1f", div) + String(letter)
+    }
     /*
     func gotDataResponseHandler(String: data){
         //var jsonData = jsonifyData(data)
@@ -242,7 +294,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     // MARK: Actions
-
+    @IBAction func searchClicked(sender: UIButton) {
+        delegate?.toggleRightPanel?()
+    }
+    
+    // MARK - Share by email action
     @IBAction func shareScreenClicked(sender: UIButton){
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
@@ -284,9 +340,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func searchClicked(sender: UIButton) {
-        delegate?.toggleRightPanel?()
-    }
+    
     
 }
 

@@ -614,9 +614,12 @@
                         <outlet property="pageControlViewWidthConstraint" destination="AuT-wr-vPD" id="5bs-ZQ-ceb"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
                         <outlet property="statusBarSeparator" destination="2jK-IF-SC5" id="Pev-sp-duV"/>
+                        <outlet property="totalRetweetsNumberLabel" destination="TaT-Bc-iOj" id="O4B-q9-4CE"/>
+                        <outlet property="totalTweetsNumberLabel" destination="Buv-yN-YAx" id="Yly-XF-Eqg"/>
                         <outlet property="tweetsFooterLabel" destination="LqR-JU-lTL" id="SEn-Nn-ozT"/>
                         <outlet property="tweetsFooterSeparatorLine" destination="xYW-Rv-ULE" id="CWd-CO-rE0"/>
                         <outlet property="tweetsFooterView" destination="vzr-LZ-Xry" id="si3-AE-r3V"/>
+                        <outlet property="tweetsPerHourNumberLabel" destination="PtA-S5-plN" id="3Kk-pE-AdD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
