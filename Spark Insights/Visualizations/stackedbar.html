@@ -20,12 +20,6 @@
             height:  96%;
             width:   98%;
         }
-        .nvd3 .nv-axis.nv-x path.domain{
-              stroke-width: 4px;
-              stroke-opacity: 1.00;
-              stroke: #989898;
-              transform: translate(0px,10px);
-        }
 
     </style>
 </head>
@@ -36,6 +30,16 @@
 </div>
 
 <script>
+
+/* //css that can be used to modify axes
+.nvd3 .nv-axis.nv-x path.domain{
+    stroke-width: 4px;
+    stroke-opacity: 1.00;
+    stroke: #989898;
+    transform: translate(0px,10px);
+}
+*/
+
 
     var chartData = null
     function renderChart(data) {
@@ -83,7 +87,7 @@
             .selectAll('.nv-x.nv-axis > g')
             .selectAll('g')
             .selectAll('text')
-            .attr('transform', function(d) {return 'translate (0,20) rotate(-30 0,0)'});
+            .attr('transform', function(d) {return 'translate (0,7) rotate(-30 0,0)'});
 
             //d3.select('body')
             //.selectAll('rect.nv-bar.positive')
@@ -102,6 +106,7 @@
     //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
 
 
+    /*
     var myData = [{
       "key": "Tweet Count",
       "values": [
@@ -116,6 +121,7 @@
       }
     ];
     renderChart(myData);
+     */
 
     function transformData(data){
         //Copy Object

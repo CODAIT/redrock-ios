@@ -29,7 +29,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions //these are the names of the HTML files
         
-    var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
+    //var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
 
     // last visited page
     var previousPage = 0
@@ -59,7 +59,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // Do any additional setup after loading the view, typically from a nib.
         self.setupTweetsTableView()
         self.setupVisualizationHandler()
-        self.setupWebViews() // we will move this to the handler
+        self.setupWebViews() // we may move this to the handler
         self.setupScrollView()
         self.setupMetricsNumber()
 
@@ -80,7 +80,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.configureGestureRecognizerForTweetFooterView()
         self.changeLastUpdated()
 
-        //makeARequestToGetTheData();
+        //makeARequestToGetTheData(); //speculation
         
     }
 
@@ -167,11 +167,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var jsonData = JSON(rawData)
         
         /* //something like this maybe
-        visualizationHandler.treemapData = rawData[0]
-        visualizationHandler.circlepackingData = rawData[1]
-        visualizationHandler.stackedbarData = rawData[2]
-        visualizationHandler.timemapData = rawData[3]
-        visualizationHandler.worddistanceData = rawData[4]
+        visualizationHandler.treemapData = JSON(rawData[0])
+        visualizationHandler.circlepackingData = JSON(rawData[1])
+        visualizationHandler.stackedbarData = JSON(rawData[2])
+        visualizationHandler.timemapData = JSON(rawData[3])
+        visualizationHandler.worddistanceData = JSON(rawData[4])
         */
         
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
@@ -241,7 +241,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
-            myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
+            //myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
             
