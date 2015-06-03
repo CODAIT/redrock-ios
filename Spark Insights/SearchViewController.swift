@@ -13,7 +13,7 @@ protocol SearchViewControllerDelegate {
     optional func changeRootViewController(newRoot: UIViewController)
 }
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UITextFieldDelegate {
 
     weak var delegate: SearchViewControllerDelegate?
     
@@ -34,6 +34,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.textField.delegate = self
         setInsetTextField()
         addGestureRecognizerSearchView()
     }
@@ -46,6 +47,7 @@ class SearchViewController: UIViewController {
         self.searchButtonView.userInteractionEnabled = true
     }
     
+    // Text leading space
     func setInsetTextField()
     {
         self.textField.layer.sublayerTransform = CATransform3DMakeTranslation(20, 0, 0);
@@ -56,6 +58,16 @@ class SearchViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == self.textField
+        {
+            self.searchButtonView.alpha = 0.5
+            self.searchClicked(nil)
+            return true
+        }
+        
+        return false
+    }
 
     /*
     // MARK: - Navigation
@@ -92,25 +104,46 @@ class SearchViewController: UIViewController {
         self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
     }
     
-    func searchClicked(gesture: UIGestureRecognizer) {
-        if gesture.state == UIGestureRecognizerState.Began
+    func searchClicked(gesture: UIGestureRecognizer?) {
+        let searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if searchText != ""
         {
-            self.searchButtonView.alpha = 0.5
+            var state = UIGestureRecognizerState.Ended
+            if gesture != nil
+            {
+                state = gesture!.state
+            }
+            if state == UIGestureRecognizerState.Began
+            {
+                self.searchButtonView.alpha = 0.5
+            }
+            else if state == UIGestureRecognizerState.Ended
+            {
+                let containerViewController = ContainerViewController()
+                containerViewController.searchText = searchText
+                // Animate the transition to the new view controller
+                var tr = CATransition()
+                tr.duration = 0.2
+                tr.type = kCATransitionFade
+                self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
+                self.presentViewController(containerViewController, animated: false, completion: {
+                    self.delegate?.changeRootViewController?(containerViewController)
+                })
+            }
         }
-        else if gesture.state == UIGestureRecognizerState.Ended
+        else
         {
-            let containerViewController = ContainerViewController()
-            // TODO: need some validation here
-            containerViewController.searchText = textField.text
-            
-            // Animate the transition to the new view controller
-            var tr = CATransition()
-            tr.duration = 0.2
-            tr.type = kCATransitionFade
-            self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
-            self.presentViewController(containerViewController, animated: false, completion: {
-                self.delegate?.changeRootViewController?(containerViewController)
-            })
+            self.displayAlert("#SparkInsights", message: "No search parameters defined.")
+            self.searchButtonView.alpha = 1.0
         }
+    }
+    
+    func displayAlert(title: String, message: String)
+    {
+        
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
