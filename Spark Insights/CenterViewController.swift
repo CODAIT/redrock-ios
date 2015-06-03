@@ -51,6 +51,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
+    private var loadingView :LoadingView!
+
+    
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
     
@@ -404,13 +407,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: LoadingView
         // Display loading view
-        // loadingView = LoadingView(frame: view.frame)
-        // view.addSubview(loadingView!)
+        loadingView = LoadingView(frame: view.frame)
+        view.addSubview(loadingView!)
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                // self.loadingView.removeFromSuperview()
+                self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
