@@ -381,11 +381,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK: - Network
     
     func createRequest() {
+        println("createRequest")
+        
         var search = self.searchText
         var req = ""
         
         // TODO: build request string
         
+        executeRequest(req)
+
+        /*
         if (Config.useDummyData) {
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -395,6 +400,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         } else {
             executeRequest(req)
         }
+        */
     }
     
     func executeRequest(req: String) {
