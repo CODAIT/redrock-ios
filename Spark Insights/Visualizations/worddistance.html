@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8'>
-  <title>Force Layout Example 1</title>
+  <title></title>
   <style>
   </style>
 </head>
@@ -13,15 +13,16 @@
 
   var width = 675, height = 500;
 
-  var centerColor = "#7CC7FF";
-  var color = ["#B4E051","#6EEDD8","#D7AAFF","#FF9EEE","#FFA5B4","#FFA573","#FDD600"];
+  var centerColor = "rgba(92,195,184,0.8)";
+  //var color = ["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"];
+  var color = ["#5cc3b8"]
 
 // there is one parent node and multiple children
 // the parent is in the center
 // each child has degrees away from the parent
 
-  function renderChart(data){
-    //document.getElementById("test").innerHTML = "heyo"
+  function renderChart(data, windowWidth, windowHeight){
+    //document.getElementById("test").innerHTML = "windowWidth: "+windowWidth+"... windowHeight: "+windowHeight;
       
     var data = JSON.parse(data); //jsonify the data
     
@@ -29,7 +30,7 @@
     var twopi = 2*Math.PI;
     var arc = twopi/numberOfCircles;
 
-    var centerx = width/2;
+    var centerx = (width-25)/2;
     var centery = height/2;
 
     var maxLengthAway = height/3;
@@ -67,8 +68,8 @@
         .attr("x2",centerx)
         .attr("y1",myCenterY)
         .attr("y2",centery)
-        .attr("stroke-width",3)
-        .attr("stroke","grey");
+        .attr("stroke-width",5)
+        .attr("stroke","#dee8e8");
 
       svg.append("text")
         .attr("x", textX)
@@ -82,10 +83,11 @@
       .attr("cy", centery)
       .attr("r", maxCircleRadius*1.2)
       .attr("fill", centerColor)
-      .attr("stroke", "black");
+      .attr("stroke-width",7)
+      .attr("stroke", "#fce776");
     svg.append("text")
       .attr("x", centerx-maxCircleRadius/2)
-      .attr("y", centery)
+      .attr("y", centery+7)
       .style("font-size", "33px")
       .text(data.name);
 
@@ -103,21 +105,22 @@
         .attr("cx", myCenterX)
         .attr("cy", myCenterY)
         .attr("r", myRadius)
-        .attr("fill", color[i])
-        .attr("stroke", "black");
+        .attr("fill",centerColor)
+        .attr("stroke-width",7)
+        .attr("stroke", "#fce776");
 
-      if(mySizeRatio >= 0.65){
+      if(mySizeRatio >= 0.50){
         svg.append("text")
-          .attr("x", myCenterX-myRadius/2)
+          .attr("x", myCenterX-myRadius/1.3)
           .attr("y", myCenterY+5)
           .style("font-size", myFontSize)
           .text(myText);
       }
       else{
         svg.append("text")
-          .attr("x", myCenterX+myRadius+3)
+          .attr("x", myCenterX+myRadius+6)
           .attr("y", myCenterY+5)
-          .style("font-size", "20px")
+          .style("font-size", "12px")
           .text(myText);
       }
     }

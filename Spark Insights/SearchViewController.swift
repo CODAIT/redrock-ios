@@ -29,7 +29,6 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonView: UIView!
-    @IBOutlet weak var searchImageView: UIImageView!
     
     private var recalculateConstrainstsForSearchView = true
     
@@ -41,9 +40,8 @@ class SearchViewController: UIViewController {
     
     func addGestureRecognizerSearchView()
     {
-        let tapGesture = UITapGestureRecognizer(target: self, action: "searchClicked:")
-        self.searchImageView.addGestureRecognizer(tapGesture)
-        self.searchImageView.userInteractionEnabled = true
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "searchClicked:")
+        tapGesture.minimumPressDuration = 0.001
         self.searchButtonView.addGestureRecognizer(tapGesture)
         self.searchButtonView.userInteractionEnabled = true
     }
@@ -94,19 +92,25 @@ class SearchViewController: UIViewController {
         self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
     }
     
-    @IBAction func searchClicked(sender: UIButton) {
-        
-        let containerViewController = ContainerViewController()
-        // TODO: need some validation here
-        containerViewController.searchText = textField.text
-        //self.searchButtonView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-        // Animate the transition to the new view controller
-        var tr = CATransition()
-        tr.duration = 0.2
-        tr.type = kCATransitionFade
-        self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
-        self.presentViewController(containerViewController, animated: false, completion: {
-            self.delegate?.changeRootViewController?(containerViewController)
-        })
+    func searchClicked(gesture: UIGestureRecognizer) {
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.searchButtonView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            let containerViewController = ContainerViewController()
+            // TODO: need some validation here
+            containerViewController.searchText = textField.text
+            
+            // Animate the transition to the new view controller
+            var tr = CATransition()
+            tr.duration = 0.2
+            tr.type = kCATransitionFade
+            self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
+            self.presentViewController(containerViewController, animated: false, completion: {
+                self.delegate?.changeRootViewController?(containerViewController)
+            })
+        }
     }
 }

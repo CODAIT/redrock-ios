@@ -131,23 +131,15 @@ class TwitterTweet
             var stringTime = ""
             if hours > 0
             {
-                stringTime = String(hours)
-                if minutes > 0
-                {
-                    stringTime = stringTime + "h " + String(minutes) + "m"
-                }
-                else
-                {
-                    stringTime = stringTime + "hours"
-                }
+                stringTime = String(hours) + " hr"
             }
             else if minutes > 0
             {
-                stringTime = String(minutes) + "min"
+                stringTime = String(minutes) + " min"
             }
             else
             {
-                stringTime = String(seconds) + "sec"
+                stringTime = String(seconds) + " sec"
             }
             
             return stringTime

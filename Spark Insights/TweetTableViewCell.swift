@@ -8,8 +8,19 @@
 
 import UIKit
 
+@objc
+protocol TweetTableViewCellDelegate {
+    func twitterBirdButtonClicked(clickedCell: TweetTableViewCell)
+    optional func cellDidOpen(openedCell: TweetTableViewCell)
+    optional func cellDidClose(closedCell: TweetTableViewCell)
+    optional func cellDidBeginOpening(openingCell: TweetTableViewCell)
+}
+
 class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextLabelDelegate{
 
+    // Delegate
+    weak var delegate: TweetTableViewCellDelegate?
+    
     // Tweet Cell outlets
     @IBOutlet weak var displayView: UIView!
     @IBOutlet weak var userProfileImage: UIImageView!
@@ -20,28 +31,31 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     @IBOutlet weak var countRetweet: UILabel!
     @IBOutlet weak var tweetDateTime: UILabel!
     
+    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
+    
     //Tweet cell swipeable
     @IBOutlet weak var twitterDetailImg: UIImageView!
-    @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
+
     var panRecognizer = UIPanGestureRecognizer()
     var panStartPoint = CGPoint()
     var startingRightLayoutConstraintConstant = CGFloat()
     let kBounceValue = CGFloat(5.0)
     
     //Constants to calculate cell height
-    static let profileImageWidth = CGFloat(36)
-    static let profileImageHeight = CGFloat(36)
-    static let characWidth = CGFloat(7)
-    static let lineHeight = CGFloat(20)
-    static let tweetToolbarHeight = CGFloat(18)
-    static let blankSpaceHeight = CGFloat(40)
+    static let profileImageWidth = CGFloat(50)
+    static let profileImageHeight = CGFloat(50)
+    static let characWidth = CGFloat(9)
+    static let lineHeight = CGFloat(24)
+    static let tweetToolbarHeight = CGFloat(19)
+    static let blankSpaceHeight = CGFloat(70)
+    static let maxCellHeight = CGFloat(220)
     
     //Keep track of the row index of the cell
     var rowIndex:Int = 0
     var displayTappedURL: ((selectedURL: String) -> ())!
     var isURLTapped = false
-    var actionOnClickImageDetail: ((tweetCell: TweetTableViewCell) -> ())!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,8 +65,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         tweeText.linkTextColor = Config.tweetsTableTextComponentsColor
         tweeText.textColor = UIColor.whiteColor()
         self.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
-        self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
-        self.userScreenName.textColor = Config.tweetsTableTextComponentsColor
+        self.backgroundColor = Config.tweetsTableBackgroundColor
+        //self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
         //ContextLabel delegate
         tweeText.delegate = self
         //Profile Image layout
@@ -62,7 +76,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         self.panRecognizer.delegate = self
         self.displayView.addGestureRecognizer(self.panRecognizer)
         // User interaction Swipe image
-        let tapGesture = UITapGestureRecognizer(target: self, action: "twitterImageClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "twitterImageClicked:")
+        tapGesture.minimumPressDuration = 0.001
         twitterDetailImg.addGestureRecognizer(tapGesture)
         twitterDetailImg.userInteractionEnabled = true
     }
@@ -70,9 +85,9 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     // MARK - Profile Image style
     func changeImageLayout()
     {
-        self.userProfileImage.layer.cornerRadius = 10.0;
+        self.userProfileImage.layer.cornerRadius = 20.0;
         self.userProfileImage.layer.masksToBounds = true;
-        self.userProfileImage.layer.borderColor = Config.tweetsTableTextComponentsColor.CGColor
+        self.userProfileImage.layer.borderColor = Config.tweetsProfileImageBorderColor.CGColor
         self.userProfileImage.layer.borderWidth = 2.0;
     }
     
@@ -111,7 +126,15 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         let tweetTextWidth = tableWidth - self.profileImageWidth
         let characByLine = tweetTextWidth/self.characWidth
         let lineCount = textLength/characByLine
-        return (self.lineHeight*lineCount + self.profileImageHeight + self.tweetToolbarHeight + self.blankSpaceHeight)
+        let cellHeight = (self.lineHeight*lineCount + self.profileImageHeight + self.tweetToolbarHeight + self.blankSpaceHeight)
+        if cellHeight > self.maxCellHeight
+        {
+            return self.maxCellHeight
+        }
+        else
+        {
+            return cellHeight
+        }
     }
     
     // MARK - Context Label delegate
@@ -141,7 +164,15 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func twitterImageClicked(gesture: UIGestureRecognizer)
     {
-        self.actionOnClickImageDetail(tweetCell: self)
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.twitterDetailImg.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            delegate?.twitterBirdButtonClicked(self)
+            self.twitterDetailImg.alpha = 1.0
+        }
     }
     
     // MARK - Swipeable
@@ -151,6 +182,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         case UIGestureRecognizerState.Began:
             self.panStartPoint = gesture.translationInView(self.displayView)
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant
+            self.delegate?.cellDidBeginOpening!(self)
             break
         case UIGestureRecognizerState.Changed:
             swipeableCellChanged(gesture)
@@ -259,6 +291,11 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func resetConstraintContstantsToZero(animated: Bool, notifyDelegateDidClose: Bool)
     {
+        if notifyDelegateDidClose
+        {
+            self.delegate?.cellDidClose!(self)
+        }
+        
         if (self.startingRightLayoutConstraintConstant == 0 &&
             self.contentViewRightConstraint.constant == 0) {
                 //Already all the way closed, no bounce necessary
@@ -280,6 +317,11 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func setConstraintsToShowAllButtons(animated: Bool, notifyDelegateDidOpen:Bool)
     {
+        if notifyDelegateDidOpen
+        {
+            self.delegate?.cellDidOpen!(self)
+        }
+        
         if (self.startingRightLayoutConstraintConstant == self.twitterImageTotalWidth() &&
             self.contentViewRightConstraint.constant == self.twitterImageTotalWidth()) {
                 return;
