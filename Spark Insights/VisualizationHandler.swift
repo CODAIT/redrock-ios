@@ -131,7 +131,6 @@ class VisualizationHandler{
         webView.stringByEvaluatingJavaScriptFromString(script)
     }
     
-    func
 
     
     
