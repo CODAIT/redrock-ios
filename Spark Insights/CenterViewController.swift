@@ -96,6 +96,17 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.resetViewController()
+    }
+    
+    // MARK: - Reset UI
+    
+    func resetViewController() {
+        // Use this function to reset the view controller's UI to a clean state
+        println("Resetting \(__FILE__)")
+    }
+    
     func configureGestureRecognizerForSearchIconView()
     {
         let tapGesture = UILongPressGestureRecognizer(target: self, action: "searchClicked:")
