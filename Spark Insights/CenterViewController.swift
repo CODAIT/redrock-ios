@@ -32,10 +32,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
-    let visualizationNames = ["circlepacking", "stackedbar", "treemap", "timemap", "worddistance"] // currently this needs to manually match the buttondata positions //these are the names of the HTML files
-        
-    //var colors = [UIColor.blueColor(), UIColor.darkGrayColor(), UIColor.grayColor(), UIColor.purpleColor(), UIColor.redColor()]
-
+    
     // last visited page
     var previousPage = 0
    
@@ -68,14 +65,20 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.setupTweetsTableView()
-        self.setupVisualizationHandler()
-        self.setupWebViews() // we may move this to the handler
+        self.setupWebViews()
         self.setupScrollView()
         self.setupMetricsNumber()
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
         
+        
+        
+        for i in 0..<Config.visualizationNames.count{
+            pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
+        }
+        
+        /*
         pageControlView.buttonData = [
             PageControlButtonData(imageName: "Bubble_TEAL", selectedImageName: "Bubble_WHITE"),
             PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
@@ -83,6 +86,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE"),
             PageControlButtonData(imageName: "Network_TEAL", selectedImageName: "Network_WHITE")
         ]
+        */
+        
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
         
@@ -246,18 +251,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     /*
-        populates the visualizationHandler
-    */
-    func setupVisualizationHandler() {
-        visualizationHandler.visualizationNames = self.visualizationNames // the names of the HTML files corresponding to a visualization in /Visualizations
-    }
-    
-    /*
         creates the webviews
     */
     func setupWebViews() {
-        for i in 0..<visualizationHandler.getNumberOfVisualizations(){
-            let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+visualizationHandler.visualizationNames[i], withExtension: "html")
+        for i in 0..<Config.getNumberOfVisualizations(){
+            let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[i], withExtension: "html")
             let request = NSURLRequest(URL: filePath!)
             
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
@@ -267,7 +265,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
-            //myWebView.backgroundColor = colors[i % visualizationHandler.getNumberOfVisualizations()]
+            //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
             
@@ -287,13 +285,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         sets up the scrollview that contains the webviews
     */
     func setupScrollView() {
-        for i in 0..<visualizationHandler.getNumberOfVisualizations() {
+        for i in 0..<Config.getNumberOfVisualizations() {
             let myWebView = visualizationHandler.webViews[i]
             self.scrollView.addSubview(myWebView)
             self.scrollView.delegate = self
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
+        self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.dummyView.frame.size.height)
     }
     
     // MARK: - UIScrollViewDelegate
@@ -307,7 +305,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             println("page was changed to... \(page)")
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
-            if((page+1)<visualizationHandler.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
+            if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
                 visualizationHandler.reloadAppropriateView(page+1)
             }
             // we might also want to load the page before this page

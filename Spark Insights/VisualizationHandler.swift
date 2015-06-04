@@ -13,7 +13,7 @@ import UIKit
 
 class VisualizationHandler{
     
-    var visualizationNames: [String] = [String]()
+    //var visualizationNames: [String] = [String]()
     var webViews : [UIWebView] = [UIWebView]()
     
     //var dataForViews : JSON = JSON(["name", "age"])
@@ -23,16 +23,12 @@ class VisualizationHandler{
     var worddistanceData : JSON  = nil
     var timemapData : JSON       = nil
     var stackedbarData : JSON    = nil
-    
-    func getNumberOfVisualizations()->Int{
-        return visualizationNames.count;
-    }
-        
+            
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
         
-        if(viewNumber >= 0 && viewNumber < visualizationNames.count){
-        switch visualizationNames[viewNumber]{
+        if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+        switch Config.visualizationNames[viewNumber]{
             case "treemap":
                 webViews[viewNumber].scalesPageToFit = false
             case "circlepacking":
