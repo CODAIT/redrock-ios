@@ -8,12 +8,19 @@
 
 import UIKit
 
+@objc
+protocol ContainerViewControllerDelegate {
+    optional func displaySearchViewController()
+}
+
 enum SlideOutState {
     case BothCollapsed
     case RightPanelExpanded
 }
 
 class ContainerViewController: UIViewController {
+    
+    weak var delegate: ContainerViewControllerDelegate?
     
     var centerViewController: CenterViewController!
     var rightViewController: RightViewController!
@@ -38,7 +45,7 @@ class ContainerViewController: UIViewController {
     
 }
 
-// MARK: CenterViewController delegate
+// MARK: - CenterViewControllerDelegate
 
 extension ContainerViewController: RightViewControllerDelegate
 {
@@ -91,6 +98,10 @@ extension ContainerViewController: CenterViewControllerDelegate {
                 self.rightViewController = nil;
             }
         }
+    }
+    
+    func displaySearchViewController() {
+        delegate?.displaySearchViewController?()
     }
     
     func animateCenterPanelXPosition(#targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {

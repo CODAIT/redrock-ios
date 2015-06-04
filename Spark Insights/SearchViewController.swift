@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 protocol SearchViewControllerDelegate {
-    optional func changeRootViewController(newRoot: UIViewController)
+    optional func displayContainerViewController(currentViewController: UIViewController, searchText: String)
 }
 
 class SearchViewController: UIViewController, UITextFieldDelegate {
@@ -39,6 +39,18 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         self.textField.delegate = self
         setInsetTextField()
         addGestureRecognizerSearchView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.resetViewController()
+    }
+    
+    // MARK: - Reset UI
+    
+    func resetViewController() {
+        // Use this function to reset the view controller's UI to a clean state
+        println("Resetting \(__FILE__)")
+        self.textField.text = ""
     }
     
     func addGestureRecognizerSearchView()
@@ -123,16 +135,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         {
             if searchText != ""
             {
-                let containerViewController = ContainerViewController()
-                containerViewController.searchText = searchText
-                // Animate the transition to the new view controller
-                var tr = CATransition()
-                tr.duration = 0.2
-                tr.type = kCATransitionFade
-                self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
-                self.presentViewController(containerViewController, animated: false, completion: {
-                    self.delegate?.changeRootViewController?(containerViewController)
-                })
+                delegate?.displayContainerViewController?(self, searchText: searchText)
             }
             else
             {

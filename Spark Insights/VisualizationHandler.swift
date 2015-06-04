@@ -31,22 +31,24 @@ class VisualizationHandler{
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
         
+        if(viewNumber >= 0 && viewNumber < visualizationNames.count){
         switch visualizationNames[viewNumber]{
-        case "treemap":
-            webViews[viewNumber].scalesPageToFit = false
-        case "circlepacking":
-            webViews[viewNumber].scalesPageToFit = false
-        case "worddistance":
-            webViews[viewNumber].scalesPageToFit = false
-        case "timemap":
-            webViews[viewNumber].scalesPageToFit = true
-        case "stackedbar":
-            webViews[viewNumber].scalesPageToFit = false
-        default:
-            webViews[viewNumber].scalesPageToFit = false
+            case "treemap":
+                webViews[viewNumber].scalesPageToFit = false
+            case "circlepacking":
+                webViews[viewNumber].scalesPageToFit = false
+            case "worddistance":
+                webViews[viewNumber].scalesPageToFit = false
+            case "timemap":
+                webViews[viewNumber].scalesPageToFit = true
+            case "stackedbar":
+                webViews[viewNumber].scalesPageToFit = false
+            default:
+                webViews[viewNumber].scalesPageToFit = false
+            }
+            webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
         }
         
-        webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
     }
     func transformData(webView: UIWebView){
         // should tell it which webView I am with some property

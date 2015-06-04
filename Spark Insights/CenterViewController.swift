@@ -18,6 +18,7 @@ import Social
 protocol CenterViewControllerDelegate {
     optional func toggleRightPanel()
     optional func collapseSidePanels()
+    optional func displaySearchViewController()
 }
 
 class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate {
@@ -96,6 +97,17 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.resetViewController()
+    }
+    
+    // MARK: - Reset UI
+    
+    func resetViewController() {
+        // Use this function to reset the view controller's UI to a clean state
+        println("Resetting \(__FILE__)")
     }
     
     func configureGestureRecognizerForSearchIconView()
@@ -284,7 +296,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
     }
     
-    // MARK: UIScrollViewDelegate
+    // MARK: - UIScrollViewDelegate
     
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -303,7 +315,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK: UIWebViewDelegate
+    // MARK: - UIWebViewDelegate
     
     /*
         When a page finishes loading, load in the javascript
@@ -314,7 +326,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.transformData(webView)
     }
     
-    // MARK: PageControlDelegate
+    // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
         println("Page Changed to index: \(index)")
@@ -334,7 +346,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK - Share by email action
+    // MARK - Actions
+    
     @IBAction func shareScreenClicked(sender: UIButton){
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
@@ -376,6 +389,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func headerTitleClicked(sender: AnyObject) {
+        delegate?.displaySearchViewController?()
+    }
     
     
     // MARK: - Network
@@ -388,9 +404,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: build request string
         
-        executeRequest(req)
-
-        /*
         if (Config.useDummyData) {
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -400,7 +413,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         } else {
             executeRequest(req)
         }
-        */
     }
     
     func executeRequest(req: String) {
@@ -419,7 +431,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                self.loadingView.removeFromSuperview()
+                //self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
