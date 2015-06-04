@@ -37,7 +37,7 @@
 var margin = 0,
     diameter = 550;
     
-    var w = 800, h = 500;
+    var w = 800, h = 700;
 
 //var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
 
@@ -80,8 +80,8 @@ var pack = d3.layout.pack()
     .value(function(d) { return d.size; })
 
 var svg = d3.select("body").append("svg")
-    .attr("width", diameter)
-    .attr("height", diameter)
+    .attr("width", w)
+    .attr("height", h)
     .append("g")
     .attr("transform", "translate(" + ((diameter / 2)+45) + "," + ((diameter / 2)-25) + ")");
 
