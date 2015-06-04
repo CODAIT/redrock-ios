@@ -50,6 +50,7 @@ class ContainerViewController: UIViewController {
 extension ContainerViewController: RightViewControllerDelegate
 {
     func executeActionOnGoClicked(searchTerms: String) {
+        self.searchText = searchTerms
         self.centerViewController.searchText = searchTerms
         self.toggleRightPanel()
     }

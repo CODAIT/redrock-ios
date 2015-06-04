@@ -13,7 +13,7 @@ import UIKit
 
 class VisualizationHandler{
     
-    var visualizationNames: [String] = [String]()
+    //var visualizationNames: [String] = [String]()
     var webViews : [UIWebView] = [UIWebView]()
     
     //var dataForViews : JSON = JSON(["name", "age"])
@@ -23,30 +23,28 @@ class VisualizationHandler{
     var worddistanceData : JSON  = nil
     var timemapData : JSON       = nil
     var stackedbarData : JSON    = nil
-    
-    func getNumberOfVisualizations()->Int{
-        return visualizationNames.count;
-    }
-        
+            
     func reloadAppropriateView(viewNumber: Int){
         println("should reload \(viewNumber)")
         
-        switch visualizationNames[viewNumber]{
-        case "treemap":
-            webViews[viewNumber].scalesPageToFit = false
-        case "circlepacking":
-            webViews[viewNumber].scalesPageToFit = false
-        case "worddistance":
-            webViews[viewNumber].scalesPageToFit = false
-        case "timemap":
-            webViews[viewNumber].scalesPageToFit = true
-        case "stackedbar":
-            webViews[viewNumber].scalesPageToFit = false
-        default:
-            webViews[viewNumber].scalesPageToFit = false
+        if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+        switch Config.visualizationNames[viewNumber]{
+            case "treemap":
+                webViews[viewNumber].scalesPageToFit = false
+            case "circlepacking":
+                webViews[viewNumber].scalesPageToFit = false
+            case "worddistance":
+                webViews[viewNumber].scalesPageToFit = false
+            case "timemap":
+                webViews[viewNumber].scalesPageToFit = true
+            case "stackedbar":
+                webViews[viewNumber].scalesPageToFit = false
+            default:
+                webViews[viewNumber].scalesPageToFit = false
+            }
+            webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
         }
         
-        webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
     }
     func transformData(webView: UIWebView){
         // should tell it which webView I am with some property

@@ -89,6 +89,10 @@ extension AppDelegate: ContainerViewControllerDelegate {
             self.window!.rootViewController = searchViewController
             self.window!.makeKeyAndVisible()
         }
+        else
+        {
+            searchViewController?.recalculateConstrainstForBakcAnimation()
+        }
         
         // When returning to search
         if (containerViewController != nil) {
