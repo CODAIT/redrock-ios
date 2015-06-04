@@ -78,16 +78,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
         }
         
-        /*
-        pageControlView.buttonData = [
-            PageControlButtonData(imageName: "Bubble_TEAL", selectedImageName: "Bubble_WHITE"),
-            PageControlButtonData(imageName: "Bar_TEAL", selectedImageName: "Bar_WHITE"),
-            PageControlButtonData(imageName: "Tree_TEAL", selectedImageName: "Tree_WHITE"),
-            PageControlButtonData(imageName: "Map_TEAL", selectedImageName: "Map_WHITE"),
-            PageControlButtonData(imageName: "Network_TEAL", selectedImageName: "Network_WHITE")
-        ]
-        */
-        
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
         
@@ -97,6 +87,38 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
+        
+        
+        
+        /*
+        visualizationHandler.treemapData = JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")
+        
+        println("VISUALIZATIONHANDLER.TREEMAPDATA STUFF")
+    
+        println("visualizationHandler.treemapData[\"status\"]:")
+        println(visualizationHandler.treemapData["status"])
+        
+        println(visualizationHandler.treemapData["data"])
+        
+        for (row: String, rowJson: JSON) in visualizationHandler.treemapData["data"] {
+            println("for rowJson")
+            for (col: String, cellJson: JSON) in rowJson {
+                println("for colJson")
+                //println(row, col, cellJson)
+                let r: Int = row.toInt()!
+                let c: Int = col.toInt()!
+                //self.tableData[r][c] = cellJson.stringValue
+                //tableData[r][c] = cellJson.stringValue
+                
+                println("r: \(r), c: \(c), cellJSON.stringValue: \(cellJson.stringValue))")
+                
+            }
+        }
+
+        */
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -302,7 +324,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
         if(previousPage != page){
-            println("page was changed to... \(page)")
+            //println("page was changed to... \(page)")
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
             if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
@@ -320,14 +342,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     */
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
-        println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        //println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
         visualizationHandler.transformData(webView)
     }
     
     // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
-        println("Page Changed to index: \(index)")
+        //println("Page Changed to index: \(index)")
         var offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
@@ -406,7 +428,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
-                self.onDummyRequestSuccess(nil)
+                self.onDummyRequestSuccess(
+
+                    
+                nil
+                // dummy data goes here
+                
+                
+                
+                )
             }
         } else {
             executeRequest(req)
@@ -429,7 +459,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                //self.loadingView.removeFromSuperview()
+                self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
@@ -482,16 +512,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         populateUI(json)
     }
     
-    
-    
     func populateUI(json: JSON){
+        
+        
         
         populateCharts(json)
     }
     
     func populateCharts(json : JSON){
         //something like this maybe
-        visualizationHandler.treemapData = json
+        visualizationHandler.treemapData = JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")
         visualizationHandler.circlepackingData = json
         visualizationHandler.stackedbarData = json
         visualizationHandler.timemapData = json
