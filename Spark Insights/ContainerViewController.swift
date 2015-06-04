@@ -23,7 +23,7 @@ class ContainerViewController: UIViewController {
     weak var delegate: ContainerViewControllerDelegate?
     
     var centerViewController: CenterViewController!
-    var rightViewController: RightViewController?
+    var rightViewController: RightViewController!
     
     var currentState: SlideOutState = .BothCollapsed
     let centerPanelExpandedOffset: CGFloat = 325
@@ -47,6 +47,14 @@ class ContainerViewController: UIViewController {
 
 // MARK: - CenterViewControllerDelegate
 
+extension ContainerViewController: RightViewControllerDelegate
+{
+    func executeActionOnGoClicked(searchTerms: String) {
+        self.centerViewController.searchText = searchTerms
+        self.toggleRightPanel()
+    }
+}
+
 extension ContainerViewController: CenterViewControllerDelegate {
     
     func toggleRightPanel() {
@@ -69,20 +77,22 @@ extension ContainerViewController: CenterViewControllerDelegate {
     func addRightPanelViewController() {
         if (rightViewController == nil) {
             rightViewController = UIStoryboard.rightViewController()
-            
+            self.rightViewController.delegate = self
+            self.rightViewController.searchString = self.searchText
             addChildSidePanelController(rightViewController!)
         }
     }
     
     func animateRightPanel(#shouldExpand: Bool) {
         if (shouldExpand) {
+            self.rightViewController.searchString = self.searchText
+            self.rightViewController.tableA.reloadData()
+            self.rightViewController.tableB.reloadData()
             currentState = .RightPanelExpanded
-            
             animateCenterPanelXPosition(targetPosition: -centerPanelExpandedOffset)
         } else {
             animateCenterPanelXPosition(targetPosition: 0) { _ in
                 self.currentState = .BothCollapsed
-                
                 self.rightViewController!.view.removeFromSuperview()
                 self.rightViewController = nil;
             }

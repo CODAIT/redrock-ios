@@ -52,6 +52,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
+    private var loadingView :LoadingView!
+
+    
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
     
@@ -157,11 +160,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func waitToUpdateSearch()
     {
         // 5min until new update be available
-        let delay = 150.0 * Double(NSEC_PER_SEC)
+        let delay = 5.0 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.canUpdateSearch = true
-            UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
                 self.tweetsFooterLabel.text = "Refresh Available"
                 self.tweetsFooterView.backgroundColor = Config.mediumGreen
                 self.tweetsFooterSeparatorLine.hidden = true
@@ -394,11 +397,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK: - Network
     
     func createRequest() {
+        println("createRequest")
+        
         var search = self.searchText
         var req = ""
         
         // TODO: build request string
         
+        executeRequest(req)
+
+        /*
         if (Config.useDummyData) {
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -408,6 +416,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         } else {
             executeRequest(req)
         }
+        */
     }
     
     func executeRequest(req: String) {
@@ -420,13 +429,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: LoadingView
         // Display loading view
-        // loadingView = LoadingView(frame: view.frame)
-        // view.addSubview(loadingView!)
+        loadingView = LoadingView(frame: view.frame)
+        view.addSubview(loadingView!)
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                // self.loadingView.removeFromSuperview()
+                self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
