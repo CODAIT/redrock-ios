@@ -63,15 +63,21 @@ extension ContainerViewController: CenterViewControllerDelegate {
     // we need to close that
     func toggleRightPanel(close: Bool) {
         var notAlreadyExpanded = (currentState != .RightPanelExpanded)
-        if close {
-            notAlreadyExpanded = false
+        if close
+        {
+            if !notAlreadyExpanded
+            {
+                animateRightPanel(shouldExpand: false)
+            }
         }
-        
-        if notAlreadyExpanded {
-            addRightPanelViewController()
+        else
+        {
+            if notAlreadyExpanded {
+                addRightPanelViewController()
+            }
+            animateRightPanel(shouldExpand: notAlreadyExpanded)
         }
-        
-        animateRightPanel(shouldExpand: notAlreadyExpanded)
+
     }
     
     func addChildSidePanelController(sidePanelController: UIViewController) {

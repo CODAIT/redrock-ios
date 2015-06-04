@@ -139,6 +139,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         self.searchHolderTopConstraint.constant = self.searchHolderTopConstraintInitial
         self.searchHolderBottomConstraint.constant = self.searchHolderBottomConstraintInitial
         self.searchButtonView.alpha = 1.0
+        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+
     }
 
     
