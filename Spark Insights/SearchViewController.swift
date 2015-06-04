@@ -19,26 +19,36 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var imageTitleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageSearchTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var appImageTitle: UILabel!
+    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var appTitleTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var appImageTitle: UILabel!
+    @IBOutlet weak var searchTextFieldHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var AppTitleView: UIView!
     @IBOutlet weak var appTitleLabel: UILabel!
     @IBOutlet weak var searchHolderView: UIView!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var topImageView: UIImageView!
-    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonView: UIView!
     
-    @IBOutlet weak var searchTextFieldHeightConstraint: NSLayoutConstraint!
-    
     private var recalculateConstrainstsForSearchView = true
+    
+    var imageTitleTopConstraintInitial: CGFloat!
+    var imageSearchTopConstraintInitial: CGFloat!
+    var searchHolderTopConstraintInitial: CGFloat!
+    var searchHolderBottomConstraintInitial: CGFloat!
+    var appTitleTopConstraintInitial: CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.textField.delegate = self
         setInsetTextField()
         addGestureRecognizerSearchView()
+        imageTitleTopConstraintInitial = self.imageTitleTopConstraint.constant
+        imageSearchTopConstraintInitial = self.imageSearchTopConstraint.constant
+        searchHolderTopConstraintInitial = self.searchHolderTopConstraint.constant
+        searchHolderBottomConstraintInitial = self.searchHolderBottomConstraint.constant
+        appTitleTopConstraintInitial = self.appTitleTopConstraint.constant
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -115,8 +125,22 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         self.appTitleLabel.hidden = false
         self.appTitleTopConstraint.constant = -UIApplication.sharedApplication().statusBarFrame.height
         self.searchHolderTopConstraint.constant = self.AppTitleView.frame.height
-        self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height + (self.topImageView.frame.height - self.searchHolderView.frame.height) - self.AppTitleView.frame.height
+        self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height
     }
+    
+    func recalculateConstrainstForBakcAnimation()
+    {
+        self.recalculateConstrainstsForSearchView = true
+        self.imageSearchTopConstraint.constant = self.imageSearchTopConstraintInitial
+        self.imageTitleTopConstraint.constant = self.imageTitleTopConstraintInitial
+        self.AppTitleView.hidden = true
+        self.appTitleLabel.hidden = true
+        self.appTitleTopConstraint.constant = self.appTitleTopConstraintInitial
+        self.searchHolderTopConstraint.constant = self.searchHolderTopConstraintInitial
+        self.searchHolderBottomConstraint.constant = self.searchHolderBottomConstraintInitial
+        self.searchButtonView.alpha = 1.0
+    }
+
     
     func searchClicked(gesture: UIGestureRecognizer?) {
         var searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
@@ -144,8 +168,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
                 animation.duration = 0.07
                 animation.repeatCount = 2
                 animation.autoreverses = true
-                animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 10, self.textField.center.y))
-                animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 10, self.textField.center.y))
+                animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 5, self.textField.center.y))
+                animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 5, self.textField.center.y))
                 self.textField.layer.addAnimation(animation, forKey: "position")
             }
         }

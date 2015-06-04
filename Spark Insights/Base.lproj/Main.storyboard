@@ -25,8 +25,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNa-ah-PM3">
-                                        <rect key="frame" x="15" y="28" width="57" height="34"/>
-                                        <state key="normal" title="&lt; Back">
+                                        <rect key="frame" x="539" y="28" width="46" height="34"/>
+                                        <state key="normal" title="Close">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -36,8 +36,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="eNa-ah-PM3" secondAttribute="bottom" constant="8" id="hct-s7-Ffn"/>
-                                    <constraint firstItem="eNa-ah-PM3" firstAttribute="leading" secondItem="mxE-pq-8rZ" secondAttribute="leading" constant="15" id="sMp-Gf-uuo"/>
+                                    <constraint firstAttribute="bottom" secondItem="eNa-ah-PM3" secondAttribute="bottom" constant="8" id="9sX-6s-8Vk"/>
+                                    <constraint firstAttribute="trailing" secondItem="eNa-ah-PM3" secondAttribute="trailing" constant="15" id="vkt-Cy-jty"/>
                                 </constraints>
                             </view>
                         </subviews>

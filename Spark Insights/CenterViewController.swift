@@ -49,8 +49,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
-    private var loadingView :LoadingView!
-
+    // Rosstin: I made these separate so that if one finishes before the other, they don't both disappear
+    //  alternatively we could write some logic to check both conditions before removing the view
+    private var loadingView1 :LoadingView! // the loading view for the executeRequest
+    private var loadingView2 :LoadingView! // the loading view for the tweets
     
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
@@ -60,6 +62,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var tweetsFooterSeparatorLine: UIView!
     
     @IBOutlet weak var searchButtonView: UIView!
+    
+    var tweetsTableViewController: TweetsTableViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,33 +93,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.configureGestureRecognizerForSearchIconView()
         
         
-        
-        /*
-        visualizationHandler.treemapData = JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")
-        
-        println("VISUALIZATIONHANDLER.TREEMAPDATA STUFF")
-    
-        println("visualizationHandler.treemapData[\"status\"]:")
-        println(visualizationHandler.treemapData["status"])
-        
-        println(visualizationHandler.treemapData["data"])
-        
-        for (row: String, rowJson: JSON) in visualizationHandler.treemapData["data"] {
-            println("for rowJson")
-            for (col: String, cellJson: JSON) in rowJson {
-                println("for colJson")
-                //println(row, col, cellJson)
-                let r: Int = row.toInt()!
-                let c: Int = col.toInt()!
-                //self.tableData[r][c] = cellJson.stringValue
-                //tableData[r][c] = cellJson.stringValue
-                
-                println("r: \(r), c: \(c), cellJSON.stringValue: \(cellJson.stringValue))")
-                
-            }
-        }
-
-        */
         
         
         
@@ -187,7 +164,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func waitToUpdateSearch()
     {
         // 5min until new update be available
-        let delay = 5.0 * Double(NSEC_PER_SEC)
+        let delay = 300.0 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             self.canUpdateSearch = true
@@ -203,24 +180,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func setupTweetsTableView()
     {
-        if let tweetsController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
-        {
-            addChildViewController(tweetsController)
-            let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth - self.statusBarSeparator.frame.height
-            tweetsController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
-            self.leftView.addSubview(tweetsController.view)
-            
-            // Simulating request delay
-            let delay = 1.0 * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue()) {
-                tweetsController.tweets = ReadTweetsData.readJSON()!
-                tweetsController.tableView.reloadData()
-            }
-            //-----
-            
-            tweetsController.didMoveToParentViewController(self)
-        }
+        self.tweetsTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
+        
+        addChildViewController(tweetsTableViewController)
+        let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth - self.statusBarSeparator.frame.height
+        self.tweetsTableViewController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
+        self.leftView.addSubview(self.tweetsTableViewController.view)
+        tweetsTableViewController.didMoveToParentViewController(self)
     }
     
     func setupMetricsNumber()
@@ -425,18 +391,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // TODO: build request string
         
         if (Config.useDummyData) {
+            loadingView1 = LoadingView(frame: view.frame)
+            view.addSubview(loadingView1!)
+            
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
-                self.onDummyRequestSuccess(
-
-                    
-                nil
-                // dummy data goes here
-                
-                
-                
-                )
+                self.onDummyRequestSuccess(nil)
+                self.loadingView1.removeFromSuperview()
             }
         } else {
             executeRequest(req)
@@ -453,13 +415,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: LoadingView
         // Display loading view
-        loadingView = LoadingView(frame: view.frame)
-        view.addSubview(loadingView!)
+        loadingView1 = LoadingView(frame: view.frame)
+        view.addSubview(loadingView1!)
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                self.loadingView.removeFromSuperview()
+                self.loadingView1.removeFromSuperview()
             })
             
             if error != nil {
@@ -513,16 +475,33 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func populateUI(json: JSON){
-        
-        
-        
         populateCharts(json)
+        populateTweetsTable(json)
+    }
+    
+    func populateTweetsTable(json: JSON)
+    {
+        loadingView2 = LoadingView(frame: view.frame)
+        view.addSubview(loadingView2!)
+
+        // Simulating request delay
+        let delay = 1.0 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.loadingView2.removeFromSuperview()
+
+            self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
+            self.tweetsTableViewController.tableView.reloadData()
+        }
+        //-----
     }
     
     func populateCharts(json : JSON){
         //something like this maybe
-        visualizationHandler.treemapData = JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")
-        visualizationHandler.circlepackingData = json
+        visualizationHandler.circlepackingData = [["1","happy","444"],["1","ecstatic","222"],["1","glad","344"],["2","bummed","111"],["3","drunk","577"],["3","wasted","55"],["3","trashed","99"],["4","lovesick","233"],["4","crushing","333"],["4","cloud9","288"],["4","turned-on","555"]]
+        visualizationHandler.treemapData = [["1","happy","444"],["1","ecstatic","222"],["2","bummed","111"]]
+        
+            //JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")
         visualizationHandler.stackedbarData = json
         visualizationHandler.timemapData = json
         visualizationHandler.worddistanceData = json
@@ -530,8 +509,5 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
         // other pages will get loaded when they are swiped to
     }
-    
-    
-    
 }
 
