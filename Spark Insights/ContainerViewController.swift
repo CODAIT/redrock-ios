@@ -50,16 +50,22 @@ class ContainerViewController: UIViewController {
 extension ContainerViewController: RightViewControllerDelegate
 {
     func executeActionOnGoClicked(searchTerms: String) {
+        self.toggleRightPanel(false)
         self.searchText = searchTerms
         self.centerViewController.searchText = searchTerms
-        self.toggleRightPanel()
     }
 }
 
 extension ContainerViewController: CenterViewControllerDelegate {
     
-    func toggleRightPanel() {
-        let notAlreadyExpanded = (currentState != .RightPanelExpanded)
+    // If close is true, always close the panel
+    // Necessary because if you go back to the main search screen and the side search is opened,
+    // we need to close that
+    func toggleRightPanel(close: Bool) {
+        var notAlreadyExpanded = (currentState != .RightPanelExpanded)
+        if close {
+            notAlreadyExpanded = false
+        }
         
         if notAlreadyExpanded {
             addRightPanelViewController()

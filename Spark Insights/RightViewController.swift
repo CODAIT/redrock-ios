@@ -46,6 +46,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     private var beginDraggingRect: CGRect?
     
     weak var delegate: RightViewControllerDelegate?
+    var canEditRow = false
     
     var searchString: String? {
         didSet {
@@ -168,6 +169,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
+            self.canEditRow = true
             self.tableA.setEditing(true, animated: true)
             self.tableB.setEditing(true, animated: true)
             UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
@@ -181,6 +183,10 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return canEditRow
+    }
+    
     func doneClicked(gesture: UIGestureRecognizer)
     {
         if gesture.state == UIGestureRecognizerState.Began
@@ -192,6 +198,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
+            self.canEditRow = false
             self.goView.hidden = false
             self.editView.hidden = false
             self.toolbarSeparator.hidden = false

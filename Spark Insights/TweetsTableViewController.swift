@@ -85,11 +85,16 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     
     func screenShot() -> UIImage
     {
-        UIGraphicsBeginImageContextWithOptions(UIScreen.mainScreen().bounds.size, false, 0);
-        self.view.drawViewHierarchyInRect(view.bounds, afterScreenUpdates: true)
-        var screenShootImage:UIImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return screenShootImage;
+        let layer = UIApplication.sharedApplication().keyWindow!.layer
+        let scale = UIScreen.mainScreen().scale
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+        
+        layer.renderInContext(UIGraphicsGetCurrentContext())
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+        return screenshot;
     }
     
     // MARK: - Table view data source

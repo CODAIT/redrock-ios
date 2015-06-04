@@ -64,6 +64,10 @@ extension AppDelegate: SearchViewControllerDelegate {
             containerViewController = ContainerViewController()
             containerViewController!.delegate = self
         }
+        else
+        {
+            containerViewController!.centerViewController.searchText = searchText
+        }
         containerViewController!.searchText = searchText
         
         // Animate the transition to the new view controller
