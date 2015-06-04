@@ -51,6 +51,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     
+    private var loadingView :LoadingView!
+
+    
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
     
@@ -88,9 +91,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
-
-        //makeARequestToGetTheData(); //speculation
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -190,22 +190,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalTweets)
         self.totalRetweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalRetweets)
         self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(metrics.tweetsPerHour)
-    }
-
-    func gotDataResponseHandler(rawData: NSDictionary){
-        var jsonData = JSON(rawData)
-        
-        /* //something like this maybe
-        visualizationHandler.tr
-eemapData = JSON(rawData[0])
-        visualizationHandler.circlepackingData = JSON(rawData[1])
-        visualizationHandler.stackedbarData = JSON(rawData[2])
-        visualizationHandler.timemapData = JSON(rawData[3])
-        visualizationHandler.worddistanceData = JSON(rawData[4])
-        */
-        
-        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
-        // other pages will get loaded when they are swiped to
     }
 
     func getMetricsNumber() -> (totalTweets: Int64, totalRetweets: Int64, tweetsPerHour: Int64)
@@ -397,11 +381,16 @@ eemapData = JSON(rawData[0])
     // MARK: - Network
     
     func createRequest() {
+        println("createRequest")
+        
         var search = self.searchText
         var req = ""
         
         // TODO: build request string
         
+        executeRequest(req)
+
+        /*
         if (Config.useDummyData) {
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -411,6 +400,7 @@ eemapData = JSON(rawData[0])
         } else {
             executeRequest(req)
         }
+        */
     }
     
     func executeRequest(req: String) {
@@ -423,13 +413,13 @@ eemapData = JSON(rawData[0])
         
         // TODO: LoadingView
         // Display loading view
-        // loadingView = LoadingView(frame: view.frame)
-        // view.addSubview(loadingView!)
+        loadingView = LoadingView(frame: view.frame)
+        view.addSubview(loadingView!)
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                // self.loadingView.removeFromSuperview()
+                self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
@@ -474,11 +464,34 @@ eemapData = JSON(rawData[0])
     func onRequestSuccess(json: JSON) {
         println(__FUNCTION__)
         // Populate UI
+        populateUI(json)
     }
     
     func onDummyRequestSuccess(json: JSON) {
         println(__FUNCTION__)
-        // Populate UI with Dummy Data
+        populateUI(json)
     }
+    
+    
+    
+    func populateUI(json: JSON){
+        
+        populateCharts(json)
+    }
+    
+    func populateCharts(json : JSON){
+        //something like this maybe
+        visualizationHandler.treemapData = json
+        visualizationHandler.circlepackingData = json
+        visualizationHandler.stackedbarData = json
+        visualizationHandler.timemapData = json
+        visualizationHandler.worddistanceData = json
+        
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+        // other pages will get loaded when they are swiped to
+    }
+    
+    
+    
 }
 

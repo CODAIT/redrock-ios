@@ -33,6 +33,8 @@
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
+		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
+		F32ACAE61B1FC05100D3D16E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32ACAE41B1FC05100D3D16E /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +79,8 @@
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
+		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
+		F32ACAE41B1FC05100D3D16E /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +160,8 @@
 				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
 				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
+				F32ACAE31B1FC05100D3D16E /* LoadingView.xib */,
+				F32ACAE41B1FC05100D3D16E /* LoadingView.swift */,
 				CE79DA7B1B190081003F01F6 /* PageControlView.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
@@ -288,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */,
+				F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */,
 				CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */,
 				CE79DA831B19166C003F01F6 /* LICENSE in Resources */,
 				CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */,
@@ -328,6 +335,7 @@
 				41ED940F1B17ABB400A80447 /* DisplayUrlViewController.swift in Sources */,
 				CE79DA841B19166C003F01F6 /* README.md in Sources */,
 				41ED94141B17D49F00A80447 /* TwitterTweet.swift in Sources */,
+				F32ACAE61B1FC05100D3D16E /* LoadingView.swift in Sources */,
 				41ED940D1B17AA7100A80447 /* TweetTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

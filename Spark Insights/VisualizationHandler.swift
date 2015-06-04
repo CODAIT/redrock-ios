@@ -130,6 +130,7 @@ class VisualizationHandler{
         
         webView.stringByEvaluatingJavaScriptFromString(script)
     }
+    
 
     
     
