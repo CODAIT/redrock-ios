@@ -168,8 +168,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
                 animation.duration = 0.07
                 animation.repeatCount = 2
                 animation.autoreverses = true
-                animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 10, self.textField.center.y))
-                animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 10, self.textField.center.y))
+                animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 5, self.textField.center.y))
+                animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 5, self.textField.center.y))
                 self.textField.layer.addAnimation(animation, forKey: "position")
             }
         }

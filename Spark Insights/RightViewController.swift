@@ -214,22 +214,46 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
-            var stringSearch = ""
-            let includeList = self.listA?.array as! Array<String>
-            let excludeList:Array = self.listB?.array as! Array<String>
-            for including in includeList
+            if validateBeforeGo()
             {
-                stringSearch = stringSearch + including + ","
+                var stringSearch = ""
+                let includeList = self.listA?.array as! Array<String>
+                let excludeList:Array = self.listB?.array as! Array<String>
+                for including in includeList
+                {
+                    stringSearch = stringSearch + including + ","
+                }
+                for excluding in excludeList
+                {
+                    stringSearch = stringSearch + "-" + excluding + ","
+                }
+                var aux = Array(stringSearch)
+                aux.removeLast()
+                self.goView.alpha = 1.0
+                self.delegate?.executeActionOnGoClicked(String(aux))
             }
-            for excluding in excludeList
-            {
-                stringSearch = stringSearch + "-" + excluding + ","
-            }
-            var aux = Array(stringSearch)
-            aux.removeLast()
-            self.goView.alpha = 1.0
-            self.delegate?.executeActionOnGoClicked(String(aux))
         }
+    }
+    
+    func validateBeforeGo() -> Bool
+    {
+        if self.listA?.array?.count > 0
+        {
+            return true
+        }
+        else
+        {
+            self.goView.alpha = 1.0
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.duration = 0.05
+            animation.repeatCount = 2
+            animation.autoreverses = true
+            animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 5, self.textField.center.y))
+            animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 5, self.textField.center.y))
+            self.textField.layer.addAnimation(animation, forKey: "position")
+            return false
+        }
+        
     }
     
     // MARK: - UITableViewDataSource
@@ -262,7 +286,27 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if (!textField.text.isEmpty) {
-            listA?.array?.append(textField.text)
+            var searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            searchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            var terms = searchText.componentsSeparatedByString(",")
+            for var i = 0; i < terms.count;  i++
+            {
+                var term = terms[i]
+                if term != ""
+                {
+                    var aux = Array(term)
+                    if aux[0] == "-"
+                    {
+                        aux.removeAtIndex(0)
+                        listB?.array?.append(String(aux))
+                    }
+                    else
+                    {
+                        listA?.array?.append(term)
+                    }
+                }
+            }
+            tableB.reloadData()
             tableA.reloadData()
             textField.text = ""
         }
