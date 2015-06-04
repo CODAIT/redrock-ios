@@ -16,7 +16,7 @@ enum SlideOutState {
 class ContainerViewController: UIViewController {
     
     var centerViewController: CenterViewController!
-    var rightViewController: UIViewController?
+    var rightViewController: RightViewController!
     
     var currentState: SlideOutState = .BothCollapsed
     let centerPanelExpandedOffset: CGFloat = 325
@@ -40,6 +40,14 @@ class ContainerViewController: UIViewController {
 
 // MARK: CenterViewController delegate
 
+extension ContainerViewController: RightViewControllerDelegate
+{
+    func executeActionOnGoClicked(searchTerms: String) {
+        self.centerViewController.searchText = searchTerms
+        self.toggleRightPanel()
+    }
+}
+
 extension ContainerViewController: CenterViewControllerDelegate {
     
     func toggleRightPanel() {
@@ -62,20 +70,22 @@ extension ContainerViewController: CenterViewControllerDelegate {
     func addRightPanelViewController() {
         if (rightViewController == nil) {
             rightViewController = UIStoryboard.rightViewController()
-            
+            self.rightViewController.delegate = self
+            self.rightViewController.searchString = self.searchText
             addChildSidePanelController(rightViewController!)
         }
     }
     
     func animateRightPanel(#shouldExpand: Bool) {
         if (shouldExpand) {
+            self.rightViewController.searchString = self.searchText
+            self.rightViewController.tableA.reloadData()
+            self.rightViewController.tableB.reloadData()
             currentState = .RightPanelExpanded
-            
             animateCenterPanelXPosition(targetPosition: -centerPanelExpandedOffset)
         } else {
             animateCenterPanelXPosition(targetPosition: 0) { _ in
                 self.currentState = .BothCollapsed
-                
                 self.rightViewController!.view.removeFromSuperview()
                 self.rightViewController = nil;
             }
@@ -93,8 +103,8 @@ extension ContainerViewController: CenterViewControllerDelegate {
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()) }
     
-    class func rightViewController() -> UIViewController? {
-        return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? UIViewController
+    class func rightViewController() -> RightViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? RightViewController
     }
     
     class func centerViewController() -> CenterViewController? {

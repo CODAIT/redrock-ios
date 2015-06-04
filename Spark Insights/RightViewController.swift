@@ -8,6 +8,11 @@
 
 import UIKit
 
+@objc
+protocol RightViewControllerDelegate {
+    func executeActionOnGoClicked(searchTerms: String)
+}
+
 class RightViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var textField: UITextField!
@@ -17,6 +22,11 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBOutlet weak var goView: UIView!
     @IBOutlet weak var editView: UIView!
+    @IBOutlet weak var doneView: UIView!
+    @IBOutlet weak var toolbarSeparator: UIView!
+    
+    @IBOutlet weak var doneViewBottonConstraint: NSLayoutConstraint!
+    @IBOutlet weak var doneViewTopConstraint: NSLayoutConstraint!
     
     private var listA: RefArray?
     private var listB: RefArray?
@@ -35,11 +45,16 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     private var beginDraggingRect: CGRect?
     
+    weak var delegate: RightViewControllerDelegate?
+    
+    var searchString: String? {
+        didSet {
+            self.setListTerms()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        listA = RefArray(arr:["one", "two", "three"])
-        listB = RefArray(arr: ["#1", "#2", "#3"])
         
         // UI Tweaks
         var spacerView = UIView(frame: CGRectMake(0, 0, 10, textField.frame.size.height)) // Setting text inset
@@ -89,6 +104,35 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         //toolbar
         self.configureTapGestureEdit()
         self.configureTapGestureGo()
+        self.configureTapGestureDone()
+        
+        //hide done view
+        self.doneViewBottonConstraint.constant = 80
+        self.doneViewTopConstraint.constant = 80
+    }
+    
+    func setListTerms()
+    {
+        listA = RefArray(arr:[])
+        listB = RefArray(arr:[])
+        let terms = self.searchString?.componentsSeparatedByString(",")
+        for var i = 0; i < terms?.count; i++
+        {
+            var term = terms?[i]
+            if term != ""
+            {
+                var aux = Array(term!)
+                if aux[0] == "-"
+                {
+                    aux.removeAtIndex(0)
+                    listB?.array?.append(String(aux))
+                }
+                else
+                {
+                    listA?.array?.append(term!)
+                }
+            }
+        }
     }
     
     // MARK: Gesture reconizer and actions
@@ -108,6 +152,14 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.goView.userInteractionEnabled = true
     }
     
+    func configureTapGestureDone()
+    {
+        var tapGesture = UILongPressGestureRecognizer(target: self, action: "doneClicked:")
+        tapGesture.minimumPressDuration = 0.001
+        self.doneView.addGestureRecognizer(tapGesture)
+        self.doneView.userInteractionEnabled = true
+    }
+    
     func editClicked(gesture: UIGestureRecognizer)
     {
         if gesture.state == UIGestureRecognizerState.Began
@@ -118,7 +170,39 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         {
             self.tableA.setEditing(true, animated: true)
             self.tableB.setEditing(true, animated: true)
+            UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
+                self.doneViewBottonConstraint.constant = 0
+                self.doneViewTopConstraint.constant = 0
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+
+            self.doneViewBottonConstraint.constant = 0
             self.editView.alpha = 1.0
+        }
+    }
+    
+    func doneClicked(gesture: UIGestureRecognizer)
+    {
+        if gesture.state == UIGestureRecognizerState.Began
+        {
+            self.goView.hidden = true
+            self.editView.hidden = true
+            self.toolbarSeparator.hidden = true
+            self.doneView.alpha = 0.5
+        }
+        else if gesture.state == UIGestureRecognizerState.Ended
+        {
+            self.goView.hidden = false
+            self.editView.hidden = false
+            self.toolbarSeparator.hidden = false
+            tableA.setEditing(false, animated: true)
+            tableB.setEditing(false, animated: true)
+            UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
+                self.doneView.alpha = 1.0
+                self.doneViewBottonConstraint.constant = 80
+                self.doneViewTopConstraint.constant = 80
+                self.view.layoutIfNeeded()
+                }, completion: nil)
         }
     }
     
@@ -130,9 +214,21 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
-            //Reload data here
-            //call delegate
+            var stringSearch = ""
+            let includeList = self.listA?.array as! Array<String>
+            let excludeList:Array = self.listB?.array as! Array<String>
+            for including in includeList
+            {
+                stringSearch = stringSearch + including + ","
+            }
+            for excluding in excludeList
+            {
+                stringSearch = stringSearch + "-" + excluding + ","
+            }
+            var aux = Array(stringSearch)
+            aux.removeLast()
             self.goView.alpha = 1.0
+            self.delegate?.executeActionOnGoClicked(String(aux))
         }
     }
     
@@ -397,11 +493,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     // MARK: - Actions
-    
-    @IBAction func doneClicked(sender: AnyObject) {
-        self.tableA.setEditing(true, animated: true)
-        self.tableB.setEditing(true, animated: true)
-    }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         

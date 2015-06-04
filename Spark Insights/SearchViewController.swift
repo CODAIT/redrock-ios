@@ -30,6 +30,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchButtonView: UIView!
     
+    @IBOutlet weak var searchTextFieldHeightConstraint: NSLayoutConstraint!
+    
     private var recalculateConstrainstsForSearchView = true
     
     override func viewDidLoad() {
@@ -105,19 +107,21 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     }
     
     func searchClicked(gesture: UIGestureRecognizer?) {
-        let searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        if searchText != ""
+        var searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        searchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        var state = UIGestureRecognizerState.Ended
+        if gesture != nil
         {
-            var state = UIGestureRecognizerState.Ended
-            if gesture != nil
-            {
-                state = gesture!.state
-            }
-            if state == UIGestureRecognizerState.Began
-            {
-                self.searchButtonView.alpha = 0.5
-            }
-            else if state == UIGestureRecognizerState.Ended
+            state = gesture!.state
+        }
+        if state == UIGestureRecognizerState.Began
+        {
+            self.searchButtonView.alpha = 0.5
+        }
+        else if state == UIGestureRecognizerState.Ended
+        {
+            if searchText != ""
             {
                 let containerViewController = ContainerViewController()
                 containerViewController.searchText = searchText
@@ -130,20 +134,19 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
                     self.delegate?.changeRootViewController?(containerViewController)
                 })
             }
+            else
+            {
+                self.searchButtonView.alpha = 1.0
+                let animation = CABasicAnimation(keyPath: "position")
+                animation.duration = 0.07
+                animation.repeatCount = 2
+                animation.autoreverses = true
+                animation.fromValue = NSValue(CGPoint: CGPointMake(self.textField.center.x - 10, self.textField.center.y))
+                animation.toValue = NSValue(CGPoint: CGPointMake(self.textField.center.x + 10, self.textField.center.y))
+                self.textField.layer.addAnimation(animation, forKey: "position")
+            }
         }
-        else
-        {
-            self.displayAlert("#SparkInsights", message: "No search parameters defined.")
-            self.searchButtonView.alpha = 1.0
-        }
-    }
     
-    func displayAlert(title: String, message: String)
-    {
-        
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
     }
+
 }
