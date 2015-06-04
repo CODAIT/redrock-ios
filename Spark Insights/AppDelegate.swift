@@ -72,7 +72,7 @@ extension AppDelegate: SearchViewControllerDelegate {
         
         // Animate the transition to the new view controller
         var tr = CATransition()
-        tr.duration = 0.2
+        tr.duration = 0.5
         tr.type = kCATransitionFade
         currentViewController.view.window!.layer.addAnimation(tr, forKey: kCATransition)
         currentViewController.presentViewController(containerViewController!, animated: false, completion: nil)
