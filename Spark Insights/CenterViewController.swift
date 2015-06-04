@@ -61,6 +61,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     @IBOutlet weak var searchButtonView: UIView!
     
+    var tweetsTableViewController: TweetsTableViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -181,24 +183,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func setupTweetsTableView()
     {
-        if let tweetsController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
-        {
-            addChildViewController(tweetsController)
-            let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth - self.statusBarSeparator.frame.height
-            tweetsController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
-            self.leftView.addSubview(tweetsController.view)
-            
-            // Simulating request delay
-            let delay = 1.0 * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue()) {
-                tweetsController.tweets = ReadTweetsData.readJSON()!
-                tweetsController.tableView.reloadData()
-            }
-            //-----
-            
-            tweetsController.didMoveToParentViewController(self)
-        }
+        self.tweetsTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
+        
+        addChildViewController(tweetsTableViewController)
+        let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth - self.statusBarSeparator.frame.height
+        self.tweetsTableViewController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
+        self.leftView.addSubview(self.tweetsTableViewController.view)
+        tweetsTableViewController.didMoveToParentViewController(self)
     }
     
     func setupMetricsNumber()
@@ -403,10 +394,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         // TODO: build request string
         
         if (Config.useDummyData) {
+            loadingView = LoadingView(frame: view.frame)
+            view.addSubview(loadingView!)
+            
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 self.onDummyRequestSuccess(nil)
+                self.loadingView.removeFromSuperview()
             }
         } else {
             executeRequest(req)
@@ -485,8 +480,20 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     
     func populateUI(json: JSON){
-        
         populateCharts(json)
+        populateTweetsTable(json)
+    }
+    
+    func populateTweetsTable(json: JSON)
+    {
+        // Simulating request delay
+        let delay = 1.0 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
+            self.tweetsTableViewController.tableView.reloadData()
+        }
+        //-----
     }
     
     func populateCharts(json : JSON){
