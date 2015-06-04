@@ -18,6 +18,7 @@ import Social
 protocol CenterViewControllerDelegate {
     optional func toggleRightPanel()
     optional func collapseSidePanels()
+    optional func displaySearchViewController()
 }
 
 class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate {
@@ -281,7 +282,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(visualizationHandler.getNumberOfVisualizations()), self.dummyView.frame.size.height)
     }
     
-    // MARK: UIScrollViewDelegate
+    // MARK: - UIScrollViewDelegate
     
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -300,7 +301,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK: UIWebViewDelegate
+    // MARK: - UIWebViewDelegate
     
     /*
         When a page finishes loading, load in the javascript
@@ -311,7 +312,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.transformData(webView)
     }
     
-    // MARK: PageControlDelegate
+    // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
         println("Page Changed to index: \(index)")
@@ -331,7 +332,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK - Share by email action
+    // MARK - Actions
+    
     @IBAction func shareScreenClicked(sender: UIButton){
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
@@ -373,6 +375,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func headerTitleClicked(sender: AnyObject) {
+        delegate?.displaySearchViewController?()
+    }
     
     
     // MARK: - Network

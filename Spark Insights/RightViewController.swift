@@ -91,7 +91,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.configureTapGestureGo()
     }
     
-    // MARK: Gesture reconizer and actions
+    // MARK: - Gesture reconizer and actions
     func configureTapGestureEdit()
     {
         var tapGesture = UILongPressGestureRecognizer(target: self, action: "editClicked:")

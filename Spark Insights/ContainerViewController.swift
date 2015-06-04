@@ -8,6 +8,11 @@
 
 import UIKit
 
+@objc
+protocol ContainerViewControllerDelegate {
+    optional func displaySearchViewController()
+}
+
 enum SlideOutState {
     case BothCollapsed
     case RightPanelExpanded
@@ -15,8 +20,10 @@ enum SlideOutState {
 
 class ContainerViewController: UIViewController {
     
+    weak var delegate: ContainerViewControllerDelegate?
+    
     var centerViewController: CenterViewController!
-    var rightViewController: UIViewController?
+    var rightViewController: RightViewController?
     
     var currentState: SlideOutState = .BothCollapsed
     let centerPanelExpandedOffset: CGFloat = 325
@@ -38,7 +45,7 @@ class ContainerViewController: UIViewController {
     
 }
 
-// MARK: CenterViewController delegate
+// MARK: - CenterViewControllerDelegate
 
 extension ContainerViewController: CenterViewControllerDelegate {
     
@@ -82,6 +89,10 @@ extension ContainerViewController: CenterViewControllerDelegate {
         }
     }
     
+    func displaySearchViewController() {
+        delegate?.displaySearchViewController?()
+    }
+    
     func animateCenterPanelXPosition(#targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.centerViewController.view.frame.origin.x = targetPosition
@@ -93,8 +104,8 @@ extension ContainerViewController: CenterViewControllerDelegate {
 private extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()) }
     
-    class func rightViewController() -> UIViewController? {
-        return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? UIViewController
+    class func rightViewController() -> RightViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? RightViewController
     }
     
     class func centerViewController() -> CenterViewController? {

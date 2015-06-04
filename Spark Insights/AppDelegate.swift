@@ -9,29 +9,24 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDelegate, ContainerViewControllerDelegate {
 
     var window: UIWindow?
-
+    var storyboard: UIStoryboard?
+    var containerViewController: ContainerViewController?
+    var searchViewController: SearchViewController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let storboard = UIStoryboard(name: "Main", bundle: nil)
-        var newVC: UIViewController
+        storyboard = UIStoryboard(name: "Main", bundle: nil)
         
+        displaySearchViewController()
         if Config.skipSearchScreen {
-            newVC = ContainerViewController()
-        } else {
-            var searchViewController = storboard.instantiateViewControllerWithIdentifier("SearchViewController") as! SearchViewController
-            searchViewController.delegate = self
-            newVC = searchViewController
+            displayContainerViewController(searchViewController!, searchText: "")
         }
-        
-        window!.rootViewController = newVC
-        window!.makeKeyAndVisible()
         
         return true
     }
@@ -58,12 +53,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    // MARK: SearchViewControllerDelegate
-    
-    func changeRootViewController(newRootVC: UIViewController) {
-        // By making the containerViewController root, searchViewController can be released
-        window!.rootViewController = newRootVC
-        window!.makeKeyAndVisible()
-    }
 }
 
+// MARK: - SearchViewControllerDelegate
+
+extension AppDelegate: SearchViewControllerDelegate {
+    
+    func displayContainerViewController(currentViewController: UIViewController, searchText: String) {
+        if (containerViewController == nil) {
+            containerViewController = ContainerViewController()
+            containerViewController!.delegate = self
+        }
+        containerViewController!.searchText = searchText
+        
+        // Animate the transition to the new view controller
+        var tr = CATransition()
+        tr.duration = 0.2
+        tr.type = kCATransitionFade
+        currentViewController.view.window!.layer.addAnimation(tr, forKey: kCATransition)
+        currentViewController.presentViewController(containerViewController!, animated: false, completion: nil)
+    }
+    
+}
+
+// MARK: - ContainerViewControllerDelegate
+
+extension AppDelegate: ContainerViewControllerDelegate {
+    
+    func displaySearchViewController() {
+        // On first launch
+        if (searchViewController == nil) {
+            searchViewController = storyboard!.instantiateViewControllerWithIdentifier("SearchViewController") as? SearchViewController
+            searchViewController!.delegate = self
+            
+            self.window!.rootViewController = searchViewController
+            self.window!.makeKeyAndVisible()
+        }
+        
+        // When returning to search
+        if (containerViewController != nil) {
+            // Animate the transition to the new view controller
+            var tr = CATransition()
+            tr.duration = 0.2
+            tr.type = kCATransitionFade
+            containerViewController?.view.window!.layer.addAnimation(tr, forKey: kCATransition)
+            containerViewController?.dismissViewControllerAnimated(false, completion: nil)
+        }
+    }
+    
+}

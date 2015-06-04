@@ -10,7 +10,7 @@ import UIKit
 
 @objc
 protocol SearchViewControllerDelegate {
-    optional func changeRootViewController(newRoot: UIViewController)
+    optional func displayContainerViewController(currentViewController: UIViewController, searchText: String)
 }
 
 class SearchViewController: UIViewController, UITextFieldDelegate {
@@ -119,16 +119,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             }
             else if state == UIGestureRecognizerState.Ended
             {
-                let containerViewController = ContainerViewController()
-                containerViewController.searchText = searchText
-                // Animate the transition to the new view controller
-                var tr = CATransition()
-                tr.duration = 0.2
-                tr.type = kCATransitionFade
-                self.view.window!.layer.addAnimation(tr, forKey: kCATransition)
-                self.presentViewController(containerViewController, animated: false, completion: {
-                    self.delegate?.changeRootViewController?(containerViewController)
-                })
+                delegate?.displayContainerViewController?(self, searchText: searchText)
             }
         }
         else
