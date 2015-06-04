@@ -16,7 +16,7 @@ import Social
 
 @objc
 protocol CenterViewControllerDelegate {
-    optional func toggleRightPanel()
+    optional func toggleRightPanel(close: Bool)
     optional func collapseSidePanels()
     optional func displaySearchViewController()
 }
@@ -330,7 +330,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
-            delegate?.toggleRightPanel?()
+            delegate?.toggleRightPanel?(false)
             self.searchButtonView.alpha = 1.0
         }
     }
@@ -379,6 +379,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     @IBAction func headerTitleClicked(sender: AnyObject) {
+        delegate?.toggleRightPanel!(true)
         delegate?.displaySearchViewController?()
     }
     
