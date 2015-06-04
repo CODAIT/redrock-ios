@@ -51,8 +51,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     // Rosstin: I made these separate so that if one finishes before the other, they don't both disappear
     //  alternatively we could write some logic to check both conditions before removing the view
+    // if we have more than one loading view, we could iterate a static variable and then decrement it until it was 0
     private var loadingView1 :LoadingView! // the loading view for the executeRequest
-    private var loadingView2 :LoadingView! // the loading view for the tweets
+    //private var loadingView2 :LoadingView! // the loading view for the tweets
     
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
@@ -279,7 +280,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             self.scrollView.delegate = self
         }
         
-        self.scrollView.contentSize = CGSizeMake(self.dummyView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.dummyView.frame.size.height)
+        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
     }
     
     // MARK: - UIScrollViewDelegate
@@ -289,6 +290,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var pageWidth = scrollView.frame.size.width
         var fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
+        if(page >= Config.getNumberOfVisualizations()){
+            //println("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
+            page = Config.getNumberOfVisualizations()-1
+        }
         if(previousPage != page){
             //println("page was changed to... \(page)")
             previousPage = page
@@ -314,8 +319,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     // MARK: - PageControlDelegate
     
+    
+    // this doesn't get called?
     func pageChanged(index: Int) {
-        //println("Page Changed to index: \(index)")
+        println("Page Changed to index: \(index)")
         var offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
@@ -481,15 +488,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func populateTweetsTable(json: JSON)
     {
-        loadingView2 = LoadingView(frame: view.frame)
-        view.addSubview(loadingView2!)
-
         // Simulating request delay
         let delay = 1.0 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
-            self.loadingView2.removeFromSuperview()
-
             self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
             self.tweetsTableViewController.tableView.reloadData()
         }
@@ -498,7 +500,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func populateCharts(json : JSON){
         //something like this maybe
-        visualizationHandler.circlepackingData = [["1","happy","444"],["1","ecstatic","222"],["1","glad","344"],["2","bummed","111"],["3","drunk","577"],["3","wasted","55"],["3","trashed","99"],["4","lovesick","233"],["4","crushing","333"],["4","cloud9","288"],["4","turned-on","555"]]
+        visualizationHandler.circlepackingData = [["1","ecstatic","222"],["1","glad","344"],["2","bummed","111"],["3","drunk","577"],["3","trashed","99"],["4","lovesick","233"],["4","crushing","333"],["4","cloud9","288"],["4","turned-on","555"],["1","happy","444"],["3","wasted","55"]]
+        
+        visualizationHandler.reorderCirclepackingData()
+        
         visualizationHandler.treemapData = [["1","happy","444"],["1","ecstatic","222"],["2","bummed","111"]]
         
             //JSON("var data = { status: 0, fields: [ 'Time', 'Count','Name' ], data: [ [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], [ '17:01', 5,'Alpha' ], [ '17:03', 16,'Gamma' ], [ '17:04', 5,'Zeta' ], [ '17:06', 8,'Rho' ], [ '17:10', 20,'Kappa' ], [ '17:11', 30,'Epsilon' ], [ '17:15', 25,'Delta' ], [ '17:20', 12,'Delta' ], [ '17:25', 16,'Epsilon' ], [ '17:30', 12,'Zeta' ], [ '17:40', 23,'Alpha' ], [ '17:45', 19,'Beta' ], [ '18:01', 22,'Gamma' ], [ '18:12', 32,'Kappa' ], [ '18:17', 33,'Omicron' ], [ '18:31', 14,'Pi' ], [ '18:33', 19,'Tau' ], [ '18:36', 20,'Upsilon' ], [ '18:41', 10,'Psi' ], ] };")

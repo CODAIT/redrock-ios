@@ -66,13 +66,16 @@ class VisualizationHandler{
         webView.stringByEvaluatingJavaScriptFromString(treeScript)
     }
     
+    func reorderCirclepackingData(){
+        circlepackingData.sort({$0[0] < $1[0]})
+    }
+    
     func transformDataForCirclepacking(webView: UIWebView){
         println(circlepackingData)
 
         //var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
         var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
-        
         
         var groupName : String = "uninitialized" // this isn't safe, there should be a better way
         
