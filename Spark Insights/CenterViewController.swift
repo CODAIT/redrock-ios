@@ -404,9 +404,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: build request string
         
-        executeRequest(req)
-
-        /*
         if (Config.useDummyData) {
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
@@ -416,7 +413,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         } else {
             executeRequest(req)
         }
-        */
     }
     
     func executeRequest(req: String) {
@@ -435,7 +431,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 // TODO: LoadingView
-                self.loadingView.removeFromSuperview()
+                //self.loadingView.removeFromSuperview()
             })
             
             if error != nil {
