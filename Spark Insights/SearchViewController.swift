@@ -42,9 +42,11 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        YLGIFImage.setPrefetchNum(5)
-        let path = NSBundle.mainBundle().URLForResource("animation_v1", withExtension: "gif")?.absoluteString as String!
-        topImageView.image = YLGIFImage(contentsOfFile: path)
+        if (Config.searchViewAnimation) {
+            YLGIFImage.setPrefetchNum(5)
+            let path = NSBundle.mainBundle().URLForResource("animation_v1", withExtension: "gif")?.absoluteString as String!
+            topImageView.image = YLGIFImage(contentsOfFile: path)
+        }
         
         self.textField.delegate = self
         setInsetTextField()
@@ -58,7 +60,9 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.resetViewController()
-        topImageView.startAnimating()
+        if (Config.searchViewAnimation) {
+            topImageView.startAnimating()
+        }
     }
     
     // MARK: - Reset UI
@@ -114,7 +118,9 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBAction func startedEditing(sender: UITextField) {
         if self.recalculateConstrainstsForSearchView
         {
-            topImageView.stopAnimating()
+            if (Config.searchViewAnimation) {
+                topImageView.stopAnimating()
+            }
             recalculateConstraintsForAnimation()
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
                 self.view.layoutIfNeeded()
