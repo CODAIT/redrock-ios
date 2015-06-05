@@ -320,10 +320,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     // MARK: - PageControlDelegate
     
-    
-    // this doesn't get called?
     func pageChanged(index: Int) {
-        println("Page Changed to index: \(index)")
+        //println("Page Changed to index: \(index)")
         var offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
