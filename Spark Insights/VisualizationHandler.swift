@@ -14,38 +14,48 @@ import UIKit
 class VisualizationHandler{
     
     var webViews : [UIWebView] = [UIWebView]()
+    var loadingViews = [UIActivityIndicatorView]()
     
     var treemapData : [[String]]       = [[String]]()
     var circlepackingData : [[String]]      = [[String]]()
     var worddistanceData : [[String]]      = [[String]]()
     var timemapData : [[String]] = [[String]]()
     var stackedbarData : [[String]] = [[String]]()
-            
+    
     func reloadAppropriateView(viewNumber: Int){
         //println("should reload \(viewNumber)")
         
         if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
             webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
             webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
+            self.webViews[viewNumber].hidden = false
+            self.loadingViews[viewNumber].stopAnimating()
+            self.loadingViews[viewNumber].hidden = true
         }
-        
     }
+    
     func transformData(webView: UIWebView){
         // uses the path to determine which function to use
         switch webView.request!.URL!.lastPathComponent!{
         case "treemap.html":
             transformDataForTreemapping(webView)
+            break;
         case "circlepacking.html":
             transformDataForCirclepacking(webView)
+            break;
         case "worddistance.html":
             transformDataForWorddistance(webView)
+            break;
         case "timemap.html":
             transformDataForTimemap(webView)
+            break;
         case "stackedbar.html":
             transformDataForStackedbar(webView)
+            break;
         default:
-            break
+            break;
         }
+        
         
     }
     
@@ -177,6 +187,16 @@ class VisualizationHandler{
     }
     
 
-    
+    //MARK: Clean WebViews
+    func cleanWebViews()
+    {
+        for var i = 0; i < self.webViews.count; i++
+        {
+            //self.webViews[i].loadHTMLString("<HTML></HTML>", baseURL: nil)
+            self.webViews[i].hidden = true
+            self.loadingViews[i].startAnimating()
+            self.loadingViews[i].hidden = false
+        }
+    }
     
 }

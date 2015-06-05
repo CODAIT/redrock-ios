@@ -110,26 +110,39 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tweets.count == 0
+        {
+            return 1
+        }
         return tweets.count
     }
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
-                
-        var tweet = self.getTweetObject(indexPath.row)
-        tweetCell.configureWithTweetData(tweet.getProfileImage(),
-            userName: tweet.getUserName(),
-            userScreenName: tweet.getUserHandle(),
-            tweetText: tweet.getTweetText(),
-            countFavorite: String(tweet.getFavoritesCount()),
-            countRetweet: String(tweet.getRetweetsCount()),
-            dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"))
-        
-        tweetCell.delegate = self
-        tweetCell.rowIndex = indexPath.row
-        tweetCell.displayTappedURL = self.displayTweetTappedURL
-        return tweetCell
+        if tweets.count == 0
+        {
+            var loadingCell = self.tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as! UITableViewCell
+            loadingCell.backgroundColor = Config.tweetsTableBackgroundColor
+            return loadingCell
+        }
+        else
+        {
+            var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
+            
+            var tweet = self.getTweetObject(indexPath.row)
+            tweetCell.configureWithTweetData(tweet.getProfileImage(),
+                userName: tweet.getUserName(),
+                userScreenName: tweet.getUserHandle(),
+                tweetText: tweet.getTweetText(),
+                countFavorite: String(tweet.getFavoritesCount()),
+                countRetweet: String(tweet.getRetweetsCount()),
+                dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"))
+            
+            tweetCell.delegate = self
+            tweetCell.rowIndex = indexPath.row
+            tweetCell.displayTappedURL = self.displayTweetTappedURL
+            return tweetCell
+        }
     }
     
     func getTweetObject(row: Int) -> TwitterTweet
@@ -175,6 +188,10 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        if tweets.count == 0
+        {
+            return 80
+        }
         return TweetTableViewCell.calculateHeightForCell(CGFloat(count(tweets[indexPath.row]["text"].stringValue)), tableWidth: self.tableView.frame.width)
     }
     
