@@ -49,7 +49,7 @@ class ReadTweetsData
         return nil
     }
     
-    private class func getTweetsObjects(tweets: JSON) ->  Array<TwitterTweet>?
+    class func getTweetsObjects(tweets: JSON) ->  Array<TwitterTweet>?
     {
         var tweetsObj = Array<TwitterTweet>()
         for (var i = 0; i < tweets.array?.count; i++)

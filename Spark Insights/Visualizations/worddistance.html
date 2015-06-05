@@ -71,10 +71,12 @@
         .attr("stroke-width",5)
         .attr("stroke","#dee8e8");
 
+        /*
       svg.append("text")
         .attr("x", textX)
         .attr("y", textY)
         .text(data.children[i].distance);
+         */
     }
 
     // print the center circle
@@ -85,6 +87,7 @@
       .attr("fill", centerColor)
       .attr("stroke-width",7)
       .attr("stroke", "#fce776");
+      
     svg.append("text")
       .attr("x", centerx-maxCircleRadius/2)
       .attr("y", centery+7)

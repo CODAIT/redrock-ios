@@ -17,12 +17,12 @@ class VisualizationHandler{
     
     var treemapData : [[String]]       = [[String]]()
     var circlepackingData : [[String]]      = [[String]]()
-    var worddistanceData : JSON  = nil
-    var timemapData : JSON       = nil
-    var stackedbarData : JSON    = nil
+    var worddistanceData : [[String]]      = [[String]]()
+    var timemapData : [[String]] = [[String]]()
+    var stackedbarData : [[String]] = [[String]]()
             
     func reloadAppropriateView(viewNumber: Int){
-        println("should reload \(viewNumber)")
+        //println("should reload \(viewNumber)")
         
         if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
             webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
@@ -50,20 +50,29 @@ class VisualizationHandler{
     }
     
     func transformDataForTreemapping(webView: UIWebView){
-        println(treemapData)
+        //println(treemapData)
         
         var script9="var data7 = '{\"name\": \"all\",\"children\": ["
         
         for r in 0..<treemapData.count{
-//            script9+=
+            script9+="{\"name\": \""
+            script9+=treemapData[r][0]
+            script9+="\",\"children\": [{\"name\": \""
+            script9+=treemapData[r][0]
+            script9+="\", \"size\": "
+            script9+=treemapData[r][1]
+            script9+="}]}"
+            if(r != (treemapData.count-1)){
+                script9+=","
+            }
         }
-        
-        script9+="]}]}'; renderChart(data7);"
+        script9+="]}'; renderChart(data7);"
 
+        //println(script9)
         
-        var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+        //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
-        webView.stringByEvaluatingJavaScriptFromString(treeScript)
+        webView.stringByEvaluatingJavaScriptFromString(script9)
     }
     
     func reorderCirclepackingData(){
@@ -71,9 +80,7 @@ class VisualizationHandler{
     }
     
     func transformDataForCirclepacking(webView: UIWebView){
-        println(circlepackingData)
-
-        //var script = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"accountant\",\"children\": [{\"name\": \"accountant\", \"size\": 3938}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+        //println(circlepackingData)
         
         var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
         
@@ -104,24 +111,11 @@ class VisualizationHandler{
         }
         script9+="]}]}'; renderChart(data7);"
         
-        
-        /*
-        var script = "var data7 = '{\"name\": \" \",\"children\": [{\"name\": \"1\",\"children\": [{\"name\": \":)\", \"size\": 3938},{\"name\": \"happy\", \"size\": 3812},{\"name\": \"caturday\", \"size\": 40999},{\"name\": \"good\", \"size\": 6714},{\"name\": \"cheers\", \"size\": 3812},{\"name\": \"congrats!\", \"size\": 6714},{\"name\": \"sweet!\", \"size\": 2143}]},{\"name\": \"2\",\"children\": [{\"name\": \"love\", \"size\": 3534},{\"name\": \"iloveyou\", \"size\": 5731},{\"name\": \"justin\", \"size\": 7840},{\"name\": \"smiling\", \"size\": 5914},{\"name\": \"joy!\", \"size\": 3416}]},{\"name\": \"3\",\"children\": [{\"name\": \":(\", \"size\": 3938},{\"name\": \"sad\", \"size\": 3812},{\"name\": \"sorry\", \"size\": 6714},{\"name\": \"miss\", \"size\": 6714},{\"name\": \"bad\", \"size\": 3812},{\"name\": \"heartbroken\", \"size\": 6714},{\"name\": \"pain\", \"size\": 2243},{\"name\": \"sick\", \"size\": 2443}]}]}'; renderChart(data7);"*/
-        
-        //var script2 = "var data7 = "{\"name\": \" \",\"children\": [{\"name\"
-
-        //var script = "renderChart(\"blah\");"
-    
-        //println("SCRIPT9")
-        //println(script9)
-        
         webView.stringByEvaluatingJavaScriptFromString(script9)
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        println(worddistanceData)
-
-        //var script2 = "renderChart(\"blah\");"
+        //println(worddistanceData)
         
         var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
         
@@ -132,23 +126,54 @@ class VisualizationHandler{
         
         println(timemapData)
         
-        var timemapScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
+        var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
-        webView.stringByEvaluatingJavaScriptFromString(timemapScript)
+        for r in 0..<timemapData.count{
+            script9+="{\"z\": \""
+            script9+=timemapData[r][0]
+            script9+="\", \"x\":\""
+            script9+=timemapData[r][1]
+            script9+="\", \"y\":"
+            script9+=timemapData[r][2]
+            script9+="}"
+            if(r != (timemapData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}]; renderChart(myData);"
+        
+        println(script9)
+
+        webView.stringByEvaluatingJavaScriptFromString(script9)
     }
     
     func transformDataForStackedbar(webView: UIWebView){
-                
-        println(stackedbarData)
         
-        //var script = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData);"
+        //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
-        var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
+        //println(stackedbarData)
         
-        //var script = "renderChart(myData);"
+        var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
+        
+        for r in 0..<stackedbarData.count{
+            script9+="{\"x\": \""
+            script9+=stackedbarData[r][0]
+            script9+="\", \"y\":"
+            script9+=stackedbarData[r][1]
+            script9+=", \"z\":"
+            script9+=stackedbarData[r][2]
+            script9+="}"
+            if(r != (stackedbarData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}]; renderChart(myData);"
+        
+        //println(script9)
 
+        //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
         
-        webView.stringByEvaluatingJavaScriptFromString(script)
+        webView.stringByEvaluatingJavaScriptFromString(script9)
     }
     
 
