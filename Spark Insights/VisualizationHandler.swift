@@ -21,10 +21,7 @@ class VisualizationHandler{
     var worddistanceData : [[String]]      = [[String]]()
     var timemapData : [[String]] = [[String]]()
     var stackedbarData : [[String]] = [[String]]()
-<<<<<<< HEAD
-=======
     var wordcloudData : [[String]] = [[String]]()
->>>>>>> origin/master
     
     func reloadAppropriateView(viewNumber: Int){
         //println("should reload \(viewNumber)")
@@ -55,12 +52,9 @@ class VisualizationHandler{
             break;
         case "stackedbar.html":
             transformDataForStackedbar(webView)
-<<<<<<< HEAD
             break;
-=======
         case "wordcloud.html":
             transformDataForWordcloud(webView)
->>>>>>> origin/master
         default:
             break;
         }
