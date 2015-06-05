@@ -25,7 +25,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
     var searchText: String? {
         didSet {
-            self.createRequest()
+            self.loadDataFromServer()
         }
     }
     weak var delegate: CenterViewControllerDelegate?
@@ -141,7 +141,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             }
             else if gesture.state == UIGestureRecognizerState.Ended
             {
-                //Update all necessary data
+                let currentSearch = self.searchText
+                self.searchText = currentSearch
                 self.tweetsFooterView.alpha = 0.5
                 self.changeLastUpdated()
             }
@@ -387,17 +388,49 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         delegate?.displaySearchViewController?()
     }
     
-    
+    func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
+    {
+        let terms = self.searchText!.componentsSeparatedByString(",")
+        var includeStr = ""
+        var excludeStr = ""
+        for var i = 0; i < terms.count; i++
+        {
+            var term = terms[i]
+            if term != ""
+            {
+                var aux = Array(term)
+                if aux[0] == "-"
+                {
+                    aux.removeAtIndex(0)
+                    excludeStr = excludeStr + String(aux) + ","
+                }
+                else
+                {
+                    includeStr = includeStr + term + ","
+                }
+            }
+        }
+        
+        var vector = Array(includeStr)
+        if vector.count > 0
+        {
+            vector.removeLast()
+        }
+        includeStr = String(vector)
+        vector = Array(excludeStr)
+        if vector.count > 0
+        {
+            vector.removeLast()
+        }
+        excludeStr = String(vector)
+        
+        return (includeStr, excludeStr)
+
+    }
     // MARK: - Network
     
-    func createRequest() {
-        println("createRequest")
-        
-        var search = self.searchText
-        var req = ""
-        
-        // TODO: build request string
-        
+    func loadDataFromServer()
+    {
         if (Config.useDummyData) {
             loadingView1 = LoadingView(frame: view.frame)
             view.addSubview(loadingView1!)
@@ -409,26 +442,57 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 self.loadingView1.removeFromSuperview()
             }
         } else {
-            executeRequest(req)
+            var search = self.getIncludeAndExcludeSeparated()
+            self.executeTweetRequest(search.include, exclude: search.exclude)
         }
+
     }
     
-    func executeRequest(req: String) {
-        let urlPath :String = "\(Config.serverAddress)/\(req)"
-
-        println("Sending Request: " + urlPath)
-        let url: NSURL = NSURL(string: urlPath)!
+    func executeTweetRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["top"] = "100"
+        let req = self.createRequest(Config.serverTweetsPath, paremeters: parameters)
+        executeRequest(req, callBack: self.populateTweetsTable)
+    }
+    
+    func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
+        println("createRequest")
+        
+        var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
+        if paremeters.count > 0
+        {
+            urlPath += "?"
+            let keys = paremeters.keys
+            for key in keys
+            {
+                urlPath += key + "=" + paremeters[key]! + "&"
+            }
+            var aux = Array(urlPath)
+            aux.removeLast()
+            urlPath = String(aux)
+        }
+        return urlPath
+    }
+    
+    func executeRequest(req: String, callBack: (json: JSON) -> ()) {
+        //let urlPath :String = "\(Config.serverAddress)/\(req)"
+        
+        //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        
+        println("Sending Request: " + req)
+        let url: NSURL = NSURL(string: req)!
         let session = NSURLSession.sharedSession()
         session.configuration.timeoutIntervalForRequest = 300
         
-        // TODO: LoadingView
-        // Display loading view
         loadingView1 = LoadingView(frame: view.frame)
         view.addSubview(loadingView1!)
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             dispatch_async(dispatch_get_main_queue(), {
-                // TODO: LoadingView
                 self.loadingView1.removeFromSuperview()
             })
             
@@ -465,7 +529,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             dispatch_async(dispatch_get_main_queue(), {
                 // Success on main thread
-                self.onRequestSuccess(json)
+                callBack(json: json)
             })
         })
         task.resume()
@@ -474,7 +538,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func onRequestSuccess(json: JSON) {
         println(__FUNCTION__)
         // Populate UI
-        populateUI(json)
+        self.tweetsTableViewController.tweets = ReadTweetsData.getTweetsObjects(json["tweets"])!
+        self.tweetsTableViewController.tableView.reloadData()
+        //populateUI(json)
     }
     
     func onDummyRequestSuccess(json: JSON) {
@@ -490,12 +556,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func populateTweetsTable(json: JSON)
     {
         // Simulating request delay
-        let delay = 1.0 * Double(NSEC_PER_SEC)
+        /*let delay = 1.0 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {
+        dispatch_after(time, dispatch_get_main_queue()) {*/
             self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
             self.tweetsTableViewController.tableView.reloadData()
-        }
+        //}
         //-----
     }
     
