@@ -74,7 +74,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupTweetsTableView()
         self.setupWebViews()
         self.setupScrollView()
-        self.setupMetricsNumber()
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
@@ -404,6 +403,19 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             tweetsTableViewController.tableView.reloadData()
         }
         
+        if self.totalTweetsNumberLabel != nil
+        {
+            self.totalTweetsNumberLabel.text = ""
+        }
+        if self.totalRetweetsNumberLabel != nil
+        {
+            self.totalRetweetsNumberLabel.text = ""
+        }
+        if self.tweetsPerHourNumberLabel != nil
+        {
+            self.tweetsPerHourNumberLabel.text = ""
+        }
+        
         self.visualizationHandler.cleanWebViews()
         
     }
@@ -520,6 +532,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func populateUI(json: JSON){
+        self.setupMetricsNumber()
         populateCharts(json)
         populateTweetsTable(json)
     }
