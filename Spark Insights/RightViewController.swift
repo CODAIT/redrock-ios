@@ -74,8 +74,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         gr1aa.numberOfTouchesRequired = 1
         tableA.addGestureRecognizer(gr1aa)
         
-        var gr2a = UILongPressGestureRecognizer(target: self, action: "handleLPA:")
-        tableA.addGestureRecognizer(gr2a)
+        // Disabled: causes problems when pan allowed to startDragging
+        // var gr2a = UILongPressGestureRecognizer(target: self, action: "handleLPA:")
+        // tableA.addGestureRecognizer(gr2a)
         
         var gr3a = UIPanGestureRecognizer(target: self, action: "handlePanA:")
         gr3a.delegate = self
@@ -92,8 +93,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         gr1bb.numberOfTouchesRequired = 1
         tableB.addGestureRecognizer(gr1bb)
         
-        var gr2b = UILongPressGestureRecognizer(target: self, action: "handleLPB:")
-        tableB.addGestureRecognizer(gr2b)
+        // Disabled: causes problems when pan allowed to startDragging
+        // var gr2b = UILongPressGestureRecognizer(target: self, action: "handleLPB:")
+        // tableB.addGestureRecognizer(gr2b)
         
         var gr3b = UIPanGestureRecognizer(target: self, action: "handlePanB:")
         gr3b.delegate = self
