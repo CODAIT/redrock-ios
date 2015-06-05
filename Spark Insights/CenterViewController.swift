@@ -152,7 +152,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     {
         var dateNow = NSDate()
         var dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "hh:mm aa"
+        dateFormat.dateFormat = "E, MMM d hh:mm aa"
         dateFormat.timeZone = NSTimeZone.localTimeZone()
         self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
         self.canUpdateSearch = false
