@@ -12,11 +12,17 @@ protocol NetworkDelegate {
     func handleTweetsCallBack(json: JSON)
     func handleSentimentsCallBack(json: JSON)
     func handleLocationCallBack(json:JSON)
+    func handleProfessionCallBack(json:JSON)
+    func handleWordDistanceCallBack(json:JSON)
+    func handleWordClusterCallBack(json:JSON)
+    func requestsEnded()
 }
 
 class Network
 {
     var delegate: NetworkDelegate?
+    private var requestCount = 0
+    private var requestTotal = 0
     
     // MARK: Call Requests
     
@@ -34,7 +40,7 @@ class Network
         parameters["user"] = "ssdemo"
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
-        parameters["top"] = "100"
+        parameters["top"] = Config.tweetsTopParameter
         let req = self.createRequest(Config.serverTweetsPath, paremeters: parameters)
         executeRequest(req, callBack: self.callTweetDelegate)
     }
@@ -59,6 +65,39 @@ class Network
         executeRequest(req, callBack: self.callLocationDelegate)
     }
     
+    private func executeProfessionRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        let req = self.createRequest(Config.serverProfessionPath, paremeters: parameters)
+        executeRequest(req, callBack: self.callProfessionDelegate)
+    }
+    
+    private func executeWordDistanceRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["top"] = Config.wordDistanceTopParameter
+        let req = self.createRequest(Config.serverWorddistancePath, paremeters: parameters)
+        executeRequest(req, callBack: self.callWordDistanceDelegate)
+    }
+    
+    private func executeWordClusterRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["cluster"] = Config.wordClusterClusterParameter
+        parameters["word"] = Config.wordClusterWordParameter
+        let req = self.createRequest(Config.serverWordclusterPath, paremeters: parameters)
+        executeRequest(req, callBack: self.callWordClusterDelegate)
+    }
+    
     //MARK: Call Delegates
     private func callTweetDelegate(json: JSON)
     {
@@ -74,12 +113,27 @@ class Network
     {
         self.delegate?.handleLocationCallBack(json)
     }
-
     
+    private func callProfessionDelegate(json: JSON)
+    {
+        self.delegate?.handleProfessionCallBack(json)
+    }
+    
+    private func callWordDistanceDelegate(json: JSON)
+    {
+        self.delegate?.handleWordDistanceCallBack(json)
+    }
+    
+    private func callWordClusterDelegate(json: JSON)
+    {
+        self.delegate?.handleWordClusterCallBack(json)
+    }
+
+
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
         println("createRequest")
-        
+        self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
         if paremeters.count > 0
         {
@@ -105,9 +159,7 @@ class Network
         session.configuration.timeoutIntervalForRequest = 300
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
-                //self.loadingView1.removeFromSuperview()
-            })
+            self.requestCount++
             
             if error != nil {
                 // If there is an error in the web request, print it to the console
@@ -141,9 +193,13 @@ class Network
             println("Request completed: Status = OK")
             
             dispatch_async(dispatch_get_main_queue(), {
+                if self.requestCount == self.requestTotal
+                {
+                    self.delegate?.requestsEnded()
+                }
                 // Success on main thread
                 callBack(json: json)
-            })
+            }) 
         })
         task.resume()
     }
