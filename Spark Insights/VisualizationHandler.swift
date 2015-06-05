@@ -21,6 +21,10 @@ class VisualizationHandler{
     var worddistanceData : [[String]]      = [[String]]()
     var timemapData : [[String]] = [[String]]()
     var stackedbarData : [[String]] = [[String]]()
+<<<<<<< HEAD
+=======
+    var wordcloudData : [[String]] = [[String]]()
+>>>>>>> origin/master
     
     func reloadAppropriateView(viewNumber: Int){
         //println("should reload \(viewNumber)")
@@ -51,7 +55,12 @@ class VisualizationHandler{
             break;
         case "stackedbar.html":
             transformDataForStackedbar(webView)
+<<<<<<< HEAD
             break;
+=======
+        case "wordcloud.html":
+            transformDataForWordcloud(webView)
+>>>>>>> origin/master
         default:
             break;
         }
@@ -134,7 +143,7 @@ class VisualizationHandler{
 
     func transformDataForTimemap(webView: UIWebView){
         
-        println(timemapData)
+        //println(timemapData)
         
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
@@ -152,7 +161,7 @@ class VisualizationHandler{
         }
         script9+="]}]; renderChart(myData);"
         
-        println(script9)
+        //println(script9)
 
         webView.stringByEvaluatingJavaScriptFromString(script9)
     }
@@ -185,6 +194,11 @@ class VisualizationHandler{
         
         webView.stringByEvaluatingJavaScriptFromString(script9)
     }
+    
+    func transformDataForWordcloud(webView: UIWebView){
+        println("transformDataForWordcloud (not yet imp)")
+    }
+
     
 
     //MARK: Clean WebViews
