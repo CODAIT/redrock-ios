@@ -116,23 +116,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
-        
-        /*let user_name = tweets[indexPath.row]["user"]["name"].stringValue
-        let user_screen_name = tweets[indexPath.row]["user"]["screen_name"].stringValue
-        let user_profile_image = (tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        let dateTime = tweets[indexPath.row]["created_at"].stringValue
-        let retweet_count = tweets[indexPath.row]["retweet_count"].stringValue
-        let favorite_count = tweets[indexPath.row]["favorite_count"].stringValue
-        let text = tweets[indexPath.row]["text"].stringValue
-        
-        tweetCell.configureWithTweetData(UIImage(),
-            userName: user_name,
-            userScreenName: user_screen_name,
-            tweetText: text,
-            countFavorite: retweet_count,
-            countRetweet: favorite_count,
-            dateTime: dateTime)*/
-        
+                
         var tweet = self.getTweetObject(indexPath.row)
         tweetCell.configureWithTweetData(tweet.getProfileImage(),
             userName: tweet.getUserName(),
