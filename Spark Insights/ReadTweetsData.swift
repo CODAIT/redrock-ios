@@ -34,7 +34,7 @@ class ReadTweetsData
         return nil
     }
     
-    class func readJSON() -> Array<TwitterTweet>?
+    class func readJSON() -> JSON?
     {
         if let fileData = ReadTweetsData.getJSONSwift()
         {
@@ -42,14 +42,14 @@ class ReadTweetsData
             if let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &parseError)
             {
                 let jsonTweets = JSON(JSONObject!)
-                return self.getTweetsObjects(jsonTweets["tweets"])
+                return jsonTweets["tweets"]
             }
         }
         
         return nil
     }
     
-    class func getTweetsObjects(tweets: JSON) ->  Array<TwitterTweet>?
+    private class func getTweetsObjects(tweets: JSON) ->  Array<TwitterTweet>?
     {
         var tweetsObj = Array<TwitterTweet>()
         for (var i = 0; i < tweets.array?.count; i++)
