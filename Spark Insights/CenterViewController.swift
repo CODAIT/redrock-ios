@@ -466,6 +466,24 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         //TODO: implement sentiment
     }
     
+    func handleWordDistanceCallBack(json: JSON) {
+        //TODO: implement Word Distance
+    }
+    
+    func handleWordClusterCallBack(json: JSON) {
+        //TODO: implement Word Cluster
+    }
+    
+    func handleProfessionCallBack(json: JSON) {
+        //TODO: implement Profession
+    }
+    
+    func requestsEnded() {
+        self.loadingView1.removeFromSuperview()
+    }
+    
+    //MARK: Dummy Data
+    
     func onDummyRequestSuccess(json: JSON) {
         println(__FUNCTION__)
         populateUI(json)
