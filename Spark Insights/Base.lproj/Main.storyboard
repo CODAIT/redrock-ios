@@ -194,7 +194,7 @@
                                     <constraint firstAttribute="trailing" secondItem="dHi-gH-brf" secondAttribute="trailing" constant="15" id="qeo-WA-mM9"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search Image_color" translatesAutoresizingMaskIntoConstraints="NO" id="TNK-78-uCq">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search Image_color" translatesAutoresizingMaskIntoConstraints="NO" id="TNK-78-uCq" customClass="YLImageView" customModule="RedRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="416"/>
                                 <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
