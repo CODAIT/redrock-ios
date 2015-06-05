@@ -11,13 +11,11 @@ import Social
 
 class TweetsTableViewController: UITableViewController, TweetTableViewCellDelegate{
 
-    var tweets = Array<TwitterTweet>()
+    var tweets:JSON = []
     var openedTweetCell = Array<TweetTableViewCell>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.tableView.backgroundView?.backgroundColor = Config.tweetsTableBackgroundColor
-        //self.tableView.backgroundColor = Config.tweetsTableBackgroundColor
         self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: nil), forCellReuseIdentifier: "TweetTableCellView")
     }
 
@@ -81,6 +79,14 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
                 tweetCell.twitterDetailImg.alpha = 1.0
             })
         }
+        else
+        {
+            let alertController = UIAlertController(title: "RedRock", message:
+                "No Twitter account available", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     func screenShot() -> UIImage
@@ -111,13 +117,30 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
         
-        tweetCell.configureWithTweetData(tweets[indexPath.row].getProfileImage(),
-            userName: tweets[indexPath.row].getUserName(),
-            userScreenName: tweets[indexPath.row].getUserHandle(),
-            tweetText: tweets[indexPath.row].getTweetText(),
-            countFavorite: String(tweets[indexPath.row].getFavoritesCount()),
-            countRetweet: String(tweets[indexPath.row].getRetweetsCount()),
-            dateTime: tweets[indexPath.row].getDateTimeToDisplay("MMM dd HH:mm:ss"))
+        /*let user_name = tweets[indexPath.row]["user"]["name"].stringValue
+        let user_screen_name = tweets[indexPath.row]["user"]["screen_name"].stringValue
+        let user_profile_image = (tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let dateTime = tweets[indexPath.row]["created_at"].stringValue
+        let retweet_count = tweets[indexPath.row]["retweet_count"].stringValue
+        let favorite_count = tweets[indexPath.row]["favorite_count"].stringValue
+        let text = tweets[indexPath.row]["text"].stringValue
+        
+        tweetCell.configureWithTweetData(UIImage(),
+            userName: user_name,
+            userScreenName: user_screen_name,
+            tweetText: text,
+            countFavorite: retweet_count,
+            countRetweet: favorite_count,
+            dateTime: dateTime)*/
+        
+        var tweet = self.getTweetObject(indexPath.row)
+        tweetCell.configureWithTweetData(tweet.getProfileImage(),
+            userName: tweet.getUserName(),
+            userScreenName: tweet.getUserHandle(),
+            tweetText: tweet.getTweetText(),
+            countFavorite: String(tweet.getFavoritesCount()),
+            countRetweet: String(tweet.getRetweetsCount()),
+            dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"))
         
         tweetCell.delegate = self
         tweetCell.rowIndex = indexPath.row
@@ -125,8 +148,50 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         return tweetCell
     }
     
+    func getTweetObject(row: Int) -> TwitterTweet
+    {
+        let user_name = tweets[row]["user"]["name"].stringValue
+        let user_screen_name = tweets[row]["user"]["screen_name"].stringValue
+        let user_profile_image = (tweets[row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let dateTime = tweets[row]["created_at"].stringValue
+        let retweet_count = tweets[row]["retweet_count"].stringValue
+        let favorite_count = tweets[row]["favorite_count"].stringValue
+        let text = tweets[row]["text"].stringValue
+        
+        var tweet = TwitterTweet()
+        tweet.setUserName(user_name)
+        tweet.setUserhandle(user_screen_name, addAt: true)
+        if (favorite_count == "")
+        {
+            tweet.setFavorites(0)
+        }
+        else
+        {
+            tweet.setFavorites(favorite_count.toInt()!)
+        }
+        if (retweet_count == "")
+        {
+            tweet.setRetweets(0)
+        }
+        else
+        {
+            tweet.setRetweets(retweet_count.toInt()!)
+        }
+        tweet.setTweetText(text)
+        tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
+        if let urlImage = NSURL(string: user_profile_image)
+        {
+            if let dataImage = NSData(contentsOfURL: urlImage){
+                tweet.setUserProfileImage(UIImage(data: dataImage)!)
+                
+            }
+        }
+        
+        return tweet
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
-        return TweetTableViewCell.calculateHeightForCell(CGFloat(count( tweets[indexPath.row].getTweetText())), tableWidth: self.tableView.frame.width)
+        return TweetTableViewCell.calculateHeightForCell(CGFloat(count(tweets[indexPath.row]["text"].stringValue)), tableWidth: self.tableView.frame.width)
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {

@@ -352,7 +352,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func configuredMailComposeViewController() -> MFMailComposeViewController {
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setSubject("IBM Spark Insights")
+        mailComposerVC.setSubject("IBM RedRock")
         mailComposerVC.addAttachmentData(UIImageJPEGRepresentation(getScreenShot(), 1), mimeType: "image/jpeg", fileName: "IBMSparkInsightsScreenShot.jpeg")
         return mailComposerVC
     }
@@ -457,7 +457,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func handleTweetsCallBack(json: JSON) {
-        self.tweetsTableViewController.tweets = ReadTweetsData.getTweetsObjects(json["tweets"])!
+        self.tweetsTableViewController.tweets = json["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
     }
     
