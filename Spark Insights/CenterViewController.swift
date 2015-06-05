@@ -444,6 +444,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         } else {
             var search = self.getIncludeAndExcludeSeparated()
             self.executeTweetRequest(search.include, exclude: search.exclude)
+            self.executeSentimentRequest(search.include, exclude: search.exclude)
+            self.executeLocationRequest(search.include, exclude: search.exclude)
         }
 
     }
@@ -457,6 +459,28 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         parameters["top"] = "100"
         let req = self.createRequest(Config.serverTweetsPath, paremeters: parameters)
         executeRequest(req, callBack: self.populateTweetsTable)
+    }
+    
+    func executeSentimentRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        let req = self.createRequest(Config.serverSentimentPath, paremeters: parameters)
+        //TODO: Setup Sentiment CallBack
+        //executeRequest(req, callBack: /*sentiment callBack*/)
+    }
+    
+    func executeLocationRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        let req = self.createRequest(Config.serverLocationPath, paremeters: parameters)
+        //TODO: Setup Location CallBack
+        //executeRequest(req, callBack: /*location callBack*/)
     }
     
     func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
@@ -479,8 +503,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func executeRequest(req: String, callBack: (json: JSON) -> ()) {
-        //let urlPath :String = "\(Config.serverAddress)/\(req)"
-        
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         println("Sending Request: " + req)
@@ -555,14 +577,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func populateTweetsTable(json: JSON)
     {
-        // Simulating request delay
-        /*let delay = 1.0 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {*/
-            self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
-            self.tweetsTableViewController.tableView.reloadData()
-        //}
-        //-----
+        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
+        self.tweetsTableViewController.tableView.reloadData()
     }
     
     func populateCharts(json : JSON){
