@@ -106,7 +106,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func resetViewController() {
         // Use this function to reset the view controller's UI to a clean state
-        println("Resetting \(__FILE__)")
+        Log("Resetting \(__FILE__)")
     }
     
     func configureGestureRecognizerForSearchIconView()
@@ -298,11 +298,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var page : Int = Int(round(fractionalPage))
         
         if(page >= Config.getNumberOfVisualizations()){
-            //println("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
+            //Log("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
-            //println("page was changed to... \(page)")
+            //Log("page was changed to... \(page)")
             visualizationHandler.loadingViews[page].hidden = false
             visualizationHandler.loadingViews[page].startAnimating()
             previousPage = page
@@ -322,7 +322,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     */
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
-        //println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
         webView.hidden = false
         visualizationHandler.transformData(webView)
     }
@@ -330,7 +330,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
-        //println("Page Changed to index: \(index)")
+        //Log("Page Changed to index: \(index)")
         var offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
@@ -527,7 +527,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     //MARK: Dummy Data
     
     func onDummyRequestSuccess(json: JSON) {
-        println(__FUNCTION__)
+        Log(__FUNCTION__)
         populateUI(json)
     }
     

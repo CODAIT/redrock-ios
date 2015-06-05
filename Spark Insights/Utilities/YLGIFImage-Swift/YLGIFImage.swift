@@ -75,19 +75,19 @@ class YLGIFImage : UIImage {
             self.frameDurations.append(NSNumber(double: frameDuration))
             self.totalDuration += frameDuration
 
-            //println("dura = \(frameDuration)")
+            //Log("dura = \(frameDuration)")
 
             if i < Int(YLGIFImage.prefetchNum) {
                 // get frame
                 let cgimage = CGImageSourceCreateImageAtIndex(cgImageSource, i, nil)
                 var image: UIImage = UIImage(CGImage: cgimage)!
                 self.frameImages.append(image)
-                //println("\(i): frame = \(image)")
+                //Log("\(i): frame = \(image)")
             } else {
                 self.frameImages.append(NSNull())
             }
         }
-        //println("\(self.frameImages.count)")
+        //Log("\(self.frameImages.count)")
     }
 
     func getFrame(index: UInt) -> UIImage? {

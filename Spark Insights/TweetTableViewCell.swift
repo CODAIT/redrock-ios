@@ -152,7 +152,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     
     func contextLabel(contextLabel: ContextLabel, movedTouchTo text: String, with linkRangeResult: LinkRangeResult) {
-        println("movedTouchTo: \(text)" + "\nRange: \(linkRangeResult.linkRange)")
+        Log("movedTouchTo: \(text)" + "\nRange: \(linkRangeResult.linkRange)")
     }
     
     func contextLabel(contextLabel: ContextLabel, endedTouchOf text: String, with linkRangeResult: LinkRangeResult) {

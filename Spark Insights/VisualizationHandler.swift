@@ -24,7 +24,7 @@ class VisualizationHandler{
     var wordcloudData : [[String]] = [[String]]()
     
     func reloadAppropriateView(viewNumber: Int){
-        //println("should reload \(viewNumber)")
+        //Log("should reload \(viewNumber)")
         
         if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
             webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
@@ -63,7 +63,7 @@ class VisualizationHandler{
     }
     
     func transformDataForTreemapping(webView: UIWebView){
-        //println(treemapData)
+        //Log(treemapData)
         
         var script9="var data7 = '{\"name\": \"all\",\"children\": ["
         
@@ -81,7 +81,7 @@ class VisualizationHandler{
         }
         script9+="]}'; renderChart(data7);"
 
-        //println(script9)
+        //Log(script9)
         
         //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
@@ -93,7 +93,7 @@ class VisualizationHandler{
     }
     
     func transformDataForCirclepacking(webView: UIWebView){
-        //println(circlepackingData)
+        //Log(circlepackingData)
         
         var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
         
@@ -128,7 +128,7 @@ class VisualizationHandler{
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        //println(worddistanceData)
+        //Log(worddistanceData)
         
         var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
         
@@ -137,7 +137,7 @@ class VisualizationHandler{
 
     func transformDataForTimemap(webView: UIWebView){
         
-        //println(timemapData)
+        //Log(timemapData)
         
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
@@ -155,7 +155,7 @@ class VisualizationHandler{
         }
         script9+="]}]; renderChart(myData);"
         
-        //println(script9)
+        //Log(script9)
 
         webView.stringByEvaluatingJavaScriptFromString(script9)
     }
@@ -164,7 +164,7 @@ class VisualizationHandler{
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
-        //println(stackedbarData)
+        //Log(stackedbarData)
         
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
@@ -182,7 +182,7 @@ class VisualizationHandler{
         }
         script9+="]}]; renderChart(myData);"
         
-        //println(script9)
+        //Log(script9)
 
         //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
         
@@ -190,7 +190,7 @@ class VisualizationHandler{
     }
     
     func transformDataForWordcloud(webView: UIWebView){
-        println("transformDataForWordcloud (not yet imp)")
+        Log("transformDataForWordcloud (not yet imp)")
     }
 
     
