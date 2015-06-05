@@ -57,14 +57,14 @@
 		41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		41ED94181B17DCB100A80447 /* ReadTweetsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadTweetsData.swift; sourceTree = "<group>"; };
 		41ED941A1B17E20000A80447 /* Tweets.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Tweets.json; sourceTree = "<group>"; };
-		CE79DA451B1640C0003F01F6 /* SparkInsight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SparkInsight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE79DA451B1640C0003F01F6 /* RedRock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RedRock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA491B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE79DA4C1B1640C0003F01F6 /* CenterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenterViewController.swift; sourceTree = "<group>"; };
 		CE79DA4F1B1640C0003F01F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE79DA511B1640C0003F01F6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE79DA541B1640C0003F01F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		CE79DA5A1B1640C0003F01F6 /* SparkInsightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SparkInsightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE79DA5A1B1640C0003F01F6 /* RedRockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedRockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA5F1B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spark_InsightsTests.swift; sourceTree = "<group>"; };
 		CE79DA6A1B1650AA003F01F6 /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
@@ -141,8 +141,8 @@
 		CE79DA461B1640C0003F01F6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE79DA451B1640C0003F01F6 /* SparkInsight.app */,
-				CE79DA5A1B1640C0003F01F6 /* SparkInsightTests.xctest */,
+				CE79DA451B1640C0003F01F6 /* RedRock.app */,
+				CE79DA5A1B1640C0003F01F6 /* RedRockTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -215,9 +215,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CE79DA441B1640C0003F01F6 /* SparkInsight */ = {
+		CE79DA441B1640C0003F01F6 /* RedRock */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE79DA641B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "SparkInsight" */;
+			buildConfigurationList = CE79DA641B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "RedRock" */;
 			buildPhases = (
 				CE79DA411B1640C0003F01F6 /* Sources */,
 				CE79DA421B1640C0003F01F6 /* Frameworks */,
@@ -227,14 +227,14 @@
 			);
 			dependencies = (
 			);
-			name = SparkInsight;
+			name = RedRock;
 			productName = "Spark Insights";
-			productReference = CE79DA451B1640C0003F01F6 /* SparkInsight.app */;
+			productReference = CE79DA451B1640C0003F01F6 /* RedRock.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CE79DA591B1640C0003F01F6 /* SparkInsightTests */ = {
+		CE79DA591B1640C0003F01F6 /* RedRockTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE79DA671B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "SparkInsightTests" */;
+			buildConfigurationList = CE79DA671B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "RedRockTests" */;
 			buildPhases = (
 				CE79DA561B1640C0003F01F6 /* Sources */,
 				CE79DA571B1640C0003F01F6 /* Frameworks */,
@@ -245,9 +245,9 @@
 			dependencies = (
 				CE79DA5C1B1640C0003F01F6 /* PBXTargetDependency */,
 			);
-			name = SparkInsightTests;
+			name = RedRockTests;
 			productName = "Spark InsightsTests";
-			productReference = CE79DA5A1B1640C0003F01F6 /* SparkInsightTests.xctest */;
+			productReference = CE79DA5A1B1640C0003F01F6 /* RedRockTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -269,7 +269,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CE79DA401B1640C0003F01F6 /* Build configuration list for PBXProject "SparkInsight" */;
+			buildConfigurationList = CE79DA401B1640C0003F01F6 /* Build configuration list for PBXProject "RedRock" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -282,8 +282,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE79DA441B1640C0003F01F6 /* SparkInsight */,
-				CE79DA591B1640C0003F01F6 /* SparkInsightTests */,
+				CE79DA441B1640C0003F01F6 /* RedRock */,
+				CE79DA591B1640C0003F01F6 /* RedRockTests */,
 			);
 		};
 /* End PBXProject section */
@@ -352,7 +352,7 @@
 /* Begin PBXTargetDependency section */
 		CE79DA5C1B1640C0003F01F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CE79DA441B1640C0003F01F6 /* SparkInsight */;
+			target = CE79DA441B1640C0003F01F6 /* RedRock */;
 			targetProxy = CE79DA5B1B1640C0003F01F6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -468,7 +468,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = RedRock;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -500,8 +500,8 @@
 				);
 				INFOPLIST_FILE = "Spark InsightsTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SparkInsightTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SparkInsight.app/SparkInsight";
+				PRODUCT_NAME = RedRockTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RedRock.app/RedRock";
 			};
 			name = Debug;
 		};
@@ -515,15 +515,15 @@
 				);
 				INFOPLIST_FILE = "Spark InsightsTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SparkInsightTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SparkInsight.app/SparkInsight";
+				PRODUCT_NAME = RedRockTests;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RedRock.app/RedRock";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE79DA401B1640C0003F01F6 /* Build configuration list for PBXProject "SparkInsight" */ = {
+		CE79DA401B1640C0003F01F6 /* Build configuration list for PBXProject "RedRock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE79DA621B1640C0003F01F6 /* Debug */,
@@ -532,7 +532,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE79DA641B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "SparkInsight" */ = {
+		CE79DA641B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "RedRock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE79DA651B1640C0003F01F6 /* Debug */,
@@ -541,7 +541,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE79DA671B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "SparkInsightTests" */ = {
+		CE79DA671B1640C0003F01F6 /* Build configuration list for PBXNativeTarget "RedRockTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE79DA681B1640C0003F01F6 /* Debug */,
