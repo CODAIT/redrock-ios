@@ -21,7 +21,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate {
+class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -442,127 +442,28 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 self.loadingView1.removeFromSuperview()
             }
         } else {
+            loadingView1 = LoadingView(frame: view.frame)
+            view.addSubview(loadingView1!)
             var search = self.getIncludeAndExcludeSeparated()
-            self.executeTweetRequest(search.include, exclude: search.exclude)
-            self.executeSentimentRequest(search.include, exclude: search.exclude)
-            self.executeLocationRequest(search.include, exclude: search.exclude)
+            var networkConnection = Network()
+            networkConnection.delegate = self
+            networkConnection.getDataFromServer(search.include, exclude: search.exclude)
         }
-
     }
     
-    func executeTweetRequest(include: String, exclude: String)
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
-        parameters["termsInclude"] = include
-        parameters["termsExclude"] = exclude
-        parameters["top"] = "100"
-        let req = self.createRequest(Config.serverTweetsPath, paremeters: parameters)
-        executeRequest(req, callBack: self.populateTweetsTable)
+    // MARK: Network Delegate
+    
+    func handleLocationCallBack(json: JSON) {
+        //TODO: implement location
     }
     
-    func executeSentimentRequest(include: String, exclude: String)
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
-        parameters["termsInclude"] = include
-        parameters["termsExclude"] = exclude
-        let req = self.createRequest(Config.serverSentimentPath, paremeters: parameters)
-        //TODO: Setup Sentiment CallBack
-        //executeRequest(req, callBack: /*sentiment callBack*/)
-    }
-    
-    func executeLocationRequest(include: String, exclude: String)
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
-        parameters["termsInclude"] = include
-        parameters["termsExclude"] = exclude
-        let req = self.createRequest(Config.serverLocationPath, paremeters: parameters)
-        //TODO: Setup Location CallBack
-        //executeRequest(req, callBack: /*location callBack*/)
-    }
-    
-    func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
-        println("createRequest")
-        
-        var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
-        if paremeters.count > 0
-        {
-            urlPath += "?"
-            let keys = paremeters.keys
-            for key in keys
-            {
-                urlPath += key + "=" + paremeters[key]! + "&"
-            }
-            var aux = Array(urlPath)
-            aux.removeLast()
-            urlPath = String(aux)
-        }
-        return urlPath
-    }
-    
-    func executeRequest(req: String, callBack: (json: JSON) -> ()) {
-        //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-        
-        println("Sending Request: " + req)
-        let url: NSURL = NSURL(string: req)!
-        let session = NSURLSession.sharedSession()
-        session.configuration.timeoutIntervalForRequest = 300
-        
-        loadingView1 = LoadingView(frame: view.frame)
-        view.addSubview(loadingView1!)
-        
-        let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
-                self.loadingView1.removeFromSuperview()
-            })
-            
-            if error != nil {
-                // If there is an error in the web request, print it to the console
-                // TODO: handle request error
-                println(error.localizedDescription)
-                return
-            }
-            
-            //println(NSString(data: data, encoding: NSUTF8StringEncoding))
-            
-            var err: NSError?
-            var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
-            if err != nil {
-                // If there is an error parsing JSON, print it to the console
-                // TODO: handle parsing error
-                println("JSON Error \(err!.localizedDescription)")
-                return
-            }
-            
-            let json = JSON(jsonResult)
-            let status = json["status"].intValue
-            
-            if( status == 1 ) {
-                let msg = json["message"].stringValue
-                // TODO: handle error message
-                println("Error: " + msg)
-                return
-            }
-            
-            // Success
-            println("Request completed: Status = OK")
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                // Success on main thread
-                callBack(json: json)
-            })
-        })
-        task.resume()
-    }
-    
-    func onRequestSuccess(json: JSON) {
-        println(__FUNCTION__)
-        // Populate UI
+    func handleTweetsCallBack(json: JSON) {
         self.tweetsTableViewController.tweets = ReadTweetsData.getTweetsObjects(json["tweets"])!
         self.tweetsTableViewController.tableView.reloadData()
-        //populateUI(json)
+    }
+    
+    func handleSentimentsCallBack(json: JSON) {
+        //TODO: implement sentiment
     }
     
     func onDummyRequestSuccess(json: JSON) {
@@ -575,7 +476,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         populateTweetsTable(json)
     }
     
-    func populateTweetsTable(json: JSON)
+    func populateTweetsTable(json:JSON)
     {
         self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
         self.tweetsTableViewController.tableView.reloadData()
