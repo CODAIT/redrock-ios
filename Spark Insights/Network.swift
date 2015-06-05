@@ -12,11 +12,19 @@ protocol NetworkDelegate {
     func handleTweetsCallBack(json: JSON)
     func handleSentimentsCallBack(json: JSON)
     func handleLocationCallBack(json:JSON)
+    func handleProfessionCallBack(json:JSON)
+    func handleWordDistanceCallBack(json:JSON)
+    func handleWordClusterCallBack(json:JSON)
+    func handleRequestError(message: String)
+    func requestsEnded(error: Bool)
 }
 
 class Network
 {
     var delegate: NetworkDelegate?
+    private var requestCount = 0
+    private var requestTotal = 0
+    private var error = false
     
     // MARK: Call Requests
     
@@ -25,6 +33,9 @@ class Network
         self.executeTweetRequest(include, exclude: exclude)
         self.executeSentimentRequest(include, exclude: exclude)
         self.executeLocationRequest(include, exclude: exclude)
+        self.executeProfessionRequest(include, exclude: exclude)
+        self.executeWordClusterRequest(include, exclude: exclude)
+        self.executeWordDistanceRequest(include, exclude: exclude)
     }
     
     //MARK: Data
@@ -34,7 +45,7 @@ class Network
         parameters["user"] = "ssdemo"
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
-        parameters["top"] = "100"
+        parameters["top"] = Config.tweetsTopParameter
         let req = self.createRequest(Config.serverTweetsPath, paremeters: parameters)
         executeRequest(req, callBack: self.callTweetDelegate)
     }
@@ -59,6 +70,39 @@ class Network
         executeRequest(req, callBack: self.callLocationDelegate)
     }
     
+    private func executeProfessionRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        let req = self.createRequest(Config.serverProfessionPath, paremeters: parameters)
+        executeRequest(req, callBack: self.callProfessionDelegate)
+    }
+    
+    private func executeWordDistanceRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["top"] = Config.wordDistanceTopParameter
+        let req = self.createRequest(Config.serverWorddistancePath, paremeters: parameters)
+        executeRequest(req, callBack: self.callWordDistanceDelegate)
+    }
+    
+    private func executeWordClusterRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["cluster"] = Config.wordClusterClusterParameter
+        parameters["word"] = Config.wordClusterWordParameter
+        let req = self.createRequest(Config.serverWordclusterPath, paremeters: parameters)
+        executeRequest(req, callBack: self.callWordClusterDelegate)
+    }
+    
     //MARK: Call Delegates
     private func callTweetDelegate(json: JSON)
     {
@@ -74,12 +118,27 @@ class Network
     {
         self.delegate?.handleLocationCallBack(json)
     }
-
     
+    private func callProfessionDelegate(json: JSON)
+    {
+        self.delegate?.handleProfessionCallBack(json)
+    }
+    
+    private func callWordDistanceDelegate(json: JSON)
+    {
+        self.delegate?.handleWordDistanceCallBack(json)
+    }
+    
+    private func callWordClusterDelegate(json: JSON)
+    {
+        self.delegate?.handleWordClusterCallBack(json)
+    }
+
+
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
         println("createRequest")
-        
+        self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
         if paremeters.count > 0
         {
@@ -96,6 +155,7 @@ class Network
         return urlPath
     }
     
+
     private func executeRequest(req: String, callBack: (json: JSON) -> ()) {
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
@@ -105,24 +165,30 @@ class Network
         session.configuration.timeoutIntervalForRequest = 300
         
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
-            dispatch_async(dispatch_get_main_queue(), {
-                //self.loadingView1.removeFromSuperview()
-            })
+            self.requestCount++
+            
+            if let httpResponse = response as? NSHTTPURLResponse
+            {
+                if httpResponse.statusCode != 200
+                {
+                    println(NSString(data: data, encoding: NSUTF8StringEncoding))
+                    self.requestError("Server Error. Code \(httpResponse.statusCode)")
+                    return
+                }
+            }
             
             if error != nil {
                 // If there is an error in the web request, print it to the console
-                // TODO: handle request error
                 println(error.localizedDescription)
+                self.requestError(error.localizedDescription)
                 return
             }
-            
-            //println(NSString(data: data, encoding: NSUTF8StringEncoding))
             
             var err: NSError?
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
             if err != nil {
                 // If there is an error parsing JSON, print it to the console
-                // TODO: handle parsing error
+                self.requestError("JSON Error \(err!.localizedDescription)")
                 println("JSON Error \(err!.localizedDescription)")
                 return
             }
@@ -132,7 +198,7 @@ class Network
             
             if( status == 1 ) {
                 let msg = json["message"].stringValue
-                // TODO: handle error message
+                self.requestError("Error: " + msg)
                 println("Error: " + msg)
                 return
             }
@@ -141,11 +207,27 @@ class Network
             println("Request completed: Status = OK")
             
             dispatch_async(dispatch_get_main_queue(), {
+                if self.requestCount == self.requestTotal
+                {
+                    self.delegate?.requestsEnded(self.error)
+                }
                 // Success on main thread
                 callBack(json: json)
-            })
+            }) 
         })
         task.resume()
+    }
+    
+    private func requestError(message: String)
+    {
+        self.error = true
+        dispatch_async(dispatch_get_main_queue(), {
+            self.delegate?.handleRequestError(message)
+            if self.requestCount == self.requestTotal
+            {
+                self.delegate?.requestsEnded(self.error)
+            }
+        })
     }
 
 }
