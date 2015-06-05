@@ -144,7 +144,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 let currentSearch = self.searchText
                 self.searchText = currentSearch
                 self.tweetsFooterView.alpha = 0.5
-                self.changeLastUpdated()
             }
         }
     }
@@ -176,7 +175,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 self.tweetsFooterSeparatorLine.hidden = true
                 self.view.layoutIfNeeded()
             }, completion: nil)
-
         }
     }
     
@@ -439,6 +437,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 self.onDummyRequestSuccess(nil)
+                self.changeLastUpdated()
                 self.loadingView1.removeFromSuperview()
             }
         } else {
@@ -478,8 +477,17 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         //TODO: implement Profession
     }
     
-    func requestsEnded() {
+    func requestsEnded(error: Bool) {
+        if !error
+        {
+            self.changeLastUpdated()
+        }
         self.loadingView1.removeFromSuperview()
+    }
+    
+    func handleRequestError(message: String) {
+        self.tweetsFooterLabel.numberOfLines = 4
+        self.tweetsFooterLabel.text = message
     }
     
     //MARK: Dummy Data
