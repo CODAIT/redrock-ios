@@ -74,8 +74,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         gr1aa.numberOfTouchesRequired = 1
         tableA.addGestureRecognizer(gr1aa)
         
-        var gr2a = UILongPressGestureRecognizer(target: self, action: "handleLPA:")
-        tableA.addGestureRecognizer(gr2a)
+        // Disabled: causes problems when pan allowed to startDragging
+        // var gr2a = UILongPressGestureRecognizer(target: self, action: "handleLPA:")
+        // tableA.addGestureRecognizer(gr2a)
         
         var gr3a = UIPanGestureRecognizer(target: self, action: "handlePanA:")
         gr3a.delegate = self
@@ -92,8 +93,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         gr1bb.numberOfTouchesRequired = 1
         tableB.addGestureRecognizer(gr1bb)
         
-        var gr2b = UILongPressGestureRecognizer(target: self, action: "handleLPB:")
-        tableB.addGestureRecognizer(gr2b)
+        // Disabled: causes problems when pan allowed to startDragging
+        // var gr2b = UILongPressGestureRecognizer(target: self, action: "handleLPB:")
+        // tableB.addGestureRecognizer(gr2b)
         
         var gr3b = UIPanGestureRecognizer(target: self, action: "handlePanB:")
         gr3b.delegate = self
@@ -344,14 +346,16 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         println(__FUNCTION__)
         dragging = true
         draggedIndex = draggingIndex
-        tempView = UIView(frame: CGRectMake(0, 0, 100, 34))
+        tempView = UIView(frame: CGRectMake(0, 0, 130, 34))
+        tempView?.alpha = 0.8
         tempView?.backgroundColor = Config.sideSearchTextFieldColor
         var label = UILabel(frame: tempView!.bounds)
         label.text = draggedName
-        label.backgroundColor = UIColor.blackColor()
+        label.backgroundColor = Config.extraDarkBlueColor
         label.textColor = draggedColor
         tempView?.addSubview(label)
-        self.view.addSubview(tempView!)
+        // Adding view to parent so it can be seen on the entire screen
+        self.parentViewController!.view.addSubview(tempView!)
         tempView?.center = location
         beginDraggingRect = tempView?.frame
     }
@@ -469,7 +473,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.handleLP(gestureRecognizer, table: fromTable, list: fromList!)
     }
     
-    func handlePan(gestureRecognizer: UIGestureRecognizer) {
+    func handlePan(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
         println(__FUNCTION__)
         
         var state = gestureRecognizer.state
@@ -477,6 +481,31 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         if (state == UIGestureRecognizerState.Began) {
             panning = true
+            
+            // Enabling startdrag on pan, this will not work well with a scrolling TableView
+            var tableLoc = gestureRecognizer.locationInView(table)
+            var indexPath = table.indexPathForRowAtPoint(tableLoc)
+            
+            if (indexPath == nil) {
+                return
+            }
+            
+            var cell = table.cellForRowAtIndexPath(indexPath!)
+            
+            if (cell == nil) {
+                return
+            }
+            
+            var label = cell?.viewWithTag(100) as! UILabel
+            var title = label.text
+            var color = label.textColor
+            
+            if (indexPath!.row >= list.array!.count) {
+                println("Non in any row")
+                return
+            }
+            
+            self.startDragging(indexPath!.row, draggedName: title!, draggedColor: color, location: gestureRecognizer.locationInView(self.view))
         }
         
         if (state == UIGestureRecognizerState.Ended) {
@@ -530,12 +559,20 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func handlePanA(gestureRecognizer: UIGestureRecognizer) {
         println("PAN:" + __FUNCTION__)
-        handlePan(gestureRecognizer)
+        fromTable = tableA
+        toTable = tableB
+        fromList = listA
+        toList = listB
+        self.handlePan(gestureRecognizer, table: fromTable, list: fromList!)
     }
     
     func handlePanB(gestureRecognizer: UIGestureRecognizer) {
         println(__FUNCTION__)
-        handlePan(gestureRecognizer)
+        fromTable = tableB
+        toTable = tableA
+        fromList = listB
+        toList = listA
+        self.handlePan(gestureRecognizer, table: fromTable, list: fromList!)
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,

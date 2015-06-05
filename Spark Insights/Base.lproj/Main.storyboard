@@ -8,7 +8,7 @@
         <!--Display Url View Controller-->
         <scene sceneID="dta-eh-0YJ">
             <objects>
-                <viewController storyboardIdentifier="TweetDisplayURL" id="iQx-C4-2GR" customClass="DisplayUrlViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TweetDisplayURL" id="iQx-C4-2GR" customClass="DisplayUrlViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XDf-Nk-8gm"/>
                         <viewControllerLayoutGuide type="bottom" id="2a7-cZ-S1F"/>
@@ -64,7 +64,7 @@
         <!--Tweets Table View Controller-->
         <scene sceneID="Cv1-aW-z6w">
             <objects>
-                <tableViewController storyboardIdentifier="TweetsTableViewController" id="fLC-Uh-TSB" customClass="TweetsTableViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TweetsTableViewController" id="fLC-Uh-TSB" customClass="TweetsTableViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3aP-HM-Dht">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -82,7 +82,7 @@
         <!--Search View Controller-->
         <scene sceneID="hl8-6R-1gB">
             <objects>
-                <viewController storyboardIdentifier="SearchViewController" id="k4c-cg-gwj" customClass="SearchViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchViewController" id="k4c-cg-gwj" customClass="SearchViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aQm-6b-v5n"/>
                         <viewControllerLayoutGuide type="bottom" id="N7N-vg-1kn"/>
@@ -276,7 +276,7 @@
         <!--Center View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="CenterViewController" id="BYZ-38-t0r" customClass="CenterViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CenterViewController" id="BYZ-38-t0r" customClass="CenterViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -360,7 +360,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6b-Ns-gk2">
                                         <rect key="frame" x="0.0" y="644" width="699" height="60"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifN-uh-2Nl" customClass="PageControlView" customModule="Spark_Insights" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ifN-uh-2Nl" customClass="PageControlView" customModule="RedRock" customModuleProvider="target">
                                                 <rect key="frame" x="167" y="0.0" width="364" height="60"/>
                                                 <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -628,7 +628,7 @@
         <!--Right View Controller-->
         <scene sceneID="eb2-ha-XHF">
             <objects>
-                <viewController storyboardIdentifier="RightViewController" id="Pkp-zW-FqT" customClass="RightViewController" customModule="Spark_Insights" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RightViewController" id="Pkp-zW-FqT" customClass="RightViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X5S-C8-Gca"/>
                         <viewControllerLayoutGuide type="bottom" id="Jnz-Sc-MaC"/>
@@ -649,14 +649,14 @@
                                         <color key="separatorColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="sectionIndexBackgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IncludeCell" rowHeight="34" id="fGu-pN-iHK">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IncludeCell" rowHeight="44" id="fGu-pN-iHK" customClass="SearchMenuTableViewCell" customModule="RedRock" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fGu-pN-iHK" id="ays-BK-2EN">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ecf-kN-lmO">
-                                                            <rect key="frame" x="0.0" y="7" width="42" height="20"/>
+                                                            <rect key="frame" x="0.0" y="12" width="42" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                             <color key="textColor" red="0.55686274509803924" green="0.77647058823529413" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
@@ -690,14 +690,14 @@
                                             <constraint firstAttribute="width" constant="133" id="SJY-MZ-nWe"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExcludeCell" rowHeight="34" id="1yP-jO-ogk">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExcludeCell" rowHeight="44" id="1yP-jO-ogk">
                                                 <rect key="frame" x="0.0" y="0.0" width="133" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1yP-jO-ogk" id="Sg1-uV-IRF">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YNW-Ls-nvV">
-                                                            <rect key="frame" x="0.0" y="7" width="42" height="20"/>
+                                                            <rect key="frame" x="0.0" y="12" width="42" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                                             <color key="textColor" red="0.94117647059999998" green="0.32156862749999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
