@@ -137,7 +137,7 @@ class Network
 
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
-        println("createRequest")
+        Log("createRequest")
         self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
         if paremeters.count > 0
@@ -159,7 +159,7 @@ class Network
     private func executeRequest(req: String, callBack: (json: JSON) -> ()) {
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
-        println("Sending Request: " + req)
+        Log("Sending Request: " + req)
         let url: NSURL = NSURL(string: req)!
         let session = NSURLSession.sharedSession()
         session.configuration.timeoutIntervalForRequest = 300
@@ -171,7 +171,7 @@ class Network
             {
                 if httpResponse.statusCode != 200
                 {
-                    println(NSString(data: data, encoding: NSUTF8StringEncoding))
+                    Log(NSString(data: data, encoding: NSUTF8StringEncoding)!)
                     self.requestError("Server Error. Code \(httpResponse.statusCode)")
                     return
                 }
@@ -179,7 +179,7 @@ class Network
             
             if error != nil {
                 // If there is an error in the web request, print it to the console
-                println(error.localizedDescription)
+                Log(error.localizedDescription)
                 self.requestError(error.localizedDescription)
                 return
             }
@@ -189,7 +189,7 @@ class Network
             if err != nil {
                 // If there is an error parsing JSON, print it to the console
                 self.requestError("JSON Error \(err!.localizedDescription)")
-                println("JSON Error \(err!.localizedDescription)")
+                Log("JSON Error \(err!.localizedDescription)")
                 return
             }
             
@@ -199,12 +199,12 @@ class Network
             if( status == 1 ) {
                 let msg = json["message"].stringValue
                 self.requestError("Error: " + msg)
-                println("Error: " + msg)
+                Log("Error: " + msg)
                 return
             }
             
             // Success
-            println("Request completed: Status = OK")
+            Log("Request completed: Status = OK")
             
             dispatch_async(dispatch_get_main_queue(), {
                 if self.requestCount == self.requestTotal

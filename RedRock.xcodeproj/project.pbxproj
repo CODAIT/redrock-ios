@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		41CC75D71B22068600383F13 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC75D61B22068600383F13 /* Network.swift */; };
+		41E688521B22550000644714 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E688511B22550000644714 /* LoadingTableViewCell.swift */; };
 		41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94041B179DC400A80447 /* TweetsTableViewController.swift */; };
 		41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94081B17AA6700A80447 /* ContextLabel.swift */; };
 		41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41ED940A1B17AA7100A80447 /* TweetCell.xib */; };
@@ -33,6 +34,7 @@
 		CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */; };
 		CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */; };
 		CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEADC1B22452300FB9695 /* animation_v1.gif */; };
+		CEDBEADF1B22672400FB9695 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEADE1B22672400FB9695 /* Log.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
 		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
@@ -51,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		41CC75D61B22068600383F13 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		41E688511B22550000644714 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		41ED94041B179DC400A80447 /* TweetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTableViewController.swift; sourceTree = "<group>"; };
 		41ED94081B17AA6700A80447 /* ContextLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextLabel.swift; sourceTree = "<group>"; };
 		41ED940A1B17AA7100A80447 /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
@@ -82,6 +85,7 @@
 		CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
 		CEDBEADC1B22452300FB9695 /* animation_v1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = animation_v1.gif; sourceTree = "<group>"; };
+		CEDBEADE1B22672400FB9695 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
 		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -167,9 +171,11 @@
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
 				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
 				CE79DA7B1B190081003F01F6 /* PageControlView.swift */,
+				41E688511B22550000644714 /* LoadingTableViewCell.swift */,
 				41CC75D61B22068600383F13 /* Network.swift */,
 				CE79DA791B18B9BA003F01F6 /* Config.swift */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
+				CEDBEADE1B22672400FB9695 /* Log.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
@@ -345,7 +351,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41E688521B22550000644714 /* LoadingTableViewCell.swift in Sources */,
 				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
+				CEDBEADF1B22672400FB9695 /* Log.swift in Sources */,
 				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
@@ -497,6 +505,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-D DEBUGLOG";
 				PRODUCT_NAME = RedRock;
 				PROVISIONING_PROFILE = "960432f8-dca8-45cb-b9c6-e7754f2c87b5";
 			};

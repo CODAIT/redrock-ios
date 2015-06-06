@@ -25,6 +25,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
     var searchText: String? {
         didSet {
+            self.cleanViews()
             self.loadDataFromServer()
         }
     }
@@ -48,6 +49,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var scrollViewLoadingView: UIView!
     
     // Rosstin: I made these separate so that if one finishes before the other, they don't both disappear
     //  alternatively we could write some logic to check both conditions before removing the view
@@ -72,12 +74,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupTweetsTableView()
         self.setupWebViews()
         self.setupScrollView()
-        self.setupMetricsNumber()
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
-        
-        
         
         for i in 0..<Config.visualizationNames.count{
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
@@ -92,11 +91,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
-        
-        
-        
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,7 +106,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func resetViewController() {
         // Use this function to reset the view controller's UI to a clean state
-        println("Resetting \(__FILE__)")
+        Log("Resetting \(__FILE__)")
     }
     
     func configureGestureRecognizerForSearchIconView()
@@ -276,7 +270,20 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         for i in 0..<Config.getNumberOfVisualizations() {
             let myWebView = visualizationHandler.webViews[i]
             self.scrollView.addSubview(myWebView)
+            var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             self.scrollView.delegate = self
+            
+            //Loading view
+            let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+            activityIndicator.frame = CGRectMake(myOrigin, 0, 100, 100);
+            var center = self.scrollView.center
+            center.x = myOrigin + center.x
+            activityIndicator.center = center
+            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+            activityIndicator.color = Config.darkBlueColor
+            activityIndicator.startAnimating()
+            self.scrollView.addSubview(activityIndicator)
+            visualizationHandler.loadingViews.append(activityIndicator)
         }
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
@@ -289,12 +296,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var pageWidth = scrollView.frame.size.width
         var fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
+        
         if(page >= Config.getNumberOfVisualizations()){
-            //println("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
+            //Log("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
-            //println("page was changed to... \(page)")
+            //Log("page was changed to... \(page)")
+            visualizationHandler.loadingViews[page].hidden = false
+            visualizationHandler.loadingViews[page].startAnimating()
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
             if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
@@ -312,14 +322,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     */
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
-        //println("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        webView.hidden = false
         visualizationHandler.transformData(webView)
     }
     
     // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
-        //println("Page Changed to index: \(index)")
+        //Log("Page Changed to index: \(index)")
         var offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
@@ -384,6 +395,31 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         delegate?.displaySearchViewController?()
     }
     
+    func cleanViews()
+    {
+        if self.tweetsTableViewController != nil
+        {
+            tweetsTableViewController.tweets = []
+            tweetsTableViewController.tableView.reloadData()
+        }
+        
+        if self.totalTweetsNumberLabel != nil
+        {
+            self.totalTweetsNumberLabel.text = ""
+        }
+        if self.totalRetweetsNumberLabel != nil
+        {
+            self.totalRetweetsNumberLabel.text = ""
+        }
+        if self.tweetsPerHourNumberLabel != nil
+        {
+            self.tweetsPerHourNumberLabel.text = ""
+        }
+        
+        self.visualizationHandler.cleanWebViews()
+        
+    }
+    
     func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
     {
         let terms = self.searchText!.componentsSeparatedByString(",")
@@ -428,19 +464,19 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func loadDataFromServer()
     {
         if (Config.useDummyData) {
-            loadingView1 = LoadingView(frame: view.frame)
-            view.addSubview(loadingView1!)
+            //loadingView1 = LoadingView(frame: view.frame)
+            //view.addSubview(loadingView1!)
             
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 self.onDummyRequestSuccess(nil)
                 self.changeLastUpdated()
-                self.loadingView1.removeFromSuperview()
+                //self.loadingView1.removeFromSuperview()
             }
         } else {
-            loadingView1 = LoadingView(frame: view.frame)
-            view.addSubview(loadingView1!)
+            //loadingView1 = LoadingView(frame: view.frame)
+            //view.addSubview(loadingView1!)
             var search = self.getIncludeAndExcludeSeparated()
             var networkConnection = Network()
             networkConnection.delegate = self
@@ -480,7 +516,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             self.changeLastUpdated()
         }
-        self.loadingView1.removeFromSuperview()
+        //self.loadingView1.removeFromSuperview()
     }
     
     func handleRequestError(message: String) {
@@ -491,11 +527,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     //MARK: Dummy Data
     
     func onDummyRequestSuccess(json: JSON) {
-        println(__FUNCTION__)
+        Log(__FUNCTION__)
         populateUI(json)
     }
     
     func populateUI(json: JSON){
+        self.setupMetricsNumber()
         populateCharts(json)
         populateTweetsTable(json)
     }
