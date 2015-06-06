@@ -82,6 +82,7 @@ class Network
     
     private func executeWordDistanceRequest(include: String, exclude: String)
     {
+        Log("executeWordDistanceRequest")
         var parameters = Dictionary<String,String>()
         parameters["user"] = "ssdemo"
         parameters["termsInclude"] = include
@@ -126,6 +127,7 @@ class Network
     
     private func callWordDistanceDelegate(json: JSON)
     {
+        println("callWordDistanceDelegate")
         self.delegate?.handleWordDistanceCallBack(json)
     }
     

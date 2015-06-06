@@ -214,7 +214,7 @@ class VisualizationHandler{
     }
     
     func transformDataForWordcloud(webView: UIWebView){
-        Log("transformDataForWordcloud (not yet imp)")
+        //Log("transformDataForWordcloud (not yet imp)")
     }
 
     
