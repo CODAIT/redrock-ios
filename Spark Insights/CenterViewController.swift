@@ -500,8 +500,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func handleWordDistanceCallBack(json: JSON) {
-        Log("handleWordDistanceCallBack")
-        Log("\(json)")
+        //Log("handleWordDistanceCallBack")
+        //Log("\(json)")
         //TODO: implement Word Distance
     }
     

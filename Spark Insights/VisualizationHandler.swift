@@ -128,7 +128,7 @@ class VisualizationHandler{
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        Log(worddistanceData)
+        //Log(worddistanceData)
         
         var script9 = "var myData = '{\"name\": \""
         script9+="spark"
