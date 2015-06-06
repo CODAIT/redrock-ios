@@ -118,11 +118,35 @@ class VisualizationHandler{
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        //println(worddistanceData)
+        println(worddistanceData)
         
-        var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
+        var script9 = "var myData = '{\"name\": \""
+        script9+="spark"
+        script9+="\",\"children\": ["
+        for r in 0..<worddistanceData.count{
+            script9+="{\"name\": \""
+            script9+=worddistanceData[r][0]
+            script9+="\", \"distance\": "
+            script9+=worddistanceData[r][1]
+            script9+=", \"size\": "
+            script9+=worddistanceData[r][2]
+            script9+="}"
+            if(r != (worddistanceData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
         
-        webView.stringByEvaluatingJavaScriptFromString(wordScript)
+        println(script9)
+        
+        /*
+        [ [ "#datamining", 0.66010167854665769, "457" ], [ "#analytics", 0.66111733184244015, "8904" ], [ "#rstats", 0.69084306092036141, "361" ], [ "@hortonworks", 0.66914077012093209, "166" ], [ "#neo4j", 0.69127034015170996, "63" ], [ "#datascience", 0.67888717822606814, "4202" ], [ "#azure", 0.66226415367181413, "667" ], [ "@mapr", 0.66354464393456225, "165" ], [ "#deeplearning", 0.66175874534547685, "396" ], [ "#machinelearning", 0.6964340180591716, "2260" ], [ "#nosql", 0.75678772608504818, "877" ], [ "#sas", 0.70367785412709649, "145" ], [ "#mongodb", 0.6993281653000063, "225" ], [ "#hbase", 0.78010979167439309, "138" ], [ "#python", 0.69931247945181596, "2821" ], [ "#mapreduce", 0.72372695100578921, "62" ], [ "#apache", 0.75935793530857787, "244" ], [ "#cassandra", 0.76777460490727012, "128" ], [ "#hadoop", 0.82618702428574087, "1831" ], [ "#r", 0.76732526060916861, "277" ] ]*/
+        
+        //var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
+        
+        // println(wordScript)
+        
+        webView.stringByEvaluatingJavaScriptFromString(script9)
     }
 
     func transformDataForTimemap(webView: UIWebView){

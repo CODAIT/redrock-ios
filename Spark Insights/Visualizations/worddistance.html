@@ -23,17 +23,17 @@
 
   function renderChart(data, windowWidth, windowHeight){
     //document.getElementById("test").innerHTML = "windowWidth: "+windowWidth+"... windowHeight: "+windowHeight;
-      
+
     var data = JSON.parse(data); //jsonify the data
-    
+
     var numberOfCircles = data.children.length;
     var twopi = 2*Math.PI;
     var arc = twopi/numberOfCircles;
 
-    var centerx = (width-25)/2;
+    var centerx = (width-99)/2;
     var centery = height/2;
 
-    var maxLengthAway = height/3;
+    var maxLengthAway = height/5;
     var maxCircleRadius = width/15;
     var minLengthAway = maxCircleRadius*2.5;
 
@@ -87,9 +87,9 @@
       .attr("fill", centerColor)
       //.attr("stroke-width",7)
       //.attr("stroke", "#fce776");
-      
+
     svg.append("text")
-      .attr("x", centerx-maxCircleRadius/2)
+      .attr("x", centerx-maxCircleRadius*1.2 + 15) //we need to use the title centering thing
       .attr("y", centery+7)
       .style("font-size", "33px")
       .text(data.name);
@@ -112,6 +112,7 @@
         //.attr("stroke-width",7)
         //.attr("stroke", "#fce776");
 
+      /*
       if(mySizeRatio >= 0.50){
         svg.append("text")
           .attr("x", myCenterX-myRadius/1.3)
@@ -119,13 +120,13 @@
           .style("font-size", myFontSize)
           .text(myText);
       }
-      else{
+      else{*/
         svg.append("text")
           .attr("x", myCenterX+myRadius+6)
           .attr("y", myCenterY+5)
           .style("font-size", "12px")
           .text(myText);
-      }
+      //}
     }
   }
 
