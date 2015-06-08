@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node {
+  fill: rgba(92,195,184,1.0);
+}
+
+.link {
+  stroke: #dee8e8;
+  stroke-opacity: .6;
+}
+
+</style>
+<body>
+    
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+
+function renderChart(data, w, h) {
+
+
+var width = w,
+height = h;
+
+var color = d3.scale.category20();
+
+var force = d3.layout.force()
+.charge(-3000)
+.linkDistance(10)
+.size([width, height]);
+
+var svg = d3.select("body").append("svg")
+.attr("width", width)
+.attr("height", height);
+
+
+  var graph = JSON.parse(data);
+
+var maxNodeSize = d3.max(graph.nodes, function(d) {return d.value;});
+
+var maxLinkLength = d3.max(graph.links, function(d){return d.distance;});
+
+var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50]);
+
+var linkScale = d3.scale.linear().domain([0,maxLinkLength]).range([5,200]);
+
+/*
+var n = graph.nodes.length
+graph.nodes.forEach(function(d, i){
+    d.x = d.y = width / n * i;
+});
+*/
+ 
+//document.getElementById("test").innerHTML = "width: "+w+"... height: "+h;
+//document.getElementById("test").innerHTML = "max: "+max;
+
+
+  force
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .linkDistance(function(d) { return linkScale(d.distance);})
+      .start();
+
+      n = 2000;
+      for (var i = 0; i < n; ++i) force.tick();
+
+force
+.nodes(graph.nodes)
+.links(graph.links)
+.linkDistance(function(d) { return linkScale(d.distance);})
+.start();
+
+  var link = svg.selectAll(".link")
+      .data(graph.links)
+    .enter().append("line")
+      .attr("class", "link")
+      .attr("stroke-width",5)
+      .style("stroke-width", function(d) { return Math.sqrt(radiusScale(d.value)); })
+      ;
+
+  var node = svg.selectAll(".node")
+      .data(graph.nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+    node.append("circle")
+    .attr("stroke","rgba(0,0,0,0)")
+    .attr("r", function(d){return radiusScale(d.value);})
+
+    node.append("text")
+    .attr("x", function(d){return 4+radiusScale(d.value);})
+    .attr("dy", ".35em")
+    .attr("stroke", "black")
+    .attr("fill", "black")
+    .text(function(d) {return d.name;});
+
+
+  force.on("tick", function() {
+    // bound the links according to their radius and the screen bounds
+    link.attr("x1", function(d) { return Math.max(0,Math.min(width,d.source.x)); })
+        .attr("y1", function(d) { return Math.max(0,Math.min(height,d.source.y)); })
+        .attr("x2", function(d) { return Math.max(0,Math.min(width,d.target.x)); })
+        .attr("y2", function(d) { return Math.max(0,Math.min(height,d.target.y)); });
+
+        // bound the nodes according to their radius and the screen bounds
+        node.attr("transform", function(d) { return "translate(" + Math.max(0+radiusScale(d.value),Math.min(width-70-radiusScale(d.value),d.x)) + "," + Math.max(0+radiusScale(d.value),Math.min(height-radiusScale(d.value),d.y)) + ")"; });
+  });
+  
+};
+
+//renderChart('{"nodes":[    {"name":"Myriel","value":52,"group":1},    {"name":"Labarre","value":5,"group":2},    {"name":"Valjean","value":17,"group":2},    {"name":"Mme.deR","value":55,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":44,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":22,"group":2},    {"name":"Isabeau","value":17,"group":2},    {"name":"Gervais","value":33,"group":2}  ],  "links":[    {"source":0,"target":1,"distance":33},    {"source":0,"target":2,"distance":22},    {"source":0,"target":3,"distance":22},    {"source":0,"target":4,"distance":11},    {"source":0,"target":5,"distance":22},    {"source":0,"target":6,"distance":22},    {"source":0,"target":7,"distance":43},    {"source":0,"target":8,"distance":22},    {"source":0,"target":9,"distance":22}  ]}');
+
+</script>

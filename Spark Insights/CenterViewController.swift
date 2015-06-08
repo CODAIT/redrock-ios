@@ -248,11 +248,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             var myWebView : UIWebView
 
+            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
+            visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
+
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+            
             
             //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
             
-            Log("request is: \(request)")
             myWebView.loadRequest(request)
             
             // don't let webviews scroll
