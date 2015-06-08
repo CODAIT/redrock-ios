@@ -12,7 +12,6 @@ import Foundation
 import UIKit
 
 class VisualizationHandler{
-    
     var webViews : [UIWebView] = [UIWebView]()
     var loadingViews = [UIActivityIndicatorView]()
     
@@ -24,14 +23,21 @@ class VisualizationHandler{
     var wordcloudData : [[String]] = [[String]]()
     
     func reloadAppropriateView(viewNumber: Int){
-        //Log("should reload \(viewNumber)")
-        
-        if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
-            webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-            webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
-            self.webViews[viewNumber].hidden = false
-            self.loadingViews[viewNumber].stopAnimating()
-            self.loadingViews[viewNumber].hidden = true
+        if var request = webViews[viewNumber].request{
+            //Log("if var request = webViews[viewNumber].request! is \(request)")
+            
+            if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+                webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
+                let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
+                let request = NSURLRequest(URL: filePath!)
+                webViews[viewNumber].loadRequest(request)
+                self.webViews[viewNumber].hidden = false
+                self.loadingViews[viewNumber].stopAnimating()
+                self.loadingViews[viewNumber].hidden = true
+            }
+        }
+        else{
+            //Log("NOT if var request = webViews[viewNumber].request!")
         }
     }
     
@@ -128,7 +134,7 @@ class VisualizationHandler{
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        Log(worddistanceData)
+        //Log(worddistanceData)
         
         var script9 = "var myData = '{\"name\": \""
         script9+="spark"
