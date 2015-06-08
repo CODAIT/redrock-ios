@@ -49,6 +49,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.textField.delegate = self
+        self.textField.keyboardType = UIKeyboardType.Twitter
         setInsetTextField()
         addGestureRecognizerSearchView()
         imageTitleTopConstraintInitial = self.imageTitleTopConstraint.constant
@@ -174,7 +175,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         else if state == UIGestureRecognizerState.Ended
         {
-            if searchText != ""
+            if searchText != "" && checkIncludeTerms(searchText)
             {
                 delegate?.displayContainerViewController?(self, searchText: searchText)
             }
@@ -191,6 +192,26 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
+    }
+    
+    /* Find at least one include term*/
+    func checkIncludeTerms(searchTerms: String) -> Bool
+    {
+        let terms = searchTerms.componentsSeparatedByString(",")
+        for var i = 0; i < terms.count; i++
+        {
+            var term = terms[i]
+            if term != ""
+            {
+                var aux = Array(term)
+                if aux[0] != "-"
+                {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
 
 }

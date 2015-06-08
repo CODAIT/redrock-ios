@@ -62,6 +62,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         textField.leftViewMode = .Always
         textField.leftView = spacerView
         textField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSForegroundColorAttributeName: Config.sideSearchTextFieldPlaceholderColor])
+        textField.keyboardType = UIKeyboardType.Twitter
         
         // Add Gesture Recognizers
         var gr1a = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")
@@ -274,6 +275,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        checkGoButtonCondition()
         var list = (tableView === tableA) ? listA?.array : listB?.array
         return list!.count
     }
@@ -593,6 +595,20 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             listB?.array?.removeAtIndex(indexPath.row)
         }
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    func checkGoButtonCondition()
+    {
+        if listA?.array?.count == 0
+        {
+            self.goView.userInteractionEnabled = false
+            self.goView.alpha = 0.5
+        }
+        else
+        {
+            self.goView.userInteractionEnabled = true
+            self.goView.alpha = 1.0
+        }
     }
     
     
