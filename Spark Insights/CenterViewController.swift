@@ -68,6 +68,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     var tweetsTableViewController: TweetsTableViewController!
     
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        print("Webview \(webView.request) fail with error \(error)");
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -244,11 +248,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             var myWebView : UIWebView
 
-            
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
             //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
             
+            Log("request is: \(request)")
             myWebView.loadRequest(request)
             
             // don't let webviews scroll
@@ -302,7 +306,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
-            //Log("page was changed to... \(page)")
             visualizationHandler.loadingViews[page].hidden = false
             visualizationHandler.loadingViews[page].startAnimating()
             previousPage = page
@@ -311,7 +314,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 visualizationHandler.reloadAppropriateView(page+1)
             }
             // we might also want to load the page before this page
+            //Log("hidden?: \(visualizationHandler.loadingViews[page].hidden)")
             pageControlView.selectedIndex = page
+            //Log("page was changed to... \(page)")
         }
     }
     
@@ -350,6 +355,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK - Actions
     
     @IBAction func shareScreenClicked(sender: UIButton){
+        
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
             self.presentViewController(mailComposeViewController, animated: true, completion: nil)
