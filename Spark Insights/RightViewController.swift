@@ -62,6 +62,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         textField.leftViewMode = .Always
         textField.leftView = spacerView
         textField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSForegroundColorAttributeName: Config.sideSearchTextFieldPlaceholderColor])
+        textField.keyboardType = UIKeyboardType.Twitter
         
         // Add Gesture Recognizers
         var gr1a = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")

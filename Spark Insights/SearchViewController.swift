@@ -49,6 +49,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         
         self.textField.delegate = self
+        self.textField.keyboardType = UIKeyboardType.Twitter
         setInsetTextField()
         addGestureRecognizerSearchView()
         imageTitleTopConstraintInitial = self.imageTitleTopConstraint.constant
