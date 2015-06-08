@@ -41,10 +41,11 @@ var svg = d3.select("body").append("svg")
 var maxNodeSize = d3.max(graph.nodes, function(d) {return d.value;});
 
 var maxLinkLength = d3.max(graph.links, function(d){return d.distance;});
+var minLinkLength = d3.min(graph.links, function(d){return d.distance;});
 
 var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50]);
 
-var linkScale = d3.scale.linear().domain([0,maxLinkLength]).range([5,200]);
+var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,150]);
 
 /*
 var n = graph.nodes.length
