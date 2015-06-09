@@ -89,6 +89,7 @@ class Network
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.wordDistanceTopParameter
         let req = self.createRequest(Config.serverWorddistancePath, paremeters: parameters)
+        Log(req)
         executeRequest(req, callBack: self.callWordDistanceDelegate)
     }
     
