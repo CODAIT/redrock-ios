@@ -41,7 +41,7 @@
         font-weight:normal !important;
  }
     .tick {
-      opacity: 0 !important;
+      opacity: 1.0 !important;
     }
     circle {
     opacity: 0.8;
@@ -58,19 +58,19 @@
 
     var chartData = null;
     var chart = null;
-    var toggle = false;
+    var toggle = true;
     function renderChart(data) {
 
         chartData = transformData(data);
 
         nv.addGraph(function() {
              chart = nv.models.multiBarChart()
-            .showControls(toggle)
+            .showControls(false)
             .groupSpacing(0.5)
             .hideable(true)
             .duration(1000)
-            .showYAxis(toggle)
-            .showLegend(toggle)
+            .showYAxis(true)
+            .showLegend(true)
             .stacked(true);
             chart.x(function(d,i) {
                     //return d.x
@@ -88,7 +88,7 @@
             .tickFormat(function(d, i) {
                         return chartData[0].values[d].x;
             });
-            //chart.xAxis.rotateLabels(-30);
+            chart.xAxis.rotateLabels(-30);
             chart.yAxis
             //.axisLabel("Count")
             .tickFormat(d3.format(',.0d'));
@@ -103,7 +103,7 @@
             .selectAll('.nv-x.nv-axis > g')
             .selectAll('g')
             .selectAll('text')
-            .attr('transform', function(d) {return 'translate (0,7) rotate(-30 0,0)'});
+            .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
 
             return chart;
         },function(){
@@ -111,10 +111,10 @@
                function(event){
                     var coordinates = d3.mouse(this);
                     showClickPoint(coordinates);
-                    toggle = !toggle;
-                    chart.showControls(toggle);
-                    chart.showYAxis(toggle);
-                    chart.showLegend(toggle);
+                    //toggle = !toggle;
+                    //chart.showControls(toggle);
+                    //chart.showYAxis(toggle);
+                    //chart.showLegend(toggle);
                     chart.update();
            });
       });
@@ -162,7 +162,7 @@
         return copy;
     }
 
-    renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
+    //renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
 
     </script>
 </body>
