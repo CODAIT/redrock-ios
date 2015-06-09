@@ -25,34 +25,53 @@
     .nvd3 .nv-legend .nv-legendWrap{
         transform: translate(0px, 30px);
     }
+    .nvd3 .nv-axis.nv-x path.domain {
+  stroke-opacity: 1;
+}
 
+.nvd3 .nv-axis path {
+       fill: none;
+    stroke: rgba(0, 0, 0, 0.32);
+    stroke-opacity: .75;
+    shape-rendering: crispEdges;
+ }
+
+ text{
+        fill: rgb(171, 171, 171);
+        font-weight:normal !important;
+ }
+    .tick {
+      opacity: 0 !important;
+    }
+    circle {
+    opacity: 0.8;
+    }   
     </style>
 </head>
 <body>
 
 <div id="chart1" class='with-3d-shadow with-transitions'>
-    <svg></svg>
+    <svg id="canvas"></svg>
 </div>
-
 <script>
 
-/* //css that can be used to modify axes
-.nvd3 .nv-axis.nv-x path.domain{
-    stroke-width: 4px;
-    stroke-opacity: 1.00;
-    stroke: #989898;
-    transform: translate(0px,10px);
-}
-*/
 
-
-    var chartData = null
+    var chartData = null;
+    var chart = null;
+    var toggle = false;
     function renderChart(data) {
 
         chartData = transformData(data);
 
         nv.addGraph(function() {
-            var chart = nv.models.multiBarChart().showControls(false).stacked(true);
+             chart = nv.models.multiBarChart()
+            .showControls(toggle)
+            .groupSpacing(0.5)
+            .hideable(true)
+            .duration(1000)
+            .showYAxis(toggle)
+            .showLegend(toggle)
+            .stacked(true);
             chart.x(function(d,i) {
                     //return d.x
                     return i;
@@ -61,21 +80,13 @@
                     return d.y
                     });
             chart.color(["#325d80","#94d9d1"]);
-            chart.margin({left: 100, right:100,top:100,bottom:100});
+            chart.margin({left: 80, right:80,top:80,bottom:80});
             chart.tooltips(true);
             chart.reduceXTicks(false);
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
                         return chartData[0].values[d].x;
-                        // if(d == 0){
-                        //     return d;
-                        // }else if( (d.indexOf('Feb 27') >= 0) && (i % 10 != 0) ) {
-                        //   return "";
-                        // }
-                        // else {
-                        //   return d;
-                        // }
             });
             //chart.xAxis.rotateLabels(-30);
             chart.yAxis
@@ -94,39 +105,35 @@
             .selectAll('text')
             .attr('transform', function(d) {return 'translate (0,7) rotate(-30 0,0)'});
 
-            //d3.select('body')
-            //.selectAll('rect.nv-bar.positive')
-            //.attr('transform', function(d) {return 'translate (-33,-33)'});
-            //.attr('stroke', 'white')
-            //.attr('stroke-width', '12px')
-            //.attr('stroke-opacity', 1);
-
-            //chart.selectAll('.axis line, .axis path').style({'stroke': 'Red', 'stroke-width': '20px'});
-
             return chart;
-        });
+        },function(){
+          d3.select("#canvas").on('click',
+               function(event){
+                    var coordinates = d3.mouse(this);
+                    showClickPoint(coordinates);
+                    toggle = !toggle;
+                    chart.showControls(toggle);
+                    chart.showYAxis(toggle);
+                    chart.showLegend(toggle);
+                    chart.update();
+           });
+      });
 
     }
 
-    //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
-
-
-    /*
-    var myData = [{
-      "key": "Tweet Count",
-      "values": [
-        {"x":"11/17","y":43, "z": 33},
-        {"x":"11/18","y":22, "z": 22},
-        {"x":"11/19","y":22, "z": 22},
-        {"x":"11/20","y":33, "z": 11},
-        {"x":"11/21","y":51, "z": 15},
-        {"x":"11/22","y":44, "z": 23},
-        {"x":"11/23","y":55, "z": 44}
-      ]
-      }
-    ];
-    renderChart(myData);
-     */
+    function showClickPoint(cords){
+        var svg = d3.select("#canvas");
+        svg.append("circle")
+                .attr("class", "cursor")
+                .attr("r", 0)
+                .attr("fill","#43ACD5")
+                .attr("transform", "translate(" + cords[0]+","+cords[1] + ")")
+                .transition()
+                .attr("r", 20)
+                .transition()
+                .attr("r", 0)
+                .remove();
+    }
 
     function transformData(data){
         //Copy Object
@@ -155,6 +162,7 @@
         return copy;
     }
 
+    renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
 
     </script>
 </body>

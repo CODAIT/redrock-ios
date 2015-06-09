@@ -17,12 +17,15 @@ form {
 }
 
 .node {
-  border: solid 1px white;
-  font: 20px sans-serif;
-  line-height: 32px;
-  overflow: hidden;
-  position: absolute;
-  text-indent: 10px;
+    font: 20px sans-serif;
+    line-height: 32px;
+    overflow: hidden;
+    position: absolute;
+    border: 1px solid white;
+    font-size: 16px;
+    font-family: inherit;
+    text-indent: 10px;
+    color: rgba(255, 255, 255, 0.42);
 }
 
 </style>
@@ -31,18 +34,21 @@ form {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
+var toggle = false;
+var flareData = null;
+
 var margin = {top: 40, right: 10, bottom: 10, left: 10},
     width = 667 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
+var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"].reverse());
 
 var treemap = d3.layout.treemap()
     .size([width, height])
     .sticky(true)
     .value(function(d) { return d.size; });
 
-var div = d3.select("body").append("div")
+var div = d3.select("body").append("div").attr("id","treemap")
     .style("position", "relative")
     .style("width", (width + margin.left + margin.right) + "px")
     .style("height", (height + margin.top + margin.bottom) + "px")
@@ -51,9 +57,7 @@ var div = d3.select("body").append("div")
 
 function renderChart(data) {
     
-    //var flareData = '{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}';
-    
-    var flareData = data;
+    flareData = data;
     
     var flareDataAsJson = JSON.parse(flareData);
     
@@ -67,20 +71,21 @@ function renderChart(data) {
         .attr("class", "node")
         .call(position)
         .style("background", function(d) { return d.children ? color(d.name) : null; })
-        .text(function(d) { return d.children ? null : d.name + " (" + d.size+")"; });
+        .text(function(d) { 
 
-        /*
-        d3.selectAll("input").on("change", function change() {
-                                 var value = this.value === "count"
-                                 ? function() { return 1; }
-                                 : function(d) { return d.size; };
-                                 
-                                 node
-                                 .data(treemap.value(value).nodes)
-                                 .transition()
-                                 .duration(1500)
-                                 .call(position);
-                                 });*/
+          if(!toggle){
+            return null;
+          }
+
+          return (d.children)? null : d.name + " (" + d.size+")"; 
+        });
+
+        d3.select("#treemap").on("click",function(event){
+          div.datum(root).selectAll(".node").remove();
+          toggle = !toggle;
+          drawTreemap(flareData);
+          console.log("clickme");
+        });
     };
     
     drawTreemap(flareDataAsJson);
@@ -94,3 +99,6 @@ function position() {
 }
 
 </script>
+
+
+<!-- renderChart('{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}'); -->

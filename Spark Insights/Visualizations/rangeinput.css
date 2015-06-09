@@ -22,13 +22,12 @@ input[type=range]::-ms-track {
 /* Special styling for WebKit/Blink */
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  border: 1px solid #9A9A9A;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #999999;
+  border: 1px solid #555D5A;
+  height: 35px;
+  width: 8px;
+  background: #555D5A;
   cursor: pointer;
-  margin-top: -14px;
+  margin-top: -15px;
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
   -o-transition: all 1s ease-in-out;
@@ -41,11 +40,10 @@ input[type=range]::-webkit-slider-thumb {
 /* All the same stuff for Firefox */
 input[type=range]::-moz-range-thumb {
 /*  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
-  border: 1px solid #9A9A9A;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #999999;
+  border: 1px solid #555D5A;
+  height: 35px;
+  width: 8px;
+  background: #555D5A;
   cursor: pointer;
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
@@ -56,11 +54,10 @@ input[type=range]::-moz-range-thumb {
 /* All the same stuff for IE */
 input[type=range]::-ms-thumb {
 /*  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
-  border: 1px solid #9A9A9A;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #999999;
+  border: 1px solid #555D5A;
+  height: 35px;
+  width: 8px;
+  background: #555D5A;
   cursor: pointer;
   -webkit-transition: all 1s ease-in-out;
   -moz-transition: all 1s ease-in-out;
@@ -70,31 +67,31 @@ input[type=range]::-ms-thumb {
 
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
-  height: 16px;
+  height: 6px;
   cursor: pointer;
 /*  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
-  background: #F7F7F7;
+  background: #C5CEC9;
   border-radius: 1.3px;
-  border: 1px solid #B3B3B3;
+  border: 1px solid #C5CEC9;
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #F7F7F7;
+  background: #C5CEC9;
 }
 
 input[type=range]::-moz-range-track {
   width: 100%;
-  height: 16px;
+  height: 6px;
   cursor: pointer;
 /*  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
-  background: #F7F7F7;
+  background: #C5CEC9;
   border-radius: 1.3px;
-  border: 1px solid #B3B3B3;
+  border: 1px solid #C5CEC9;
 }
 
 input[type=range]::-ms-track {
   width: 100%;
-  height: 16px;
+  height: 6px;
   cursor: pointer;
   background: transparent;
   border-color: transparent;
@@ -103,7 +100,7 @@ input[type=range]::-ms-track {
 }
 input[type=range]::-ms-fill-lower {
   background: #2a6495;
-  border: 0.2px solid #B3B3B3;
+  border: 0.2px solid #C5CEC9;
   border-radius: 2.6px;
 /*  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;*/
 }

@@ -4,11 +4,15 @@
 
 .node {
   cursor: pointer;
+   -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .node:hover {
-  stroke: #000;
-  stroke-width: 1.5px;
+ stroke: rgba(0, 0, 0, 0.48);
+  stroke-width: 6.5px;
 }
 
 .node--leaf {
@@ -74,6 +78,8 @@ function returnColor(parentColor, number){
     }
 }
 
+var toggle = true;
+
 var pack = d3.layout.pack()
     .padding(8)
     .size([diameter - margin, diameter - margin])
@@ -115,21 +121,23 @@ function renderChart(data){
       text.append("text")
       .attr("class", "label")
       .attr("dy", "-0.2em")
+      .attr("opacity",(toggle)?0:1)
       .style("text-anchor", "middle")
-      .style("fill-opacity", function(d) { return 1;})
+      .style("fill-opacity", function(d) { return 0.5;})
       //.style("fill", "white")
       .style("display", function(d) { return 1;})
-      .style("font-size", function(d){return Math.round(d.r*0.43)+"px"})
+      .style("font-size", function(d){return Math.round(d.r*0.33)+"px"})
       .text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
       
       text.append("text")
       .attr("class", "label")
       .attr("dy", "0.75em")
       .style("text-anchor", "middle")
-      .style("fill-opacity", function(d) { return 1;})
+      .attr("opacity",(toggle)?0:1)
+      .style("fill-opacity", function(d) { return 0.5;})
       //.style("fill", "white")
       .style("display", function(d) { return 1;d.parent === root ? null : "none"; })
-      .style("font-size", function(d){return Math.round(d.r*0.43)+"px"})
+      .style("font-size", function(d){return Math.round(d.r*0.33)+"px"})
       .text(function(d) { if(d.depth>=2){ return (" (" + d.size + ")");}else{return " ";} });
 
   var node = svg.selectAll("circle,text");
@@ -157,6 +165,15 @@ function renderChart(data){
         .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
         .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
         .each("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+
+    //Handle on click event
+    svg.on("click",function(){
+      var coordinates = d3.mouse(this);
+      toggle = !toggle;
+
+      var text = svg.selectAll("text").attr("opacity",(toggle)?0:1);
+
+    }) 
   }
 
   function zoomTo(v) {
@@ -171,3 +188,6 @@ d3.select(self.frameElement).style("height", diameter + "px");
 //renderChart("blah");
 
 </script>
+
+
+<!-- renderChart('{"name": "all","children": [{"name": "ecstatic","children": [{"name": "ecstatic", "size": 222}]},{"name": "glad","children": [{"name": "glad", "size": 344}]},{"name": "bummed","children": [{"name": "bummed", "size": 111}]},{"name": "drunk","children": [{"name": "drunk", "size": 577}]},{"name": "trashed","children": [{"name": "trashed", "size": 99}]},{"name": "lovesick","children": [{"name": "lovesick", "size": 233}]},{"name": "crushing","children": [{"name": "crushing", "size": 333}]},{"name": "cloud9","children": [{"name": "cloud9", "size": 288}]},{"name": "turned-on","children": [{"name": "turned-on", "size": 555}]},{"name": "happy","children": [{"name": "happy", "size": 444}]},{"name": "wasted","children": [{"name": "wasted", "size": 55}]}]}'); -->
