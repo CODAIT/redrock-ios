@@ -175,7 +175,11 @@ class VisualizationHandler{
     func transformDataForForcegraph(webView: UIWebView){
         //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
         
-        var script9 = "var myData = '{\"nodes\": [ {\"name\":\"searchterm\",\"value\":1000,\"group\":1}, "
+        //TODO: should have searchterm should be from actual searchterm
+        
+        var searchterm = ""
+        
+        var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchterm)\",\"value\":1000,\"group\":1}, "
         for r in 0..<forcegraphData.count{
             script9+="{\"name\": \""
             script9+=forcegraphData[r][0]

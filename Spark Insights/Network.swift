@@ -30,12 +30,15 @@ class Network
     
     func getDataFromServer(include: String, exclude:String)
     {
-        self.executeTweetRequest(include, exclude: exclude)
-        self.executeSentimentRequest(include, exclude: exclude)
-        self.executeLocationRequest(include, exclude: exclude)
-        //self.executeProfessionRequest(include, exclude: exclude) //this contract is different, needs testing more
-        //self.executeWordClusterRequest(include, exclude: exclude) //this one is broken
-        self.executeWordDistanceRequest(include, exclude: exclude)
+        var customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}").invertedSet
+        var encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        var encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
+        self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
+        self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
+        //self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!) // contract was broken, needs to be fixed
+        //self.executeWordClusterRequest(encodeInclude, exclude: encodeExclude) // not yet working
+        self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
     }
     
     //MARK: Data
