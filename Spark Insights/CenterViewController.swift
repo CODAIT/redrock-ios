@@ -408,6 +408,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     {
         if self.tweetsTableViewController != nil
         {
+            tweetsTableViewController.emptySearchResult = false
             tweetsTableViewController.tweets = []
             tweetsTableViewController.tableView.reloadData()
         }
@@ -496,6 +497,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK: Network Delegate
     
     func handleTweetsCallBack(json: JSON) {
+        if json["tweets"].count == 0
+        {
+            self.tweetsTableViewController.emptySearchResult = true
+        }
         self.tweetsTableViewController.tweets = json["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
     }
@@ -548,8 +553,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         Log("values: \(academicValue)... \(designerValue)... \(mediaValue)... \(hrValue)... \(marketingValue)... \(executiveValue)... \(engineerValue)...")
         
-        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["roboticist",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
-
+        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["Media",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
 
         //var professionData = "{ \"status\": 0, \"profession\": { \"Academic\": 19, \"Designer\": 11, \"Media\": 40, \"HR\": 4, \"Marketing\": 14, \"Executive\": 11, \"Engineer\": 20 } }"
         
@@ -599,6 +603,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleRequestError(message: String) {
         self.tweetsFooterLabel.numberOfLines = 4
         self.tweetsFooterLabel.text = message
+        self.tweetsFooterView.backgroundColor = UIColor.redColor()
     }
     
     //MARK: Dummy Data

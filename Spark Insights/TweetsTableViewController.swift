@@ -13,6 +13,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
 
     var tweets:JSON = []
     var openedTweetCell = Array<TweetTableViewCell>()
+    var emptySearchResult = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,9 +122,18 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if tweets.count == 0
         {
-            var loadingCell = self.tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as! UITableViewCell
-            loadingCell.backgroundColor = Config.tweetsTableBackgroundColor
-            return loadingCell
+            if !emptySearchResult
+            {
+                var loadingCell = self.tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as! UITableViewCell
+                loadingCell.backgroundColor = Config.tweetsTableBackgroundColor
+                return loadingCell
+            }
+            else
+            {
+                var emptySearch = self.tableView.dequeueReusableCellWithIdentifier("NoDataCell", forIndexPath: indexPath) as! UITableViewCell
+                emptySearch.backgroundColor = Config.tweetsTableBackgroundColor
+                return emptySearch
+            }
         }
         else
         {

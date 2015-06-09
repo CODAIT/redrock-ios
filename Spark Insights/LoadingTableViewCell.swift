@@ -24,7 +24,10 @@ class LoadingTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-        self.loadingView.startAnimating()
+        if self.loadingView != nil
+        {
+            self.loadingView.startAnimating()
+        }
     }
 
 }
