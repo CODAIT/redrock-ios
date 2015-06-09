@@ -21,11 +21,9 @@ form {
     line-height: 32px;
     overflow: hidden;
     position: absolute;
-    border: 1px solid white;
     font-size: 16px;
     font-family: inherit;
-    text-indent: 10px;
-    color: rgba(255, 255, 255, 0.42);
+    color: rgba(255, 255, 255, 1.00);
 }
 
 </style>
@@ -34,7 +32,7 @@ form {
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-var toggle = false;
+var toggle = true;
 var flareData = null;
 
 var margin = {top: 40, right: 10, bottom: 10, left: 10},
@@ -70,22 +68,32 @@ function renderChart(data) {
         node.append("div")
         .attr("class", "node")
         .call(position)
-        .style("background", function(d) { return d.children ? color(d.name) : null; })
-        .text(function(d) { 
+        .style("border", "1px solid white")
+        .style("background", function(d) { return d.children ? color(d.name) : null; });
+        //.text(function(d) {
+        //  if(!toggle){
+        //    return null;
+        //  }
+        //  return (d.children)? null : d.name/* + " (" + d.size+")" */;
+        //});
+        
+        node.append("text")
+        .attr("class", "node")
+        .call(positionText)
+        .text(function(d) {
+                if(!toggle){
+                  return null;
+                }
+                return (d.children)? null : d.name/* + " (" + d.size+")" */;
+              });
 
-          if(!toggle){
-            return null;
-          }
 
-          return (d.children)? null : d.name + " (" + d.size+")"; 
-        });
-
-        d3.select("#treemap").on("click",function(event){
-          div.datum(root).selectAll(".node").remove();
-          toggle = !toggle;
-          drawTreemap(flareData);
-          console.log("clickme");
-        });
+        //d3.select("#treemap").on("click",function(event){
+          //div.datum(root).selectAll(".node").remove();
+          //toggle = !toggle;
+          //drawTreemap(flareData);
+          //console.log("clickme");
+        //});
     };
     
     drawTreemap(flareDataAsJson);
@@ -97,6 +105,14 @@ function position() {
       .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
       .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
 }
+
+function positionText() {
+    this.style("left", function(d) { return d.x + 10 + "px"; })
+    .style("top", function(d) { return d.y + "px"; })
+    .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+    .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+}
+
 
 </script>
 

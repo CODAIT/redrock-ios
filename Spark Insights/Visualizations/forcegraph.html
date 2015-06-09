@@ -94,8 +94,8 @@ force
     node.append("text")
     .attr("x", function(d){return 4+radiusScale(d.value);})
     .attr("dy", ".35em")
-    .attr("stroke", "black")
     .attr("fill", "black")
+    .attr("font-family", "Helvetica")
     .text(function(d) {return d.name;});
 
 

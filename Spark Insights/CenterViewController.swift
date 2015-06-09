@@ -559,7 +559,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.circlepackingData = [["1","ecstatic","222"],["1","glad","344"],["2","bummed","111"],["3","drunk","577"],["3","trashed","99"],["4","lovesick","233"],["4","crushing","333"],["4","cloud9","288"],["4","turned-on","555"],["1","happy","444"],["3","wasted","55"]]
         visualizationHandler.reorderCirclepackingData()
         
-        visualizationHandler.treemapData = [["ecstatic","222"],["glad","344"],["bummed","111"],["drunk","577"],["trashed","99"],["lovesick","233"],["crushing","333"],["cloud9","288"],["turned-on","555"],["happy","444"],["wasted","55"]]
+        visualizationHandler.treemapData = [["data scientist","222"],["programmer","344"],["game designer","111"],["roboticist","577"],["professional tweeter","99"],["cat-groomer","233"],["number-cruncher","333"],["social climber","288"],["street fighter","555"],["analyst","444"],["mathemagician","55"]]
         
         visualizationHandler.stackedbarData = [["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
