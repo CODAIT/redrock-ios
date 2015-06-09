@@ -72,7 +72,6 @@
                 margin-top: -13px;
          }
         #rangeContainer{
-
             vertical-align:bottom;
             width:60%;
             /*float:right;*/
@@ -184,18 +183,19 @@
     }
 
     function renderChart(data) {
-        
-
-
        mapData = data[0].values;
        mapData = mapLatandLong(mapData);
        datesArr = getDistictDates(mapData);
        countriesArr = getDistictCountries(mapData);
        filteredMapData = getFilteredMapData();
        setDatesOnRange()
+       
        maxCount = getMaxCount(mapData);
        
-       //var radiusScale = d3.scale.linear().domain([0,maxCount]).range([1,50]);
+       //maxNumber = getMaxValue(data);
+       //document.getElementById("test").innerHTML = "maxValue: "+maxValue
+       
+       var radiusScale = d3.scale.linear().domain([0,maxCount]).range([1,50]);
 
        //Set XY
        var xy = d3.geo.equirectangular()
@@ -365,7 +365,6 @@
         var max = Math.max.apply( Math, counts );
         return max;
     }
-
 
     function rangeValueChanged(value){
         //Stop animation if user moves the range
