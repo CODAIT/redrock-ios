@@ -495,32 +495,54 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     // MARK: Network Delegate
     
-    func handleLocationCallBack(json: JSON) {
-        //TODO: implement location
-    }
-    
     func handleTweetsCallBack(json: JSON) {
         self.tweetsTableViewController.tweets = json["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
     }
     
+    func handleLocationCallBack(json: JSON) {
+        var numberOfColumns = 3        // number of columns
+        var containerName = "???" // name of container for data //TODO: unknown
+        visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+    }
+
     func handleSentimentsCallBack(json: JSON) {
-        //TODO: implement sentiment
+        var numberOfColumns = 3        // number of columns
+        var containerName = "???" // name of container for data //TODO: unknown
+        visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
     func handleWordDistanceCallBack(json: JSON) {
-        Log("handleWordDistanceCallBack")
-        Log("\(json)")
-        
-        let col_cnt: Int? = 3
-        let row_cnt: Int? = json["distance"].array?.count
+        var numberOfColumns = 3        // number of columns
+        var containerName = "distance" // name of container for data
+        visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+    }
+    
+    func handleWordClusterCallBack(json: JSON) {
+        var numberOfColumns = 3        // number of columns
+        var containerName = "???" // name of container for data //TODO: unknown
+        visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+    }
+    
+    func handleProfessionCallBack(json: JSON) {
+        var numberOfColumns = 2        // number of columns
+        var containerName = "???" // name of container for data //TODO: unknown
+        visualizationHandler.treemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
+    }
+    
+    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>> {
+        let col_cnt: Int? = numberOfColumns
+        let row_cnt: Int? = json[containerName].array?.count
         
         var tableData = Array(count: row_cnt!, repeatedValue: Array(count: col_cnt!, repeatedValue: ""))
-        //var tableData = Array(count: )
-        
         
         // populates the 2d array
-        for (row: String, rowJson: JSON) in json["distance"] {
+        for (row: String, rowJson: JSON) in json[containerName] {
             for (col: String, cellJson: JSON) in rowJson {
                 //println(row, col, cellJson)
                 let r: Int = row.toInt()!
@@ -529,21 +551,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 tableData[r][c] = cellJson.stringValue
             }
         }
-
-        visualizationHandler.forcegraphData = tableData
-        
-        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
-
-        //TODO: implement Word Distance
+        return tableData
     }
     
-    func handleWordClusterCallBack(json: JSON) {
-        //TODO: implement Word Cluster
-    }
     
-    func handleProfessionCallBack(json: JSON) {
-        //TODO: implement Profession
-    }
     
     func requestsEnded(error: Bool) {
         if !error
@@ -586,7 +597,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         visualizationHandler.stackedbarData = [["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
-        visualizationHandler.worddistanceData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
+        /*
+        visualizationHandler.worddistanceData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]*/
         
         /*
         visualizationHandler.forcegraphData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]*/
