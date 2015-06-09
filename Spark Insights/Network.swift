@@ -37,7 +37,7 @@ class Network
         self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
-        //self.executeWordClusterRequest(encodeInclude, exclude: encodeExclude)
+        //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
     }
     

@@ -408,6 +408,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     {
         if self.tweetsTableViewController != nil
         {
+            tweetsTableViewController.emptySearchResult = false
             tweetsTableViewController.tweets = []
             tweetsTableViewController.tableView.reloadData()
         }
@@ -496,6 +497,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     // MARK: Network Delegate
     
     func handleTweetsCallBack(json: JSON) {
+        if json["tweets"].count == 0
+        {
+            self.tweetsTableViewController.emptySearchResult = true
+        }
         self.tweetsTableViewController.tweets = json["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
     }
@@ -567,6 +572,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleRequestError(message: String) {
         self.tweetsFooterLabel.numberOfLines = 4
         self.tweetsFooterLabel.text = message
+        self.tweetsFooterView.backgroundColor = UIColor.redColor()
     }
     
     //MARK: Dummy Data
