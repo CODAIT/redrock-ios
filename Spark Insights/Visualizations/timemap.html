@@ -184,6 +184,8 @@
     }
 
     function renderChart(data) {
+        
+
 
        mapData = data[0].values;
        mapData = mapLatandLong(mapData);
@@ -192,6 +194,8 @@
        filteredMapData = getFilteredMapData();
        setDatesOnRange()
        maxCount = getMaxCount(mapData);
+       
+       //var radiusScale = d3.scale.linear().domain([0,maxCount]).range([1,50]);
 
        //Set XY
        var xy = d3.geo.equirectangular()
@@ -383,7 +387,9 @@
       .transition()
       .duration(2000).ease("linear")
       .attr("r",  function(d) {
-        return getRadiusForDateAndCountry(filteredMapData[value],d.name); //return getRadiusForDateAndCountry(datesArr[value],d.name); //Math.floor((Math.random() * 50) + 1); //
+        return getRadiusForDateAndCountry(filteredMapData[value],d.name);
+            
+            //radiusScale(getRadiusForDateAndCountry(filteredMapData[value],d.name)); //return getRadiusForDateAndCountry(datesArr[value],d.name); //Math.floor((Math.random() * 50) + 1); //
       });
 
       labels.selectAll("text").text(function() {return ""});

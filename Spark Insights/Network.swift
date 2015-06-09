@@ -36,8 +36,8 @@ class Network
         self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
-        self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
         //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!)
+        //self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!) // contract was broken, needs to be fixed
         self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
     }
     
