@@ -33,8 +33,8 @@ class Network
         self.executeTweetRequest(include, exclude: exclude)
         self.executeSentimentRequest(include, exclude: exclude)
         self.executeLocationRequest(include, exclude: exclude)
-        self.executeProfessionRequest(include, exclude: exclude)
-        self.executeWordClusterRequest(include, exclude: exclude)
+        //self.executeProfessionRequest(include, exclude: exclude) //this contract is different, needs testing more
+        //self.executeWordClusterRequest(include, exclude: exclude) //this one is broken
         self.executeWordDistanceRequest(include, exclude: exclude)
     }
     
