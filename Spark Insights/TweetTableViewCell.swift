@@ -31,6 +31,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     @IBOutlet weak var countRetweet: UILabel!
     @IBOutlet weak var tweetDateTime: UILabel!
     
+    @IBOutlet weak var twitterBirdView: UIView!
     @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
@@ -78,8 +79,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         // User interaction Swipe image
         let tapGesture = UILongPressGestureRecognizer(target: self, action: "twitterImageClicked:")
         tapGesture.minimumPressDuration = 0.001
-        twitterDetailImg.addGestureRecognizer(tapGesture)
-        twitterDetailImg.userInteractionEnabled = true
+        self.twitterBirdView.addGestureRecognizer(tapGesture)
+        self.twitterBirdView.userInteractionEnabled = true
     }
     
     // MARK - Profile Image style
@@ -152,7 +153,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     
     func contextLabel(contextLabel: ContextLabel, movedTouchTo text: String, with linkRangeResult: LinkRangeResult) {
-        println("movedTouchTo: \(text)" + "\nRange: \(linkRangeResult.linkRange)")
+        Log("movedTouchTo: \(text)" + "\nRange: \(linkRangeResult.linkRange)")
     }
     
     func contextLabel(contextLabel: ContextLabel, endedTouchOf text: String, with linkRangeResult: LinkRangeResult) {
@@ -166,12 +167,12 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     {
         if gesture.state == UIGestureRecognizerState.Began
         {
-            self.twitterDetailImg.alpha = 0.5
+            self.twitterBirdView.alpha = 0.5
         }
         else if gesture.state == UIGestureRecognizerState.Ended
         {
             delegate?.twitterBirdButtonClicked(self)
-            self.twitterDetailImg.alpha = 1.0
+            self.twitterBirdView.alpha = 1.0
         }
     }
     
@@ -257,7 +258,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         if (self.startingRightLayoutConstraintConstant == 0)
         { //1
             //Cell was opening
-            var halfOfButtonOne = CGRectGetWidth(self.twitterDetailImg.frame) / 2; //2
+            var halfOfButtonOne = CGRectGetWidth(self.twitterBirdView.frame) / 2; //2
             if (self.contentViewRightConstraint.constant >= halfOfButtonOne)
             { //3
                 //Open all the way
@@ -270,7 +271,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
         else {
             //Cell was closing
-            var imageWidth = CGRectGetWidth(self.twitterDetailImg.frame); //4
+            var imageWidth = CGRectGetWidth(self.twitterBirdView.frame); //4
             if (self.contentViewRightConstraint.constant >= imageWidth)
             { //5
                 //Re-open all the way
@@ -286,7 +287,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func twitterImageTotalWidth() -> CGFloat
     {
-        return CGRectGetWidth(self.twitterDetailImg.frame)
+        return CGRectGetWidth(self.twitterBirdView.frame)
     }
     
     func resetConstraintContstantsToZero(animated: Bool, notifyDelegateDidClose: Bool)

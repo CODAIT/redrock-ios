@@ -40,6 +40,10 @@
                                     <constraint firstAttribute="trailing" secondItem="eNa-ah-PM3" secondAttribute="trailing" constant="15" id="vkt-Cy-jty"/>
                                 </constraints>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="l3i-iX-v6c">
+                                <rect key="frame" x="281.5" y="281.5" width="37" height="37"/>
+                                <color key="color" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -47,14 +51,17 @@
                             <constraint firstItem="mxE-pq-8rZ" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leading" id="8Be-As-bpk"/>
                             <constraint firstItem="mxE-pq-8rZ" firstAttribute="top" secondItem="BgT-b0-QGJ" secondAttribute="top" id="ELc-ov-IUa"/>
                             <constraint firstItem="Z8o-Mf-baw" firstAttribute="leading" secondItem="BgT-b0-QGJ" secondAttribute="leading" id="PIF-FG-TO0"/>
+                            <constraint firstAttribute="centerX" secondItem="l3i-iX-v6c" secondAttribute="centerX" id="X2Z-Lk-jb4"/>
                             <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="BgT-b0-QGJ" secondAttribute="top" constant="70" id="Yjj-3W-nXv"/>
                             <constraint firstItem="2a7-cZ-S1F" firstAttribute="top" secondItem="Z8o-Mf-baw" secondAttribute="bottom" id="tQ0-tA-ERs"/>
+                            <constraint firstAttribute="centerY" secondItem="l3i-iX-v6c" secondAttribute="centerY" id="tVB-Dx-ZKg"/>
                             <constraint firstAttribute="trailing" secondItem="Z8o-Mf-baw" secondAttribute="trailing" id="waP-iq-SQ5"/>
                             <constraint firstItem="Z8o-Mf-baw" firstAttribute="top" secondItem="mxE-pq-8rZ" secondAttribute="bottom" id="zKI-Hr-jUm"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="URLwebView" destination="Z8o-Mf-baw" id="Tah-Nw-lZr"/>
+                        <outlet property="loadingIndicator" destination="l3i-iX-v6c" id="pIC-jc-udN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBD-SD-tLd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -69,6 +76,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.10980392156862745" green="0.21176470588235294" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoadingCell" id="Qgz-At-csw" customClass="LoadingTableViewCell" customModule="RedRock" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qgz-At-csw" id="4RU-IN-ur2">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GAJ-KQ-zkL">
+                                            <rect key="frame" x="290" y="12" width="20" height="20"/>
+                                            <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="GAJ-KQ-zkL" secondAttribute="centerY" id="X4u-eA-qWq"/>
+                                        <constraint firstAttribute="centerX" secondItem="GAJ-KQ-zkL" secondAttribute="centerX" id="fLb-Se-122"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="loadingView" destination="GAJ-KQ-zkL" id="SSH-Zz-rpf"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="fLC-Uh-TSB" id="tNN-VI-EEA"/>
                             <outlet property="delegate" destination="fLC-Uh-TSB" id="jDd-3x-roT"/>
@@ -194,7 +223,7 @@
                                     <constraint firstAttribute="trailing" secondItem="dHi-gH-brf" secondAttribute="trailing" constant="15" id="qeo-WA-mM9"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search Image_color" translatesAutoresizingMaskIntoConstraints="NO" id="TNK-78-uCq">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search Image_color" translatesAutoresizingMaskIntoConstraints="NO" id="TNK-78-uCq" customClass="YLImageView" customModule="RedRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="416"/>
                                 <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -413,8 +442,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JZ2-by-FLb">
                                         <rect key="frame" x="0.0" y="0.0" width="231" height="104"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="41.5K" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Buv-yN-YAx">
-                                                <rect key="frame" x="62" y="20" width="106.5" height="48.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Buv-yN-YAx">
+                                                <rect key="frame" x="115.5" y="20" width="0.0" height="48.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48.5" id="jHB-Ij-uMK"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="41"/>
                                                 <color key="textColor" red="0.3529411764705882" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -437,8 +469,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bx4-YR-IY4">
                                         <rect key="frame" x="234" y="0.0" width="231" height="104"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="980" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaT-Bc-iOj">
-                                                <rect key="frame" x="81" y="20" width="68.5" height="48.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaT-Bc-iOj">
+                                                <rect key="frame" x="115.5" y="20" width="0.0" height="48.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48.5" id="RGv-Pc-ZM4"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="41"/>
                                                 <color key="textColor" red="0.35294117650000001" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -481,8 +516,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P0c-ph-fGN">
                                         <rect key="frame" x="468" y="0.0" width="231" height="104"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="89" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtA-S5-plN">
-                                                <rect key="frame" x="92" y="20" width="46" height="48.5"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtA-S5-plN">
+                                                <rect key="frame" x="115" y="20" width="0.0" height="48.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48.5" id="bL2-2e-xQI"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="41"/>
                                                 <color key="textColor" red="0.35294117650000001" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>

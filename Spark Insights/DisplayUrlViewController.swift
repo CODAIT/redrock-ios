@@ -8,10 +8,11 @@
 
 import UIKit
 
-class DisplayUrlViewController: UIViewController {
+class DisplayUrlViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var URLwebView: UIWebView!
     var loadUrl = ""
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     @IBAction func dismissViewController(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -19,6 +20,7 @@ class DisplayUrlViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.URLwebView.delegate = self
         if let url = NSURL (string: loadUrl)
         {
             let requestObj = NSURLRequest(URL: url)
@@ -27,6 +29,10 @@ class DisplayUrlViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    func webViewDidFinishLoad(webView: UIWebView) {
+        self.loadingIndicator.hidden = true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

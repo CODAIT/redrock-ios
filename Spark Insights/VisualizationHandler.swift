@@ -12,48 +12,71 @@ import Foundation
 import UIKit
 
 class VisualizationHandler{
-    
     var webViews : [UIWebView] = [UIWebView]()
+    var loadingViews = [UIActivityIndicatorView]()
+    
+    var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
+    var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
     
     var treemapData : [[String]]       = [[String]]()
     var circlepackingData : [[String]]      = [[String]]()
     var worddistanceData : [[String]]      = [[String]]()
+    var forcegraphData : [[String]]      = [[String]]()
     var timemapData : [[String]] = [[String]]()
     var stackedbarData : [[String]] = [[String]]()
     var wordcloudData : [[String]] = [[String]]()
     
     func reloadAppropriateView(viewNumber: Int){
-        //println("should reload \(viewNumber)")
-        
-        if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
-            webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-            webViews[viewNumber].loadRequest(webViews[viewNumber].request!)
+        if var request = webViews[viewNumber].request{
+            //Log("if var request = webViews[viewNumber].request! is \(request)")
+            
+            if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+                webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
+                let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
+                let request = NSURLRequest(URL: filePath!)
+                webViews[viewNumber].loadRequest(request)
+                self.webViews[viewNumber].hidden = false
+                self.loadingViews[viewNumber].stopAnimating()
+                self.loadingViews[viewNumber].hidden = true
+            }
         }
-        
+        else{
+            //Log("NOT if var request = webViews[viewNumber].request!")
+        }
     }
+    
     func transformData(webView: UIWebView){
         // uses the path to determine which function to use
         switch webView.request!.URL!.lastPathComponent!{
         case "treemap.html":
             transformDataForTreemapping(webView)
+            break;
         case "circlepacking.html":
             transformDataForCirclepacking(webView)
+            break;
         case "worddistance.html":
             transformDataForWorddistance(webView)
+            break;
+        case "forcegraph.html":
+            transformDataForForcegraph(webView)
+            break;
         case "timemap.html":
             transformDataForTimemap(webView)
+            break;
         case "stackedbar.html":
             transformDataForStackedbar(webView)
+            break;
         case "wordcloud.html":
             transformDataForWordcloud(webView)
         default:
-            break
+            break;
         }
+        
         
     }
     
     func transformDataForTreemapping(webView: UIWebView){
-        //println(treemapData)
+        //Log(treemapData)
         
         var script9="var data7 = '{\"name\": \"all\",\"children\": ["
         
@@ -71,7 +94,7 @@ class VisualizationHandler{
         }
         script9+="]}'; renderChart(data7);"
 
-        //println(script9)
+        //Log(script9)
         
         //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
         
@@ -83,7 +106,7 @@ class VisualizationHandler{
     }
     
     func transformDataForCirclepacking(webView: UIWebView){
-        //println(circlepackingData)
+        //Log(circlepackingData)
         
         var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
         
@@ -118,16 +141,82 @@ class VisualizationHandler{
     }
     
     func transformDataForWorddistance(webView: UIWebView){
-        //println(worddistanceData)
+        //Log(worddistanceData)
         
-        var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
+        var script9 = "var myData = '{\"name\": \""
+        script9+="spark"
+        script9+="\",\"children\": ["
+        for r in 0..<worddistanceData.count{
+            script9+="{\"name\": \""
+            script9+=worddistanceData[r][0]
+            script9+="\", \"distance\": "
+            script9+=worddistanceData[r][1]
+            script9+=", \"size\": "
+            script9+=worddistanceData[r][2]
+            script9+="}"
+            if(r != (worddistanceData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);"
         
-        webView.stringByEvaluatingJavaScriptFromString(wordScript)
+        println(script9)
+        
+        /*
+        [ [ "#datamining", 0.66010167854665769, "457" ], [ "#analytics", 0.66111733184244015, "8904" ], [ "#rstats", 0.69084306092036141, "361" ], [ "@hortonworks", 0.66914077012093209, "166" ], [ "#neo4j", 0.69127034015170996, "63" ], [ "#datascience", 0.67888717822606814, "4202" ], [ "#azure", 0.66226415367181413, "667" ], [ "@mapr", 0.66354464393456225, "165" ], [ "#deeplearning", 0.66175874534547685, "396" ], [ "#machinelearning", 0.6964340180591716, "2260" ], [ "#nosql", 0.75678772608504818, "877" ], [ "#sas", 0.70367785412709649, "145" ], [ "#mongodb", 0.6993281653000063, "225" ], [ "#hbase", 0.78010979167439309, "138" ], [ "#python", 0.69931247945181596, "2821" ], [ "#mapreduce", 0.72372695100578921, "62" ], [ "#apache", 0.75935793530857787, "244" ], [ "#cassandra", 0.76777460490727012, "128" ], [ "#hadoop", 0.82618702428574087, "1831" ], [ "#r", 0.76732526060916861, "277" ] ]*/
+        
+        //var wordScript = "var myData = '{\"name\": \"cat\",\"children\": [{\"name\": \"feline\", \"distance\": 0.6, \"size\": 44},{\"name\": \"dog\", \"distance\": 0.4, \"size\": 22},{\"name\": \"bunny\", \"distance\": 0.0, \"size\": 10},{\"name\": \"gif\", \"distance\": 1.0, \"size\": 55},{\"name\": \"tail\", \"distance\": 0.2, \"size\": 88},{\"name\": \"fur\", \"distance\": 0.7, \"size\": 50}]}'; var w = \(webView.window!.frame.size.width); var h = \(webView.window!.frame.size.height); renderChart(myData,w,h);"
+        
+        // println(wordScript)
+        
+        webView.stringByEvaluatingJavaScriptFromString(script9)
     }
 
+    func transformDataForForcegraph(webView: UIWebView){
+        //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
+        
+        var script9 = "var myData = '{\"nodes\": [ {\"name\":\"searchterm\",\"value\":1000,\"group\":1}, "
+        for r in 0..<forcegraphData.count{
+            script9+="{\"name\": \""
+            script9+=forcegraphData[r][0]
+            script9+="\", \"value\": "
+            script9+=forcegraphData[r][2]
+            script9+=", \"group\": 2"
+            script9+="}"
+            if(r != (forcegraphData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="], \"links\": ["
+        for r in 0..<forcegraphData.count{
+            script9+="{\"source\": 0"
+            script9+=", \"target\": "
+            script9+="\(r+1)"
+            script9+=", \"distance\": "
+            var myInteger = Int((forcegraphData[r][1] as NSString).floatValue*10000)
+            script9+="\(myInteger)"
+            script9+="}"
+            if(r != (forcegraphData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);"
+
+        //println("SCRIPT9..... \(script9)")
+        
+        //var testscript = "var myData='{\"nodes\":[    {\"name\":\"Myriel\",\"value\":52,\"group\":1},    {\"name\":\"Labarre\",\"value\":5,\"group\":2},    {\"name\":\"Valjean\",\"value\":17,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":55,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":44,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":22,\"group\":2},    {\"name\":\"Isabeau\",\"value\":17,\"group\":2},    {\"name\":\"Gervais\",\"value\":33,\"group\":2}  ],  \"links\":[    {\"source\":0,\"target\":1,\"distance\":33},    {\"source\":0,\"target\":2,\"distance\":22},    {\"source\":0,\"target\":3,\"distance\":22},    {\"source\":0,\"target\":4,\"distance\":11},    {\"source\":0,\"target\":5,\"distance\":22},    {\"source\":0,\"target\":6,\"distance\":22},    {\"source\":0,\"target\":7,\"distance\":43},    {\"source\":0,\"target\":8,\"distance\":22},    {\"source\":0,\"target\":9,\"distance\":22}  ]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);";
+        
+        //println("TESTSCRIPT..... \(testscript)")
+        
+        // println(wordScript)
+        
+        webView.stringByEvaluatingJavaScriptFromString(script9)
+    }
+
+    
     func transformDataForTimemap(webView: UIWebView){
         
-        //println(timemapData)
+        //Log(timemapData)
         
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
@@ -145,7 +234,7 @@ class VisualizationHandler{
         }
         script9+="]}]; renderChart(myData);"
         
-        //println(script9)
+        //Log(script9)
 
         webView.stringByEvaluatingJavaScriptFromString(script9)
     }
@@ -154,7 +243,7 @@ class VisualizationHandler{
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
-        //println(stackedbarData)
+        //Log(stackedbarData)
         
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
@@ -172,7 +261,7 @@ class VisualizationHandler{
         }
         script9+="]}]; renderChart(myData);"
         
-        //println(script9)
+        //Log(script9)
 
         //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
         
@@ -180,11 +269,21 @@ class VisualizationHandler{
     }
     
     func transformDataForWordcloud(webView: UIWebView){
-        println("transformDataForWordcloud (not yet imp)")
+        //Log("transformDataForWordcloud (not yet imp)")
     }
 
     
 
-    
+    //MARK: Clean WebViews
+    func cleanWebViews()
+    {
+        for var i = 0; i < self.webViews.count; i++
+        {
+            //self.webViews[i].loadHTMLString("<HTML></HTML>", baseURL: nil)
+            self.webViews[i].hidden = true
+            self.loadingViews[i].startAnimating()
+            self.loadingViews[i].hidden = false
+        }
+    }
     
 }

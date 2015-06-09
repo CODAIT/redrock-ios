@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         if Config.skipSearchScreen {
             displayContainerViewController(searchViewController!, searchText: "")
         }
-        
         return true
     }
 

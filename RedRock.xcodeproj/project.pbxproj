@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		41CC75D71B22068600383F13 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC75D61B22068600383F13 /* Network.swift */; };
+		41E688521B22550000644714 /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E688511B22550000644714 /* LoadingTableViewCell.swift */; };
 		41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94041B179DC400A80447 /* TweetsTableViewController.swift */; };
 		41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41ED94081B17AA6700A80447 /* ContextLabel.swift */; };
 		41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41ED940A1B17AA7100A80447 /* TweetCell.xib */; };
@@ -30,6 +31,10 @@
 		CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA7B1B190081003F01F6 /* PageControlView.swift */; };
 		CE79DA831B19166C003F01F6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA801B19166C003F01F6 /* LICENSE */; };
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
+		CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */; };
+		CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */; };
+		CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEADC1B22452300FB9695 /* animation_v1.gif */; };
+		CEDBEADF1B22672400FB9695 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEADE1B22672400FB9695 /* Log.swift */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
 		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
@@ -48,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		41CC75D61B22068600383F13 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		41E688511B22550000644714 /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		41ED94041B179DC400A80447 /* TweetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsTableViewController.swift; sourceTree = "<group>"; };
 		41ED94081B17AA6700A80447 /* ContextLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextLabel.swift; sourceTree = "<group>"; };
 		41ED940A1B17AA7100A80447 /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
@@ -76,6 +82,10 @@
 		CE79DA801B19166C003F01F6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CE79DA811B19166C003F01F6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
+		CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
+		CEDBEADC1B22452300FB9695 /* animation_v1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = animation_v1.gif; sourceTree = "<group>"; };
+		CEDBEADE1B22672400FB9695 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
 		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -104,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				CE79DA7F1B19166C003F01F6 /* UIColor-Hex-Swift */,
+				CEDBEAD71B2244CE00FB9695 /* YLGIFImage-Swift */,
 				41ED941A1B17E20000A80447 /* Tweets.json */,
 				41ED94081B17AA6700A80447 /* ContextLabel.swift */,
 				41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */,
@@ -159,14 +170,16 @@
 				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
 				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
-				419E859F1B1FA0DD009847B9 /* SearchMenuTableViewCell.swift */,
 				CE79DA7B1B190081003F01F6 /* PageControlView.swift */,
+				41E688511B22550000644714 /* LoadingTableViewCell.swift */,
 				41CC75D61B22068600383F13 /* Network.swift */,
 				CE79DA791B18B9BA003F01F6 /* Config.swift */,
 				CE79DA6A1B1650AA003F01F6 /* DemoData.swift */,
+				CEDBEADE1B22672400FB9695 /* Log.swift */,
 				CE79DA511B1640C0003F01F6 /* Images.xcassets */,
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
+				CEDBEADC1B22452300FB9695 /* animation_v1.gif */,
 				41DE4C6A1B18E5A9002BD66A /* Utilities */,
 				41ED94151B17DC4500A80447 /* Tweets */,
 				41ED94101B17C2EB00A80447 /* TweetCells */,
@@ -219,6 +232,16 @@
 				F32ACAE41B1FC05100D3D16E /* LoadingView.swift */,
 			);
 			name = LoadingView;
+			sourceTree = "<group>";
+		};
+		CEDBEAD71B2244CE00FB9695 /* YLGIFImage-Swift */ = {
+			isa = PBXGroup;
+			children = (
+				CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */,
+				CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */,
+			);
+			name = "YLGIFImage-Swift";
+			path = "Utilities/YLGIFImage-Swift";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +328,7 @@
 				CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */,
 				F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */,
 				CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */,
+				CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */,
 				CE79DA831B19166C003F01F6 /* LICENSE in Resources */,
 				CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */,
 				41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */,
@@ -327,7 +351,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41E688521B22550000644714 /* LoadingTableViewCell.swift in Sources */,
 				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
+				CEDBEADF1B22672400FB9695 /* Log.swift in Sources */,
 				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
@@ -336,7 +362,9 @@
 				CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */,
 				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
+				CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
+				CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */,
 				CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */,
 				CE79DA4B1B1640C0003F01F6 /* AppDelegate.swift in Sources */,
 				41CC75D71B22068600383F13 /* Network.swift in Sources */,
@@ -477,8 +505,9 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-D DEBUGLOG";
 				PRODUCT_NAME = RedRock;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "960432f8-dca8-45cb-b9c6-e7754f2c87b5";
 			};
 			name = Debug;
 		};
@@ -486,12 +515,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "6a171cbf-0f3a-44f7-9724-9536ab2cff8b";
 			};
 			name = Release;
 		};

@@ -41,7 +41,15 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if (Config.searchViewAnimation) {
+            YLGIFImage.setPrefetchNum(5)
+            let path = NSBundle.mainBundle().URLForResource("animation_v1", withExtension: "gif")?.absoluteString as String!
+            topImageView.image = YLGIFImage(contentsOfFile: path)
+        }
+        
         self.textField.delegate = self
+        self.textField.keyboardType = UIKeyboardType.Twitter
         setInsetTextField()
         addGestureRecognizerSearchView()
         imageTitleTopConstraintInitial = self.imageTitleTopConstraint.constant
@@ -53,13 +61,16 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.resetViewController()
+        if (Config.searchViewAnimation) {
+            topImageView.startAnimating()
+        }
     }
     
     // MARK: - Reset UI
     
     func resetViewController() {
         // Use this function to reset the view controller's UI to a clean state
-        println("Resetting \(__FILE__)")
+        Log("Resetting \(__FILE__)")
         self.textField.text = ""
     }
     
@@ -108,6 +119,9 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBAction func startedEditing(sender: UITextField) {
         if self.recalculateConstrainstsForSearchView
         {
+            if (Config.searchViewAnimation) {
+                topImageView.stopAnimating()
+            }
             recalculateConstraintsForAnimation()
             UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
                 self.view.layoutIfNeeded()
@@ -161,7 +175,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         else if state == UIGestureRecognizerState.Ended
         {
-            if searchText != ""
+            if searchText != "" && checkIncludeTerms(searchText)
             {
                 delegate?.displayContainerViewController?(self, searchText: searchText)
             }
@@ -178,6 +192,26 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
+    }
+    
+    /* Find at least one include term*/
+    func checkIncludeTerms(searchTerms: String) -> Bool
+    {
+        let terms = searchTerms.componentsSeparatedByString(",")
+        for var i = 0; i < terms.count; i++
+        {
+            var term = terms[i]
+            if term != ""
+            {
+                var aux = Array(term)
+                if aux[0] != "-"
+                {
+                    return true
+                }
+            }
+        }
+        
+        return false
     }
 
 }
