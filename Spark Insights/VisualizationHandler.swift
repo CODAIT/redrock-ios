@@ -15,6 +15,7 @@ class VisualizationHandler{
     var webViews : [UIWebView] = [UIWebView]()
     var loadingViews = [UIActivityIndicatorView]()
     var resultsLabels = [UILabel]()
+    var isloadingVisualization = [Bool]()
     var searchText : String = ""
     
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
@@ -372,7 +373,7 @@ class VisualizationHandler{
     
     func noDataState(index: Int)
     {
-        if !firstLoad
+        if !self.isloadingVisualization[index]
         {
             self.webViews[index].hidden = true
             self.loadingViews[index].stopAnimating()
@@ -387,7 +388,17 @@ class VisualizationHandler{
         for var i = 0; i < self.webViews.count; i++
         {
             self.loadingState(i)
+            self.isloadingVisualization[i] = true
         }
+        
+        //Clear charts data
+        self.treemapData.removeAll(keepCapacity: false)
+        self.circlepackingData.removeAll(keepCapacity: false)
+        self.worddistanceData.removeAll(keepCapacity: false)
+        self.forcegraphData.removeAll(keepCapacity: false)
+        self.timemapData.removeAll(keepCapacity: false)
+        self.stackedbarData.removeAll(keepCapacity: false)
+        self.wordcloudData.removeAll(keepCapacity: false)
     }
     
 }

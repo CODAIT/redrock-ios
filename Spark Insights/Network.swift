@@ -15,6 +15,7 @@ protocol NetworkDelegate {
     func handleProfessionCallBack(json:JSON)
     func handleWordDistanceCallBack(json:JSON)
     func handleWordClusterCallBack(json:JSON)
+    func handleWorldCloudCallBack(json: JSON)
     func handleRequestError(message: String)
     func requestsEnded(error: Bool)
 }
@@ -40,6 +41,7 @@ class Network
         //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
         self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
+        self.executeWorldCloudRequest()
     }
     
     //MARK: Data
@@ -108,6 +110,14 @@ class Network
         executeRequest(req, callBack: self.callWordClusterDelegate)
     }
     
+    private func executeWorldCloudRequest()
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "hao"
+        let req = self.createRequest(Config.serverWorldcloudPath, paremeters: parameters)
+        executeRequest(req, callBack: self.callWorldCloudDelegate)
+    }
+    
     //MARK: Call Delegates
     private func callTweetDelegate(json: JSON)
     {
@@ -139,7 +149,11 @@ class Network
     {
         self.delegate?.handleWordClusterCallBack(json)
     }
-
+    
+    private func callWorldCloudDelegate(json: JSON)
+    {
+        self.delegate?.handleWorldCloudCallBack(json)
+    }
 
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
