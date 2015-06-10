@@ -36,12 +36,12 @@ class VisualizationHandler{
             //Log("if var request = webViews[viewNumber].request! is \(request)")
             
             if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+
                 self.loadingState(viewNumber)
                 webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
                 let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
                 let request = NSURLRequest(URL: filePath!)
                 webViews[viewNumber].loadRequest(request)
-                //self.successState(viewNumber)
             }
         }
         else{

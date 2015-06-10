@@ -352,6 +352,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
         visualizationHandler.transformData(webView)
+
     }
     
     // MARK: - PageControlDelegate
