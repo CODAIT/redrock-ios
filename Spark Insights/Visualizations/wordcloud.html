@@ -18,6 +18,11 @@ wordColor=d3.scale.linear().domain([10,20,40,80]).range(["#5596E6","#8CD211","#F
 //(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80", "#264a60", "#1c3648", "#142834", "#010205"]);
 
 function makeCanvases(number){
+
+
+//d3.selectAll(("#svg" + topic[0].topic + " > *").remove();
+d3.selectAll("svg").remove();
+
   for (x = 0; x < number; x++) {
   	viz = d3.select("body").append("svg")
       .attr("width", 465)
@@ -46,6 +51,7 @@ function renderSingle(topic) {
   function draw(words) {
 
 	viz = d3.select("#svg" + topic[0].topic);
+
 
       viz.append("g")
         .attr("transform", "translate(265,220)")
@@ -80,6 +86,14 @@ function renderSingle(topic) {
 }
 
 function renderChart(data) {
+    /*
+    d3.select("svg").remove();
+    d3.select("svg0").remove();
+    d3.select("svg1").remove();
+    d3.select("svg2").remove();
+    d3.select("svg3").remove();
+    */
+    
     makeCanvases(data.length);
 
     for (i = 0; i < data.length; i++) {
