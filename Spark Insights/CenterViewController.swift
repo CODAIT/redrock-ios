@@ -75,6 +75,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        visualizationHandler.firstLoad = true
         self.setupTweetsTableView()
         self.setupWebViews()
         self.setupScrollView()
@@ -255,7 +256,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
-            
+            myWebView.scalesPageToFit = Config.scalePagesToFit[i]
             //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
@@ -282,20 +283,36 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             self.scrollView.delegate = self
             
+            // scroll view center
+            var center = self.scrollView.center
+            center.x = myOrigin + center.x
+            
             //Loading view
             let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
             activityIndicator.frame = CGRectMake(myOrigin, 0, 100, 100);
-            var center = self.scrollView.center
-            center.x = myOrigin + center.x
             activityIndicator.center = center
             activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
             activityIndicator.color = Config.darkBlueColor
             activityIndicator.startAnimating()
             self.scrollView.addSubview(activityIndicator)
             visualizationHandler.loadingViews.append(activityIndicator)
+            
+            //Results Label
+            let label = UILabel()
+            label.frame = CGRectMake(myOrigin, 0, 300, 300);
+            label.numberOfLines = 3
+            label.center = center
+            label.textColor = Config.darkBlueColor
+            label.text = Config.noDataMessage
+            label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
+            label.textAlignment = NSTextAlignment.Center
+            label.hidden = true
+            self.scrollView.addSubview(label)
+            visualizationHandler.resultsLabels.append(label)
         }
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
+        self.visualizationHandler.firstLoad = false
     }
     
     // MARK: - UIScrollViewDelegate
@@ -311,8 +328,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
-            visualizationHandler.loadingViews[page].hidden = false
-            visualizationHandler.loadingViews[page].startAnimating()
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
             if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
@@ -330,12 +345,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     /*
         When a page finishes loading, load in the javascript
     */
-    func webViewDidFinishLoad(webView: UIWebView) {
+    /*func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        visualizationHandler.transformData(webView, index: previousPage)
         webView.hidden = false
-        visualizationHandler.transformData(webView)
-    }
+    }*/
     
     // MARK: - PageControlDelegate
     
