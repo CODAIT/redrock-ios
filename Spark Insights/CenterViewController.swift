@@ -351,8 +351,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
-        visualizationHandler.transformData(webView, index: previousPage)
-        webView.hidden = false
+        visualizationHandler.transformData(webView)
+
     }
     
     // MARK: - PageControlDelegate
