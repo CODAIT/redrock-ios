@@ -348,12 +348,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     /*
         When a page finishes loading, load in the javascript
     */
-    /*func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
-        visualizationHandler.transformData(webView, index: previousPage)
-        webView.hidden = false
-    }*/
+        visualizationHandler.transformData(webView)
+    }
     
     // MARK: - PageControlDelegate
     
