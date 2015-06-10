@@ -82,11 +82,11 @@
             chart.color(["#325d80","#94d9d1"]);
             chart.margin({left: 80, right:80,top:80,bottom:80});
             chart.tooltips(true);
-            chart.reduceXTicks(false);
+            chart.reduceXTicks(true);
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
-                        return chartData[0].values[d].x;
+                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length-3);
             });
             chart.xAxis.rotateLabels(-30);
             chart.yAxis
