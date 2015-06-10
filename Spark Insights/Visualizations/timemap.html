@@ -113,6 +113,7 @@
     </style>
 </head>
 <body>
+    <p id="test">test</p>
   <div id="bubbles" class='with-3d-shadow with-transitions'></div>
   <div id="controls">
 
@@ -182,7 +183,14 @@
         ;
     }
 
-    function renderChart(data) {
+    function renderChart(data, biggestValue) {
+        
+        //maxNumber = getMaxValue(data);
+        document.getElementById("test").innerHTML = "biggestValue: "+(biggestValue+1);
+        var radiusScale = d3.scale.linear().domain([0.0,biggestValue]).range([0.0,8000.0]);
+        scalefactor = radiusScale(scalefactor);
+        document.getElementById("test").innerHTML = "scalefactor: "+(scalefactor);
+        
        mapData = data[0].values;
        mapData = mapLatandLong(mapData);
        datesArr = getDistictDates(mapData);
@@ -192,10 +200,6 @@
        
        maxCount = getMaxCount(mapData);
        
-       //maxNumber = getMaxValue(data);
-       //document.getElementById("test").innerHTML = "maxValue: "+maxValue
-       
-       var radiusScale = d3.scale.linear().domain([0,maxCount]).range([1,50]);
 
        //Set XY
        var xy = d3.geo.equirectangular()
@@ -386,6 +390,7 @@
       .transition()
       .duration(2000).ease("linear")
       .attr("r",  function(d) {
+            //document.getElementById("test").innerHTML = "getRadiusForDateAndCountry(filteredMapData[value],d.name): "+getRadiusForDateAndCountry(filteredMapData[value],d.name);
         return getRadiusForDateAndCountry(filteredMapData[value],d.name);
             
             //radiusScale(getRadiusForDateAndCountry(filteredMapData[value],d.name)); //return getRadiusForDateAndCountry(datesArr[value],d.name); //Math.floor((Math.random() * 50) + 1); //
