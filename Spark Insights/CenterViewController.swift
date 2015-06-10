@@ -309,6 +309,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             label.hidden = true
             self.scrollView.addSubview(label)
             visualizationHandler.resultsLabels.append(label)
+            
+            //loading control
+            visualizationHandler.isloadingVisualization.append(true)
         }
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
@@ -526,6 +529,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 3        // number of columns
         var containerName = "location" // name of container for data //TODO: unknown
         visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
 
@@ -533,6 +537,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 4        // number of columns
         var containerName = "sentiment" // name of container for data //TODO: unknown
         visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
@@ -542,59 +547,43 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var containerName = "distance" // name of container for data
         visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
         visualizationHandler.searchText = searchText!
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     func handleWordClusterCallBack(json: JSON) {
         var numberOfColumns = 3        // number of columns
         var containerName = "cluster" // name of container for data
         visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
     func handleProfessionCallBack(json: JSON) {
         Log("handleProfessionCallBack")
-        /*
-        var numberOfColumns = 1        // number of columns //we need to make this arbitrary
-        var containerName = "profession" // name of container for data //TODO: unknown
-        visualizationHandler.treemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
-        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
-        */
-        //Log(json["profession"])
-        
-        func replaceEmptyStringWithZero(myString:String)->String{
-            if(myString.isEmpty){
-                return "0"
+        if let professions = json["profession"].dictionaryObject as? Dictionary<String,Int>
+        {
+            var keys = professions.keys
+            var treemap = [[String]]()
+            for profession in keys
+            {
+                if (professions[profession] != nil || professions[profession] != 0)
+                {
+                    treemap.append([profession, String(professions[profession]!)])
+                }
             }
-            else{
-                return myString
-            }
+            visualizationHandler.treemapData = treemap
         }
-        
-        var academicValue = replaceEmptyStringWithZero(json["profession"]["Academic"].stringValue)
-        var designerValue = replaceEmptyStringWithZero(json["profession"]["Designer"].stringValue)
-        var mediaValue = replaceEmptyStringWithZero(json["profession"]["Media"].stringValue)
-        var hrValue = replaceEmptyStringWithZero(json["profession"]["HR"].stringValue)
-        var marketingValue = replaceEmptyStringWithZero(json["profession"]["Marketing"].stringValue)
-        var executiveValue = replaceEmptyStringWithZero(json["profession"]["Executive"].stringValue)
-        var engineerValue = replaceEmptyStringWithZero(json["profession"]["Engineer"].stringValue)
-        
-        Log("values: \(academicValue)... \(designerValue)... \(mediaValue)... \(hrValue)... \(marketingValue)... \(executiveValue)... \(engineerValue)...")
-        
-        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
-
-        //var professionData = "{ \"status\": 0, \"profession\": { \"Academic\": 19, \"Designer\": 11, \"Media\": 40, \"HR\": 4, \"Marketing\": 14, \"Executive\": 11, \"Engineer\": 20 } }"
-        
-
-        /*
-        var professionData = json.rawString()!
-        if let rangeOfProfession = professionData.rangeOfString("\"Academic\": "){
-            remainingString = professionData.substringFromIndex(rangeOfProfession.endIndex)
-            var complete = false
-            while(!complete){
-                var startOfWord = remainingString.rangeOfString("\"").startIndex
-            }
+        else
+        {
+            Log("Could not convert Profession JSON into Dictionary")
         }
-        */
+        visualizationHandler.isloadingVisualization[previousPage] = false
+        visualizationHandler.reloadAppropriateView(previousPage)
+     }
+    
+    func handleWorldCloudCallBack(json: JSON) {
+        //TODO: populate word cloud
+        visualizationHandler.isloadingVisualization[previousPage] = false
     }
     
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>> {
