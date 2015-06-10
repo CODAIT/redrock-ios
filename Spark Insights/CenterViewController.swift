@@ -526,6 +526,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 3        // number of columns
         var containerName = "distance" // name of container for data
         visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.searchText = searchText!
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     func handleWordClusterCallBack(json: JSON) {
