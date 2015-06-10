@@ -85,15 +85,7 @@ function renderSingle(topic) {
 
 }
 
-function renderChart(data) {
-    /*
-    d3.select("svg").remove();
-    d3.select("svg0").remove();
-    d3.select("svg1").remove();
-    d3.select("svg2").remove();
-    d3.select("svg3").remove();
-    */
-    
+function renderChart(data) {    
     makeCanvases(data.length);
 
     for (i = 0; i < data.length; i++) {

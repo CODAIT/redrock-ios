@@ -107,6 +107,8 @@ function renderChart(data){
       nodes = pack.nodes(root),
       view;
       
+  svg.selectAll("circle,text").remove()
+      
   var circle = svg.selectAll("circle")
       .data(nodes)
     .enter().append("circle")
