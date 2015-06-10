@@ -545,13 +545,22 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         */
         //Log(json["profession"])
         
-        var academicValue = json["profession"]["Academic"].stringValue
-        var designerValue = json["profession"]["Designer"].stringValue
-        var mediaValue = json["profession"]["Media"].stringValue
-        var hrValue = json["profession"]["HR"].stringValue
-        var marketingValue = json["profession"]["Marketing"].stringValue
-        var executiveValue = json["profession"]["Executive"].stringValue
-        var engineerValue = json["profession"]["Engineer"].stringValue
+        func replaceEmptyStringWithZero(myString:String)->String{
+            if(myString.isEmpty){
+                return "0"
+            }
+            else{
+                return myString
+            }
+        }
+        
+        var academicValue = replaceEmptyStringWithZero(json["profession"]["Academic"].stringValue)
+        var designerValue = replaceEmptyStringWithZero(json["profession"]["Designer"].stringValue)
+        var mediaValue = replaceEmptyStringWithZero(json["profession"]["Media"].stringValue)
+        var hrValue = replaceEmptyStringWithZero(json["profession"]["HR"].stringValue)
+        var marketingValue = replaceEmptyStringWithZero(json["profession"]["Marketing"].stringValue)
+        var executiveValue = replaceEmptyStringWithZero(json["profession"]["Executive"].stringValue)
+        var engineerValue = replaceEmptyStringWithZero(json["profession"]["Engineer"].stringValue)
         
         Log("values: \(academicValue)... \(designerValue)... \(mediaValue)... \(hrValue)... \(marketingValue)... \(executiveValue)... \(engineerValue)...")
         
