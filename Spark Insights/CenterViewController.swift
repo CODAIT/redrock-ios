@@ -75,6 +75,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        visualizationHandler.firstLoad = true
         self.setupTweetsTableView()
         self.setupWebViews()
         self.setupScrollView()
@@ -255,7 +256,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
             myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
-            
+            myWebView.scalesPageToFit = Config.scalePagesToFit[i]
             //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
             
             myWebView.loadRequest(request)
@@ -282,20 +283,39 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             self.scrollView.delegate = self
             
+            // scroll view center
+            var center = self.scrollView.center
+            center.x = myOrigin + center.x
+            
             //Loading view
             let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
             activityIndicator.frame = CGRectMake(myOrigin, 0, 100, 100);
-            var center = self.scrollView.center
-            center.x = myOrigin + center.x
             activityIndicator.center = center
             activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
             activityIndicator.color = Config.darkBlueColor
             activityIndicator.startAnimating()
             self.scrollView.addSubview(activityIndicator)
             visualizationHandler.loadingViews.append(activityIndicator)
+            
+            //Results Label
+            let label = UILabel()
+            label.frame = CGRectMake(myOrigin, 0, 300, 300);
+            label.numberOfLines = 3
+            label.center = center
+            label.textColor = Config.darkBlueColor
+            label.text = Config.noDataMessage
+            label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
+            label.textAlignment = NSTextAlignment.Center
+            label.hidden = true
+            self.scrollView.addSubview(label)
+            visualizationHandler.resultsLabels.append(label)
+            
+            //loading control
+            visualizationHandler.isloadingVisualization.append(true)
         }
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
+        self.visualizationHandler.firstLoad = false
     }
     
     // MARK: - UIScrollViewDelegate
@@ -311,8 +331,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
-            visualizationHandler.loadingViews[page].hidden = false
-            visualizationHandler.loadingViews[page].startAnimating()
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
             if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
@@ -333,8 +351,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
+        visualizationHandler.transformData(webView, index: previousPage)
         webView.hidden = false
-        visualizationHandler.transformData(webView)
     }
     
     // MARK: - PageControlDelegate
@@ -519,6 +537,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 3        // number of columns
         var containerName = "location" // name of container for data //TODO: unknown
         visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
 
@@ -530,6 +549,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 4        // number of columns
         var containerName = "sentiment" // name of container for data //TODO: unknown
         visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
@@ -543,6 +563,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var containerName = "distance" // name of container for data
         visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.searchText = searchText!
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     func handleWordClusterCallBack(json: JSON?, error: NSError?) {
@@ -551,8 +572,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         var numberOfColumns = 3        // number of columns
-        var containerName = "???" // name of container for data //TODO: unknown
+        var containerName = "cluster" // name of container for data
         visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+        visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
@@ -562,48 +584,31 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             Log("HANDLE ERROR: \(error)")
             return
         }
-        /*
-        var numberOfColumns = 1        // number of columns //we need to make this arbitrary
-        var containerName = "profession" // name of container for data //TODO: unknown
-        visualizationHandler.treemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
-        visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
-        */
-        //Log(json["profession"])
         
-        func replaceEmptyStringWithZero(myString:String)->String{
-            if(myString.isEmpty){
-                return "0"
+        if let professions = json!["profession"].dictionaryObject as? Dictionary<String,Int>
+        {
+            var keys = professions.keys
+            var treemap = [[String]]()
+            for profession in keys
+            {
+                if (professions[profession] != nil || professions[profession] != 0)
+                {
+                    treemap.append([profession, String(professions[profession]!)])
+                }
             }
-            else{
-                return myString
-            }
+            visualizationHandler.treemapData = treemap
         }
-        
-        var academicValue = replaceEmptyStringWithZero(json!["profession"]["Academic"].stringValue)
-        var designerValue = replaceEmptyStringWithZero(json!["profession"]["Designer"].stringValue)
-        var mediaValue = replaceEmptyStringWithZero(json!["profession"]["Media"].stringValue)
-        var hrValue = replaceEmptyStringWithZero(json!["profession"]["HR"].stringValue)
-        var marketingValue = replaceEmptyStringWithZero(json!["profession"]["Marketing"].stringValue)
-        var executiveValue = replaceEmptyStringWithZero(json!["profession"]["Executive"].stringValue)
-        var engineerValue = replaceEmptyStringWithZero(json!["profession"]["Engineer"].stringValue)
-        
-        Log("values: \(academicValue)... \(designerValue)... \(mediaValue)... \(hrValue)... \(marketingValue)... \(executiveValue)... \(engineerValue)...")
-        
-        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["Media",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
-
-        //var professionData = "{ \"status\": 0, \"profession\": { \"Academic\": 19, \"Designer\": 11, \"Media\": 40, \"HR\": 4, \"Marketing\": 14, \"Executive\": 11, \"Engineer\": 20 } }"
-        
-
-        /*
-        var professionData = json.rawString()!
-        if let rangeOfProfession = professionData.rangeOfString("\"Academic\": "){
-            remainingString = professionData.substringFromIndex(rangeOfProfession.endIndex)
-            var complete = false
-            while(!complete){
-                var startOfWord = remainingString.rangeOfString("\"").startIndex
-            }
+        else
+        {
+            Log("Could not convert Profession JSON into Dictionary")
         }
-        */
+        visualizationHandler.isloadingVisualization[previousPage] = false
+        visualizationHandler.reloadAppropriateView(previousPage)
+     }
+    
+    func handleWorldCloudCallBack(json: JSON?, error: NSError?) {
+        //TODO: populate word cloud
+        visualizationHandler.isloadingVisualization[previousPage] = false
     }
     
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>> {
@@ -652,6 +657,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.tweetsTableViewController.tableView.reloadData()
     }
     
+    
     func populateCharts(json : JSON){
         if(Config.useDummyData){
             visualizationHandler.circlepackingData = [["1","spark","222"],["1","sparksummit","344"],["2","#ibm","111"],["3","bigdata","577"],["3","analytics","99"],["4","@mapr","233"],["4","hadoop","333"],["4","hdfs","288"],["4","hortonworks","555"],["1","#sparkinsight","444"],["3","datamining","55"]]
@@ -660,8 +666,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             visualizationHandler.treemapData = [["data scientist","222"],["programmer","344"],["designer","111"],["roboticist","577"],["marketer","99"],["barista","233"],["ceo","333"],["founder","288"],["fortune500","555"],["analyst","444"],["gamedev","55"]]
             
             visualizationHandler.stackedbarData = [["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
-
+            
             visualizationHandler.worddistanceData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
+            
+            visualizationHandler.wordcloudData = [["0", "link", "0.2"], ["0", "Very", "0.3"], ["0", "worry", "0.3"], ["0", "hold", "0.00001"], ["0", "City", "0.0002"], ["0", "Ackles", "0.01"], ["0", "places", "0.1"], ["0", "Followers", "0.001"], ["0", "donxe2x80x99t", "0.002"], ["0", "seems", "0.01"], ["1", "power", "0.1"], ["1", "keep", "0.22"], ["1", "Scherzinger", "0.3"], ["1", "@justinbieber:", "0.12"], ["1", "SUPER", "0.16"], ["1", "#ChoiceTVBreakOutStar", "0.09"], ["1", "#ChoiceMaleHottie", "0.35"], ["1", "call", "0.05"], ["1", "years", "0.2"], ["1", "change", "0.3"], ["2", "pretty", "0.15"], ["2", "needed", "0.12"], ["2", "like", "0.16"], ["2", "song", "0.002"], ["2", "SEHUN", "0.0000002"], ["2", "team", "0.01"], ["2", "Because", "0.012"], ["2", "needs", "0.004"], ["2", "forever", "0.12"], ["2", "stop", "0.17"], ["3", "fucking", "0.07"], ["3", "Followers", "0.16"], ["3", "#TheOriginals", "0.14"], ["3", "move", "0.02"], ["3", "close", "0.004"], ["3", "dream", "0.002"], ["3", "Update", "0.001"], ["3", "picture", "0.1"], ["3", "President", "0.015"], ["3", "play", "0.12"]]
             
             visualizationHandler.forcegraphData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
             
