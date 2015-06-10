@@ -222,6 +222,8 @@ class VisualizationHandler{
         
         //Log(timemapData)
         
+        var biggestValue = 0
+        
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
         for r in 0..<timemapData.count{
@@ -230,13 +232,20 @@ class VisualizationHandler{
             script9+="\", \"x\":\""
             script9+=timemapData[r][1]
             script9+="\", \"y\":"
-            script9+=timemapData[r][2]
+            
+            var value = timemapData[r][2]
+            if(value.toInt() > biggestValue){
+                biggestValue = value.toInt()!
+                //Log("biggestValue is \(biggestValue)")
+            }
+
+            script9+=value
             script9+="}"
             if(r != (timemapData.count-1)){
                 script9+=","
             }
         }
-        script9+="]}]; renderChart(myData);"
+        script9+="]}]; renderChart(myData, \(biggestValue).);"
         
         //Log(script9)
 
