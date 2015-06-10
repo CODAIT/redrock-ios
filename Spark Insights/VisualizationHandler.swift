@@ -36,11 +36,12 @@ class VisualizationHandler{
             
             if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
                 //self.loadingState(viewNumber)
-                transformData(self.webViews[viewNumber], index: viewNumber)
-                //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-                //let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
-                //let request = NSURLRequest(URL: filePath!)
-                //webViews[viewNumber].loadRequest(request)
+                
+                webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
+                let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
+                let request = NSURLRequest(URL: filePath!)
+                webViews[viewNumber].loadRequest(request)
+                //transformData(self.webViews[viewNumber], index: viewNumber)
                 //self.successState(viewNumber)
             }
         }

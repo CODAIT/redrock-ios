@@ -345,12 +345,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     /*
         When a page finishes loading, load in the javascript
     */
-    /*func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
         visualizationHandler.transformData(webView, index: previousPage)
         webView.hidden = false
-    }*/
+    }
     
     // MARK: - PageControlDelegate
     
@@ -580,7 +580,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         Log("values: \(academicValue)... \(designerValue)... \(mediaValue)... \(hrValue)... \(marketingValue)... \(executiveValue)... \(engineerValue)...")
         
-        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["Media",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
+        visualizationHandler.treemapData = [["Academic",academicValue],["Designer",designerValue],["Media",mediaValue],["HR",hrValue],["Marketing",marketingValue],["Executive",executiveValue],["Engineer",engineerValue]]
 
         //var professionData = "{ \"status\": 0, \"profession\": { \"Academic\": 19, \"Designer\": 11, \"Media\": 40, \"HR\": 4, \"Marketing\": 14, \"Executive\": 11, \"Engineer\": 20 } }"
         
