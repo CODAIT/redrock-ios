@@ -113,7 +113,6 @@
     </style>
 </head>
 <body>
-    <p id="test">test</p>
   <div id="bubbles" class='with-3d-shadow with-transitions'></div>
   <div id="controls">
 
@@ -186,10 +185,10 @@
     function renderChart(data, biggestValue) {
         
         //maxNumber = getMaxValue(data);
-        document.getElementById("test").innerHTML = "biggestValue: "+(biggestValue+1);
+        //document.getElementById("test").innerHTML = "biggestValue: "+(biggestValue+1);
         var radiusScale = d3.scale.linear().domain([0.0,biggestValue]).range([0.0,8000.0]);
         scalefactor = radiusScale(scalefactor);
-        document.getElementById("test").innerHTML = "scalefactor: "+(scalefactor);
+        //document.getElementById("test").innerHTML = "scalefactor: "+(scalefactor);
         
        mapData = data[0].values;
        mapData = mapLatandLong(mapData);

@@ -14,6 +14,7 @@ import UIKit
 class VisualizationHandler{
     var webViews : [UIWebView] = [UIWebView]()
     var loadingViews = [UIActivityIndicatorView]()
+    var searchText : String = ""
     
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
     var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
@@ -177,9 +178,7 @@ class VisualizationHandler{
         
         //TODO: should have searchterm should be from actual searchterm
         
-        var searchterm = ""
-        
-        var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchterm)\",\"value\":1000,\"group\":1}, "
+        var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchText)\",\"value\":1000,\"group\":1}, "
         for r in 0..<forcegraphData.count{
             script9+="{\"name\": \""
             script9+=forcegraphData[r][0]

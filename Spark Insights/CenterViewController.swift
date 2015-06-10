@@ -78,6 +78,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupTweetsTableView()
         self.setupWebViews()
         self.setupScrollView()
+        visualizationHandler.searchText = searchText!
+        Log(visualizationHandler.searchText)
 
         // currently this relies on the order of elements
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
