@@ -170,7 +170,7 @@ class VisualizationHandler{
         
         if self.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] != ""
         {
-            self.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+            self.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: self.errorDescription[Config.visualizationsIndex.circlepacking.rawValue])
         }
 
     }
@@ -234,7 +234,7 @@ class VisualizationHandler{
 
         if self.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] != ""
         {
-            self.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+            self.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: self.errorDescription[Config.visualizationsIndex.forcegraph.rawValue])
         }
 
     }
@@ -290,7 +290,7 @@ class VisualizationHandler{
         
         if self.errorDescription[Config.visualizationsIndex.timemap.rawValue] != ""
         {
-            self.errorState(Config.visualizationsIndex.timemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+            self.errorState(Config.visualizationsIndex.timemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.timemap.rawValue])
         }
     }
     
@@ -338,7 +338,7 @@ class VisualizationHandler{
         
         if self.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] != ""
         {
-            self.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+            self.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: self.errorDescription[Config.visualizationsIndex.stackedbar.rawValue])
         }
 
     }
@@ -405,7 +405,7 @@ class VisualizationHandler{
         
         if self.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] != ""
         {
-            self.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+            self.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: self.errorDescription[Config.visualizationsIndex.wordcloud.rawValue])
         }
 
     }

@@ -574,6 +574,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
                 }
                 else{
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
                     self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
                 }
             })
@@ -601,6 +602,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue) //reload the current page
                 }
                 else{
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = Config.serverErrorMessage
                     self.visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: Config.serverErrorMessage)
                 }
             })
@@ -613,6 +615,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         else if(json == nil){
+            self.visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = Config.serverErrorMessage
             visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
             return
         }
@@ -629,6 +632,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue) //reload the current page
                 }
                 else{
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = Config.serverErrorMessage
                     self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
                 }
             })
@@ -642,26 +646,35 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         
-        if let professions = json!["profession"].dictionaryObject as? Dictionary<String,Int>
+        if json!["profession"] != nil
         {
-            var keys = professions.keys
-            var treemap = [[String]]()
-            for profession in keys
+            if let professions = json!["profession"].dictionaryObject as? Dictionary<String,Int>
             {
-                if (professions[profession] != nil || professions[profession] != 0)
+                var keys = professions.keys
+                var treemap = [[String]]()
+                for profession in keys
                 {
-                    treemap.append([profession, String(professions[profession]!)])
+                    if (professions[profession] != nil || professions[profession] != 0)
+                    {
+                        treemap.append([profession, String(professions[profession]!)])
+                    }
                 }
+                visualizationHandler.treemapData = treemap
+                visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
             }
-            visualizationHandler.treemapData = treemap
+            else
+            {
+                visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
+                visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
+            }
         }
         else
         {
-            Log("Could not convert Profession JSON into Dictionary")
+            visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
+            visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
         }
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
-     }
+    }
     
     func handleWordCloudCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
@@ -681,7 +694,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] = Config.serverErrorMessage
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
