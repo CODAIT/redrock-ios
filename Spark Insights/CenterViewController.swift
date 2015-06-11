@@ -780,7 +780,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             if json!["tweetsperhour"] != nil
             {
-                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["tweetsperhour"].intValue))
+                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay((Int64(json!["tweetsperhour"].intValue + 1)*30))
             }
             else
             {
