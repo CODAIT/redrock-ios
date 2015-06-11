@@ -825,7 +825,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 //self.tableData[r][c] = cellJson.stringValue
                 Log(cellJson.stringValue)
                 
-                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "") //remove quotes
+                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "") //remove quotes
             }
         }
         return tableData
