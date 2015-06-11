@@ -423,9 +423,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             self.tweetsPerHourNumberLabel.text = ""
         }
-        
+        if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
+        {
+            self.changeLastUpdated()
+        }
         self.visualizationHandler.cleanWebViews()
-        
     }
     
     func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
