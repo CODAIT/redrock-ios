@@ -39,7 +39,7 @@ class Network
         //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
         self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
         self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
-        self.executeWordCloudRequest()
+        //self.executeWordCloudRequest()
     }
     
     //MARK: Data
