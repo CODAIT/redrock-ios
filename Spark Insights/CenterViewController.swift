@@ -351,8 +351,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func webViewDidFinishLoad(webView: UIWebView) {
         //get the data in there somehow
         //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
-        visualizationHandler.transformData(webView, index: previousPage)
-        webView.hidden = false
+        visualizationHandler.transformData(webView)
+
     }
     
     // MARK: - PageControlDelegate
@@ -514,53 +514,78 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK: Network Delegate
+    // MARK: - Network Delegate
     
-    func handleTweetsCallBack(json: JSON) {
-        if json["tweets"].count == 0
+    func handleTweetsCallBack(json: JSON?, error: NSError?) {
+        if ((error) != nil) {
+            self.tweetsTableViewController.errorMessage = error!.localizedDescription
+        } else if json!["tweets"].count == 0
         {
             self.tweetsTableViewController.emptySearchResult = true
         }
-        self.tweetsTableViewController.tweets = json["tweets"]
+        if json != nil {
+            self.tweetsTableViewController.tweets = json!["tweets"]
+        }
         self.tweetsTableViewController.tableView.reloadData()
     }
     
-    func handleLocationCallBack(json: JSON) {
+    func handleLocationCallBack(json: JSON?, error: NSError?) {
+        if (error != nil) {
+            Log("HANDLE ERROR: \(error)")
+            return
+        }
         var numberOfColumns = 3        // number of columns
         var containerName = "location" // name of container for data //TODO: unknown
-        visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
 
-    func handleSentimentsCallBack(json: JSON) {
+    func handleSentimentsCallBack(json: JSON?, error: NSError?) {
+        if (error != nil) {
+            Log("HANDLE ERROR: \(error)")
+            return
+        }
         var numberOfColumns = 4        // number of columns
         var containerName = "sentiment" // name of container for data //TODO: unknown
-        visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
-    func handleWordDistanceCallBack(json: JSON) {
+    func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
         Log("handleWordDistanceCallBack")
+        if (error != nil) {
+            Log("HANDLE ERROR: \(error)")
+            return
+        }
         var numberOfColumns = 3        // number of columns
         var containerName = "distance" // name of container for data
-        visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.searchText = searchText!
         visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
-    func handleWordClusterCallBack(json: JSON) {
+    func handleWordClusterCallBack(json: JSON?, error: NSError?) {
+        if (error != nil) {
+            Log("HANDLE ERROR: \(error)")
+            return
+        }
         var numberOfColumns = 3        // number of columns
         var containerName = "cluster" // name of container for data
-        visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json)
+        visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.isloadingVisualization[previousPage] = false
         visualizationHandler.reloadAppropriateView(previousPage) //reload the current page
     }
     
-    func handleProfessionCallBack(json: JSON) {
+    func handleProfessionCallBack(json: JSON?, error: NSError?) {
         Log("handleProfessionCallBack")
-        if let professions = json["profession"].dictionaryObject as? Dictionary<String,Int>
+        if (error != nil) {
+            Log("HANDLE ERROR: \(error)")
+            return
+        }
+        
+        if let professions = json!["profession"].dictionaryObject as? Dictionary<String,Int>
         {
             var keys = professions.keys
             var treemap = [[String]]()
@@ -581,7 +606,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.reloadAppropriateView(previousPage)
      }
     
-    func handleWorldCloudCallBack(json: JSON) {
+    func handleWorldCloudCallBack(json: JSON?, error: NSError?) {
         //TODO: populate word cloud
         visualizationHandler.isloadingVisualization[previousPage] = false
     }
@@ -606,17 +631,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         return tableData
     }
     
-    
-    
-    func requestsEnded(error: Bool) {
-        if !error
-        {
-            self.changeLastUpdated()
-        }
-        //self.loadingView1.removeFromSuperview()
-    }
-    
-    func handleRequestError(message: String) {
+    // Keeping this in case we switch back to using one call
+    func displayRequestError(message: String) {
         self.tweetsFooterLabel.numberOfLines = 4
         self.tweetsFooterLabel.text = message
         self.tweetsFooterView.backgroundColor = UIColor.redColor()

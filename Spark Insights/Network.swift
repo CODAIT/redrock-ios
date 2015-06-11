@@ -9,15 +9,13 @@
 import Foundation
 
 protocol NetworkDelegate {
-    func handleTweetsCallBack(json: JSON)
-    func handleSentimentsCallBack(json: JSON)
-    func handleLocationCallBack(json:JSON)
-    func handleProfessionCallBack(json:JSON)
-    func handleWordDistanceCallBack(json:JSON)
-    func handleWordClusterCallBack(json:JSON)
-    func handleWorldCloudCallBack(json: JSON)
-    func handleRequestError(message: String)
-    func requestsEnded(error: Bool)
+    func handleTweetsCallBack(json: JSON?, error: NSError?)
+    func handleSentimentsCallBack(json: JSON?, error: NSError?)
+    func handleLocationCallBack(json:JSON?, error: NSError?)
+    func handleProfessionCallBack(json:JSON?, error: NSError?)
+    func handleWordDistanceCallBack(json:JSON?, error: NSError?)
+    func handleWordClusterCallBack(json:JSON?, error: NSError?)
+    func handleWorldCloudCallBack(json:JSON?, error: NSError?)
 }
 
 class Network
@@ -119,40 +117,39 @@ class Network
     }
     
     //MARK: Call Delegates
-    private func callTweetDelegate(json: JSON)
+    private func callTweetDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleTweetsCallBack(json)
+        self.delegate?.handleTweetsCallBack(json, error: error)
     }
     
-    private func callSentimentsDelegate(json: JSON)
+    private func callSentimentsDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleSentimentsCallBack(json)
+        self.delegate?.handleSentimentsCallBack(json, error: error)
     }
 
-    private func callLocationDelegate(json: JSON)
+    private func callLocationDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleLocationCallBack(json)
+        self.delegate?.handleLocationCallBack(json, error: error)
     }
     
-    private func callProfessionDelegate(json: JSON)
+    private func callProfessionDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleProfessionCallBack(json)
+        self.delegate?.handleProfessionCallBack(json, error: error)
     }
     
-    private func callWordDistanceDelegate(json: JSON)
+    private func callWordDistanceDelegate(json: JSON?, error: NSError?)
     {
-        println("callWordDistanceDelegate")
-        self.delegate?.handleWordDistanceCallBack(json)
+        self.delegate?.handleWordDistanceCallBack(json, error: error)
     }
     
-    private func callWordClusterDelegate(json: JSON)
+    private func callWordClusterDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleWordClusterCallBack(json)
+        self.delegate?.handleWordClusterCallBack(json, error: error)
     }
     
-    private func callWorldCloudDelegate(json: JSON)
+    private func callWorldCloudDelegate(json: JSON?, error: NSError?)
     {
-        self.delegate?.handleWorldCloudCallBack(json)
+        self.delegate?.handleWorldCloudCallBack(json, error: error)
     }
 
     //MARK: Server
@@ -176,7 +173,7 @@ class Network
     }
     
 
-    private func executeRequest(req: String, callBack: (json: JSON) -> ()) {
+    private func executeRequest(req: String, callBack: (json: JSON?, error: NSError?) -> ()) {
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         Log("Sending Request: " + req)
@@ -187,29 +184,41 @@ class Network
         let task = session.dataTaskWithURL(url, completionHandler: {data, response, error -> Void in
             self.requestCount++
             
+            func callbackOnMainThread(json: JSON?, error: NSError?) {
+                dispatch_async(dispatch_get_main_queue(), {
+                    callBack(json: json, error: error)
+                })
+            }
+            
+            if error != nil {
+                // There was an error in the network request
+                Log("Error: \(error.localizedDescription)")
+                
+                callbackOnMainThread(nil, error)
+                return
+            }
+            
+            var err: NSError?
+            
             if let httpResponse = response as? NSHTTPURLResponse
             {
                 if httpResponse.statusCode != 200
                 {
                     Log(NSString(data: data, encoding: NSUTF8StringEncoding)!)
-                    self.requestError("Server Error. Code \(httpResponse.statusCode)")
+                    
+                    var errorDesc = "Server Error. Status Code: \(httpResponse.statusCode)"
+                    err =  NSError(domain: "Network", code: 0, userInfo: [NSLocalizedDescriptionKey: errorDesc])
+                    callbackOnMainThread(nil, err)
                     return
                 }
             }
             
-            if error != nil {
-                // If there is an error in the web request, print it to the console
-                Log(error.localizedDescription)
-                self.requestError(error.localizedDescription)
-                return
-            }
-            
-            var err: NSError?
             var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
             if err != nil {
-                // If there is an error parsing JSON, print it to the console
-                self.requestError("JSON Error \(err!.localizedDescription)")
-                Log("JSON Error \(err!.localizedDescription)")
+                // There was an error parsing JSON
+                Log("JSON Error: \(err!.localizedDescription)")
+                
+                callbackOnMainThread(nil, err)
                 return
             }
             
@@ -218,36 +227,19 @@ class Network
             
             if( status == 1 ) {
                 let msg = json["message"].stringValue
-                self.requestError("Error: " + msg)
-                Log("Error: " + msg)
+                let errorDesc = "Error: " + msg
+                Log(errorDesc)
+                
+                err =  NSError(domain: "Network", code: 0, userInfo: [NSLocalizedDescriptionKey: msg])
+                callbackOnMainThread(nil, err)
                 return
             }
             
             // Success
             Log("Request completed: Status = OK")
             
-            dispatch_async(dispatch_get_main_queue(), {
-                if self.requestCount == self.requestTotal
-                {
-                    self.delegate?.requestsEnded(self.error)
-                }
-                // Success on main thread
-                callBack(json: json)
-            }) 
+            callbackOnMainThread(json, nil)
         })
         task.resume()
     }
-    
-    private func requestError(message: String)
-    {
-        self.error = true
-        dispatch_async(dispatch_get_main_queue(), {
-            self.delegate?.handleRequestError(message)
-            if self.requestCount == self.requestTotal
-            {
-                self.delegate?.requestsEnded(self.error)
-            }
-        })
-    }
-
 }
