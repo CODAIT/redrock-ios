@@ -120,37 +120,42 @@ class VisualizationHandler{
         {
             //reorderCirclepackingData()
             
-            var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
-            
-            var groupName : String = "uninitialized" // this isn't safe, there should be a better way
-            
-            for r in 0..<circlepackingData.count{
-                if(groupName != circlepackingData[r][0]){
-                    // stop the group (unless it's the first one)
-                    if(groupName != "uninitialized"){
-                        script9+="]},"
-                    }
-                    // new group
-                    groupName = circlepackingData[r][0]
-                    script9+="{\"name\": \""
-                    script9+=groupName
-                    script9+="\", \"children\": ["
-                }
-                else{
-                    //continue the group
-                    script9+=","
-                }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
                 
-                script9+="{\"name\": \""
-                script9+=circlepackingData[r][1]
-                script9+="\", \"size\":"
-                script9+=circlepackingData[r][2]
-                script9+="}"
-            }
-            script9+="]}]}'; renderChart(data7);"
+                var groupName : String = "uninitialized" // this isn't safe, there should be a better way
+                
+                for r in 0..<self.circlepackingData.count{
+                    if(groupName != self.circlepackingData[r][0]){
+                        // stop the group (unless it's the first one)
+                        if(groupName != "uninitialized"){
+                            script9+="]},"
+                        }
+                        // new group
+                        groupName = self.circlepackingData[r][0]
+                        script9+="{\"name\": \""
+                        script9+=groupName
+                        script9+="\", \"children\": ["
+                    }
+                    else{
+                        //continue the group
+                        script9+=","
+                    }
+                    
+                    script9+="{\"name\": \""
+                    script9+=self.circlepackingData[r][1]
+                    script9+="\", \"size\":"
+                    script9+=self.circlepackingData[r][2]
+                    script9+="}"
+                }
+                script9+="]}]}'; renderChart(data7);"
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    self.successState(Config.visualizationsIndex.circlepacking.rawValue)
+                })
+            })
             
-            webView.stringByEvaluatingJavaScriptFromString(script9)
-            self.successState(Config.visualizationsIndex.circlepacking.rawValue)
         }
         else
         {
@@ -166,44 +171,48 @@ class VisualizationHandler{
         if self.forcegraphData.count > 0
         {
             //TODO: should have searchterm should be from actual searchterm
-            
-            var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchText)\",\"value\":\(forcegraphData[0][2]),\"group\":1}, " //the search text just arbitrarily takes the value of the first data point as its value
-            for r in 0..<forcegraphData.count{
-                script9+="{\"name\": \""
-                script9+=forcegraphData[r][0]
-                script9+="\", \"value\": "
-                script9+=forcegraphData[r][2]
-                script9+=", \"group\": 2"
-                script9+="}"
-                if(r != (forcegraphData.count-1)){
-                    script9+=","
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(self.searchText)\",\"value\":\(self.forcegraphData[0][2]),\"group\":1}, " //the search text just arbitrarily takes the value of the first data point as its value
+                for r in 0..<self.self.forcegraphData.count{
+                    script9+="{\"name\": \""
+                    script9+=self.forcegraphData[r][0]
+                    script9+="\", \"value\": "
+                    script9+=self.forcegraphData[r][2]
+                    script9+=", \"group\": 2"
+                    script9+="}"
+                    if(r != (self.forcegraphData.count-1)){
+                        script9+=","
+                    }
                 }
-            }
-            script9+="], \"links\": ["
-            for r in 0..<forcegraphData.count{
-                script9+="{\"source\": 0"
-                script9+=", \"target\": "
-                script9+="\(r+1)"
-                script9+=", \"distance\": "
-                var myInteger = Int((forcegraphData[r][1] as NSString).floatValue*10000)
-                script9+="\(myInteger)"
-                script9+="}"
-                if(r != (forcegraphData.count-1)){
-                    script9+=","
+                script9+="], \"links\": ["
+                for r in 0..<self.forcegraphData.count{
+                    script9+="{\"source\": 0"
+                    script9+=", \"target\": "
+                    script9+="\(r+1)"
+                    script9+=", \"distance\": "
+                    var myInteger = Int((self.forcegraphData[r][1] as NSString).floatValue*10000)
+                    script9+="\(myInteger)"
+                    script9+="}"
+                    if(r != (self.forcegraphData.count-1)){
+                        script9+=","
+                    }
                 }
-            }
-            script9+="]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);"
-            
-            //println("SCRIPT9..... \(script9)")
-            
-            //var testscript = "var myData='{\"nodes\":[    {\"name\":\"Myriel\",\"value\":52,\"group\":1},    {\"name\":\"Labarre\",\"value\":5,\"group\":2},    {\"name\":\"Valjean\",\"value\":17,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":55,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":44,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":22,\"group\":2},    {\"name\":\"Isabeau\",\"value\":17,\"group\":2},    {\"name\":\"Gervais\",\"value\":33,\"group\":2}  ],  \"links\":[    {\"source\":0,\"target\":1,\"distance\":33},    {\"source\":0,\"target\":2,\"distance\":22},    {\"source\":0,\"target\":3,\"distance\":22},    {\"source\":0,\"target\":4,\"distance\":11},    {\"source\":0,\"target\":5,\"distance\":22},    {\"source\":0,\"target\":6,\"distance\":22},    {\"source\":0,\"target\":7,\"distance\":43},    {\"source\":0,\"target\":8,\"distance\":22},    {\"source\":0,\"target\":9,\"distance\":22}  ]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);";
-            
-            //println("TESTSCRIPT..... \(testscript)")
-            
-            // println(wordScript)
-            
-            webView.stringByEvaluatingJavaScriptFromString(script9)
-            self.successState(Config.visualizationsIndex.forcegraph.rawValue)
+                script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(myData,w,h);"
+                
+                //println("SCRIPT9..... \(script9)")
+                
+                //var testscript = "var myData='{\"nodes\":[    {\"name\":\"Myriel\",\"value\":52,\"group\":1},    {\"name\":\"Labarre\",\"value\":5,\"group\":2},    {\"name\":\"Valjean\",\"value\":17,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":55,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":44,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":22,\"group\":2},    {\"name\":\"Isabeau\",\"value\":17,\"group\":2},    {\"name\":\"Gervais\",\"value\":33,\"group\":2}  ],  \"links\":[    {\"source\":0,\"target\":1,\"distance\":33},    {\"source\":0,\"target\":2,\"distance\":22},    {\"source\":0,\"target\":3,\"distance\":22},    {\"source\":0,\"target\":4,\"distance\":11},    {\"source\":0,\"target\":5,\"distance\":22},    {\"source\":0,\"target\":6,\"distance\":22},    {\"source\":0,\"target\":7,\"distance\":43},    {\"source\":0,\"target\":8,\"distance\":22},    {\"source\":0,\"target\":9,\"distance\":22}  ]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);";
+                
+                //println("TESTSCRIPT..... \(testscript)")
+                
+                // println(wordScript)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    self.successState(Config.visualizationsIndex.forcegraph.rawValue)
+                })
+            })
 
         }
         else
@@ -221,35 +230,41 @@ class VisualizationHandler{
         self.loadingState(Config.visualizationsIndex.timemap.rawValue)
         if self.timemapData.count > 0
         {
-            var biggestValue = 0
             
-            var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
-            
-            for r in 0..<timemapData.count{
-                script9+="{\"z\": \""
-                script9+=timemapData[r][0]
-                script9+="\", \"x\":\""
-                script9+=timemapData[r][1]
-                script9+="\", \"y\":"
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
-                var value = timemapData[r][2]
-                if(value.toInt() > biggestValue){
-                    biggestValue = value.toInt()!
-                    //Log("biggestValue is \(biggestValue)")
-                }
+                var biggestValue = 0
                 
-                script9+=value
-                script9+="}"
-                if(r != (timemapData.count-1)){
-                    script9+=","
+                var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
+                
+                for r in 0..<self.timemapData.count{
+                    script9+="{\"z\": \""
+                    script9+=self.timemapData[r][0]
+                    script9+="\", \"x\":\""
+                    script9+=self.timemapData[r][1]
+                    script9+="\", \"y\":"
+                    
+                    var value = self.timemapData[r][2]
+                    if(value.toInt() > biggestValue){
+                        biggestValue = value.toInt()!
+                        //Log("biggestValue is \(biggestValue)")
+                    }
+                    
+                    script9+=value
+                    script9+="}"
+                    if(r != (self.timemapData.count-1)){
+                        script9+=","
+                    }
                 }
-            }
-            script9+="]}]; renderChart(myData, \(biggestValue).);"
-            
-            //Log(script9)
-            
-            webView.stringByEvaluatingJavaScriptFromString(script9)
-            self.successState(Config.visualizationsIndex.timemap.rawValue)
+                script9+="]}]; renderChart(myData, \(biggestValue).);"
+                
+                //Log(script9)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    self.successState(Config.visualizationsIndex.timemap.rawValue)
+                })
+            })
         }
         else
         {
@@ -266,28 +281,33 @@ class VisualizationHandler{
         self.loadingState(Config.visualizationsIndex.stackedbar.rawValue)
         if self.stackedbarData.count > 0
         {
-            var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
-            
-            for r in 0..<stackedbarData.count{
-                script9+="{\"x\": \""
-                script9+=stackedbarData[r][0]
-                script9+="\", \"y\":"
-                script9+=stackedbarData[r][1]
-                script9+=", \"z\":"
-                script9+=stackedbarData[r][2]
-                script9+="}"
-                if(r != (stackedbarData.count-1)){
-                    script9+=","
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
+                
+                for r in 0..<self.stackedbarData.count{
+                    script9+="{\"x\": \""
+                    script9+=self.stackedbarData[r][0]
+                    script9+="\", \"y\":"
+                    script9+=self.stackedbarData[r][1]
+                    script9+=", \"z\":"
+                    script9+=self.stackedbarData[r][2]
+                    script9+="}"
+                    if(r != (self.stackedbarData.count-1)){
+                        script9+=","
+                    }
                 }
-            }
-            script9+="]}]; renderChart(myData);"
-            
-            //Log(script9)
-            
-            //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
-            
-            webView.stringByEvaluatingJavaScriptFromString(script9)
-            self.successState(Config.visualizationsIndex.stackedbar.rawValue)
+                script9+="]}]; renderChart(myData);"
+                
+                //Log(script9)
+                
+                //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    self.successState(Config.visualizationsIndex.stackedbar.rawValue)
+                })
+            })
         }
         else
         {
@@ -301,49 +321,54 @@ class VisualizationHandler{
         if self.wordcloudData.count > 0
         {
             Log("transformDataForWordcloud")
-        
-            var script9 = "var data2 = [[ "
             
-            var currentTopicNumber = wordcloudData[0][0]
-            
-            for r in 0..<wordcloudData.count{
-                var thisTopicNumber = wordcloudData[r][0]
-                if( thisTopicNumber != currentTopicNumber){
-                    //switch topics
-                    script9+="], ["
-                }
-                else{
-                    if(r != 0 && r != (wordcloudData.count)){
-                        script9+=","
-                    }
-                }
-                currentTopicNumber = thisTopicNumber
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
-                script9+="{\"text\": \""
-                script9+=wordcloudData[r][1]
-                script9+="\", \"size\": \""
-                var number = String(Int(((wordcloudData[r][2] as NSString).doubleValue*100000)))
-                script9+=number
-                script9+="\", \"topic\": \""
-                script9+=thisTopicNumber
-                script9+="\"}"
-            }
-            script9+="]]; renderChart(data2);"
-            
-            //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
-            
-            //script8+=" renderChart(data2);"
-            
-            //println("WORDCLOUD STUFF")
-            //println(script9)
-            
-            //println("SCRIPT8")
-            //println(script8)
-            
-            webView.stringByEvaluatingJavaScriptFromString(script9)
-            
-            //TODO: Implement display world cloud
-            self.successState(Config.visualizationsIndex.wordcloud.rawValue)
+                var script9 = "var data2 = [[ "
+                
+                var currentTopicNumber = self.wordcloudData[0][0]
+                
+                for r in 0..<self.wordcloudData.count{
+                    var thisTopicNumber = self.wordcloudData[r][0]
+                    if( thisTopicNumber != currentTopicNumber){
+                        //switch topics
+                        script9+="], ["
+                    }
+                    else{
+                        if(r != 0 && r != (self.wordcloudData.count)){
+                            script9+=","
+                        }
+                    }
+                    currentTopicNumber = thisTopicNumber
+                    
+                    script9+="{\"text\": \""
+                    script9+=self.wordcloudData[r][1]
+                    script9+="\", \"size\": \""
+                    var number = String(Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000)))
+                    script9+=number
+                    script9+="\", \"topic\": \""
+                    script9+=thisTopicNumber
+                    script9+="\"}"
+                }
+                script9+="]]; renderChart(data2);"
+                
+                //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
+                
+                //script8+=" renderChart(data2);"
+                
+                //println("WORDCLOUD STUFF")
+                //println(script9)
+                
+                //println("SCRIPT8")
+                //println(script8)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    
+                    //TODO: Implement display world cloud
+                    self.successState(Config.visualizationsIndex.wordcloud.rawValue)
+                })
+            })
         }
         else
         {

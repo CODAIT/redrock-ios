@@ -536,9 +536,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         var numberOfColumns = 3        // number of columns
         var containerName = "location" // name of container for data //TODO: unknown
-        visualizationHandler.timemapData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.timemap.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.visualizationHandler.timemapData = data
+                self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.timemap.rawValue] = false
+                self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
+            })
+        })
     }
 
     func handleSentimentsCallBack(json: JSON?, error: NSError?) {
@@ -548,9 +554,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         var numberOfColumns = 4        // number of columns
         var containerName = "sentiment" // name of container for data //TODO: unknown
-        visualizationHandler.stackedbarData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.stackedbar.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.visualizationHandler.stackedbarData = data
+                self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.stackedbar.rawValue] = false
+                self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
+            })
+        })
     }
     
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
@@ -561,10 +573,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         var numberOfColumns = 3        // number of columns
         var containerName = "distance" // name of container for data
-        visualizationHandler.forcegraphData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-        visualizationHandler.searchText = searchText!
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue) //reload the current page
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.visualizationHandler.forcegraphData = data
+                self.visualizationHandler.searchText = self.searchText!
+                self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
+                self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue) //reload the current page
+            })
+        })
     }
     func handleWordClusterCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
@@ -573,9 +591,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         var numberOfColumns = 3        // number of columns
         var containerName = "cluster" // name of container for data
-        visualizationHandler.circlepackingData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.circlepacking.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue) //reload the current page
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.visualizationHandler.circlepackingData = data
+                self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.circlepacking.rawValue] = false
+                self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue) //reload the current page
+            })
+        })
     }
     
     func handleProfessionCallBack(json: JSON?, error: NSError?) {
@@ -613,9 +637,15 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         var numberOfColumns = 3        // number of columns
         var containerName = "topics" // name of container for data
-        visualizationHandler.wordcloudData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-        visualizationHandler.isloadingVisualization[Config.visualizationsIndex.wordcloud.rawValue] = false
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.visualizationHandler.wordcloudData = data
+                self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.wordcloud.rawValue] = false
+                self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
+            })
+        })
     }
     
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>> {
