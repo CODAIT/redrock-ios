@@ -381,6 +381,15 @@ class VisualizationHandler{
         }
     }
     
+    func errorState(index: Int, error: String)
+    {
+        self.webViews[index].hidden = true
+        self.loadingViews[index].stopAnimating()
+        self.loadingViews[index].hidden = true
+        self.resultsLabels[index].text = error
+        self.resultsLabels[index].hidden = false
+    }
+    
     //MARK: Clean WebViews
     func cleanWebViews()
     {
