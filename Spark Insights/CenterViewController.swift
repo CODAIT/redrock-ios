@@ -407,6 +407,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         if self.tweetsTableViewController != nil
         {
             tweetsTableViewController.emptySearchResult = false
+            tweetsTableViewController.errorMessage = nil
             tweetsTableViewController.tweets = []
             tweetsTableViewController.tableView.reloadData()
         }
