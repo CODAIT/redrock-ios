@@ -33,16 +33,32 @@ class Network
         var encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
         var encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
 
-        self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
-        self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
-        self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
-        //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
-        self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
-        self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
-        //self.executeWordCloudRequest()
+        if (Config.serverMakeSingleRequest) {
+            self.executeFullRequest(encodeInclude!, exclude: encodeExclude!)
+        }
+        else {
+            self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
+            self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
+            self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
+            //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
+            self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
+            self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
+            //self.executeWordCloudRequest()
+        }
     }
     
     //MARK: Data
+    private func executeFullRequest(include: String, exclude: String)
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = include
+        parameters["termsExclude"] = exclude
+        parameters["top"] = Config.tweetsTopParameter
+        let req = self.createRequest(Config.serverSearch, paremeters: parameters)
+        executeRequest(req, callBack: self.callFullResponseDelegate)
+    }
+    
     private func executeTweetRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
@@ -117,6 +133,17 @@ class Network
     }
     
     //MARK: Call Delegates
+    private func callFullResponseDelegate(json: JSON?, error: NSError?)
+    {
+        self.delegate?.handleTweetsCallBack(json, error: error)
+        self.delegate?.handleSentimentsCallBack(json, error: error)
+        self.delegate?.handleLocationCallBack(json, error: error)
+        self.delegate?.handleProfessionCallBack(json, error: error)
+        self.delegate?.handleWordDistanceCallBack(json, error: error)
+        self.delegate?.handleWordClusterCallBack(json, error: error)
+        self.delegate?.handleWordCloudCallBack(json, error: error)
+    }
+    
     private func callTweetDelegate(json: JSON?, error: NSError?)
     {
         self.delegate?.handleTweetsCallBack(json, error: error)

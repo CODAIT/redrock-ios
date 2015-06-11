@@ -35,6 +35,7 @@
 		CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */; };
 		CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEADC1B22452300FB9695 /* animation_v1.gif */; };
 		CEDBEADF1B22672400FB9695 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEADE1B22672400FB9695 /* Log.swift */; };
+		CEDBEAE21B29EB4000FB9695 /* response_spark.json in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEAE11B29EB4000FB9695 /* response_spark.json */; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 		F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */; };
 		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
@@ -86,6 +87,7 @@
 		CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
 		CEDBEADC1B22452300FB9695 /* animation_v1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = animation_v1.gif; sourceTree = "<group>"; };
 		CEDBEADE1B22672400FB9695 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		CEDBEAE11B29EB4000FB9695 /* response_spark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = response_spark.json; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 		F3222DFB1B19192D00FDE3B1 /* VisualizationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationHandler.swift; sourceTree = "<group>"; };
 		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				CE79DA7F1B19166C003F01F6 /* UIColor-Hex-Swift */,
 				CEDBEAD71B2244CE00FB9695 /* YLGIFImage-Swift */,
 				41ED941A1B17E20000A80447 /* Tweets.json */,
+				CEDBEAE11B29EB4000FB9695 /* response_spark.json */,
 				41ED94081B17AA6700A80447 /* ContextLabel.swift */,
 				41ED94161B17DC6A00A80447 /* SwiftyJSON.swift */,
 			);
@@ -329,6 +332,7 @@
 				F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */,
 				CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */,
 				CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */,
+				CEDBEAE21B29EB4000FB9695 /* response_spark.json in Resources */,
 				CE79DA831B19166C003F01F6 /* LICENSE in Resources */,
 				CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */,
 				41ED940C1B17AA7100A80447 /* TweetCell.xib in Resources */,

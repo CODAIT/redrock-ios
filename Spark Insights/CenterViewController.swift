@@ -679,19 +679,62 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func onDummyRequestSuccess(json: JSON) {
         Log(__FUNCTION__)
-        populateUI(json)
+        
+        if (Config.serverMakeSingleRequest) {
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                let filePath = NSBundle.mainBundle().pathForResource("response_spark", ofType:"json")
+                
+                var readError:NSError?
+                if let fileData = NSData(contentsOfFile:filePath!,
+                    options: NSDataReadingOptions.DataReadingUncached,
+                    error:&readError)
+                {
+                    // Read success
+                    var parseError: NSError?
+                    if let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &parseError)
+                    {
+                        // Parse success
+                        let json = JSON(JSONObject!)
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.populateUI(json)
+                        })
+                    } else {
+                        // Parse error
+                        // TODO: handle error
+                        Log("Error Parsing demo data: \(parseError?.localizedDescription)")
+                    }
+                } else {
+                    // Read error
+                    // TODO: handle error
+                    Log("Error Reading demo data: \(readError?.localizedDescription)")
+                }
+                
+            })
+            
+        } else {
+            populateUI(json)
+        }
     }
     
     func populateUI(json: JSON){
         self.setupMetricsNumber()
-        populateCharts(json)
+        
+        // TODO: fix charts
+//        populateCharts(json)
         populateTweetsTable(json)
     }
     
     func populateTweetsTable(json:JSON)
     {
-        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
+        
+//        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
+        self.tweetsTableViewController.tweets = json["toptweets"]["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
+        
+        // TODO: We should be using the actual callbacks to load the dummy data... example
+        // self.handleLocationCallBack(json["toptweets"], error: nil)
     }
     
     
