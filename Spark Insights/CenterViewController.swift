@@ -270,6 +270,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             visualizationHandler.webViews.append(myWebView)
             
+            // set initial loading state
+            myWebView.hidden = true
+
+            
         }
     }
     
@@ -512,12 +516,32 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
         if ((error) != nil) {
             self.tweetsTableViewController.errorMessage = error!.localizedDescription
-        } else if json!["tweets"].count == 0
-        {
-            self.tweetsTableViewController.emptySearchResult = true
         }
-        if json != nil {
-            self.tweetsTableViewController.tweets = json!["tweets"]
+        else if json != nil
+        {
+            //select the json content according to appropriate request
+            var tweetsContent = json!
+            if Config.serverMakeSingleRequest
+            {
+                tweetsContent = json!["toptweets"]
+            }
+            
+            if tweetsContent != nil
+            {
+                if tweetsContent["tweets"].count == 0
+                {
+                    self.tweetsTableViewController.emptySearchResult = true
+                }
+                self.tweetsTableViewController.tweets = tweetsContent["tweets"]
+            }
+            else
+            {
+                self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
+            }
+        }
+        else
+        {
+            self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
         }
         self.tweetsTableViewController.tableView.reloadData()
     }
@@ -716,20 +740,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         // TODO: fix charts
 //        populateCharts(json)
-        populateTweetsTable(json)
+        self.handleTweetsCallBack(json, error: nil)
     }
-    
-    func populateTweetsTable(json:JSON)
-    {
-        
-//        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
-        self.tweetsTableViewController.tweets = json["toptweets"]["tweets"]
-        self.tweetsTableViewController.tableView.reloadData()
-        
-        // TODO: We should be using the actual callbacks to load the dummy data... example
-        // self.handleLocationCallBack(json["toptweets"], error: nil)
-    }
-    
     
     func populateCharts(json : JSON){
         if(Config.useDummyData){
