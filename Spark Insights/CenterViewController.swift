@@ -540,20 +540,41 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 3        // number of columns
         var containerName = "location" // name of container for data //TODO: unknown
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.visualizationHandler.timemapData = data!
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.timemap.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })
+        var contentJson = json
+        if contentJson != nil
+        {
+            if Config.serverMakeSingleRequest
+            {
+                contentJson = json![containerName]
+            }
+            if contentJson != nil
+            {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.timemap.rawValue)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if(data != nil){
+                            self.visualizationHandler.timemapData = data!
+                            self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.timemap.rawValue] = false
+                            self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
+                        }
+                        else{
+                            self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
+                            self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
+                        }
+                    })
+                })
+            }
+            else
+            {
+                self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
+                self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
+            }
+        }
+        else
+        {
+            self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
+            self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
+        }
     }
 
     func handleSentimentsCallBack(json: JSON?, error: NSError?) {
@@ -565,20 +586,44 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var numberOfColumns = 4        // number of columns
         var containerName = "sentiment" // name of container for data //TODO: unknown
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.visualizationHandler.stackedbarData = data!
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.stackedbar.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })
+        
+        var contentJson = json
+        if contentJson != nil
+        {
+            if Config.serverMakeSingleRequest
+            {
+                contentJson = json![containerName]
+            }
+            
+            if contentJson != nil
+            {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.stackedbar.rawValue)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if(data != nil){
+                            self.visualizationHandler.stackedbarData = data!
+                            self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.stackedbar.rawValue] = false
+                            self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
+                        }
+                        else{
+                            self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
+                            self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
+                        }
+                    })
+                })
+            }
+            else
+            {
+                self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
+                self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
+            }
+        }
+        else
+        {
+            self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
+            self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
+        }
+        
     }
     
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
@@ -592,7 +637,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var containerName = "distance" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.forcegraph.rawValue)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     //Log("forcegraph data wasn't nil")
@@ -624,7 +669,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var containerName = "cluster" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.circlepacking.rawValue)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     self.visualizationHandler.circlepackingData = data!
@@ -646,27 +691,43 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         
-        if json!["profession"] != nil
+        var contentJson = json
+        if contentJson != nil
         {
-            if let professions = json!["profession"].dictionaryObject as? Dictionary<String,Int>
+            if Config.serverMakeSingleRequest
             {
-                var keys = professions.keys
-                var treemap = [[String]]()
-                for profession in keys
+                contentJson = json!["profession"]
+            }
+            
+            if contentJson != nil
+            {
+                
+                if let professions = contentJson!["profession"].dictionaryObject as? Dictionary<String,Int>
                 {
-                    if (professions[profession] != nil || professions[profession] != 0)
+                    var keys = professions.keys
+                    var treemap = [[String]]()
+                    for profession in keys
                     {
-                        treemap.append([profession, String(professions[profession]!)])
+                        if (professions[profession] != nil || professions[profession] != 0)
+                        {
+                            treemap.append([profession, String(professions[profession]!)])
+                        }
                     }
+                    visualizationHandler.treemapData = treemap
+                    visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                    visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
                 }
-                visualizationHandler.treemapData = treemap
-                visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-                visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+                else
+                {
+                    visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
+                    visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
+                }
+
             }
             else
             {
-                visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
-                visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
+                visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
+                visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
             }
         }
         else
@@ -686,7 +747,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var containerName = "topic" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.wordcloud.rawValue)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     self.visualizationHandler.wordcloudData = data!
@@ -737,12 +798,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>>? {
+    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON, chartIndex: Int) -> Array<Array<String>>? {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json[containerName].array?.count
         
         if(row_cnt == nil || col_cnt == nil){
-            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
+            visualizationHandler.errorState(chartIndex, error: Config.serverErrorMessage)
             return nil
         }
         
@@ -816,14 +877,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func populateUI(json: JSON){
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
-        // TODO: fix charts
-//        populateCharts(json)
-//        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
-        self.tweetsTableViewController.tweets = json["toptweets"]["tweets"]
-        self.tweetsTableViewController.tableView.reloadData()
-        
-        // TODO: We should be using the actual callbacks to load the dummy data... example
-        // self.handleLocationCallBack(json["toptweets"], error: nil)
         
         Log("location")
         self.handleLocationCallBack(json["location"], error: nil )
