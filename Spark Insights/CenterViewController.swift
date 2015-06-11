@@ -531,7 +531,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func handleLocationCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: "\(error!.localizedDescription)")
             return
         }
         var numberOfColumns = 3        // number of columns
@@ -549,7 +549,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
     func handleSentimentsCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: "\(error!.localizedDescription)")
             return
         }
         var numberOfColumns = 4        // number of columns
@@ -568,7 +568,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
         Log("handleWordDistanceCallBack")
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "\(error!.localizedDescription)")
             return
         }
         var numberOfColumns = 3        // number of columns
@@ -586,7 +586,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     func handleWordClusterCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "\(error?.localizedDescription)")
             return
         }
         var numberOfColumns = 3        // number of columns
@@ -605,7 +605,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleProfessionCallBack(json: JSON?, error: NSError?) {
         Log("handleProfessionCallBack")
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: "\(error!.localizedDescription)")
             return
         }
         
@@ -630,9 +630,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
      }
     
-    func handleWorldCloudCallBack(json: JSON?, error: NSError?) {
+    func handleWordCloudCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
-            Log("HANDLE ERROR: \(error)")
+            visualizationHandler.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: "\(error!.localizedDescription)")
             return
         }
         var numberOfColumns = 3        // number of columns

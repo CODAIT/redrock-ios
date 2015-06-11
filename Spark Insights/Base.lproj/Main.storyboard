@@ -97,7 +97,7 @@
                                     <outlet property="loadingView" destination="GAJ-KQ-zkL" id="SSH-Zz-rpf"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDataCell" id="u4O-Jm-m74" customClass="LoadingTableViewCell" customModule="RedRock" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoDataCell" id="u4O-Jm-m74">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u4O-Jm-m74" id="RGv-8m-SU9">
                                     <autoresizingMask key="autoresizingMask"/>
