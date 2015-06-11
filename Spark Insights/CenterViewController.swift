@@ -879,13 +879,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.handleTopMetrics(json, error: nil)
         
         Log("location")
-        self.handleLocationCallBack(json["location"], error: nil )
+        self.handleLocationCallBack(json, error: nil )
 
         Log("profession")
-        self.handleProfessionCallBack(json["profession"], error: nil)
+        self.handleProfessionCallBack(json, error: nil)
         
         Log("sentiment")
-        self.handleSentimentsCallBack(json["sentiment"], error: nil)
+        self.handleSentimentsCallBack(json, error: nil)
         
         Log("distance")
         self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
