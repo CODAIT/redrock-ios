@@ -297,6 +297,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             //loading control
             visualizationHandler.isloadingVisualization.append(true)
+            visualizationHandler.errorDescription.append("")
         }
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
@@ -532,6 +533,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func handleLocationCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: "\(error!.localizedDescription)")
             return
         }
@@ -547,6 +549,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
                 }
                 else{
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
                     self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
                 }
             })
@@ -555,6 +558,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
 
     func handleSentimentsCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: "\(error!.localizedDescription)")
             return
         }
@@ -579,6 +583,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
         Log("handleWordDistanceCallBack")
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "\(error!.localizedDescription)")
             return
         }
@@ -603,6 +608,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     func handleWordClusterCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "\(error?.localizedDescription)")
             return
         }
@@ -631,6 +637,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func handleProfessionCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: "\(error!.localizedDescription)")
             return
         }
@@ -658,6 +665,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func handleWordCloudCallBack(json: JSON?, error: NSError?) {
         if (error != nil) {
+            visualizationHandler.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: "\(error!.localizedDescription)")
             return
         }
