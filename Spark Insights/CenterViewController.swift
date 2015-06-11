@@ -327,19 +327,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         var page : Int = Int(round(fractionalPage))
         
         if(page >= Config.getNumberOfVisualizations()){
-            //Log("page is greater than the number of visualizations (\(Config.getNumberOfVisualizations())) : \(page)")
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){
             previousPage = page
             visualizationHandler.reloadAppropriateView(page)
-            if((page+1)<Config.getNumberOfVisualizations()){ //preload the next view to avoid "pop"
-                visualizationHandler.reloadAppropriateView(page+1)
-            }
-            // we might also want to load the page before this page
-            //Log("hidden?: \(visualizationHandler.loadingViews[page].hidden)")
             pageControlView.selectedIndex = page
-            //Log("page was changed to... \(page)")
         }
     }
     
