@@ -213,7 +213,7 @@ class Network
                 }
             }
             
-            var jsonResult = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err) as! NSDictionary
+            var jsonResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err)
             if err != nil {
                 // There was an error parsing JSON
                 Log("JSON Error: \(err!.localizedDescription)")
@@ -222,7 +222,7 @@ class Network
                 return
             }
             
-            let json = JSON(jsonResult)
+            let json = JSON(jsonResult as! NSDictionary)
             let status = json["status"].intValue
             
             if( status == 1 ) {
