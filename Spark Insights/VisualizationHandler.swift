@@ -115,7 +115,7 @@ class VisualizationHandler{
     }
     
     func reorderCirclepackingData(){
-        circlepackingData.sort({$0[0] < $1[0]})
+        circlepackingData.sort({$0[2] < $1[2]})
     }
     
     func transformDataForCirclepacking(webView: UIWebView){
@@ -124,7 +124,7 @@ class VisualizationHandler{
         self.loadingState(Config.visualizationsIndex.circlepacking.rawValue)
         if self.circlepackingData.count > 0
         {
-            //reorderCirclepackingData()
+            reorderCirclepackingData()
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
@@ -132,13 +132,13 @@ class VisualizationHandler{
                 var groupName : String = "uninitialized" // this isn't safe, there should be a better way
                 
                 for r in 0..<self.circlepackingData.count{
-                    if(groupName != self.circlepackingData[r][0]){
+                    if(groupName != self.circlepackingData[r][2]){
                         // stop the group (unless it's the first one)
                         if(groupName != "uninitialized"){
                             script9+="]},"
                         }
                         // new group
-                        groupName = self.circlepackingData[r][0]
+                        groupName = self.circlepackingData[r][2]
                         script9+="{\"name\": \""
                         script9+=groupName
                         script9+="\", \"children\": ["
@@ -149,9 +149,9 @@ class VisualizationHandler{
                     }
                     
                     script9+="{\"name\": \""
-                    script9+=self.circlepackingData[r][1]
+                    script9+=self.circlepackingData[r][0]
                     script9+="\", \"size\":"
-                    script9+=self.circlepackingData[r][2]
+                    script9+=self.circlepackingData[r][3]
                     script9+="}"
                 }
                 script9+="]}]}'; renderChart(data7);"
@@ -211,7 +211,7 @@ class VisualizationHandler{
                 }
                 script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(myData,w,h);"
                 
-                //println("SCRIPT9..... \(script9)")
+                println("DISTANCE SCRIPT9..... \(script9)")
                 
                 //var testscript = "var myData='{\"nodes\":[    {\"name\":\"Myriel\",\"value\":52,\"group\":1},    {\"name\":\"Labarre\",\"value\":5,\"group\":2},    {\"name\":\"Valjean\",\"value\":17,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":55,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":44,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":22,\"group\":2},    {\"name\":\"Isabeau\",\"value\":17,\"group\":2},    {\"name\":\"Gervais\",\"value\":33,\"group\":2}  ],  \"links\":[    {\"source\":0,\"target\":1,\"distance\":33},    {\"source\":0,\"target\":2,\"distance\":22},    {\"source\":0,\"target\":3,\"distance\":22},    {\"source\":0,\"target\":4,\"distance\":11},    {\"source\":0,\"target\":5,\"distance\":22},    {\"source\":0,\"target\":6,\"distance\":22},    {\"source\":0,\"target\":7,\"distance\":43},    {\"source\":0,\"target\":8,\"distance\":22},    {\"source\":0,\"target\":9,\"distance\":22}  ]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);";
                 
@@ -228,6 +228,7 @@ class VisualizationHandler{
         }
         else
         {
+            Log("NO DATA FOR DISTANCE?")
             self.noDataState(Config.visualizationsIndex.forcegraph.rawValue)
         }
 
