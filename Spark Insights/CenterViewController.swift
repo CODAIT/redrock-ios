@@ -41,7 +41,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var canUpdateSearch = false
     
     @IBOutlet weak var tweetsPerHourNumberLabel: UILabel!
-    @IBOutlet weak var totalRetweetsNumberLabel: UILabel!
+    @IBOutlet weak var totalUsersNumberLabel: UILabel!
     @IBOutlet weak var totalTweetsNumberLabel: UILabel!
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
@@ -190,25 +190,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         tweetsTableViewController.didMoveToParentViewController(self)
     }
     
-    func setupMetricsNumber()
-    {
-        let metrics = self.getMetricsNumber()
-        self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalTweets)
-        self.totalRetweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalRetweets)
-        self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(metrics.tweetsPerHour)
-    }
-
-    func getMetricsNumber() -> (totalTweets: Int64, totalRetweets: Int64, tweetsPerHour: Int64)
-    {
-        //get metric values
-        // strtoll - String to long long int
-        var tweets = strtoll("99780009800", nil,10)
-        var retweets = strtoll("547800", nil,10)
-        var tweetsHour = strtoll("6778000", nil,10)
-        
-        return (tweets, retweets, tweetsHour)
-    }
-    
     func formatNumberToDisplay(number: Int64) -> String
     {
         let billion = Int64(999999999)
@@ -269,6 +250,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             myWebView.delegate = self
             
             visualizationHandler.webViews.append(myWebView)
+            
+            // set initial loading state
+            myWebView.hidden = true
+
             
         }
     }
@@ -430,17 +415,19 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             self.totalTweetsNumberLabel.text = ""
         }
-        if self.totalRetweetsNumberLabel != nil
+        if self.totalUsersNumberLabel != nil
         {
-            self.totalRetweetsNumberLabel.text = ""
+            self.totalUsersNumberLabel.text = ""
         }
         if self.tweetsPerHourNumberLabel != nil
         {
             self.tweetsPerHourNumberLabel.text = ""
         }
-        
+        if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
+        {
+            self.changeLastUpdated()
+        }
         self.visualizationHandler.cleanWebViews()
-        
     }
     
     func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
@@ -512,12 +499,32 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
         if ((error) != nil) {
             self.tweetsTableViewController.errorMessage = error!.localizedDescription
-        } else if json!["tweets"].count == 0
-        {
-            self.tweetsTableViewController.emptySearchResult = true
         }
-        if json != nil {
-            self.tweetsTableViewController.tweets = json!["tweets"]
+        else if json != nil
+        {
+            //select the json content according to appropriate request
+            var tweetsContent = json!
+            if Config.serverMakeSingleRequest
+            {
+                tweetsContent = json!["toptweets"]
+            }
+            
+            if tweetsContent != nil
+            {
+                if tweetsContent["tweets"].count == 0
+                {
+                    self.tweetsTableViewController.emptySearchResult = true
+                }
+                self.tweetsTableViewController.tweets = tweetsContent["tweets"]
+            }
+            else
+            {
+                self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
+            }
+        }
+        else
+        {
+            self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
         }
         self.tweetsTableViewController.tableView.reloadData()
     }
@@ -670,6 +677,42 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         })
     }
     
+    func handleTopMetrics(json: JSON?, error: NSError?) {
+        if (error != nil) {
+            self.totalTweetsNumberLabel.text = "Error"
+            self.totalUsersNumberLabel.text = "Error"
+            self.tweetsPerHourNumberLabel.text = "Error"
+            return
+        }
+        else
+        {
+            if json!["tweetsperhour"] != nil
+            {
+                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["tweetsperhour"].intValue))
+            }
+            else
+            {
+                self.tweetsPerHourNumberLabel.text = "Error"
+            }
+            if json!["totalUsers"] != nil
+            {
+                self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalUsers"].intValue))
+            }
+            else
+            {
+                self.totalUsersNumberLabel.text = "Error"
+            }
+            if json!["totaltweets"] != nil
+            {
+                 self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
+            }
+            else
+            {
+                self.totalTweetsNumberLabel.text = "Error"
+            }
+        }
+    }
+    
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>>? {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json[containerName].array?.count
@@ -747,16 +790,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func populateUI(json: JSON){
-        self.setupMetricsNumber()
-        
+        self.handleTweetsCallBack(json, error: nil)
+        self.handleTopMetrics(json, error: nil)
         // TODO: fix charts
 //        populateCharts(json)
-        populateTweetsTable(json)
-    }
-    
-    func populateTweetsTable(json:JSON)
-    {
-        
 //        self.tweetsTableViewController.tweets = ReadTweetsData.readJSON()!
         self.tweetsTableViewController.tweets = json["toptweets"]["tweets"]
         self.tweetsTableViewController.tableView.reloadData()
@@ -782,7 +819,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         Log("cluster")
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
     }
-    
     
     func populateCharts(json : JSON){
         if(Config.useDummyData){

@@ -16,6 +16,7 @@ protocol NetworkDelegate {
     func handleWordDistanceCallBack(json:JSON?, error: NSError?)
     func handleWordClusterCallBack(json:JSON?, error: NSError?)
     func handleWordCloudCallBack(json:JSON?, error: NSError?)
+    func handleTopMetrics(json:JSON?, error: NSError?)
 }
 
 class Network
@@ -44,6 +45,7 @@ class Network
             self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
             self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
             //self.executeWordCloudRequest()
+            //TODO: Find out if we have specific request for top metrics
         }
     }
     
@@ -142,6 +144,7 @@ class Network
         self.delegate?.handleWordDistanceCallBack(json, error: error)
         self.delegate?.handleWordClusterCallBack(json, error: error)
         self.delegate?.handleWordCloudCallBack(json, error: error)
+        self.delegate?.handleTopMetrics(json, error: error)
     }
     
     private func callTweetDelegate(json: JSON?, error: NSError?)
