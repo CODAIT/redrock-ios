@@ -612,7 +612,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         var numberOfColumns = 3        // number of columns
-        var containerName = "cluster" // name of container for data
+        var containerName = "topics" // name of container for data
         visualizationHandler.wordcloudData = returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
         visualizationHandler.isloadingVisualization[Config.visualizationsIndex.wordcloud.rawValue] = false
         visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
@@ -632,7 +632,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 let c: Int = col.toInt()!
                 //self.tableData[r][c] = cellJson.stringValue
                 Log(cellJson.stringValue)
-                tableData[r][c] = cellJson.stringValue
+                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "") //remove quotes
             }
         }
         return tableData
