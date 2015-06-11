@@ -41,7 +41,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var canUpdateSearch = false
     
     @IBOutlet weak var tweetsPerHourNumberLabel: UILabel!
-    @IBOutlet weak var totalRetweetsNumberLabel: UILabel!
+    @IBOutlet weak var totalUsersNumberLabel: UILabel!
     @IBOutlet weak var totalTweetsNumberLabel: UILabel!
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
@@ -188,25 +188,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.tweetsTableViewController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
         self.leftView.addSubview(self.tweetsTableViewController.view)
         tweetsTableViewController.didMoveToParentViewController(self)
-    }
-    
-    func setupMetricsNumber()
-    {
-        let metrics = self.getMetricsNumber()
-        self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalTweets)
-        self.totalRetweetsNumberLabel.text = self.formatNumberToDisplay(metrics.totalRetweets)
-        self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(metrics.tweetsPerHour)
-    }
-
-    func getMetricsNumber() -> (totalTweets: Int64, totalRetweets: Int64, tweetsPerHour: Int64)
-    {
-        //get metric values
-        // strtoll - String to long long int
-        var tweets = strtoll("99780009800", nil,10)
-        var retweets = strtoll("547800", nil,10)
-        var tweetsHour = strtoll("6778000", nil,10)
-        
-        return (tweets, retweets, tweetsHour)
     }
     
     func formatNumberToDisplay(number: Int64) -> String
@@ -434,9 +415,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             self.totalTweetsNumberLabel.text = ""
         }
-        if self.totalRetweetsNumberLabel != nil
+        if self.totalUsersNumberLabel != nil
         {
-            self.totalRetweetsNumberLabel.text = ""
+            self.totalUsersNumberLabel.text = ""
         }
         if self.tweetsPerHourNumberLabel != nil
         {
@@ -665,6 +646,42 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         })
     }
     
+    func handleTopMetrics(json: JSON?, error: NSError?) {
+        if (error != nil) {
+            self.totalTweetsNumberLabel.text = "Error"
+            self.totalUsersNumberLabel.text = "Error"
+            self.tweetsPerHourNumberLabel.text = "Error"
+            return
+        }
+        else
+        {
+            if json!["tweetsperhour"] != nil
+            {
+                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["tweetsperhour"].intValue))
+            }
+            else
+            {
+                self.tweetsPerHourNumberLabel.text = "Error"
+            }
+            if json!["totalUsers"] != nil
+            {
+                self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalUsers"].intValue))
+            }
+            else
+            {
+                self.totalUsersNumberLabel.text = "Error"
+            }
+            if json!["totaltweets"] != nil
+            {
+                 self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
+            }
+            else
+            {
+                self.totalTweetsNumberLabel.text = "Error"
+            }
+        }
+    }
+    
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>> {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json[containerName].array?.count
@@ -736,11 +753,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func populateUI(json: JSON){
-        self.setupMetricsNumber()
-        
+        self.handleTweetsCallBack(json, error: nil)
+        self.handleTopMetrics(json, error: nil)
         // TODO: fix charts
 //        populateCharts(json)
-        self.handleTweetsCallBack(json, error: nil)
+        
     }
     
     func populateCharts(json : JSON){
