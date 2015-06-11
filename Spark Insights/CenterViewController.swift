@@ -634,7 +634,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
-        Log("handleWordDistanceCallBack")
+        //Log("handleWordDistanceCallBack")
         if (error != nil) {
             visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "\(error!.localizedDescription)")
@@ -647,7 +647,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.forcegraph.rawValue)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
-                    Log("forcegraph data wasn't nil")
+                    //Log("forcegraph data wasn't nil")
                     self.visualizationHandler.forcegraphData = data!
                     self.visualizationHandler.searchText = self.searchText!
                     self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
@@ -886,13 +886,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.handleTopMetrics(json, error: nil)
         
         Log("location")
-        self.handleLocationCallBack(json["location"], error: nil )
+        self.handleLocationCallBack(json, error: nil )
 
         Log("profession")
-        self.handleProfessionCallBack(json["profession"], error: nil)
+        self.handleProfessionCallBack(json, error: nil)
         
         Log("sentiment")
-        self.handleSentimentsCallBack(json["sentiment"], error: nil)
+        self.handleSentimentsCallBack(json, error: nil)
         
         Log("distance")
         self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
