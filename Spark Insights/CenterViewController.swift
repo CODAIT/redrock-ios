@@ -666,9 +666,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             {
                 self.tweetsPerHourNumberLabel.text = "Error"
             }
-            if json!["totalUsers"] != nil
+            if json!["totalusers"] != nil
             {
-                self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalUsers"].intValue))
+                self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
             }
             else
             {
