@@ -16,6 +16,7 @@ class VisualizationHandler{
     var loadingViews = [UIActivityIndicatorView]()
     var resultsLabels = [UILabel]()
     var isloadingVisualization = [Bool]()
+    var errorDescription = [String]()
     var searchText : String = ""
     
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
@@ -106,6 +107,11 @@ class VisualizationHandler{
         {
             self.noDataState(Config.visualizationsIndex.treemap.rawValue)
         }
+        
+        if self.errorDescription[Config.visualizationsIndex.treemap.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
     }
     
     func reorderCirclepackingData(){
@@ -162,6 +168,11 @@ class VisualizationHandler{
             self.noDataState(Config.visualizationsIndex.circlepacking.rawValue)
         }
         
+        if self.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
+
     }
     
     func transformDataForForcegraph(webView: UIWebView){
@@ -220,6 +231,11 @@ class VisualizationHandler{
             self.noDataState(Config.visualizationsIndex.forcegraph.rawValue)
         }
 
+        if self.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
+
     }
 
     
@@ -270,6 +286,11 @@ class VisualizationHandler{
         {
             self.noDataState(Config.visualizationsIndex.timemap.rawValue)
         }
+        
+        if self.errorDescription[Config.visualizationsIndex.timemap.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.timemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
     }
     
     func transformDataForStackedbar(webView: UIWebView){
@@ -313,6 +334,12 @@ class VisualizationHandler{
         {
             self.noDataState(Config.visualizationsIndex.stackedbar.rawValue)
         }
+        
+        if self.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
+
     }
     
     func transformDataForWordcloud(webView: UIWebView){
@@ -374,6 +401,12 @@ class VisualizationHandler{
         {
             self.noDataState(Config.visualizationsIndex.wordcloud.rawValue)
         }
+        
+        if self.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] != ""
+        {
+            self.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
+        }
+
     }
 
     
@@ -422,6 +455,7 @@ class VisualizationHandler{
         {
             self.loadingState(i)
             self.isloadingVisualization[i] = true
+            self.errorDescription[i] = ""
         }
         
         //Clear charts data
