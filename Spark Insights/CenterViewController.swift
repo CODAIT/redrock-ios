@@ -581,7 +581,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
-        Log("handleWordDistanceCallBack")
+        //Log("handleWordDistanceCallBack")
         if (error != nil) {
             visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "\(error!.localizedDescription)")
@@ -594,7 +594,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
-                    Log("forcegraph data wasn't nil")
+                    //Log("forcegraph data wasn't nil")
                     self.visualizationHandler.forcegraphData = data!
                     self.visualizationHandler.searchText = self.searchText!
                     self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
