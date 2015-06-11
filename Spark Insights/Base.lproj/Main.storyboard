@@ -145,7 +145,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dHi-gH-brf">
                                         <rect key="frame" x="15" y="15" width="994" height="322"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="￼Example: #spark, @IBMBigData" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LDJ-rt-AZZ">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="￼Example: #SparkInsight, @IBMBigData" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LDJ-rt-AZZ">
                                                 <rect key="frame" x="142" y="192" width="531" height="60"/>
                                                 <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.87450980392156863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -610,8 +610,11 @@
                                             <constraint firstAttribute="width" constant="50" id="uqE-Ns-Frr"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4a-nJ-SKi">
-                                        <rect key="frame" x="314" y="6" width="71" height="32"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4a-nJ-SKi">
+                                        <rect key="frame" x="44.5" y="6" width="610" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="610" id="w4K-mv-F1v"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                         <state key="normal" title="RedRock">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -664,6 +667,7 @@
                     <connections>
                         <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="oCM-re-xwZ"/>
+                        <outlet property="headerLabel" destination="K4a-nJ-SKi" id="5QL-Jk-ZoJ"/>
                         <outlet property="headerView" destination="2qF-XA-JiK" id="hVc-Je-lrj"/>
                         <outlet property="leftView" destination="zAh-OB-wZF" id="cCm-Os-oMR"/>
                         <outlet property="pageControlView" destination="ifN-uh-2Nl" id="ca0-vT-6cT"/>
