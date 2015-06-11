@@ -40,6 +40,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     //Can update search
     var canUpdateSearch = false
     
+    @IBOutlet weak var headerLabel: UIButton!
     @IBOutlet weak var tweetsPerHourNumberLabel: UILabel!
     @IBOutlet weak var totalUsersNumberLabel: UILabel!
     @IBOutlet weak var totalTweetsNumberLabel: UILabel!
@@ -98,6 +99,8 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
+        
+        self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
     }
 
     override func didReceiveMemoryWarning() {
@@ -428,6 +431,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
         {
             self.changeLastUpdated()
+        }
+        if self.headerLabel != nil
+        {
+            self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         }
         self.visualizationHandler.cleanWebViews()
     }
