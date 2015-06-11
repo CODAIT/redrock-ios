@@ -320,7 +320,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         if(previousPage != page){
             previousPage = page
-            visualizationHandler.reloadAppropriateView(page)
+            //visualizationHandler.reloadAppropriateView(page)
             pageControlView.selectedIndex = page
         }
     }
