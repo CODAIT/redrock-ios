@@ -547,7 +547,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
@@ -570,7 +570,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
@@ -589,13 +589,14 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
+                    Log("forcegraph data wasn't nil")
                     self.visualizationHandler.forcegraphData = data!
                     self.visualizationHandler.searchText = self.searchText!
                     self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
@@ -606,12 +607,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             return
         }
         else if(json == nil){
-            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
             return
         }
         
-        var numberOfColumns = 3        // number of columns
-        var containerName = "topic" // name of container for data
+        var numberOfColumns = 4        // number of columns
+        var containerName = "cluster" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!)
@@ -622,7 +623,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
@@ -672,7 +673,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
                 }
                 else{
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
                 }
             })
         })
@@ -719,7 +720,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         let row_cnt: Int? = json[containerName].array?.count
         
         if(row_cnt == nil || col_cnt == nil){
-            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "REPLACE WITH BAR'S ERROR MESSAGE - JSON IS NIL")
+            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
             return nil
         }
         
@@ -814,10 +815,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         Log("distance")
         self.handleWordDistanceCallBack(json["distance"], error: nil)
         
-        Log("topic")
+        Log("topic") //topic??
         self.handleWordCloudCallBack(json, error: nil) // "topic" but not double-nested
         
-        Log("cluster")
+        Log("cluster") //cluster??
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
     }
     
