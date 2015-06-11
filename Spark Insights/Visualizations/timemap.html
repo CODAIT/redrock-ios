@@ -307,6 +307,9 @@
               displayCurrentValue(i);
               i = (i<datesArr.length - 1)? i + 1:0;
               range.value = i;
+              if(i==0){
+                                       toggleAnimation();
+              }
             }, 1000);
         }
         isAnimating = !isAnimating;
