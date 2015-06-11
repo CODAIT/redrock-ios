@@ -402,7 +402,7 @@
       .text(function(d){
         // return (getRadiusForDateAndCountry(filteredMapData[value],d.name) >800)?getRadiusForDateAndCountry(filteredMapData[value],d.name):"";
         var rad = getExactRadiusForDateAndCountry(filteredMapData[value],d.name);
-        return (rad > 1000)?rad:"";
+        return (rad > 1000)?rad:""; //this is really arbitrary
       });
     }
 

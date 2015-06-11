@@ -213,7 +213,7 @@ class VisualizationHandler{
         {
             //TODO: should have searchterm should be from actual searchterm
             
-            var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchText)\",\"value\":1000,\"group\":1}, "
+            var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(searchText)\",\"value\":\(forcegraphData[0][2]),\"group\":1}, " //the search text just arbitrarily takes the value of the first data point as its value
             for r in 0..<forcegraphData.count{
                 script9+="{\"name\": \""
                 script9+=forcegraphData[r][0]
