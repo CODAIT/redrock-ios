@@ -52,15 +52,19 @@ class VisualizationHandler{
     
     func transformData(webView: UIWebView){
         // uses the path to determine which function to use
+        //let delay = 0.5 * Double(NSEC_PER_SEC)
+        //let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        //dispatch_after(time, dispatch_get_main_queue()) {
+        
         switch webView.request!.URL!.lastPathComponent!{
         case "treemap.html":
             transformDataForTreemapping(webView)
             break;
         case "circlepacking.html":
-            transformDataForCirclepacking(webView)
+            self.transformDataForCirclepacking(webView)
             break;
         case "forcegraph.html":
-            transformDataForForcegraph(webView)
+            self.transformDataForForcegraph(webView)
             break;
         case "timemap.html":
             transformDataForTimemap(webView)
@@ -73,6 +77,8 @@ class VisualizationHandler{
         default:
             break;
         }
+        
+        //}
     }
     
     func transformDataForTreemapping(webView: UIWebView){
@@ -120,7 +126,6 @@ class VisualizationHandler{
     
     func transformDataForCirclepacking(webView: UIWebView){
         //Log(circlepackingData)
-        
         self.loadingState(Config.visualizationsIndex.circlepacking.rawValue)
         if self.circlepackingData.count > 0
         {
