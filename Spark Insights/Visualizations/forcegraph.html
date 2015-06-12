@@ -16,6 +16,8 @@
 
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
+    
+    var force;
 
 function renderChart(data, w, h) {
 
@@ -25,8 +27,8 @@ height = h;
 
 var color = d3.scale.category20();
 
-var force = d3.layout.force()
-.charge(-3000)
+force = d3.layout.force()
+.charge(-1500)
 .linkDistance(10)
 .size([width, height]);
 
@@ -66,11 +68,13 @@ graph.nodes.forEach(function(d, i){
       n = 2000;
       for (var i = 0; i < n; ++i) force.tick();
 
+/*
 force
 .nodes(graph.nodes)
 .links(graph.links)
 .linkDistance(function(d) { return linkScale(d.distance);})
 .start();
+ */
 
   var link = svg.selectAll(".link")
       .data(graph.links)
@@ -110,6 +114,14 @@ force
   });
   
 };
+
+function startAnimation(){
+    force.start();
+}
+
+function stopAnimation(){
+    force.stop();
+}
 
 //renderChart('{"nodes":[    {"name":"Myriel","value":52,"group":1},    {"name":"Labarre","value":5,"group":2},    {"name":"Valjean","value":17,"group":2},    {"name":"Mme.deR","value":55,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":44,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":22,"group":2},    {"name":"Isabeau","value":17,"group":2},    {"name":"Gervais","value":33,"group":2}  ],  "links":[    {"source":0,"target":1,"distance":33},    {"source":0,"target":2,"distance":22},    {"source":0,"target":3,"distance":22},    {"source":0,"target":4,"distance":11},    {"source":0,"target":5,"distance":22},    {"source":0,"target":6,"distance":22},    {"source":0,"target":7,"distance":43},    {"source":0,"target":8,"distance":22},    {"source":0,"target":9,"distance":22}  ]}');
 

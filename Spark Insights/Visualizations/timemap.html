@@ -132,6 +132,11 @@
     </div>
 <script>
 
+    var currDate = document.getElementById("currDate")
+
+    var minValue = document.getElementById("minValue")
+    var maxValue = document.getElementById("maxValue")
+
     var bubble_map = null;
     var datesArr = null;
     var mapData = null;
@@ -247,7 +252,7 @@
 
       displayCurrentValue(0);
       
-      toggleAnimation();
+      //toggleAnimation();
 
     }
 
@@ -290,6 +295,18 @@
 
     }
 
+    function stopAnimation(){
+        if(isAnimating){
+            toggleAnimation();
+        }
+    }
+
+    function startAnimation(){
+        if(!isAnimating){
+            toggleAnimation();
+        }
+    }
+
     function toggleAnimation(){
 
 
@@ -308,7 +325,7 @@
               i = (i<datesArr.length - 1)? i + 1:0;
               range.value = i;
               if(i==0){
-                                       toggleAnimation();
+                toggleAnimation();
               }
             }, 1000);
         }
@@ -317,8 +334,8 @@
     }
 
     function setDatesOnRange(){
-        document.getElementById("minValue").innerHTML = datesArr[0];
-        document.getElementById("maxValue").innerHTML = datesArr[datesArr.length - 1];
+        minValue.innerHTML = datesArr[0];
+        maxValue.innerHTML = datesArr[datesArr.length - 1];
     }
 
     function getDistictDates(data){
@@ -386,11 +403,11 @@
     }
 
     function displayCurrentValue(value){
-      console.log("Selected Date = " + datesArr[value]);
-      document.getElementById("currDate").innerHTML = datesArr[value].toUpperCase();
+      //console.log("Selected Date = " + datesArr[value]);
+      currDate.innerHTML = datesArr[value].toUpperCase();
       circles.selectAll("circle")
       .transition()
-      .duration(2000).ease("linear")
+      .duration(700).ease("linear")
       .attr("r",  function(d) {
             //document.getElementById("test").innerHTML = "getRadiusForDateAndCountry(filteredMapData[value],d.name): "+getRadiusForDateAndCountry(filteredMapData[value],d.name);
         return getRadiusForDateAndCountry(filteredMapData[value],d.name);
@@ -398,15 +415,17 @@
             //radiusScale(getRadiusForDateAndCountry(filteredMapData[value],d.name)); //return getRadiusForDateAndCountry(datesArr[value],d.name); //Math.floor((Math.random() * 50) + 1); //
       });
 
+      /*
       labels.selectAll("text").text(function() {return ""});
       labels.selectAll("text")
       .transition()
-      .duration(2000).ease("linear")
+      .duration(700).ease("linear")
       .text(function(d){
         // return (getRadiusForDateAndCountry(filteredMapData[value],d.name) >800)?getRadiusForDateAndCountry(filteredMapData[value],d.name):"";
         var rad = getExactRadiusForDateAndCountry(filteredMapData[value],d.name);
-        return (rad > 200000*scalefactor)?rad:""; //this is really arbitrary
+        return (rad > 100000*scalefactor)?rad:""; //this is really arbitrary
       });
+       */
     }
 
     function getRadiusForDateAndCountry(currDateData,countryName){
