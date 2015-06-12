@@ -295,6 +295,18 @@
 
     }
 
+    function stopAnimation(){
+        if(isAnimating){
+            toggleAnimation();
+        }
+    }
+
+    function startAnimation(){
+        if(!isAnimating){
+            toggleAnimation();
+        }
+    }
+
     function toggleAnimation(){
 
 
