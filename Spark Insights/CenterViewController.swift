@@ -782,7 +782,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             if json!["totaltweets"] != nil
             {
                 
-                if json!["totaltweets"].intValue == 0
+                if json!["totaltweets"].intValue < 30
                 {
                     totalTweetsIsZero = true
                 }
@@ -796,7 +796,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             {
                 if totalTweetsIsZero
                 {
-                    self.tweetsPerHourNumberLabel.text = "0"
+                    self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
                 }
                 else
                 {
