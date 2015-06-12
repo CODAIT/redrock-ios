@@ -182,6 +182,14 @@ class VisualizationHandler{
 
     }
     
+    func stopForcegraph(){
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("stopAnimation();")
+    }
+    
+    func startForcegraph(){
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("startAnimation();")
+    }
+    
     func transformDataForForcegraph(webView: UIWebView){
         //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
         

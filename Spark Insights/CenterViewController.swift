@@ -324,6 +324,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 visualizationHandler.startTimemap()
             }
             
+            if previousPage == Config.visualizationsIndex.forcegraph.rawValue{
+                Log("left forcegraph so stop animation")
+                self.visualizationHandler.stopForcegraph()
+            }
+            if page == Config.visualizationsIndex.forcegraph.rawValue{
+                Log("entered forcegraph so start animation")
+                self.visualizationHandler.startForcegraph()
+            }
+
+            
             
             previousPage = page
             //visualizationHandler.reloadAppropriateView(page)
