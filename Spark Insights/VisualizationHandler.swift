@@ -52,33 +52,33 @@ class VisualizationHandler{
     
     func transformData(webView: UIWebView){
         // uses the path to determine which function to use
-        //let delay = 0.5 * Double(NSEC_PER_SEC)
-        //let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        //dispatch_after(time, dispatch_get_main_queue()) {
+        let delay = 0.2 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
         
-        switch webView.request!.URL!.lastPathComponent!{
-        case "treemap.html":
-            transformDataForTreemapping(webView)
-            break;
-        case "circlepacking.html":
-            self.transformDataForCirclepacking(webView)
-            break;
-        case "forcegraph.html":
-            self.transformDataForForcegraph(webView)
-            break;
-        case "timemap.html":
-            transformDataForTimemap(webView)
-            break;
-        case "stackedbar.html":
-            transformDataForStackedbar(webView)
-            break;
-        case "wordcloud.html":
-            transformDataForWordcloud(webView)
-        default:
-            break;
+            switch webView.request!.URL!.lastPathComponent!{
+            case "treemap.html":
+                self.transformDataForTreemapping(webView)
+                break;
+            case "circlepacking.html":
+                self.transformDataForCirclepacking(webView)
+                break;
+            case "forcegraph.html":
+                self.transformDataForForcegraph(webView)
+                break;
+            case "timemap.html":
+                self.transformDataForTimemap(webView)
+                break;
+            case "stackedbar.html":
+                self.transformDataForStackedbar(webView)
+                break;
+            case "wordcloud.html":
+                self.transformDataForWordcloud(webView)
+            default:
+                break;
+            }
+        
         }
-        
-        //}
     }
     
     func transformDataForTreemapping(webView: UIWebView){
