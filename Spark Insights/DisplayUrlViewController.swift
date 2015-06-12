@@ -20,6 +20,7 @@ class DisplayUrlViewController: UIViewController, UIWebViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadingIndicator.startAnimating()
         self.URLwebView.delegate = self
         if let url = NSURL (string: loadUrl)
         {
@@ -30,6 +31,7 @@ class DisplayUrlViewController: UIViewController, UIWebViewDelegate {
     }
 
     func webViewDidFinishLoad(webView: UIWebView) {
+        self.loadingIndicator.stopAnimating()
         self.loadingIndicator.hidden = true
     }
     

@@ -18,9 +18,16 @@ class TwitterTweet
     private var retweetCount: Int = 0
     private var tweetText: String = ""
     private var dateTime: NSDate = NSDate()
+    private let twitterUserProfileURLbyID = "https://twitter.com/intent/user?user_id="
     private let timeInterval = NSTimeInterval(NSTimeZone.localTimeZone().secondsFromGMT)
     private let seconsToDisplayDate = NSTimeInterval(82800)
     private let displayDateFormat = "MMM dd"
+    private var userID:String = ""
+    
+    func setUserID(userID: String)
+    {
+        self.userID = userID
+    }
     
     func setUserName(userName: String)
     {
@@ -145,5 +152,9 @@ class TwitterTweet
             return stringTime
         }
     }
-
+    
+    func getProfileURL() -> String
+    {
+        return (self.twitterUserProfileURLbyID + self.userID)
+    }
 }
