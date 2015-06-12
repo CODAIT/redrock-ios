@@ -6,10 +6,6 @@
 //  Copyright (c) 2015 IBM. All rights reserved.
 //
 
-// make some request
-// comes back as a JSON
-// parse the JSOn
-
 import UIKit
 import MessageUI
 import Social
@@ -35,7 +31,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     
     // last visited page
-    var previousPage = 0
+    var previousPage : Int = 0
    
     //Can update search
     var canUpdateSearch = false
@@ -317,7 +313,18 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         if(page >= Config.getNumberOfVisualizations()){
             page = Config.getNumberOfVisualizations()-1
         }
-        if(previousPage != page){
+        if(previousPage != page){ //page was changed
+            Log("page was changed from \(previousPage) to \(page)")
+            if previousPage == Config.visualizationsIndex.timemap.rawValue{
+                Log("left timemap so stop animation")
+                visualizationHandler.stopTimemap()
+            }
+            if page == Config.visualizationsIndex.timemap.rawValue{
+                Log("entered timemap so start animation")
+                visualizationHandler.startTimemap()
+            }
+            
+            
             previousPage = page
             //visualizationHandler.reloadAppropriateView(page)
             pageControlView.selectedIndex = page

@@ -245,6 +245,14 @@ class VisualizationHandler{
         }
 
     }
+    
+    func stopTimemap(){
+        webViews[Config.visualizationsIndex.timemap.rawValue].stringByEvaluatingJavaScriptFromString("stopAnimation();")
+    }
+    
+    func startTimemap(){
+        webViews[Config.visualizationsIndex.timemap.rawValue].stringByEvaluatingJavaScriptFromString("startAnimation();")
+    }
 
     
     func transformDataForTimemap(webView: UIWebView){
