@@ -504,6 +504,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     // MARK: - Network Delegate
     
+    func displayRequestTime(time: String) {
+        let alertController = UIAlertController(title: "Request Time", message:
+            time, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
         if ((error) != nil) {
             self.tweetsTableViewController.errorMessage = error!.localizedDescription
