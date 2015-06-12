@@ -52,12 +52,6 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var scrollViewLoadingView: UIView!
     
-    // Rosstin: I made these separate so that if one finishes before the other, they don't both disappear
-    //  alternatively we could write some logic to check both conditions before removing the view
-    // if we have more than one loading view, we could iterate a static variable and then decrement it until it was 0
-    private var loadingView1 :LoadingView! // the loading view for the executeRequest
-    //private var loadingView2 :LoadingView! // the loading view for the tweets
-    
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
     
@@ -95,7 +89,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         
         //Display time of last update
         self.configureGestureRecognizerForTweetFooterView()
-        self.changeLastUpdated()
+        self.changeLastUpdated(true)
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
@@ -148,11 +142,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 let currentSearch = self.searchText
                 self.searchText = currentSearch
                 self.tweetsFooterView.alpha = 0.5
+                changeLastUpdated(true)
             }
         }
+        
     }
     
-    func changeLastUpdated()
+    func changeLastUpdated(callWaitToSearch: Bool)
     {
         var dateNow = NSDate()
         var dateFormat = NSDateFormatter()
@@ -163,7 +159,10 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.tweetsFooterView.backgroundColor = Config.darkBlueColor
         self.tweetsFooterSeparatorLine.hidden = false
         self.tweetsFooterView.alpha = 1.0
-        self.waitToUpdateSearch()
+        if callWaitToSearch
+        {
+           self.waitToUpdateSearch()
+        }
     }
     
     func waitToUpdateSearch()
@@ -430,7 +429,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
         {
-            self.changeLastUpdated()
+            self.changeLastUpdated(false)
         }
         if self.headerLabel != nil
         {
@@ -483,19 +482,12 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     func loadDataFromServer()
     {
         if (Config.useDummyData) {
-            //loadingView1 = LoadingView(frame: view.frame)
-            //view.addSubview(loadingView1!)
-            
             let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
                 self.onDummyRequestSuccess(nil)
-                self.changeLastUpdated()
-                //self.loadingView1.removeFromSuperview()
             }
         } else {
-            //loadingView1 = LoadingView(frame: view.frame)
-            //view.addSubview(loadingView1!)
             var search = self.getIncludeAndExcludeSeparated()
             var networkConnection = Network()
             networkConnection.delegate = self
@@ -780,7 +772,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         {
             if json!["tweetsperhour"] != nil
             {
-                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["tweetsperhour"].intValue))
+                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay((Int64(json!["tweetsperhour"].intValue + 1)*30))
             }
             else
             {
@@ -825,7 +817,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 //self.tableData[r][c] = cellJson.stringValue
                 Log(cellJson.stringValue)
                 
-                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "") //remove quotes
+                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
             }
         }
         return tableData

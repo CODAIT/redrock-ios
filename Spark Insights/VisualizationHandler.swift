@@ -52,26 +52,32 @@ class VisualizationHandler{
     
     func transformData(webView: UIWebView){
         // uses the path to determine which function to use
-        switch webView.request!.URL!.lastPathComponent!{
-        case "treemap.html":
-            transformDataForTreemapping(webView)
-            break;
-        case "circlepacking.html":
-            transformDataForCirclepacking(webView)
-            break;
-        case "forcegraph.html":
-            transformDataForForcegraph(webView)
-            break;
-        case "timemap.html":
-            transformDataForTimemap(webView)
-            break;
-        case "stackedbar.html":
-            transformDataForStackedbar(webView)
-            break;
-        case "wordcloud.html":
-            transformDataForWordcloud(webView)
-        default:
-            break;
+        let delay = 0.2 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+        
+            switch webView.request!.URL!.lastPathComponent!{
+            case "treemap.html":
+                self.transformDataForTreemapping(webView)
+                break;
+            case "circlepacking.html":
+                self.transformDataForCirclepacking(webView)
+                break;
+            case "forcegraph.html":
+                self.transformDataForForcegraph(webView)
+                break;
+            case "timemap.html":
+                self.transformDataForTimemap(webView)
+                break;
+            case "stackedbar.html":
+                self.transformDataForStackedbar(webView)
+                break;
+            case "wordcloud.html":
+                self.transformDataForWordcloud(webView)
+            default:
+                break;
+            }
+        
         }
     }
     
@@ -120,7 +126,6 @@ class VisualizationHandler{
     
     func transformDataForCirclepacking(webView: UIWebView){
         //Log(circlepackingData)
-        
         self.loadingState(Config.visualizationsIndex.circlepacking.rawValue)
         if self.circlepackingData.count > 0
         {
@@ -360,6 +365,8 @@ class VisualizationHandler{
                 
                 var currentTopicNumber = self.wordcloudData[0][0]
                 
+                var maxSize = 0; var minSize = 100000;
+                
                 for r in 0..<self.wordcloudData.count{
                     var thisTopicNumber = self.wordcloudData[r][0]
                     if( thisTopicNumber != currentTopicNumber){
@@ -376,15 +383,22 @@ class VisualizationHandler{
                     script9+="{\"text\": \""
                     script9+=self.wordcloudData[r][1]
                     script9+="\", \"size\": \""
-                    var number = String(Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000)))
-                    script9+=number
+                    var number = Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000))
+                    if number > maxSize{
+                        maxSize = number
+                    }
+                    if number < minSize{
+                        minSize = number
+                    }
+                    script9+=String(number)
                     script9+="\", \"topic\": \""
                     script9+=thisTopicNumber
                     script9+="\"}"
                 }
-                script9+="]]; renderChart(data2);"
+                script9+="]]; var maxSize = \(maxSize); var minSize = \(minSize); renderChart(data2, maxSize, minSize);"
                 
-                //Log(script9)
+                Log("maxSize: \(maxSize).... and script9")
+                Log(script9)
                 
                 //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
                 
