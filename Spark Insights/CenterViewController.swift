@@ -6,10 +6,6 @@
 //  Copyright (c) 2015 IBM. All rights reserved.
 //
 
-// make some request
-// comes back as a JSON
-// parse the JSOn
-
 import UIKit
 import MessageUI
 import Social
