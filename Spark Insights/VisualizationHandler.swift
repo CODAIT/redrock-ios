@@ -365,7 +365,7 @@ class VisualizationHandler{
                 
                 var currentTopicNumber = self.wordcloudData[0][0]
                 
-                var maxSize = 0;
+                var maxSize = 0; var minSize = 100000;
                 
                 for r in 0..<self.wordcloudData.count{
                     var thisTopicNumber = self.wordcloudData[r][0]
@@ -387,14 +387,18 @@ class VisualizationHandler{
                     if number > maxSize{
                         maxSize = number
                     }
+                    if number < minSize{
+                        minSize = number
+                    }
                     script9+=String(number)
                     script9+="\", \"topic\": \""
                     script9+=thisTopicNumber
                     script9+="\"}"
                 }
-                script9+="]]; var maxSize = \(maxSize); renderChart(data2, maxSize);"
+                script9+="]]; var maxSize = \(maxSize); var minSize = \(minSize); renderChart(data2, maxSize, minSize);"
                 
-                //Log(script9)
+                Log("maxSize: \(maxSize).... and script9")
+                Log(script9)
                 
                 //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
                 

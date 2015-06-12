@@ -35,9 +35,9 @@ d3.selectAll("svg").remove();
 //d3.json("topic.json", function(topic) {
 //d3.csv("topic_words"+x+".csv",
 
-function renderSingle(topic, maxSize) {
+function renderSingle(topic, maxSize, minSize) {
 
-wordScale=d3.scale.linear().domain([1,maxSize]).range([10,20,40,80]).clamp(true);
+wordScale=d3.scale.linear().domain([minSize,maxSize]).range([10,160]).clamp(true);
 wordColor=d3.scale.linear().domain([10,20,40,80]).range(["#5596E6","#8CD211","#FF5003","#E71D32"]);
 
   d3.layout.cloud().size([465, 400])
@@ -85,11 +85,11 @@ wordColor=d3.scale.linear().domain([10,20,40,80]).range(["#5596E6","#8CD211","#F
 
 }
 
-function renderChart(data, maxSize) {
+function renderChart(data, maxSize, minSize) {
     makeCanvases(data.length);
 
     for (i = 0; i < data.length; i++) {
-        renderSingle(data[i], maxSize);
+        renderSingle(data[i], maxSize, minSize);
     }
 }
 
