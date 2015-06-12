@@ -25,18 +25,8 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    // MARK - Tweet URL clicked
-    func displayTweetTappedURL(tappedURL: String)
-    {
-        if let displayViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetDisplayURL") as? DisplayUrlViewController
-        {
-            displayViewController.loadUrl = tappedURL
-            self.presentViewController(displayViewController, animated: true, completion: nil)
-        }
-    }
     
-    //MARK - Tweet Cell delegate
+    //MARK: Tweet Cell delegate
     
     func twitterBirdButtonClicked(clickedCell: TweetTableViewCell) {
         self.shareOnTwitter(clickedCell)
@@ -68,14 +58,30 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         }
     }
     
+    func didTappedURLInsideTweetText(tappedURL: String) {
+        if let displayViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetDisplayURL") as? DisplayUrlViewController
+        {
+            displayViewController.loadUrl = tappedURL
+            self.presentViewController(displayViewController, animated: true, completion: nil)
+        }
+    }
     
-    //MARK - Twitter integration
+    func userHandleClicked(clickedCell: TweetTableViewCell) {
+        if let displayViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetDisplayURL") as? DisplayUrlViewController
+        {
+            displayViewController.loadUrl = clickedCell.userProfileURL
+            self.presentViewController(displayViewController, animated: true, completion: nil)
+        }
+    }
+    
+    
+    //MARK: Twitter integration
     func shareOnTwitter(tweetCell: TweetTableViewCell)
     {
         if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
         {
             var tweetSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-            tweetSheet.setInitialText(tweetCell.userScreenName.text)
+            tweetSheet.setInitialText(tweetCell.userScreenName.titleLabel!.text)
             //tweetSheet.addImage(self.screenShot())
             self.presentViewController(tweetSheet, animated: true, completion: {
                 tweetCell.twitterDetailImg.alpha = 1.0
@@ -155,11 +161,11 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
                 tweetText: tweet.getTweetText(),
                 countFavorite: String(tweet.getFavoritesCount()),
                 countRetweet: String(tweet.getRetweetsCount()),
-                dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"))
+                dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"),
+                userProfileURL: tweet.getProfileURL())
             
             tweetCell.delegate = self
             tweetCell.rowIndex = indexPath.row
-            tweetCell.displayTappedURL = self.displayTweetTappedURL
             return tweetCell
         }
     }
@@ -173,6 +179,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         let retweet_count = tweets[row]["retweet_count"].stringValue
         let favorite_count = tweets[row]["favorite_count"].stringValue
         let text = tweets[row]["text"].stringValue
+        let userID = tweets[row]["user"]["id"].stringValue
         
         var tweet = TwitterTweet()
         tweet.setUserName(user_name)
@@ -202,6 +209,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
                 
             }
         }
+        tweet.setUserID(userID)
         
         return tweet
     }

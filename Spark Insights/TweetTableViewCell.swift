@@ -11,9 +11,11 @@ import UIKit
 @objc
 protocol TweetTableViewCellDelegate {
     func twitterBirdButtonClicked(clickedCell: TweetTableViewCell)
-    optional func cellDidOpen(openedCell: TweetTableViewCell)
-    optional func cellDidClose(closedCell: TweetTableViewCell)
-    optional func cellDidBeginOpening(openingCell: TweetTableViewCell)
+    func cellDidOpen(openedCell: TweetTableViewCell)
+    func cellDidClose(closedCell: TweetTableViewCell)
+    func cellDidBeginOpening(openingCell: TweetTableViewCell)
+    func didTappedURLInsideTweetText(tappedURL: String)
+    func userHandleClicked(clickedCell: TweetTableViewCell)
 }
 
 class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextLabelDelegate{
@@ -21,11 +23,11 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     // Delegate
     weak var delegate: TweetTableViewCellDelegate?
     
+    @IBOutlet weak var userScreenName: UIButton!
     // Tweet Cell outlets
     @IBOutlet weak var displayView: UIView!
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var userScreenName: UILabel!
     @IBOutlet weak var tweeText: ContextLabel!
     @IBOutlet weak var countFavorite: UILabel!
     @IBOutlet weak var countRetweet: UILabel!
@@ -51,12 +53,14 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     static let lineHeight = CGFloat(24)
     static let tweetToolbarHeight = CGFloat(19)
     static let blankSpaceHeight = CGFloat(70)
-    static let maxCellHeight = CGFloat(220)
+    static let maxCellHeight = CGFloat(225)
     
     //Keep track of the row index of the cell
     var rowIndex:Int = 0
-    var displayTappedURL: ((selectedURL: String) -> ())!
     var isURLTapped = false
+    
+    //User profile url by link
+    var userProfileURL = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -83,7 +87,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         self.twitterBirdView.userInteractionEnabled = true
     }
     
-    // MARK - Profile Image style
+    // MARK: Profile Image style
     func changeImageLayout()
     {
         self.userProfileImage.layer.cornerRadius = 20.0;
@@ -92,7 +96,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         self.userProfileImage.layer.borderWidth = 2.0;
     }
     
-    // MARK - Select style
+    // MARK: Select style
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if self.isURLTapped
@@ -109,17 +113,21 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
     }
     
+    @IBAction func userHandleClicked(sender: UIButton) {
+        self.delegate?.userHandleClicked(self)
+    }
     
-    // MARK - Configure Tweet
-    func configureWithTweetData(profileImage: UIImage, userName: String, userScreenName: String, tweetText: String, countFavorite: String, countRetweet: String, dateTime: String)
+    // MARK: Configure Tweet
+    func configureWithTweetData(profileImage: UIImage, userName: String, userScreenName: String, tweetText: String, countFavorite: String, countRetweet: String, dateTime: String, userProfileURL: String)
     {
         self.userProfileImage.image = profileImage
         self.userName.text = userName
-        self.userScreenName.text = userScreenName
+        self.userScreenName.setTitle(userScreenName, forState: UIControlState.Normal)
         self.tweeText.text = tweetText
         self.countFavorite.text = countFavorite
         self.countRetweet.text = countRetweet
         self.tweetDateTime.text = dateTime
+        self.userProfileURL = userProfileURL
     }
     
     static func calculateHeightForCell(textLength: CGFloat, tableWidth: CGFloat) -> CGFloat
@@ -138,7 +146,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
     }
     
-    // MARK - Context Label delegate
+    // MARK: Context Label delegate
     func contextLabel(contextLabel: ContextLabel, beganTouchOf text: String, with linkRangeResult: LinkRangeResult) {
         //Avoid row be selected
         var firstCharac = Array(text)[0]
@@ -159,7 +167,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     func contextLabel(contextLabel: ContextLabel, endedTouchOf text: String, with linkRangeResult: LinkRangeResult) {
         if  self.isURLTapped
         {
-            self.displayTappedURL(selectedURL: text)
+            self.delegate?.didTappedURLInsideTweetText(text)
         }
     }
     
@@ -176,14 +184,14 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
     }
     
-    // MARK - Swipeable
+    // MARK: Swipeable
     func panThisCell(gesture: UIPanGestureRecognizer)
     {
         switch (gesture.state) {
         case UIGestureRecognizerState.Began:
             self.panStartPoint = gesture.translationInView(self.displayView)
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant
-            self.delegate?.cellDidBeginOpening!(self)
+            self.delegate?.cellDidBeginOpening(self)
             break
         case UIGestureRecognizerState.Changed:
             swipeableCellChanged(gesture)
@@ -294,7 +302,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     {
         if notifyDelegateDidClose
         {
-            self.delegate?.cellDidClose!(self)
+            self.delegate?.cellDidClose(self)
         }
         
         if (self.startingRightLayoutConstraintConstant == 0 &&
@@ -320,7 +328,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     {
         if notifyDelegateDidOpen
         {
-            self.delegate?.cellDidOpen!(self)
+            self.delegate?.cellDidOpen(self)
         }
         
         if (self.startingRightLayoutConstraintConstant == self.twitterImageTotalWidth() &&
