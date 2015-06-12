@@ -770,14 +770,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
         else
         {
-            if json!["tweetsperhour"] != nil
-            {
-                self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay((Int64(json!["tweetsperhour"].intValue + 1)*30))
-            }
-            else
-            {
-                self.tweetsPerHourNumberLabel.text = "Error"
-            }
+            var totalTweetsIsZero = false
             if json!["totalusers"] != nil
             {
                 self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
@@ -788,11 +781,31 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             }
             if json!["totaltweets"] != nil
             {
+                
+                if json!["totaltweets"].intValue == 0
+                {
+                    totalTweetsIsZero = true
+                }
                  self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
             }
             else
             {
                 self.totalTweetsNumberLabel.text = "Error"
+            }
+            if json!["tweetsperhour"] != nil
+            {
+                if totalTweetsIsZero
+                {
+                    self.tweetsPerHourNumberLabel.text = "0"
+                }
+                else
+                {
+                    self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay((Int64(json!["tweetsperhour"].intValue + 1)*30))
+                }
+            }
+            else
+            {
+                self.tweetsPerHourNumberLabel.text = "Error"
             }
         }
     }
