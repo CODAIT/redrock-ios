@@ -45,7 +45,7 @@ var margin = 0,
 
 //var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
 
-var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4"]);
+var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
 
 var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);//, "#264a60", "#1c3648", "#142834", "#010205"]);
 
@@ -55,23 +55,40 @@ var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","
 
 var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);//, "#552f72", "#402255", "#301940", "#040304"]);
 
+var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
+
+var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
+
+var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
+
+var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
+
+
 function returnColor(parentColor, number){
     
     if(parentColor == "1"){
-        //return "#FF0000";
         return color1(number);
     }
     else if(parentColor == "2"){
-        //return "#00FF00";
         return color2(number);
     }
     else if(parentColor == "3"){
-        //return "#0000FF";
         return color3(number);
     }
     else if(parentColor == "4"){
-        //return "#505050";
         return color4(number);
+    }
+    else if(parentColor == "5"){
+        return color5(number);
+    }
+    else if(parentColor == "6"){
+        return color6(number);
+    }
+    else if(parentColor == "7"){
+        return color7(number);
+    }
+    else if(parentColor == "8"){
+        return color8(number);
     }
     else{
         return "#FF69B4";
