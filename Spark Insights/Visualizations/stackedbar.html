@@ -22,9 +22,11 @@
             width:   98%;
         }
     
+    /*
     .nvd3 .nv-legend .nv-legendWrap{
         transform: translate(0px, 30px);
     }
+    */
     .nvd3 .nv-axis.nv-x path.domain {
   stroke-opacity: 1;
 }
@@ -45,7 +47,7 @@
     }
     circle {
     opacity: 0.8;
-    }   
+    }
     </style>
 </head>
 <body>
@@ -88,9 +90,9 @@
             .tickFormat(function(d, i) {
                         return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length-3);
             });
-            chart.xAxis.rotateLabels(-30);
+            //chart.xAxis.rotateLabels(-30);
             chart.yAxis
-            //.axisLabel("Count")
+            //.axisLabel("# of Tweets")
             .tickFormat(d3.format(',.0d'));
 
             d3.select('#chart1 svg')
@@ -99,11 +101,21 @@
 
             nv.utils.windowResize(chart.update);
 
+            /*
             d3.select('body')
             .selectAll('.nv-x.nv-axis > g')
             .selectAll('g')
             .selectAll('text')
             .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
+             */
+
+             /*
+             d3.select('body')
+             .selectAll('.nv-y.nv-axis > g')
+             .selectAll('g')
+             .selectAll('text')
+             .attr('transform', function(d) {return 'translate (0,0) rotate(-30 0,0)'});
+              */
 
             return chart;
         },function(){

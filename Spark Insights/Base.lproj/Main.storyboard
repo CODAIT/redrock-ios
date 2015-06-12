@@ -155,6 +155,7 @@
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits"/>
                                                 <connections>
+                                                    <action selector="endedEditing:" destination="k4c-cg-gwj" eventType="editingDidEnd" id="8NS-lK-NiL"/>
                                                     <action selector="startedEditing:" destination="k4c-cg-gwj" eventType="editingDidBegin" id="Ixa-eD-ULc"/>
                                                 </connections>
                                             </textField>

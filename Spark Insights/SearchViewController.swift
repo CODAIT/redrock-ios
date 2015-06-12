@@ -130,6 +130,17 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             self.recalculateConstrainstsForSearchView = false
         }
     }
+
+    @IBAction func endedEditing(sender: UITextField)
+    {
+        recalculateConstrainstForBakcAnimation()
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        if (Config.searchViewAnimation) {
+            topImageView.startAnimating()
+        }
+    }
     
     func recalculateConstraintsForAnimation()
     {

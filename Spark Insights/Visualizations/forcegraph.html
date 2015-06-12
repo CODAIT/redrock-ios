@@ -68,13 +68,11 @@ graph.nodes.forEach(function(d, i){
       n = 2000;
       for (var i = 0; i < n; ++i) force.tick();
 
-/*
 force
 .nodes(graph.nodes)
 .links(graph.links)
 .linkDistance(function(d) { return linkScale(d.distance);})
 .start();
- */
 
   var link = svg.selectAll(".link")
       .data(graph.links)

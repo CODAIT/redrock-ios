@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import QuartzCore
+import UIKit
 
 protocol NetworkDelegate {
     func handleTweetsCallBack(json: JSON?, error: NSError?)
@@ -17,6 +19,7 @@ protocol NetworkDelegate {
     func handleWordClusterCallBack(json:JSON?, error: NSError?)
     func handleWordCloudCallBack(json:JSON?, error: NSError?)
     func handleTopMetrics(json:JSON?, error: NSError?)
+    func displayRequestTime(time: String)
 }
 
 class Network
@@ -25,7 +28,7 @@ class Network
     private var requestCount = 0
     private var requestTotal = 0
     private var error = false
-    
+    private var startTime = CACurrentMediaTime()
     // MARK: Call Requests
     
     func getDataFromServer(include: String, exclude:String)
@@ -41,10 +44,10 @@ class Network
             self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
             self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
             self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
-            //self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
+            self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
             self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
             self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
-            //self.executeWordCloudRequest()
+            self.executeWordCloudRequest()
             //TODO: Find out if we have specific request for top metrics
         }
     }
@@ -207,6 +210,7 @@ class Network
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         Log("Sending Request: " + req)
+        self.startTime = CACurrentMediaTime()
         let url: NSURL = NSURL(string: req)!
         let session = NSURLSession.sharedSession()
         session.configuration.timeoutIntervalForRequest = 300
@@ -220,6 +224,14 @@ class Network
                 })
             }
             
+            if Config.displayRequestTimer
+            {
+                let end = CACurrentMediaTime()
+                let elapsedTime = CACurrentMediaTime() - self.startTime
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.delegate?.displayRequestTime("\(elapsedTime)")
+                })
+            }
             if error != nil {
                 // There was an error in the network request
                 Log("Error: \(error.localizedDescription)")

@@ -313,22 +313,22 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             page = Config.getNumberOfVisualizations()-1
         }
         if(previousPage != page){ //page was changed
-            Log("page was changed from \(previousPage) to \(page)")
+            //Log("page was changed from \(previousPage) to \(page)")
             if previousPage == Config.visualizationsIndex.timemap.rawValue{
-                Log("left timemap so stop animation")
+                //Log("left timemap so stop animation")
                 visualizationHandler.stopTimemap()
             }
             if page == Config.visualizationsIndex.timemap.rawValue{
-                Log("entered timemap so start animation")
+                //Log("entered timemap so start animation")
                 visualizationHandler.startTimemap()
             }
             
             if previousPage == Config.visualizationsIndex.forcegraph.rawValue{
-                Log("left forcegraph so stop animation")
+                //Log("left forcegraph so stop animation")
                 self.visualizationHandler.stopForcegraph()
             }
             if page == Config.visualizationsIndex.forcegraph.rawValue{
-                Log("entered forcegraph so start animation")
+                //Log("entered forcegraph so start animation")
                 self.visualizationHandler.startForcegraph()
             }
             
@@ -510,6 +510,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     }
     
     // MARK: - Network Delegate
+    
+    func displayRequestTime(time: String) {
+        let alertController = UIAlertController(title: "Request Time", message:
+            time, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
     
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
         if ((error) != nil) {
