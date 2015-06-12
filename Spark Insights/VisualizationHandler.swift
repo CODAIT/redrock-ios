@@ -182,6 +182,14 @@ class VisualizationHandler{
 
     }
     
+    func stopForcegraph(){
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("stopAnimation();")
+    }
+    
+    func startForcegraph(){
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("startAnimation();")
+    }
+    
     func transformDataForForcegraph(webView: UIWebView){
         //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
         
@@ -496,5 +504,30 @@ class VisualizationHandler{
         self.stackedbarData.removeAll(keepCapacity: false)
         self.wordcloudData.removeAll(keepCapacity: false)
     }
+    
+    /*
+    func populateCharts(json : JSON){ //used for dummy data
+        if(Config.useDummyData){
+            self.circlepackingData = [["1","spark","222"],["1","sparksummit","344"],["2","#ibm","111"],["3","bigdata","577"],["3","analytics","99"],["4","@mapr","233"],["4","hadoop","333"],["4","hdfs","288"],["4","hortonworks","555"],["1","#sparkinsight","444"],["3","datamining","55"]]
+            //self.reorderCirclepackingData()
+            
+            self.treemapData = [["data scientist","222"],["programmer","344"],["designer","111"],["roboticist","577"],["marketer","99"],["barista","233"],["ceo","333"],["founder","288"],["fortune500","555"],["analyst","444"],["gamedev","55"]]
+            
+            self.stackedbarData = [["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
+            
+            self.worddistanceData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
+            
+            self.wordcloudData = [["0", "link", "0.2"], ["0", "Very", "0.3"], ["0", "worry", "0.3"], ["0", "hold", "0.00001"], ["0", "City", "0.0002"], ["0", "Ackles", "0.01"], ["0", "places", "0.1"], ["0", "Followers", "0.001"], ["0", "donxe2x80x99t", "0.002"], ["0", "seems", "0.01"], ["1", "power", "0.1"], ["1", "keep", "0.22"], ["1", "Scherzinger", "0.3"], ["1", "@justinbieber:", "0.12"], ["1", "SUPER", "0.16"], ["1", "#ChoiceTVBreakOutStar", "0.09"], ["1", "#ChoiceMaleHottie", "0.35"], ["1", "call", "0.05"], ["1", "years", "0.2"], ["1", "change", "0.3"], ["2", "pretty", "0.15"], ["2", "needed", "0.12"], ["2", "like", "0.16"], ["2", "song", "0.002"], ["2", "SEHUN", "0.0000002"], ["2", "team", "0.01"], ["2", "Because", "0.012"], ["2", "needs", "0.004"], ["2", "forever", "0.12"], ["2", "stop", "0.17"], ["3", "fucking", "0.07"], ["3", "Followers", "0.16"], ["3", "#TheOriginals", "0.14"], ["3", "move", "0.02"], ["3", "close", "0.004"], ["3", "dream", "0.002"], ["3", "Update", "0.001"], ["3", "picture", "0.1"], ["3", "President", "0.015"], ["3", "play", "0.12"]]
+            
+            self.forcegraphData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
+            
+            self.timemapData =
+                [ [  "20-Apr", "United States", "754" ], [ "20-Apr", "United Kingdom", "347" ], [ "21-Apr", "United States", "1687" ], ["21-Apr", "United Kingdom", "555"], [ "22-Apr", "United States", "2222" ], ["22-Apr", "United Kingdom", "155"], [ "23-Apr", "United States", "4343" ], ["23-Apr", "United Kingdom", "1214"], [ "24-Apr", "United States", "9999" ], ["24-Apr", "United Kingdom", "3333"], [ "25-Apr", "United States", "1687" ], ["25-Apr", "United Kingdom", "555"], [ "26-Apr", "United States", "1687" ], ["26-Apr", "United Kingdom", "555"] ]
+        }
+        self.reloadAppropriateView(previousPage) //reload the current page
+        // other pages will get loaded when they are swiped to
+    }
+    */
+
     
 }
