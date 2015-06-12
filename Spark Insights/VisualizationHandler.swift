@@ -365,6 +365,8 @@ class VisualizationHandler{
                 
                 var currentTopicNumber = self.wordcloudData[0][0]
                 
+                var maxSize = 0;
+                
                 for r in 0..<self.wordcloudData.count{
                     var thisTopicNumber = self.wordcloudData[r][0]
                     if( thisTopicNumber != currentTopicNumber){
@@ -381,13 +383,16 @@ class VisualizationHandler{
                     script9+="{\"text\": \""
                     script9+=self.wordcloudData[r][1]
                     script9+="\", \"size\": \""
-                    var number = String(Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000)))
-                    script9+=number
+                    var number = Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000))
+                    if number > maxSize{
+                        maxSize = number
+                    }
+                    script9+=String(number)
                     script9+="\", \"topic\": \""
                     script9+=thisTopicNumber
                     script9+="\"}"
                 }
-                script9+="]]; renderChart(data2);"
+                script9+="]]; var maxSize = \(maxSize); renderChart(data2, maxSize);"
                 
                 //Log(script9)
                 
