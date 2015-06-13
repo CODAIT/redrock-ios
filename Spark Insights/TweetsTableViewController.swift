@@ -155,14 +155,26 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
             var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
             
             var tweet = self.getTweetObject(indexPath.row)
-            tweetCell.configureWithTweetData(tweet.getProfileImage(),
-                userName: tweet.getUserName(),
+            
+            let user_profile_image = (tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+            
+            tweetCell.configureWithTweetData(tweet.getUserName(),
                 userScreenName: tweet.getUserHandle(),
                 tweetText: tweet.getTweetText(),
                 countFavorite: String(tweet.getFavoritesCount()),
                 countRetweet: String(tweet.getRetweetsCount()),
                 dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"),
                 userProfileURL: tweet.getProfileURL())
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                if let urlImage = NSURL(string: user_profile_image)
+                {
+                    if let dataImage = NSData(contentsOfURL: urlImage){
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            tweetCell.userProfileImage.image = UIImage(data: dataImage)!
+                        })
+                    }
+                }
+            })
             
             tweetCell.delegate = self
             tweetCell.rowIndex = indexPath.row
@@ -202,13 +214,6 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         }
         tweet.setTweetText(text)
         tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
-        if let urlImage = NSURL(string: user_profile_image)
-        {
-            if let dataImage = NSData(contentsOfURL: urlImage){
-                tweet.setUserProfileImage(UIImage(data: dataImage)!)
-                
-            }
-        }
         tweet.setUserID(userID)
         
         return tweet

@@ -118,9 +118,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     
     // MARK: Configure Tweet
-    func configureWithTweetData(profileImage: UIImage, userName: String, userScreenName: String, tweetText: String, countFavorite: String, countRetweet: String, dateTime: String, userProfileURL: String)
+    func configureWithTweetData(userName: String, userScreenName: String, tweetText: String, countFavorite: String, countRetweet: String, dateTime: String, userProfileURL: String)
     {
-        self.userProfileImage.image = profileImage
         self.userName.text = userName
         self.userScreenName.setTitle(userScreenName, forState: UIControlState.Normal)
         self.tweeText.text = tweetText
