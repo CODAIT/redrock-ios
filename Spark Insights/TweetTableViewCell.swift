@@ -53,7 +53,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     static let lineHeight = CGFloat(24)
     static let tweetToolbarHeight = CGFloat(19)
     static let blankSpaceHeight = CGFloat(70)
-    static let maxCellHeight = CGFloat(225)
+    static let maxCellHeight = CGFloat(245)
     
     //Keep track of the row index of the cell
     var rowIndex:Int = 0

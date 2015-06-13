@@ -154,18 +154,21 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         {
             var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
             
-            var tweet = self.getTweetObject(indexPath.row)
-            
-            let user_profile_image = (tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            
-            tweetCell.configureWithTweetData(tweet.getUserName(),
-                userScreenName: tweet.getUserHandle(),
-                tweetText: tweet.getTweetText(),
-                countFavorite: String(tweet.getFavoritesCount()),
-                countRetweet: String(tweet.getRetweetsCount()),
-                dateTime: tweet.getDateTimeToDisplay("MMM dd HH:mm:ss"),
-                userProfileURL: tweet.getProfileURL())
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                var tweet = self.getTweetObject(indexPath.row)
+                let user_profile_image = (self.tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                let timeToDisplay = tweet.getDateTimeToDisplay("MMM dd HH:mm:ss")
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    tweetCell.configureWithTweetData(tweet.getUserName(),
+                        userScreenName: tweet.getUserHandle(),
+                        tweetText: tweet.getTweetText(),
+                        countFavorite: String(tweet.getFavoritesCount()),
+                        countRetweet: String(tweet.getRetweetsCount()),
+                        dateTime: timeToDisplay,
+                        userProfileURL: tweet.getProfileURL())
+                })
+        
                 if let urlImage = NSURL(string: user_profile_image)
                 {
                     if let dataImage = NSData(contentsOfURL: urlImage){
