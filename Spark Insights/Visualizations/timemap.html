@@ -334,8 +334,8 @@
     }
 
     function setDatesOnRange(){
-        minValue.innerHTML = datesArr[0];
-        maxValue.innerHTML = datesArr[datesArr.length - 1];
+        minValue.innerHTML = datesArr[0].substring(0,datesArr[0].length-3);
+        maxValue.innerHTML = datesArr[datesArr.length - 1].substring(0,datesArr[datesArr.length - 1].length-3);
     }
 
     function getDistictDates(data){
