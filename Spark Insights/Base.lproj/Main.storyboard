@@ -90,7 +90,13 @@
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="GAJ-KQ-zkL" secondAttribute="centerY" id="X4u-eA-qWq"/>
                                         <constraint firstAttribute="centerX" secondItem="GAJ-KQ-zkL" secondAttribute="centerX" id="fLb-Se-122"/>
+                                        <constraint firstItem="GAJ-KQ-zkL" firstAttribute="top" secondItem="4RU-IN-ur2" secondAttribute="top" constant="12" id="fxp-n6-bq0"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="X4u-eA-qWq"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -110,9 +116,15 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="X22-x5-xbl" firstAttribute="top" secondItem="RGv-8m-SU9" secondAttribute="top" constant="12" id="OSt-11-9Uv"/>
                                         <constraint firstAttribute="centerY" secondItem="X22-x5-xbl" secondAttribute="centerY" id="oIe-WK-bej"/>
                                         <constraint firstAttribute="centerX" secondItem="X22-x5-xbl" secondAttribute="centerX" id="vN9-bW-H3C"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="oIe-WK-bej"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>

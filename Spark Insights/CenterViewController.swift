@@ -71,7 +71,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.setupWebViews()
         self.setupScrollView()
         visualizationHandler.searchText = searchText!
-        Log(visualizationHandler.searchText)
+        //Log(visualizationHandler.searchText)
 
         pageControlView.buttonSelectedBackgroundColor = Config.tealColor
         
@@ -849,7 +849,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
                 let r: Int = row.toInt()!
                 let c: Int = col.toInt()!
                 //self.tableData[r][c] = cellJson.stringValue
-                Log(cellJson.stringValue)
+                //Log(cellJson.stringValue)
                 
                 tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
             }
@@ -911,22 +911,22 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
         
-        Log("location")
+        //Log("location")
         self.handleLocationCallBack(json, error: nil )
 
-        Log("profession")
+        //Log("profession")
         self.handleProfessionCallBack(json, error: nil)
         
-        Log("sentiment")
+        //Log("sentiment")
         self.handleSentimentsCallBack(json, error: nil)
         
-        Log("distance")
+        //Log("distance")
         self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
         
-        Log("topic") //topic??
+        //Log("topic") //topic??
         self.handleWordCloudCallBack(json, error: nil) // "topic" but not double-nested
         
-        Log("cluster") //cluster??
+        //Log("cluster") //cluster??
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
     }
     
