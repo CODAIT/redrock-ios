@@ -924,7 +924,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
         
         //Log("topic") //topic??
-        self.handleWordCloudCallBack(json, error: nil) // "topic" but not double-nested
+        //self.handleWordCloudCallBack(json, error: nil) // "topic" but not double-nested
         
         //Log("cluster") //cluster??
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
