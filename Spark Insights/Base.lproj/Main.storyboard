@@ -108,8 +108,8 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u4O-Jm-m74" id="RGv-8m-SU9">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="500" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data avaiable for your search" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X22-x5-xbl">
-                                            <rect key="frame" x="177" y="12" width="247" height="20"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="500" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No data available for your search" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X22-x5-xbl">
+                                            <rect key="frame" x="175" y="12" width="251" height="20"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -484,8 +484,8 @@
                                                 <color key="textColor" red="0.3529411764705882" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Tweets" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsA-vd-aGm">
-                                                <rect key="frame" x="76" y="71" width="79.5" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searched Tweets" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsA-vd-aGm">
+                                                <rect key="frame" x="60" y="71" width="111" height="18"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                                 <color key="textColor" red="0.68235294117647061" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -511,8 +511,8 @@
                                                 <color key="textColor" red="0.35294117650000001" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Users" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8D-Gw-XvS">
-                                                <rect key="frame" x="80" y="71" width="71.5" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found Tweets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8D-Gw-XvS">
+                                                <rect key="frame" x="70" y="71" width="90.5" height="18"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                                 <color key="textColor" red="0.68235294120000001" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -558,8 +558,8 @@
                                                 <color key="textColor" red="0.35294117650000001" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tweets Per Hour" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EU6-4P-YsT">
-                                                <rect key="frame" x="62" y="71" width="107" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found Users" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EU6-4P-YsT">
+                                                <rect key="frame" x="74.5" y="71" width="82.5" height="18"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                                 <color key="textColor" red="0.68235294120000001" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -624,7 +624,7 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4a-nJ-SKi">
-                                        <rect key="frame" x="44.5" y="6" width="610" height="32"/>
+                                        <rect key="frame" x="44" y="6" width="610" height="32"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="610" id="w4K-mv-F1v"/>
                                         </constraints>
@@ -680,6 +680,8 @@
                     <connections>
                         <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="oCM-re-xwZ"/>
+                        <outlet property="foundTweetsNumberLabel" destination="TaT-Bc-iOj" id="OWX-2a-97T"/>
+                        <outlet property="foundUsersNumberLabel" destination="PtA-S5-plN" id="aLt-GL-8uR"/>
                         <outlet property="headerLabel" destination="K4a-nJ-SKi" id="5QL-Jk-ZoJ"/>
                         <outlet property="headerView" destination="2qF-XA-JiK" id="hVc-Je-lrj"/>
                         <outlet property="leftView" destination="zAh-OB-wZF" id="cCm-Os-oMR"/>
@@ -687,13 +689,11 @@
                         <outlet property="pageControlViewWidthConstraint" destination="AuT-wr-vPD" id="5bs-ZQ-ceb"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
                         <outlet property="searchButtonView" destination="SYb-Uf-iuG" id="m5q-9m-077"/>
+                        <outlet property="searchedTweetsNumberLabel" destination="Buv-yN-YAx" id="vr9-gn-aXB"/>
                         <outlet property="statusBarSeparator" destination="2jK-IF-SC5" id="Pev-sp-duV"/>
-                        <outlet property="totalTweetsNumberLabel" destination="Buv-yN-YAx" id="Yly-XF-Eqg"/>
-                        <outlet property="totalUsersNumberLabel" destination="TaT-Bc-iOj" id="Oct-a5-uFi"/>
                         <outlet property="tweetsFooterLabel" destination="LqR-JU-lTL" id="SEn-Nn-ozT"/>
                         <outlet property="tweetsFooterSeparatorLine" destination="xYW-Rv-ULE" id="CWd-CO-rE0"/>
                         <outlet property="tweetsFooterView" destination="vzr-LZ-Xry" id="si3-AE-r3V"/>
-                        <outlet property="tweetsPerHourNumberLabel" destination="PtA-S5-plN" id="3Kk-pE-AdD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
