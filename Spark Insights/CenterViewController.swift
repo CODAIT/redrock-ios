@@ -37,10 +37,9 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     var canUpdateSearch = false
     
     @IBOutlet weak var headerLabel: UIButton!
-    
-    @IBOutlet weak var foundUsersNumberLabel: UILabel!
-    @IBOutlet weak var foundTweetsNumberLabel: UILabel!
-    @IBOutlet weak var searchedTweetsNumberLabel: UILabel!
+    @IBOutlet weak var tweetsPerHourNumberLabel: UILabel!
+    @IBOutlet weak var totalUsersNumberLabel: UILabel!
+    @IBOutlet weak var totalTweetsNumberLabel: UILabel!
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -430,17 +429,17 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             tweetsTableViewController.tableView.reloadData()
         }
         
-        if self.searchedTweetsNumberLabel != nil
+        if self.totalTweetsNumberLabel != nil
         {
-            self.searchedTweetsNumberLabel.text = ""
+            self.totalTweetsNumberLabel.text = ""
         }
-        if self.foundUsersNumberLabel != nil
+        if self.totalUsersNumberLabel != nil
         {
-            self.foundUsersNumberLabel.text = ""
+            self.totalUsersNumberLabel.text = ""
         }
-        if self.foundTweetsNumberLabel != nil
+        if self.tweetsPerHourNumberLabel != nil
         {
-            self.foundTweetsNumberLabel.text = ""
+            self.tweetsPerHourNumberLabel.text = ""
         }
         if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
         {
@@ -785,36 +784,49 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     func handleTopMetrics(json: JSON?, error: NSError?) {
         if (error != nil) {
-            self.searchedTweetsNumberLabel.text = "Error"
-            self.foundTweetsNumberLabel.text = "Error"
-            self.foundUsersNumberLabel.text = "Error"
+            self.totalTweetsNumberLabel.text = "Error"
+            self.totalUsersNumberLabel.text = "Error"
+            self.tweetsPerHourNumberLabel.text = "Error"
             return
         }
         else
         {
+            var totalTweetsIsZero = false
             if json!["totalusers"] != nil
             {
-                self.foundUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
+                self.totalUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
             }
             else
             {
-                self.foundUsersNumberLabel.text = "Error"
+                self.totalUsersNumberLabel.text = "Error"
             }
             if json!["totaltweets"] != nil
             {
-                self.searchedTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
+                
+                if json!["totaltweets"].intValue < 30
+                {
+                    totalTweetsIsZero = true
+                }
+                 self.totalTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
             }
             else
             {
-                self.searchedTweetsNumberLabel.text = "Error"
+                self.totalTweetsNumberLabel.text = "Error"
             }
-            if json!["totalfilteredtweets"] != nil
+            if json!["tweetsperhour"] != nil
             {
-                self.foundTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalfilteredtweets"].intValue))
+                if totalTweetsIsZero
+                {
+                    self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
+                }
+                else
+                {
+                    self.tweetsPerHourNumberLabel.text = self.formatNumberToDisplay((Int64(json!["tweetsperhour"].intValue + 1)*30))
+                }
             }
             else
             {
-                self.foundTweetsNumberLabel.text = "Error"
+                self.tweetsPerHourNumberLabel.text = "Error"
             }
         }
     }
