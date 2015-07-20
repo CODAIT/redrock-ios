@@ -659,6 +659,11 @@
                                     <constraint firstAttribute="centerY" secondItem="K4a-nJ-SKi" secondAttribute="centerY" id="lIb-ad-oD8"/>
                                     <constraint firstAttribute="height" constant="44" id="sv8-uV-KQp"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="sv8-uV-KQp"/>
+                                    </mask>
+                                </variation>
                                 <variation key="widthClass=regular" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="325" y="0.0" width="699" height="64"/>
                                 </variation>

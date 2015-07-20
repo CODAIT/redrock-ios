@@ -74,31 +74,32 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <color key="textColor" red="0.68235294117647061" green="0.72156862745098038" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="rsS-99-ntg"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Favorite_GRAY" translatesAutoresizingMaskIntoConstraints="NO" id="d2Y-iq-sBA">
-                                <rect key="frame" x="235" y="128.5" width="14" height="17"/>
+                                <rect key="frame" x="240.5" y="128.5" width="14" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="14" id="SRi-uf-D24"/>
                                     <constraint firstAttribute="height" constant="17" id="Wxb-Or-S55"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#####" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5T3-Nr-e5e" userLabel="### - Favorite">
-                                <rect key="frame" x="181" y="126" width="48" height="19.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#####" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5T3-Nr-e5e" userLabel="### - Ret">
+                                <rect key="frame" x="181" y="126" width="44.5" height="19.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="Nbe-Tv-Mw2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <color key="textColor" red="0.68235294120000001" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#####" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV0-mq-mDl" userLabel="### - Retweet">
-                                <rect key="frame" x="255" y="126" width="45" height="19.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="iPz-tv-PAG"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
-                                <color key="textColor" red="0.68235294120000001" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Nbe-Tv-Mw2"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Retweet_GRAY" translatesAutoresizingMaskIntoConstraints="NO" id="3gl-cS-hb7">
                                 <rect key="frame" x="159" y="126.5" width="16" height="19"/>
@@ -121,11 +122,20 @@
                                     <action selector="userHandleClicked:" destination="mxV-VQ-x5j" eventType="touchUpInside" id="uJ0-Dj-9b5"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#####" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV0-mq-mDl" userLabel="### - Fav">
+                                <rect key="frame" x="260.5" y="126" width="45" height="19.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="iPz-tv-PAG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                                <color key="textColor" red="0.68235294120000001" green="0.72156862749999995" blue="0.72156862749999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.10980392156862745" green="0.21176470588235294" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="5T3-Nr-e5e" firstAttribute="top" secondItem="6aN-NT-kBE" secondAttribute="bottom" constant="15" id="4Q5-Le-7ew"/>
-                            <constraint firstItem="d2Y-iq-sBA" firstAttribute="leading" secondItem="5T3-Nr-e5e" secondAttribute="trailing" constant="6" id="5oH-Ci-rKO"/>
+                            <constraint firstItem="d2Y-iq-sBA" firstAttribute="leading" secondItem="5T3-Nr-e5e" secondAttribute="trailing" constant="15" id="5oH-Ci-rKO"/>
                             <constraint firstItem="chH-tM-zlr" firstAttribute="leading" secondItem="0b1-VP-0nS" secondAttribute="trailing" constant="16" id="8Jk-k9-LeG"/>
                             <constraint firstItem="UV0-mq-mDl" firstAttribute="top" secondItem="6aN-NT-kBE" secondAttribute="bottom" constant="15" id="93S-J1-4Hw"/>
                             <constraint firstItem="3gl-cS-hb7" firstAttribute="leading" secondItem="t6B-AB-Vxx" secondAttribute="trailing" constant="14" id="Ew3-KS-woZ"/>
@@ -156,6 +166,7 @@
                                 <exclude reference="4Q5-Le-7ew"/>
                                 <exclude reference="MNR-xE-vTg"/>
                                 <exclude reference="93S-J1-4Hw"/>
+                                <exclude reference="ec1-oa-ecO"/>
                             </mask>
                         </variation>
                     </view>
@@ -192,8 +203,8 @@
             <connections>
                 <outlet property="contentViewLeftConstraint" destination="W0a-vv-Ne8" id="Pfi-Ex-I1R"/>
                 <outlet property="contentViewRightConstraint" destination="Ftv-b9-uMN" id="IVh-os-ifd"/>
-                <outlet property="countFavorite" destination="5T3-Nr-e5e" id="KGS-tw-zL9"/>
-                <outlet property="countRetweet" destination="UV0-mq-mDl" id="VOh-c9-elX"/>
+                <outlet property="countFavorite" destination="UV0-mq-mDl" id="g3Z-GG-Rkn"/>
+                <outlet property="countRetweet" destination="5T3-Nr-e5e" id="aE5-OY-wB2"/>
                 <outlet property="displayView" destination="fHe-na-c7f" id="3xj-0K-6cG"/>
                 <outlet property="tweeText" destination="6aN-NT-kBE" id="S34-PT-GQR"/>
                 <outlet property="tweetDateTime" destination="t6B-AB-Vxx" id="2pY-AG-i03"/>
