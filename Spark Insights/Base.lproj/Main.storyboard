@@ -162,7 +162,6 @@
                                                 <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.87450980392156863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="Rxm-56-VsZ"/>
-                                                    <constraint firstAttribute="width" constant="531" id="vx9-8G-l8Z"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Italic" family="Helvetica Neue" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -226,7 +225,6 @@
                                             <constraint firstItem="LDJ-rt-AZZ" firstAttribute="leading" secondItem="dHi-gH-brf" secondAttribute="leading" constant="142" id="92y-AP-8Gt"/>
                                             <constraint firstAttribute="bottom" secondItem="mNq-RN-Clv" secondAttribute="bottom" constant="70" id="99x-cs-GqW"/>
                                             <constraint firstAttribute="trailing" secondItem="xfx-sR-7QR" secondAttribute="trailing" constant="191" id="BFU-YL-sEV"/>
-                                            <constraint firstAttribute="width" constant="994" id="BX5-cM-tVL"/>
                                             <constraint firstAttribute="height" constant="322" id="CTB-jo-Tp2"/>
                                             <constraint firstItem="mNq-RN-Clv" firstAttribute="leading" secondItem="LDJ-rt-AZZ" secondAttribute="trailing" constant="10" id="GYk-XX-qpf"/>
                                             <constraint firstItem="xfx-sR-7QR" firstAttribute="top" secondItem="Re0-33-FIs" secondAttribute="bottom" id="IeR-2b-9e3"/>
@@ -250,7 +248,6 @@
                                     <constraint firstAttribute="bottom" secondItem="dHi-gH-brf" secondAttribute="bottom" constant="15" id="NCD-D7-zGo"/>
                                     <constraint firstItem="dHi-gH-brf" firstAttribute="leading" secondItem="F9B-OC-dc3" secondAttribute="leading" constant="15" id="NXu-ur-RnK"/>
                                     <constraint firstItem="dHi-gH-brf" firstAttribute="top" secondItem="F9B-OC-dc3" secondAttribute="top" constant="15" id="gGw-dh-TeW"/>
-                                    <constraint firstAttribute="width" constant="1024" id="iYU-ZY-g0Y"/>
                                     <constraint firstAttribute="height" constant="352" id="jAs-UG-GbL"/>
                                     <constraint firstAttribute="trailing" secondItem="dHi-gH-brf" secondAttribute="trailing" constant="15" id="qeo-WA-mM9"/>
                                 </constraints>
@@ -259,7 +256,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="416"/>
                                 <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="1024" id="ehB-bD-AZS"/>
                                     <constraint firstAttribute="height" constant="416" id="kEv-mL-XYn"/>
                                 </constraints>
                             </imageView>
