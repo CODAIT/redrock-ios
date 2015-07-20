@@ -239,6 +239,7 @@
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="cec-uy-5OS"/>
+                                                <exclude reference="GYk-XX-qpf"/>
                                             </mask>
                                         </variation>
                                     </view>
@@ -251,6 +252,11 @@
                                     <constraint firstAttribute="height" constant="352" id="jAs-UG-GbL"/>
                                     <constraint firstAttribute="trailing" secondItem="dHi-gH-brf" secondAttribute="trailing" constant="15" id="qeo-WA-mM9"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="jAs-UG-GbL"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search Image_color" translatesAutoresizingMaskIntoConstraints="NO" id="TNK-78-uCq" customClass="YLImageView" customModule="RedRock" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="416"/>
@@ -258,6 +264,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="416" id="kEv-mL-XYn"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="kEv-mL-XYn"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gkC-Cq-AiE">
                                 <rect key="frame" x="0.0" y="352" width="1024" height="64"/>
@@ -280,9 +291,6 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RedRock" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htg-vv-8iy">
                                 <rect key="frame" x="417" y="190" width="191" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="191" id="LyG-Tb-4EB"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="27"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
