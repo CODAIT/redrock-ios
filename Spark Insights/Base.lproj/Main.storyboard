@@ -233,12 +233,15 @@
                                             <constraint firstAttribute="bottom" secondItem="LDJ-rt-AZZ" secondAttribute="bottom" constant="70" id="ZeO-Jd-KKy"/>
                                             <constraint firstItem="Re0-33-FIs" firstAttribute="leading" secondItem="dHi-gH-brf" secondAttribute="leading" constant="211" id="bYE-ae-N7D"/>
                                             <constraint firstItem="xfx-sR-7QR" firstAttribute="top" secondItem="Re0-33-FIs" secondAttribute="bottom" constant="5" id="cec-uy-5OS"/>
+                                            <constraint firstAttribute="bottom" secondItem="LDJ-rt-AZZ" secondAttribute="bottom" constant="70" id="fJT-2g-AQy"/>
                                             <constraint firstItem="xfx-sR-7QR" firstAttribute="leading" secondItem="dHi-gH-brf" secondAttribute="leading" constant="192" id="l7i-g5-udd"/>
                                             <constraint firstAttribute="trailing" secondItem="Re0-33-FIs" secondAttribute="trailing" constant="211" id="wn3-8t-d95"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
+                                                <exclude reference="CTB-jo-Tp2"/>
                                                 <exclude reference="cec-uy-5OS"/>
+                                                <exclude reference="ZeO-Jd-KKy"/>
                                                 <exclude reference="GYk-XX-qpf"/>
                                             </mask>
                                         </variation>
@@ -288,6 +291,11 @@
                                     <constraint firstItem="0pW-Ug-xaw" firstAttribute="leading" secondItem="gkC-Cq-AiE" secondAttribute="leadingMargin" constant="442" id="mGA-N5-BLg"/>
                                     <constraint firstItem="0pW-Ug-xaw" firstAttribute="bottom" secondItem="gkC-Cq-AiE" secondAttribute="bottomMargin" id="mug-9N-Pqm"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="UGL-l3-fuU"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RedRock" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htg-vv-8iy">
                                 <rect key="frame" x="417" y="190" width="191" height="36"/>
