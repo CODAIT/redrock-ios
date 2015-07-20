@@ -33,7 +33,6 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     }
     
     func cellDidOpen(openedCell: TweetTableViewCell) {
-        Log("open")
         if self.openedTweetCell.count == 1
         {
             self.openedTweetCell.removeAtIndex(0)
@@ -42,7 +41,6 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     }
     
     func cellDidClose(closedCell: TweetTableViewCell) {
-        Log("close")
         if self.openedTweetCell.count == 1
         {
             self.openedTweetCell.removeAtIndex(0)
@@ -51,7 +49,6 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     
     func cellDidBeginOpening(openingCell: TweetTableViewCell)
     {
-        Log("begin")
         if self.openedTweetCell.count == 1
         {
             self.openedTweetCell[0].resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)

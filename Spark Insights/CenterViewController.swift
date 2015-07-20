@@ -155,7 +155,7 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         self.tweetsFooterView.backgroundColor = Config.darkBlueColor
         self.tweetsFooterSeparatorLine.hidden = false
         self.tweetsFooterView.alpha = 1.0
-        if callWaitToSearch
+        if callWaitToSearch && Config.displayRefreshAvailable
         {
            self.waitToUpdateSearch()
         }
