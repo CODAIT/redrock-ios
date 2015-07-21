@@ -741,7 +741,7 @@
                                         <color key="separatorColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="sectionIndexBackgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IncludeCell" rowHeight="44" id="fGu-pN-iHK" customClass="SearchMenuTableViewCell" customModule="RedRock" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IncludeCell" rowHeight="44" id="fGu-pN-iHK">
                                                 <rect key="frame" x="0.0" y="0.0" width="150" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fGu-pN-iHK" id="ays-BK-2EN">
@@ -949,6 +949,7 @@
                                                     <constraint firstItem="BvZ-8u-4dm" firstAttribute="leading" secondItem="TaS-SA-aMZ" secondAttribute="leading" constant="137" id="T7X-Qj-C2k"/>
                                                     <constraint firstAttribute="centerY" secondItem="BvZ-8u-4dm" secondAttribute="centerY" id="hAn-Jx-xIU"/>
                                                     <constraint firstItem="G1b-h5-UZl" firstAttribute="leading" secondItem="BvZ-8u-4dm" secondAttribute="trailing" constant="8" id="jZd-bB-ybd"/>
+                                                    <constraint firstAttribute="height" constant="61" id="tXn-RJ-hFa"/>
                                                 </constraints>
                                                 <variation key="default">
                                                     <mask key="constraints">
@@ -974,6 +975,11 @@
                                             <constraint firstAttribute="bottom" secondItem="TaS-SA-aMZ" secondAttribute="bottom" id="wTD-gV-DSi"/>
                                             <constraint firstAttribute="bottom" secondItem="OBt-fJ-IxF" secondAttribute="bottom" id="z6z-Yw-MRZ"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="dts-Ra-hkV"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.10980392156862745" green="0.21176470588235294" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
@@ -1024,7 +1030,7 @@
                     <connections>
                         <outlet property="doneView" destination="TaS-SA-aMZ" id="jb3-gz-FPL"/>
                         <outlet property="doneViewBottonConstraint" destination="wTD-gV-DSi" id="Q28-3e-g0s"/>
-                        <outlet property="doneViewTopConstraint" destination="dts-Ra-hkV" id="jdR-Tz-yNI"/>
+                        <outlet property="doneViewHeightConstraint" destination="tXn-RJ-hFa" id="fUW-35-ffw"/>
                         <outlet property="editView" destination="OBt-fJ-IxF" id="Eeg-D1-9Zg"/>
                         <outlet property="goView" destination="TSq-7C-7zH" id="ql2-rF-X7U"/>
                         <outlet property="tableA" destination="HfT-Go-2j7" id="QE9-zm-6nR"/>

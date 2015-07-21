@@ -26,7 +26,8 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var toolbarSeparator: UIView!
     
     @IBOutlet weak var doneViewBottonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var doneViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var doneViewHeightConstraint: NSLayoutConstraint!
+    private var doneViewHeightConstraintInitial: CGFloat! 
     
     private var listA: RefArray?
     private var listB: RefArray?
@@ -57,6 +58,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        doneViewHeightConstraintInitial = self.doneViewHeightConstraint.constant
         // UI Tweaks
         var spacerView = UIView(frame: CGRectMake(0, 0, 10, textField.frame.size.height)) // Setting text inset
         textField.leftViewMode = .Always
@@ -111,8 +113,8 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.configureTapGestureDone()
         
         //hide done view
-        self.doneViewBottonConstraint.constant = 80
-        self.doneViewTopConstraint.constant = 80
+        self.doneViewHeightConstraint.constant = 0
+        self.doneViewBottonConstraint.constant = -self.doneView.frame.height
     }
     
     func setListTerms()
@@ -177,7 +179,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             self.tableB.setEditing(true, animated: true)
             UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
                 self.doneViewBottonConstraint.constant = 0
-                self.doneViewTopConstraint.constant = 0
+                self.doneViewHeightConstraint.constant = self.doneViewHeightConstraintInitial
                 self.view.layoutIfNeeded()
             }, completion: nil)
 
@@ -209,8 +211,8 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             tableB.setEditing(false, animated: true)
             UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
                 self.doneView.alpha = 1.0
-                self.doneViewBottonConstraint.constant = 80
-                self.doneViewTopConstraint.constant = 80
+                self.doneViewBottonConstraint.constant = -self.doneView.frame.height
+                self.doneViewHeightConstraint.constant = 0
                 self.view.layoutIfNeeded()
                 }, completion: nil)
         }
