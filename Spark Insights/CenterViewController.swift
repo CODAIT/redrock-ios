@@ -302,6 +302,16 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             self.scrollView.addSubview(label)
             visualizationHandler.resultsLabels.append(label)
             
+            //Title Labels
+            let titleLabel = UILabel()
+            titleLabel.frame = CGRectMake(myOrigin + CGFloat(10), 0, 300, 40);
+            titleLabel.numberOfLines = 1
+            titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+            titleLabel.textColor = Config.darkGrayTextColor
+            titleLabel.text = Config.visualizationTitles[i]
+            label.textAlignment = NSTextAlignment.Left
+            self.scrollView.addSubview(titleLabel)
+            
             //loading control
             visualizationHandler.isloadingVisualization.append(true)
             visualizationHandler.errorDescription.append("")
