@@ -88,7 +88,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         
         //Display time of last update
         self.configureGestureRecognizerForTweetFooterView()
-        self.changeLastUpdated(true)
+        self.changeLastUpdated(false, waitingResponse: true)
         
         //search icon
         self.configureGestureRecognizerForSearchIconView()
@@ -141,24 +141,31 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
                 let currentSearch = self.searchText
                 self.searchText = currentSearch
                 self.tweetsFooterView.alpha = 0.5
-                changeLastUpdated(true)
+                changeLastUpdated(false, waitingResponse: true)
             }
         }
         
     }
     
-    func changeLastUpdated(callWaitToSearch: Bool)
+    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
     {
         var dateNow = NSDate()
         var dateFormat = NSDateFormatter()
         dateFormat.dateFormat = "E, MMM d hh:mm aa"
         dateFormat.timeZone = NSTimeZone.localTimeZone()
-        self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
+        if waitingResponse
+        {
+             self.tweetsFooterLabel.text = "Waiting ..."
+        }
+        else
+        {
+           self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
+        }
         self.canUpdateSearch = false
         self.tweetsFooterView.backgroundColor = Config.darkBlueColor
         self.tweetsFooterSeparatorLine.hidden = false
         self.tweetsFooterView.alpha = 1.0
-        if callWaitToSearch
+        if callWaitToSearch && Config.displayRefreshAvailable
         {
            self.waitToUpdateSearch()
         }
@@ -456,7 +463,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         }
         if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
         {
-            self.changeLastUpdated(false)
+            self.changeLastUpdated(false, waitingResponse: true)
         }
         if self.headerLabel != nil
         {
@@ -529,6 +536,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             time, preferredStyle: UIAlertControllerStyle.Alert)
         alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func responseProcessed() {
+        self.changeLastUpdated(true, waitingResponse: false)
     }
     
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
@@ -905,6 +916,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         } else {
             populateUI(json)
         }
+        
+        self.changeLastUpdated(true, waitingResponse: false)
     }
     
     func populateUI(json: JSON){

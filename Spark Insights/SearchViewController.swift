@@ -156,13 +156,13 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     func recalculateConstrainstForBakcAnimation()
     {
         self.recalculateConstrainstsForSearchView = true
+        self.searchHolderBottomConstraint.constant = self.searchHolderBottomConstraintInitial
+        self.searchHolderTopConstraint.constant = self.searchHolderTopConstraintInitial
+        self.appTitleTopConstraint.constant = self.appTitleTopConstraintInitial
         self.imageSearchTopConstraint.constant = self.imageSearchTopConstraintInitial
         self.imageTitleTopConstraint.constant = self.imageTitleTopConstraintInitial
         self.AppTitleView.hidden = true
         self.appTitleLabel.hidden = true
-        self.appTitleTopConstraint.constant = self.appTitleTopConstraintInitial
-        self.searchHolderTopConstraint.constant = self.searchHolderTopConstraintInitial
-        self.searchHolderBottomConstraint.constant = self.searchHolderBottomConstraintInitial
         self.searchButtonView.alpha = 1.0
         UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.view.layoutIfNeeded()
