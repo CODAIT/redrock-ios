@@ -20,6 +20,7 @@ protocol NetworkDelegate {
     //func handleWordCloudCallBack(json:JSON?, error: NSError?)
     func handleTopMetrics(json:JSON?, error: NSError?)
     func displayRequestTime(time: String)
+    func responseProcessed()
 }
 
 class Network
@@ -150,6 +151,7 @@ class Network
         self.delegate?.handleWordClusterCallBack(json, error: error)
         //self.delegate?.handleWordCloudCallBack(json, error: error)
         self.delegate?.handleTopMetrics(json, error: error)
+        self.delegate?.responseProcessed()
     }
     
     private func callTweetDelegate(json: JSON?, error: NSError?)
