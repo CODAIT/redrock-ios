@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 import MessageUI
 import Social
 
@@ -17,7 +18,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -60,9 +61,11 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
     
     var tweetsTableViewController: TweetsTableViewController!
     
+    /* TODO: replace this function with equiv
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         print("Webview \(webView.request) fail with error \(error)");
     }
+    */
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -228,15 +231,16 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             
-            var myWebView : UIWebView
+            var myWebView : WKWebView
 
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
             visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
 
-            myWebView = UIWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+            Log("self.scrollView.frame.size.width: \(self.scrollView.frame.size.width)... self.scrollView.frame.size.height: \(self.scrollView.frame.size.height)")
             
-            myWebView.scalesPageToFit = Config.scalePagesToFit[i]
-            //myWebView.backgroundColor = colors[i % Config.getNumberOfVisualizations()]
+            myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+            
+            //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
             
             myWebView.loadRequest(request)
             
@@ -244,15 +248,13 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
             myWebView.scrollView.scrollEnabled = false;
             myWebView.scrollView.bounces = false;
             
-            // set the delegate so data can be loaded in
-            myWebView.delegate = self
+            //Use KVO to tell loading/not
+            myWebView.addObserver(self, forKeyPath: "loading", options: .New, context: nil)
             
             visualizationHandler.webViews.append(myWebView)
             
             // set initial loading state
             myWebView.hidden = true
-
-            
         }
     }
     
@@ -339,16 +341,26 @@ class CenterViewController: UIViewController, UIWebViewDelegate, UIScrollViewDel
         }
     }
     
-    // MARK: - UIWebViewDelegate
-    
     /*
-        When a page finishes loading, load in the javascript
+        Detect when loading is finished so that data can be transformed.
     */
-    func webViewDidFinishLoad(webView: UIWebView) {
-        //get the data in there somehow
-        //Log("I finished my load..." + webView.request!.URL!.lastPathComponent!)
-        visualizationHandler.transformData(webView)
-
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        if let wv = object as? WKWebView {
+            switch keyPath {
+                case "loading": //new: 1 or 0
+                    if let val:AnyObject = change[NSKeyValueChangeNewKey] {
+                        if let val = val as? Bool {
+                            if val {
+                                //Log("We are loading")
+                            } else {
+                                //Log("I finished my load..." + wv.URL!.lastPathComponent!)
+                                visualizationHandler.transformData(wv)
+                            }
+                        }
+                }
+                default: break
+            }
+        }
     }
     
     // MARK: - PageControlDelegate

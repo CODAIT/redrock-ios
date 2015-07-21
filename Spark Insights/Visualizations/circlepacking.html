@@ -42,14 +42,6 @@
 
 //d3.select("body").append("p").text("my text");
 
-var margin = 0,
-    diameter = 550;
-
-    var w = 800, h = 700;
-
-    var zoomedInSize = 0.88
-    var zoomedOutSize = 0.33
-
 //var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
 
 var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
@@ -104,18 +96,46 @@ function returnColor(parentColor, number){
 
 var toggle = false;
 
-var pack = d3.layout.pack()
-    .padding(8)
-    .size([diameter - margin, diameter - margin])
-    .value(function(d) { return d.size; });
+function renderChart(data, w, h){
 
-var svg = d3.select("body").append("svg")
+    //var w = 800, h = 700; //should be given by the program now
+    
+    // 671 x 540 is what the program is telling us
+    // 800 x 643
+    // 1200 x 966
+    
+    //w = 1200, h = 1000;
+    
+    var margin = 0,
+    diameter = 550;
+    
+    var resizeConstant = 1.43
+    
+    w = resizeConstant * w
+    h = resizeConstant * h
+    
+    var zoomedInSize = 0.88
+    var zoomedOutSize = 0.33
+    
+    zoomedInSize = resizeConstant * zoomedInSize
+    zoomedOutSize = resizeConstant * zoomedOutSize
+    
+    diameter = resizeConstant * diameter
+
+    //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
+
+
+    var svg = d3.select("body").append("svg")
     .attr("width", w)
     .attr("height", h)
     .append("g")
     .attr("transform", "translate(" + ((diameter / 2)+45) + "," + ((diameter / 2)-25) + ")");
 
-function renderChart(data){
+    var pack = d3.layout.pack()
+    .padding(8)
+    .size([diameter - margin, diameter - margin])
+    .value(function(d) { return d.size; });
+
 
   var root = JSON.parse(data);
 
@@ -207,6 +227,8 @@ function renderChart(data){
 
 d3.select(self.frameElement).style("height", diameter + "px");
 
+/*
 renderChart('{"name": "all","children": [{"name": "ecstatic","children": [{"name": "ecstatic", "size": 222}, {"name": "gleeful", "size": 333}]},{"name": "glad","children": [{"name": "glad", "size": 344}, {"name": "great", "size": 111}, {"name": "awesome", "size": 234}]},{"name": "bummed","children": [{"name": "bummed", "size": 111}]},{"name": "drunk","children": [{"name": "drunk", "size": 577}]},{"name": "trashed","children": [{"name": "trashed", "size": 99}]},{"name": "lovesick","children": [{"name": "lovesick", "size": 233}]},{"name": "crushing","children": [{"name": "crushing", "size": 333}]},{"name": "cloud9","children": [{"name": "cloud9", "size": 288}]},{"name": "turned-on","children": [{"name": "turned-on", "size": 555}]},{"name": "happy","children": [{"name": "happy", "size": 444}]},{"name": "wasted","children": [{"name": "wasted", "size": 55}]}]}');
+ */
 
 </script>

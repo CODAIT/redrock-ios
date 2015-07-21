@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+    
+*{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 
 .node {
   fill: rgba(92,195,184,1.0);
@@ -21,6 +26,7 @@
 
 function renderChart(data, w, h) {
 
+d3.select("svg").remove(); //clear the chart before starting
 
 var width = w,
 height = h;
@@ -69,9 +75,6 @@ graph.nodes.forEach(function(d, i){
       for (var i = 0; i < n; ++i) force.tick();
 
 force
-.nodes(graph.nodes)
-.links(graph.links)
-.linkDistance(function(d) { return linkScale(d.distance);})
 .start();
 
   var link = svg.selectAll(".link")

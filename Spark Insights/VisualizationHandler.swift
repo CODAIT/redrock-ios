@@ -10,9 +10,10 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 class VisualizationHandler{
-    var webViews : [UIWebView] = [UIWebView]()
+    var webViews : [WKWebView] = [WKWebView]()
     var loadingViews = [UIActivityIndicatorView]()
     var resultsLabels = [UILabel]()
     var isloadingVisualization = [Bool]()
@@ -33,13 +34,13 @@ class VisualizationHandler{
     var firstLoad = false
     
     func reloadAppropriateView(viewNumber: Int){
-        if var request = webViews[viewNumber].request{
+        if var url = webViews[viewNumber].URL{
             //Log("if var request = webViews[viewNumber].request! is \(request)")
             
             if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
 
                 self.loadingState(viewNumber)
-                webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
+                //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
                 let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
                 let request = NSURLRequest(URL: filePath!)
                 webViews[viewNumber].loadRequest(request)
@@ -50,13 +51,13 @@ class VisualizationHandler{
         }
     }
     
-    func transformData(webView: UIWebView){
+    func transformData(webView: WKWebView){
         // uses the path to determine which function to use
         let delay = 0.2 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
         
-            switch webView.request!.URL!.lastPathComponent!{
+            switch webView.URL!.lastPathComponent!{
             case "treemap.html":
                 self.transformDataForTreemapping(webView)
                 break;
@@ -81,7 +82,7 @@ class VisualizationHandler{
         }
     }
     
-    func transformDataForTreemapping(webView: UIWebView){
+    func transformDataForTreemapping(webView: WKWebView){
         //Log(treemapData)
         self.loadingState(Config.visualizationsIndex.treemap.rawValue)
         if self.treemapData.count > 0
@@ -106,7 +107,8 @@ class VisualizationHandler{
             
             //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
             
-            webView.stringByEvaluatingJavaScriptFromString(script9)
+            webView.evaluateJavaScript(script9, completionHandler: nil)
+            
             self.successState(Config.visualizationsIndex.treemap.rawValue)
         }
         else
@@ -124,7 +126,7 @@ class VisualizationHandler{
         circlepackingData.sort({$0[2] < $1[2]})
     }
     
-    func transformDataForCirclepacking(webView: UIWebView){
+    func transformDataForCirclepacking(webView: WKWebView){
         //Log(circlepackingData)
         self.loadingState(Config.visualizationsIndex.circlepacking.rawValue)
         if self.circlepackingData.count > 0
@@ -159,12 +161,13 @@ class VisualizationHandler{
                     script9+=self.circlepackingData[r][3]
                     script9+="}"
                 }
-                script9+="]}]}'; renderChart(data7);"
-                
+                script9+="]}]}';var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight);  renderChart(data7, w, h);"
+
                 //Log(script9)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    webView.evaluateJavaScript(script9, completionHandler: nil)
+                    
                     self.successState(Config.visualizationsIndex.circlepacking.rawValue)
                 })
             })
@@ -183,14 +186,15 @@ class VisualizationHandler{
     }
     
     func stopForcegraph(){
-        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("stopAnimation();")
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].evaluateJavaScript("stopAnimation();", completionHandler: nil)
+
     }
     
     func startForcegraph(){
-        webViews[Config.visualizationsIndex.forcegraph.rawValue].stringByEvaluatingJavaScriptFromString("startAnimation();")
+        webViews[Config.visualizationsIndex.forcegraph.rawValue].evaluateJavaScript("startAnimation();", completionHandler: nil)
     }
     
-    func transformDataForForcegraph(webView: UIWebView){
+    func transformDataForForcegraph(webView: WKWebView){
         //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
         
         self.loadingState(Config.visualizationsIndex.forcegraph.rawValue)
@@ -235,7 +239,7 @@ class VisualizationHandler{
                 // println(wordScript)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    webView.evaluateJavaScript(script9, completionHandler: nil)
                     self.successState(Config.visualizationsIndex.forcegraph.rawValue)
                 })
             })
@@ -255,15 +259,15 @@ class VisualizationHandler{
     }
     
     func stopTimemap(){
-        webViews[Config.visualizationsIndex.timemap.rawValue].stringByEvaluatingJavaScriptFromString("stopAnimation();")
+        webViews[Config.visualizationsIndex.timemap.rawValue].evaluateJavaScript("stopAnimation();", completionHandler: nil)
     }
     
     func startTimemap(){
-        webViews[Config.visualizationsIndex.timemap.rawValue].stringByEvaluatingJavaScriptFromString("startAnimation();")
+        webViews[Config.visualizationsIndex.timemap.rawValue].evaluateJavaScript("startAnimation();", completionHandler: nil)
     }
 
     
-    func transformDataForTimemap(webView: UIWebView){
+    func transformDataForTimemap(webView: WKWebView){
         
         //Log(timemapData)
         
@@ -301,7 +305,7 @@ class VisualizationHandler{
                 //Log(script9)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    webView.evaluateJavaScript(script9, completionHandler: nil)
                     self.successState(Config.visualizationsIndex.timemap.rawValue)
                 })
             })
@@ -317,7 +321,7 @@ class VisualizationHandler{
         }
     }
     
-    func transformDataForStackedbar(webView: UIWebView){
+    func transformDataForStackedbar(webView: WKWebView){
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         
@@ -349,7 +353,7 @@ class VisualizationHandler{
                 //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    webView.evaluateJavaScript(script9, completionHandler: nil)
                     self.successState(Config.visualizationsIndex.stackedbar.rawValue)
                 })
             })
@@ -368,7 +372,7 @@ class VisualizationHandler{
     
     
     // needs to be normalized
-    func transformDataForWordcloud(webView: UIWebView){
+    func transformDataForWordcloud(webView: WKWebView){
         //Log("transformDataForWordcloud (not yet imp)")
         self.loadingState(Config.visualizationsIndex.wordcloud.rawValue)
         if self.wordcloudData.count > 0
@@ -427,7 +431,7 @@ class VisualizationHandler{
                 //println(script8)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.stringByEvaluatingJavaScriptFromString(script9)
+                    webView.evaluateJavaScript(script9, completionHandler: nil); //TODO: have completion handler?
                     
                     //TODO: Implement display world cloud
                     self.successState(Config.visualizationsIndex.wordcloud.rawValue)
