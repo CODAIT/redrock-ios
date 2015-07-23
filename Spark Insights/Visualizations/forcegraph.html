@@ -28,8 +28,10 @@ function renderChart(data, w, h) {
 
 d3.select("svg").remove(); //clear the chart before starting
 
-var width = w,
-height = h;
+var resizeConstant = 1.43
+
+var width = w * resizeConstant,
+height = h * resizeConstant;
 
 var color = d3.scale.category20();
 
@@ -43,16 +45,16 @@ var svg = d3.select("body").append("svg")
 .attr("height", height);
 
 
-  var graph = JSON.parse(data);
+var graph = JSON.parse(data);
 
 var maxNodeSize = d3.max(graph.nodes, function(d) {return d.value;});
 
 var maxLinkLength = d3.max(graph.links, function(d){return d.distance;});
 var minLinkLength = d3.min(graph.links, function(d){return d.distance;});
 
-var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50]);
+var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50 * resizeConstant]);
 
-var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,150]);
+var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,150 * resizeConstant]);
 
 /*
 var n = graph.nodes.length

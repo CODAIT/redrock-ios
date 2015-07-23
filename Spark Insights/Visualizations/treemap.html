@@ -36,12 +36,12 @@ function renderChart(data, w, h) {
     
     var resizeConstant = 1.43
 
-    //var margin = {top: 20, right: 10, bottom: 10, left: 10},
+    var margin = {top: 40, right: 40, bottom: 40, left: 40},
     //width = 667; //- margin.left - margin.right,
     //height = 500; //- margin.top - margin.bottom;
 
-    width = w * resizeConstant// - margin.left - margin.right
-    height = h * resizeConstant// - margin.top - margin.bottom
+    width = w * resizeConstant - margin.left - margin.right
+    height = h * resizeConstant - margin.top - margin.bottom
 
     var treemap = d3.layout.treemap()
     .size([width, height])
@@ -51,9 +51,9 @@ function renderChart(data, w, h) {
     var div = d3.select("body").append("div").attr("id","treemap")
     .style("position", "relative")
     .style("width", width + "px")
-    .style("height", height + "px");
-    //.style("left", margin.left + "px")
-    //.style("top", margin.top + "px");
+    .style("height", height + "px")
+    .style("left", margin.left + "px")
+    .style("top", margin.top + "px");
 
     flareData = data;
     
