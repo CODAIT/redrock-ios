@@ -280,37 +280,17 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             center.x = myOrigin + center.x
             
             //Loading view
-            let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-            activityIndicator.frame = CGRectMake(myOrigin, 0, 100, 100);
-            activityIndicator.center = center
-            activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-            activityIndicator.color = Config.darkBlueColor
-            activityIndicator.startAnimating()
+            var activityIndicator = createActivityIndicatorView(myOrigin, center: center)
             self.scrollView.addSubview(activityIndicator)
             visualizationHandler.loadingViews.append(activityIndicator)
             
             //Results Label
-            let label = UILabel()
-            label.frame = CGRectMake(myOrigin, 0, 300, 300);
-            label.numberOfLines = 3
-            label.center = center
-            label.textColor = Config.darkBlueColor
-            label.text = Config.noDataMessage
-            label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
-            label.textAlignment = NSTextAlignment.Center
-            label.hidden = true
+            var label = createUILabelForError(myOrigin, center: center)
             self.scrollView.addSubview(label)
             visualizationHandler.resultsLabels.append(label)
             
             //Title Labels
-            let titleLabel = UILabel()
-            titleLabel.frame = CGRectMake(myOrigin + CGFloat(10), 0, 300, 40);
-            titleLabel.numberOfLines = 1
-            titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
-            titleLabel.textColor = Config.darkGrayTextColor
-            titleLabel.text = Config.visualizationTitles[i]
-            label.textAlignment = NSTextAlignment.Left
-            self.scrollView.addSubview(titleLabel)
+            //self.scrollView.addSubview(createUILabel(Config.visualizationTitles[i], origin: myOrigin))
             
             //loading control
             visualizationHandler.isloadingVisualization.append(true)
@@ -319,6 +299,43 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         
         self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
         self.visualizationHandler.firstLoad = false
+    }
+    
+    func createActivityIndicatorView(origin: CGFloat, center: CGPoint) -> UIActivityIndicatorView
+    {
+        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityIndicator.frame = CGRectMake(origin, 0, 100, 100);
+        activityIndicator.center = center
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.color = Config.darkBlueColor
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }
+    
+    func createUILabelForError(origin: CGFloat, center: CGPoint) -> UILabel
+    {
+        let label = UILabel()
+        label.frame = CGRectMake(origin, 0, 300, 300);
+        label.numberOfLines = 3
+        label.center = center
+        label.textColor = Config.darkBlueColor
+        label.text = Config.noDataMessage
+        label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
+        label.textAlignment = NSTextAlignment.Center
+        label.hidden = true
+        return label
+    }
+    
+    func createUILabel(text: String, origin: CGFloat) -> UILabel
+    {
+        let titleLabel = UILabel()
+        titleLabel.frame = CGRectMake(origin + CGFloat(10), 0, 300, 40);
+        titleLabel.numberOfLines = 1
+        titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        titleLabel.textColor = Config.darkGrayTextColor
+        titleLabel.text = text
+        titleLabel.textAlignment = NSTextAlignment.Left
+        return titleLabel
     }
     
     // MARK: - UIScrollViewDelegate
