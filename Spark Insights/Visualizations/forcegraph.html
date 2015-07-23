@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-    
+
 *{
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -21,7 +21,7 @@
 
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
-    
+
     var force;
 
 function renderChart(data, w, h) {
@@ -54,7 +54,7 @@ var minLinkLength = d3.min(graph.links, function(d){return d.distance;});
 
 var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50 * resizeConstant]);
 
-var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,150 * resizeConstant]);
+var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,(150*resizeConstant*resizeConstant)]);
 
 /*
 var n = graph.nodes.length
@@ -62,7 +62,7 @@ graph.nodes.forEach(function(d, i){
     d.x = d.y = width / n * i;
 });
 */
- 
+
 //document.getElementById("test").innerHTML = "width: "+w+"... height: "+h;
 //document.getElementById("test").innerHTML = "max: "+max;
 
@@ -115,7 +115,7 @@ force
         // bound the nodes according to their radius and the screen bounds
         node.attr("transform", function(d) { return "translate(" + Math.max(0+radiusScale(d.value),Math.min(width-70-radiusScale(d.value),d.x)) + "," + Math.max(0+radiusScale(d.value),Math.min(height-radiusScale(d.value),d.y)) + ")"; });
   });
-  
+
 };
 
 function startAnimation(){
