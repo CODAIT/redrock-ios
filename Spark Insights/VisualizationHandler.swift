@@ -101,7 +101,7 @@ class VisualizationHandler{
                     script9+=","
                 }
             }
-            script9+="]}'; renderChart(data7);"
+            script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);"
             
             //Log(script9)
             
