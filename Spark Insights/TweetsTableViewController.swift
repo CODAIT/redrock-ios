@@ -154,16 +154,17 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 var tweet = self.getTweetObject(indexPath.row)
                 let user_profile_image = (self.tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                let timeToDisplay = tweet.getDateTimeToDisplay("MMM dd HH:mm:ss")
+                let timeToDisplay = tweet.getDateTimeToDisplay("MMM dd")
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     tweetCell.configureWithTweetData(tweet.getUserName(),
                         userScreenName: tweet.getUserHandle(),
                         tweetText: tweet.getTweetText(),
-                        countFavorite: String(tweet.getFavoritesCount()),
-                        countRetweet: String(tweet.getRetweetsCount()),
+                        /*countFavorite: String(tweet.getFavoritesCount()),
+                        countRetweet: String(tweet.getRetweetsCount()),*/
                         dateTime: timeToDisplay,
-                        userProfileURL: tweet.getProfileURL())
+                        userProfileURL: tweet.getProfileURL(),
+                        countFollowers: tweet.getFollowersCountToDisplay())
                 })
         
                 if let urlImage = NSURL(string: user_profile_image)
@@ -188,15 +189,25 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         let user_screen_name = tweets[row]["user"]["screen_name"].stringValue
         let user_profile_image = (tweets[row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         let dateTime = tweets[row]["created_at"].stringValue
-        let retweet_count = tweets[row]["retweet_count"].stringValue
-        let favorite_count = tweets[row]["favorite_count"].stringValue
+        //let retweet_count = tweets[row]["retweet_count"].stringValue
+        //let favorite_count = tweets[row]["favorite_count"].stringValue
+        let followers_count = tweets[row]["user"]["followers_count"].stringValue
         let text = tweets[row]["text"].stringValue
         let userID = tweets[row]["user"]["id"].stringValue
         
         var tweet = TwitterTweet()
         tweet.setUserName(user_name)
         tweet.setUserhandle(user_screen_name, addAt: true)
-        if (favorite_count == "")
+        if (followers_count == "")
+        {
+            tweet.setFollowers(0)
+        }
+        else
+        {
+            tweet.setFollowers(followers_count.toInt()!)
+        }
+
+        /*if (favorite_count == "")
         {
             tweet.setFavorites(0)
         }
@@ -211,7 +222,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         else
         {
             tweet.setRetweets(retweet_count.toInt()!)
-        }
+        }*/
         tweet.setTweetText(text)
         tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
         tweet.setUserID(userID)

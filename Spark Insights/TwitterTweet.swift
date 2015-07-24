@@ -23,6 +23,7 @@ class TwitterTweet
     private let seconsToDisplayDate = NSTimeInterval(82800)
     private let displayDateFormat = "MMM dd"
     private var userID:String = ""
+    private var followersCount: Int = 0
     
     func setUserID(userID: String)
     {
@@ -59,6 +60,11 @@ class TwitterTweet
     func setRetweets(count: Int)
     {
         self.retweetCount = count
+    }
+    
+    func setFollowers(count: Int)
+    {
+        self.followersCount = count
     }
     
     func setTweetText(tweetText:String)
@@ -126,7 +132,7 @@ class TwitterTweet
         var dateFormat = NSDateFormatter()
         if secondsFromNow > self.seconsToDisplayDate
         {
-            dateFormat.dateFormat = self.displayDateFormat
+            dateFormat.dateFormat = dateFormatString//self.displayDateFormat
             return dateFormat.stringFromDate(self.dateTime)
         }
         else
@@ -156,5 +162,35 @@ class TwitterTweet
     func getProfileURL() -> String
     {
         return (self.twitterUserProfileURLbyID + self.userID)
+    }
+    
+    func getFollowersCountToDisplay() -> String
+    {
+        let billion = 999999999
+        let million = 999999
+        let thousand = 999
+        var div = 0.0
+        var letter = ""
+        if self.followersCount > billion
+        {
+            div = Double(self.followersCount)/Double((billion+1))
+            letter = "B"
+        }
+        else if self.followersCount > million
+        {
+            div = Double(self.followersCount)/Double((million+1))
+            letter = "M"
+        }
+        else if self.followersCount > thousand
+        {
+            div = Double(self.followersCount)/Double((thousand+1))
+            letter = "K"
+        }
+        else
+        {
+            return String(self.followersCount)
+        }
+        
+        return String(format: "%.1f", div) + String(letter)
     }
 }

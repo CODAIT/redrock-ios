@@ -29,9 +29,10 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var tweeText: ContextLabel!
-    @IBOutlet weak var countFavorite: UILabel!
-    @IBOutlet weak var countRetweet: UILabel!
+    //@IBOutlet weak var countFavorite: UILabel!
+    //@IBOutlet weak var countRetweet: UILabel!
     @IBOutlet weak var tweetDateTime: UILabel!
+    @IBOutlet weak var followers_count: UILabel!
     
     @IBOutlet weak var twitterBirdView: UIView!
     @IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
@@ -90,7 +91,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     // MARK: Profile Image style
     func changeImageLayout()
     {
-        self.userProfileImage.layer.cornerRadius = 20.0;
+        self.userProfileImage.layer.cornerRadius = 25.0;
         self.userProfileImage.layer.masksToBounds = true;
         self.userProfileImage.layer.borderColor = Config.tweetsProfileImageBorderColor.CGColor
         self.userProfileImage.layer.borderWidth = 2.0;
@@ -118,15 +119,16 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     }
     
     // MARK: Configure Tweet
-    func configureWithTweetData(userName: String, userScreenName: String, tweetText: String, countFavorite: String, countRetweet: String, dateTime: String, userProfileURL: String)
+    func configureWithTweetData(userName: String, userScreenName: String, tweetText: String, /*countFavorite: String, countRetweet: String,*/ dateTime: String, userProfileURL: String, countFollowers: String)
     {
         self.userName.text = userName
         self.userScreenName.setTitle(userScreenName, forState: UIControlState.Normal)
         self.tweeText.text = tweetText
-        self.countFavorite.text = countFavorite
-        self.countRetweet.text = countRetweet
+        //self.countFavorite.text = countFavorite
+        //self.countRetweet.text = countRetweet
         self.tweetDateTime.text = dateTime
         self.userProfileURL = userProfileURL
+        self.followers_count.text = countFollowers
     }
     
     static func calculateHeightForCell(textLength: CGFloat, tableWidth: CGFloat) -> CGFloat
