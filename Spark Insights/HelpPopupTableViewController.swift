@@ -15,7 +15,7 @@ class HelpPopupTableViewController: UITableViewController {
         //self.tableView.rowHeight = UITableViewAutomaticDimension
         //self.tableView.estimatedRowHeight = 150
         
-        self.preferredContentSize = CGSizeMake(350,405)
+        self.preferredContentSize = CGSizeMake(350,600)
     }
 
     override func didReceiveMemoryWarning() {
