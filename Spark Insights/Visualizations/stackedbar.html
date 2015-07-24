@@ -27,9 +27,6 @@
             width:   98%;
         }
 
-    g.nv-legendWrap.nvd3-svg{
-        transform: translate(0px, -40px);
-    }
     .nvd3 .nv-axis.nv-x path.domain {
   stroke-opacity: 1;
 }
@@ -103,6 +100,8 @@
             .call(chart);
 
             nv.utils.windowResize(chart.update);
+                    
+            d3.select(".nv-legendWrap").attr("transform", "translate(0, -50)");
 
             /*
             d3.select('body')
