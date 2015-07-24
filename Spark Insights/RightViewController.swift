@@ -351,11 +351,13 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         dragging = true
         draggedIndex = draggingIndex
         tempView = UIView(frame: CGRectMake(0, 0, 130, 34))
-        tempView?.alpha = 0.8
-        tempView?.backgroundColor = Config.sideSearchTextFieldColor
-        var label = UILabel(frame: tempView!.bounds)
+        //tempView?.alpha = 0.8
+        tempView?.backgroundColor = Config.darkBlueColor
+        tempView?.layer.borderColor = Config.lightSeaGreen.CGColor
+        tempView?.layer.borderWidth = 1
+        var label = UILabel(frame: CGRectMake(5, 0, 130, 34))
         label.text = draggedName
-        label.backgroundColor = Config.extraDarkBlueColor
+        label.backgroundColor = Config.darkBlueColor
         label.textColor = draggedColor
         tempView?.addSubview(label)
         // Adding view to parent so it can be seen on the entire screen
