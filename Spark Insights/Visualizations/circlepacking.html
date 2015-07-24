@@ -35,14 +35,50 @@
   pointer-events: none;
 }
 
+ruler { visibility: hidden; white-space: nowrap; }
+
 </style>
 <body>
+<span id="ruler"></span>
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
-//d3.select("body").append("p").text("my text");
 
-//var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"]);
+String.prototype.visualLength = function()
+{
+    var ruler = $("ruler");
+    ruler.innerHTML = this;
+    var myOffsetWidth = ruler.offsetWidth;
+    ruler.innerHTML = "";
+    return myOffsetWidth;
+}
+
+function $(id)
+{
+    return document.getElementById(id);
+}
+
+//var s = "Some text";
+//var len = s.visualLength();
+//Visually trimming the text
+//The last step is to trim the string to the given number of pixels:
+
+String.prototype.trimToPx = function(length)
+{
+    var tmp = this;
+    var trimmed = this;
+    if (tmp.visualLength() > length)
+    {
+        trimmed += "...";
+        while (trimmed.visualLength() > length)
+        {
+            tmp = tmp.substring(0, tmp.length-1);
+            trimmed = tmp + "...";
+        }
+    }
+    
+    return trimmed;
+}
 
 var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
 
@@ -122,6 +158,10 @@ function renderChart(data, w, h){
     
     diameter = resizeConstant * diameter
 
+    var ruler = document.getElementById("ruler");
+    //var test = document.getElementById("test");
+
+
     //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
 
 
@@ -163,7 +203,18 @@ function renderChart(data, w, h){
       .style("text-anchor", "middle")
       .style("fill-opacity", function(d) { return 0.5;})
       .style("display", function(d) { return 1;})
-      .style("font-size", function(d){return Math.round(d.r*zoomedOutSize)+"px"})
+      .style("font-size", function(d){
+
+
+        //return Math.round(d.r*zoomedOutSize)+"px"
+
+        return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedOutSize) )+"px";
+
+
+
+
+      })
+      //.text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
       .text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
 
   var node = svg.selectAll("circle,text");
@@ -182,7 +233,10 @@ function renderChart(data, w, h){
 
     appendedText
     .filter(function(root){return root.parent === focus;})
-    .style("font-size", function(d){ return Math.round(d.r*zoomedInSize)+"px";});
+    .style("font-size", function(d){ 
+
+      return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedInSize) )+"px";
+  });
   }
 
   function hideThenShow(){
@@ -211,9 +265,17 @@ function renderChart(data, w, h){
       toggle = !toggle;
       //alert("zooming out click")
 
+      
       appendedText
       .filter(function(root){return root.parent === focus;})
-      .style("font-size", function(d){ return Math.round(d.r*zoomedOutSize)+"px"});
+      .style("font-size", function(d){ 
+        
+        return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedOutSize) )+"px";
+
+        //return Math.round(d.r*zoomedOutSize)+"px"
+
+
+      });
 
     })
   }
@@ -223,12 +285,33 @@ function renderChart(data, w, h){
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
     circle.attr("r", function(d) { return d.r * k; });
   }
+
+  function determineFontSizeBasedOnRadiusAndText(radius, text, testSize){
+
+    //var len = text.visualLength();
+
+    ruler.style.fontSize = (testSize)+"px";
+    //test.style.fontSize = (testSize)+"px";
+
+
+    if(text.visualLength() > (radius*2)){ //it's too big, overflowing bounds
+      //window.alert("The given text... " + text + "... at the font size of... " + testSize + "... is... " + text.visualLength() + " pixels long. The diameter of the circle is " + 2*radius + ". I predict the text will overflow.");
+      testSize = testSize * ((radius*2) / text.visualLength() ) * 0.70; // it was too big, so make it smaller
+    }
+    //else if(text.visualLength() < (radius) ) { //it's too small, less than half the diameter
+    //  testSize = testSize * 2 ; //make it a little bigger
+    //}
+
+
+    //document.getElementById("test").innerHTML = "size of the string in pixels is... " + len;
+
+    return testSize;
+  }
+
 };
 
-d3.select(self.frameElement).style("height", diameter + "px");
+//d3.select(self.frameElement).style("height", diameter + "px");
 
-/*
-renderChart('{"name": "all","children": [{"name": "ecstatic","children": [{"name": "ecstatic", "size": 222}, {"name": "gleeful", "size": 333}]},{"name": "glad","children": [{"name": "glad", "size": 344}, {"name": "great", "size": 111}, {"name": "awesome", "size": 234}]},{"name": "bummed","children": [{"name": "bummed", "size": 111}]},{"name": "drunk","children": [{"name": "drunk", "size": 577}]},{"name": "trashed","children": [{"name": "trashed", "size": 99}]},{"name": "lovesick","children": [{"name": "lovesick", "size": 233}]},{"name": "crushing","children": [{"name": "crushing", "size": 333}]},{"name": "cloud9","children": [{"name": "cloud9", "size": 288}]},{"name": "turned-on","children": [{"name": "turned-on", "size": 555}]},{"name": "happy","children": [{"name": "happy", "size": 444}]},{"name": "wasted","children": [{"name": "wasted", "size": 55}]}]}');
- */
+//var data7 = '{"name": " ","children": [{"name": "101", "children": [{"name": "beck/arnley", "size":94},{"name": "ngk", "size":169},{"name": "plug", "size":3663},{"name": "acdelco", "size":246},{"name": "he76", "size":80},{"name": "platinum", "size":880},{"name": "(8034)", "size":80},{"name": "iridium", "size":51},{"name": "airtex", "size":90},{"name": "ignition", "size":265}]},{"name": "108", "children": [{"name": "@itsjaun", "size":284}]},{"name": "11", "children": [{"name": "wires", "size":245},{"name": "plugs", "size":395}]},{"name": "121", "children": [{"name": "conventional", "size":211}]},{"name": "127", "children": [{"name": "flame", "size":725}]},{"name": "2", "children": [{"name": "crib", "size":214},{"name": "blunt", "size":1341}]},{"name": "29", "children": [{"name": "ignited", "size":111}]},{"name": "37", "children": [{"name": "denso", "size":54}]},{"name": "7", "children": [{"name": "convo", "size":915}]}]}';var w = 671.0; var h = 540.0;  renderChart(data7, w, h);
 
 </script>
