@@ -329,12 +329,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     func createUILabel(text: String, origin: CGFloat) -> UILabel
     {
         let titleLabel = UILabel()
-        titleLabel.frame = CGRectMake(origin + CGFloat(10), 0, 300, 40);
+        titleLabel.frame = CGRectMake(origin, 0, self.scrollView.frame.size.width, 40);
         titleLabel.numberOfLines = 1
         titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
         titleLabel.textColor = Config.darkGrayTextColor
         titleLabel.text = text
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.backgroundColor = Config.lightWhiteIce
         return titleLabel
     }
     
