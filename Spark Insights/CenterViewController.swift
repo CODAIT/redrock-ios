@@ -60,19 +60,25 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     @IBOutlet weak var searchButtonView: UIView!
     
     var tweetsTableViewController: TweetsTableViewController!
-    
+    var firstLoad = true
     /* TODO: replace this function with equiv
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         print("Webview \(webView.request) fail with error \(error)");
     }
     */
+    override func viewDidAppear(animated: Bool) {
+        if firstLoad
+        {
+            self.setupWebViews()
+        }
+        firstLoad = false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         visualizationHandler.firstLoad = true
         self.setupTweetsTableView()
-        self.setupWebViews()
         self.setupScrollView()
         visualizationHandler.searchText = searchText!
         //Log(visualizationHandler.searchText)
@@ -259,7 +265,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             myWebView.addObserver(self, forKeyPath: "loading", options: .New, context: nil)
             
             visualizationHandler.webViews.append(myWebView)
-            
+            self.scrollView.addSubview(myWebView)
             // set initial loading state
             myWebView.hidden = true
         }
@@ -270,8 +276,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     */
     func setupScrollView() {
         for i in 0..<Config.getNumberOfVisualizations() {
-            let myWebView = visualizationHandler.webViews[i]
-            self.scrollView.addSubview(myWebView)
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             self.scrollView.delegate = self
             
