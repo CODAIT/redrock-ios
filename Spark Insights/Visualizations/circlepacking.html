@@ -43,7 +43,6 @@ ruler { visibility: hidden; white-space: nowrap; }
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
-
 String.prototype.visualLength = function()
 {
     var ruler = $("ruler");
@@ -58,11 +57,6 @@ function $(id)
     return document.getElementById(id);
 }
 
-//var s = "Some text";
-//var len = s.visualLength();
-//Visually trimming the text
-//The last step is to trim the string to the given number of pixels:
-
 String.prototype.trimToPx = function(length)
 {
     var tmp = this;
@@ -76,7 +70,6 @@ String.prototype.trimToPx = function(length)
             trimmed = tmp + "...";
         }
     }
-    
     return trimmed;
 }
 
@@ -130,40 +123,27 @@ function returnColor(parentColor, number){
     }
 }
 
-var toggle = false;
-
 function renderChart(data, w, h){
 
-    //var w = 800, h = 700; //should be given by the program now
-    
-    // 671 x 540 is what the program is telling us
-    // 800 x 643
-    // 1200 x 966
-    
-    //w = 1200, h = 1000;
-    
     var margin = 0,
     diameter = 550;
-    
+
     var resizeConstant = 1.43
-    
+
     w = resizeConstant * w
     h = resizeConstant * h
-    
+
     var zoomedInSize = 0.88
     var zoomedOutSize = 0.33
-    
+
     zoomedInSize = resizeConstant * zoomedInSize
     zoomedOutSize = resizeConstant * zoomedOutSize
-    
+
     diameter = resizeConstant * diameter
 
     var ruler = document.getElementById("ruler");
     //var test = document.getElementById("test");
-
-
     //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
-
 
     var svg = d3.select("body").append("svg")
     .attr("width", w)
@@ -190,7 +170,7 @@ function renderChart(data, w, h){
     .enter().append("circle")
       .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
       .style("fill", function(d) { if(d.depth>=2){ return d.parent ? returnColor(parentColor(d.parent.name),d.size) : null; }else{return "rgba(0,0,0,0)"}})
-      .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(), resize(d); });
+      .on("click", function(d) { if (focus !== d && focus == root) zoom(d, false), d3.event.stopPropagation(), resize(d); });
 
   var text = svg.selectAll("text")
       .data(nodes)
@@ -199,22 +179,15 @@ function renderChart(data, w, h){
   var appendedText = text.append("text");
       appendedText.attr("class", "label")
       .attr("dy","0.4em")
-      .attr("opacity",(toggle)?0:1)
+      //.attr("opacity",(toggle)?0:1)
       .style("text-anchor", "middle")
       .style("fill-opacity", function(d) { return 0.5;})
       .style("display", function(d) { return 1;})
       .style("font-size", function(d){
 
-
-        //return Math.round(d.r*zoomedOutSize)+"px"
-
+        //this initializes
         return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedOutSize) )+"px";
-
-
-
-
       })
-      //.text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
       .text(function(d) { if(d.depth>=2){ return (d.name);}else{return " ";} });
 
   var node = svg.selectAll("circle,text");
@@ -223,20 +196,22 @@ function renderChart(data, w, h){
 
   d3.select("body")
       .style("background", "#FFF")
-      .on("click", function() { zoom(root); });
+      .on("click", function() { zoom(root, true); });
 
-  zoomTo([root.x, root.y, root.r * 2 + margin]);
+  zoomTo([root.x, root.y, root.r * 2 + margin], false);
 
   function resize(root){
     var focus0 = focus; focus = root;
-    //alert("zooming in click");
+    //alert("zooming in click")
 
+    /*
     appendedText
     .filter(function(root){return root.parent === focus;})
-    .style("font-size", function(d){ 
+    .style("font-size", function(d){
 
       return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedInSize) )+"px";
   });
+  */
   }
 
   function hideThenShow(){
@@ -246,14 +221,16 @@ function renderChart(data, w, h){
     }, 0.4*1000);
   }
 
-  function zoom(d) {
+  function zoom(d, zoomingOutMa) {
+    //if(zoomingOutMa){alert("We are zooming out.")}else{alert("We are zooming in.")}
+
     var focus0 = focus; focus = d;
 
     var transition = d3.transition()
         .duration(d3.event.altKey ? 7500 : 750)
         .tween("zoom", function(d) {
           var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.3 + margin]);
-          return function(t) { zoomTo(i(t)); };
+          return function(t) { zoomTo(i(t), zoomingOutMa); };
         });
 
 
@@ -262,46 +239,50 @@ function renderChart(data, w, h){
     //Handle on click event
     svg.on("click",function(){
       var coordinates = d3.mouse(this);
-      toggle = !toggle;
-      //alert("zooming out click")
+      // this is the one that zooms out on user click
 
-      
+      //alert("zooming out click line 269")
+
       appendedText
       .filter(function(root){return root.parent === focus;})
-      .style("font-size", function(d){ 
-        
+      .style("font-size", function(d){
+        // this happens at the wrong time?
         return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedOutSize) )+"px";
-
         //return Math.round(d.r*zoomedOutSize)+"px"
-
-
       });
 
     })
   }
 
-  function zoomTo(v) {
+  function zoomTo(v, zoomingOutMa) {
     var k = diameter / v[2]; view = v;
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
     circle.attr("r", function(d) { return d.r * k; });
+
+    if(!zoomingOutMa){
+      appendedText
+      .filter(function(root){return root.parent === focus;})
+      .style("font-size", function(d){
+        return determineFontSizeBasedOnRadiusAndText((d.r*k), d.name, (d.r*k) )+"px";
+      });
+    }
+
   }
 
   function determineFontSizeBasedOnRadiusAndText(radius, text, testSize){
-
     //var len = text.visualLength();
 
     ruler.style.fontSize = (testSize)+"px";
     //test.style.fontSize = (testSize)+"px";
 
-
-    if(text.visualLength() > (radius*2)){ //it's too big, overflowing bounds
+    if(text.visualLength() > ((radius*2) * 0.90) ){ //it's too big, overflowing bounds
       //window.alert("The given text... " + text + "... at the font size of... " + testSize + "... is... " + text.visualLength() + " pixels long. The diameter of the circle is " + 2*radius + ". I predict the text will overflow.");
       testSize = testSize * ((radius*2) / text.visualLength() ) * 0.70; // it was too big, so make it smaller
     }
-    //else if(text.visualLength() < (radius) ) { //it's too small, less than half the diameter
-    //  testSize = testSize * 2 ; //make it a little bigger
-    //}
-
+    else if(text.visualLength() < (radius) ) { //it's too small, less than half the diameter
+      //window.alert("The given text... " + text + "... at the font size of... " + testSize + "... is... " + text.visualLength() + " pixels long. The diameter of the circle is " + 2*radius + ". I predict the text is too small.");
+      testSize = testSize * 1.5 ; //make it a little bigger
+    }
 
     //document.getElementById("test").innerHTML = "size of the string in pixels is... " + len;
 
@@ -309,8 +290,6 @@ function renderChart(data, w, h){
   }
 
 };
-
-//d3.select(self.frameElement).style("height", diameter + "px");
 
 //var data7 = '{"name": " ","children": [{"name": "101", "children": [{"name": "beck/arnley", "size":94},{"name": "ngk", "size":169},{"name": "plug", "size":3663},{"name": "acdelco", "size":246},{"name": "he76", "size":80},{"name": "platinum", "size":880},{"name": "(8034)", "size":80},{"name": "iridium", "size":51},{"name": "airtex", "size":90},{"name": "ignition", "size":265}]},{"name": "108", "children": [{"name": "@itsjaun", "size":284}]},{"name": "11", "children": [{"name": "wires", "size":245},{"name": "plugs", "size":395}]},{"name": "121", "children": [{"name": "conventional", "size":211}]},{"name": "127", "children": [{"name": "flame", "size":725}]},{"name": "2", "children": [{"name": "crib", "size":214},{"name": "blunt", "size":1341}]},{"name": "29", "children": [{"name": "ignited", "size":111}]},{"name": "37", "children": [{"name": "denso", "size":54}]},{"name": "7", "children": [{"name": "convo", "size":915}]}]}';var w = 671.0; var h = 540.0;  renderChart(data7, w, h);
 
