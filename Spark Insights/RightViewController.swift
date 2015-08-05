@@ -355,10 +355,11 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         tempView?.backgroundColor = Config.darkBlueColor
         tempView?.layer.borderColor = Config.lightSeaGreen.CGColor
         tempView?.layer.borderWidth = 1
-        var label = UILabel(frame: CGRectMake(5, 0, 130, 34))
+        var label = UILabel(frame: CGRectMake(0, 0, 130, 34))
         label.text = draggedName
         label.backgroundColor = Config.darkBlueColor
         label.textColor = draggedColor
+        label.textAlignment = NSTextAlignment.Center
         tempView?.addSubview(label)
         // Adding view to parent so it can be seen on the entire screen
         self.parentViewController!.view.addSubview(tempView!)
