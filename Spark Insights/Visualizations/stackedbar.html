@@ -57,7 +57,6 @@
 </div>
 <script>
 
-
     var chartData = null;
     var chart = null;
     var toggle = true;
@@ -66,7 +65,7 @@
         chartData = transformData(data);
 
         nv.addGraph(function() {
-             chart = nv.models.multiBarChart()
+            chart = nv.models.multiBarChart()
             .showControls(false)
             .groupSpacing(0.5)
             .hideable(true)
@@ -88,7 +87,7 @@
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
-                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length-3);
+                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length); //was length-3 to clip some text
             });
             //chart.xAxis.rotateLabels(-30);
             chart.yAxis
@@ -176,7 +175,7 @@
         return copy;
     }
 
-    //renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
+    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
 
     </script>
 </body>
