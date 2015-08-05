@@ -295,7 +295,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         var lowerIndex: Int = Int(round(maxDate * rangeSlider.lowerValue))
         var upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
         
-        //println("Range slider value changed: (\(lowerIndex) \(upperIndex))")
+        self.visualizationHandler.redrawStackedBarWithNewRange(lowerIndex, upperIndex: upperIndex)
+        
+        println("Range slider value changed: (\(lowerIndex) \(upperIndex))")
         //println("Range slider value changed: (\( self.visualizationHandler.dateRange[lowerIndex]) \(self.visualizationHandler.dateRange[upperIndex]))")
     }
     

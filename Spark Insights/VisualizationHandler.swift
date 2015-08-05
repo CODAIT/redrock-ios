@@ -324,6 +324,47 @@ class VisualizationHandler{
         }
     }
     
+    
+    func redrawStackedBarWithNewRange(lowerIndex: Int, upperIndex: Int){
+        println("Range slider value changed: (\( dateRange[lowerIndex]) \(dateRange[upperIndex]))")
+        
+        var firstIndex = 0
+        while firstIndex < self.stackedbarData.count && dateRange[lowerIndex] != self.stackedbarData[firstIndex][0] {
+            firstIndex++
+        }
+        //Log("firstIndex... \(firstIndex)... self.stackedbarData[r][0]... \(self.stackedbarData[firstIndex][0])... dateRange[lowerIndex]... \(dateRange[lowerIndex])")
+        
+        var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
+        
+        for r in firstIndex..<self.stackedbarData.count{
+            if (find(self.dateRange, self.stackedbarData[r][0]) == nil)
+            {
+                self.dateRange.append(self.stackedbarData[r][0])
+            }
+            
+            
+            script9+="{\"x\": \""
+            script9+=self.stackedbarData[r][0]
+            script9+="\", \"y\":"
+            script9+=self.stackedbarData[r][1]
+            script9+=", \"z\":"
+            script9+=self.stackedbarData[r][2]
+            script9+="}"
+            
+            if(self.stackedbarData[r][0] == dateRange[upperIndex]){
+                //it's the end of the range //get out of here
+                break
+            }
+            else if(r != (self.stackedbarData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}]; renderChart(myData);"
+        
+        webViews[Config.visualizationsIndex.stackedbar.rawValue].evaluateJavaScript(script9, completionHandler: nil)
+        
+    }
+    
     func transformDataForStackedbar(webView: WKWebView){
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
