@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		419F69B41B72B8E40041D682 /* RangeSliderThumbLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419F69B11B72B8E40041D682 /* RangeSliderThumbLayer.swift */; };
+		419F69B51B72B8E40041D682 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419F69B21B72B8E40041D682 /* RangeSliderTrackLayer.swift */; };
+		419F69B61B72B8E40041D682 /* RangeSliderUIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419F69B31B72B8E40041D682 /* RangeSliderUIControl.swift */; };
 		41A7C98D1B5F10DD00AD7C6F /* HelpPopupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A7C98C1B5F10DD00AD7C6F /* HelpPopupTableViewController.swift */; };
 		41A7C98F1B5F1C5900AD7C6F /* ChartHelpDecriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41A7C98E1B5F1C5900AD7C6F /* ChartHelpDecriptionTableViewCell.swift */; };
 		41CC75D71B22068600383F13 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC75D61B22068600383F13 /* Network.swift */; };
@@ -55,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		419F69B11B72B8E40041D682 /* RangeSliderThumbLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderThumbLayer.swift; sourceTree = "<group>"; };
+		419F69B21B72B8E40041D682 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
+		419F69B31B72B8E40041D682 /* RangeSliderUIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderUIControl.swift; sourceTree = "<group>"; };
 		41A7C98C1B5F10DD00AD7C6F /* HelpPopupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpPopupTableViewController.swift; sourceTree = "<group>"; };
 		41A7C98E1B5F1C5900AD7C6F /* ChartHelpDecriptionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartHelpDecriptionTableViewCell.swift; sourceTree = "<group>"; };
 		41CC75D61B22068600383F13 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -116,6 +122,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		419F69B01B72B8C30041D682 /* RangeSlider */ = {
+			isa = PBXGroup;
+			children = (
+				419F69B11B72B8E40041D682 /* RangeSliderThumbLayer.swift */,
+				419F69B21B72B8E40041D682 /* RangeSliderTrackLayer.swift */,
+				419F69B31B72B8E40041D682 /* RangeSliderUIControl.swift */,
+			);
+			path = RangeSlider;
+			sourceTree = "<group>";
+		};
 		41DE4C6A1B18E5A9002BD66A /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +205,7 @@
 				CE79DA4E1B1640C0003F01F6 /* Main.storyboard */,
 				CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */,
 				CEDBEADC1B22452300FB9695 /* animation_v1.gif */,
+				419F69B01B72B8C30041D682 /* RangeSlider */,
 				41DE4C6A1B18E5A9002BD66A /* Utilities */,
 				41ED94151B17DC4500A80447 /* Tweets */,
 				41ED94101B17C2EB00A80447 /* TweetCells */,
@@ -365,12 +382,15 @@
 				41E688521B22550000644714 /* LoadingTableViewCell.swift in Sources */,
 				41ED94091B17AA6700A80447 /* ContextLabel.swift in Sources */,
 				CEDBEADF1B22672400FB9695 /* Log.swift in Sources */,
+				419F69B51B72B8E40041D682 /* RangeSliderTrackLayer.swift in Sources */,
 				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				41A7C98D1B5F10DD00AD7C6F /* HelpPopupTableViewController.swift in Sources */,
+				419F69B61B72B8E40041D682 /* RangeSliderUIControl.swift in Sources */,
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
 				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,
 				41ED94191B17DCB100A80447 /* ReadTweetsData.swift in Sources */,
+				419F69B41B72B8E40041D682 /* RangeSliderThumbLayer.swift in Sources */,
 				CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */,
 				CE79DA7A1B18B9BA003F01F6 /* Config.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,

@@ -33,6 +33,9 @@ class VisualizationHandler{
     
     var firstLoad = false
     
+    var rangeSliderBarChart:RangeSliderUIControl = RangeSliderUIControl()
+    var dateRange = Array<String>()
+    
     func reloadAppropriateView(viewNumber: Int){
         if var url = webViews[viewNumber].URL{
             //Log("if var request = webViews[viewNumber].request! is \(request)")
@@ -335,6 +338,11 @@ class VisualizationHandler{
                 var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
                 
                 for r in 0..<self.stackedbarData.count{
+                    if (find(self.dateRange, self.stackedbarData[r][0]) == nil)
+                    {
+                        self.dateRange.append(self.stackedbarData[r][0])
+                    }
+                    
                     script9+="{\"x\": \""
                     script9+=self.stackedbarData[r][0]
                     script9+="\", \"y\":"
@@ -354,7 +362,9 @@ class VisualizationHandler{
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     webView.evaluateJavaScript(script9, completionHandler: nil)
+                    self.updateRangeSliderBarChart()
                     self.successState(Config.visualizationsIndex.stackedbar.rawValue)
+                    
                 })
             })
         }
@@ -507,6 +517,14 @@ class VisualizationHandler{
         self.timemapData.removeAll(keepCapacity: false)
         self.stackedbarData.removeAll(keepCapacity: false)
         self.wordcloudData.removeAll(keepCapacity: false)
+        self.rangeSliderBarChart.hidden = true
+    }
+    
+    func updateRangeSliderBarChart()
+    {
+        self.rangeSliderBarChart.lowerValue = 0.0
+        self.rangeSliderBarChart.upperValue = 1.0
+        self.rangeSliderBarChart.hidden = false
     }
     
     /*

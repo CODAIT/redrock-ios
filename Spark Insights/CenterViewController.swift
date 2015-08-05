@@ -268,7 +268,35 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             self.scrollView.addSubview(myWebView)
             // set initial loading state
             myWebView.hidden = true
+            
+            if i == Config.visualizationsIndex.stackedbar.rawValue
+            {
+                createSliderForBarChart(myOrigin)
+            }
         }
+    }
+    
+    func createSliderForBarChart(origin: CGFloat)
+    {
+        let rangeSlider = RangeSliderUIControl(frame: CGRectZero)
+        rangeSlider.frame = CGRect(x: origin + 35, y: self.scrollView.frame.height - 45,
+            width: self.scrollView.frame.width - 70, height: 20.0)
+        rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
+        
+        visualizationHandler.rangeSliderBarChart = rangeSlider
+        self.scrollView.addSubview(rangeSlider)
+        rangeSlider.hidden = true
+    }
+    
+    func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {
+        
+        var maxDate = Double(visualizationHandler.dateRange.count) - 1
+        //Transform range from 0-1 to 0-count
+        var lowerIndex: Int = Int(round(maxDate * rangeSlider.lowerValue))
+        var upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
+        
+        //println("Range slider value changed: (\(lowerIndex) \(upperIndex))")
+        //println("Range slider value changed: (\( self.visualizationHandler.dateRange[lowerIndex]) \(self.visualizationHandler.dateRange[upperIndex]))")
     }
     
     /*
