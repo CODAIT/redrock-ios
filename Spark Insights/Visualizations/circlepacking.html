@@ -15,8 +15,8 @@
 }
 
 .node:hover {
-  stroke: #AEB8B8;
-  stroke-width: 5px;
+  stroke: #E8E8E8;
+  stroke-width: 3px;
 }
 
 .node--leaf {
@@ -81,7 +81,7 @@ var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","
 
 var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d"]);
 
-var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]); 
+var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
 
 var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
 
@@ -152,7 +152,7 @@ function renderChart(data, w, h){
     .attr("transform", "translate(" + ((diameter / 2)+45) + "," + ((diameter / 2)-25) + ")");
 
     var pack = d3.layout.pack()
-    .padding(8)
+    .padding(10)
     .size([diameter - margin, diameter - margin])
     .value(function(d) { return d.size; });
 
@@ -258,7 +258,7 @@ function renderChart(data, w, h){
   function zoomTo(v, zoomingOutMa) {
     var k = diameter / v[2]; view = v;
     node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
-    circle.attr("r", function(d) { return d.r * k; });
+    circle.attr("r", function(d) { if(d.depth==1){ return (d.r * k)+3; } else{ return d.r * k; } });
 
     if(!zoomingOutMa){
       appendedText
