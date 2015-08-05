@@ -279,8 +279,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     func createSliderForBarChart(origin: CGFloat)
     {
         let rangeSlider = RangeSliderUIControl(frame: CGRectZero)
-        rangeSlider.frame = CGRect(x: origin + 35, y: self.scrollView.frame.height - 45,
-            width: self.scrollView.frame.width - 70, height: 20.0)
+        rangeSlider.frame = CGRect(x: origin + 65, y: self.scrollView.frame.height - 45,
+            width: self.scrollView.frame.width - 130, height: 20.0)
         rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
         
         visualizationHandler.rangeSliderBarChart = rangeSlider
