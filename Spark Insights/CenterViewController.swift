@@ -290,7 +290,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     
     func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {
         
-        var maxDate = Double(visualizationHandler.dateRange.count) - 1
+        var maxDate = Double(visualizationHandler.stackedbarData.count) - 1
+        
         //Transform range from 0-1 to 0-count
         var lowerIndex: Int = Int(round(maxDate * rangeSlider.lowerValue))
         var upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
