@@ -47,7 +47,7 @@ class RangeSliderUIControl: UIControl {
         }
     }
     
-    var thumbTintColor: UIColor = UIColor.whiteColor() {
+    var thumbTintColor: UIColor = Config.lightSeaGreen {
         didSet {
             lowerThumbLayer.setNeedsDisplay()
             upperThumbLayer.setNeedsDisplay()
@@ -103,7 +103,7 @@ class RangeSliderUIControl: UIControl {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        trackLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 3)
+        trackLayer.frame = bounds.rectByInsetting(dx: 0.0, dy: bounds.height / 2.7)
         trackLayer.setNeedsDisplay()
         
         let lowerThumbCenter = CGFloat(positionForValue(lowerValue))

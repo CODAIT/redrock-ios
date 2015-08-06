@@ -279,13 +279,36 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     func createSliderForBarChart(origin: CGFloat)
     {
         let rangeSlider = RangeSliderUIControl(frame: CGRectZero)
-        rangeSlider.frame = CGRect(x: origin + 65, y: self.scrollView.frame.height - 45,
-            width: self.scrollView.frame.width - 130, height: 20.0)
+        rangeSlider.frame = CGRect(x: origin + 80, y: self.scrollView.frame.height - 55,
+            width: self.scrollView.frame.width - 160, height: 18.0)
         rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
         
         visualizationHandler.rangeSliderBarChart = rangeSlider
         self.scrollView.addSubview(rangeSlider)
+        var leftLabel = createUILabelRange(CGFloat(origin + 80), align: NSTextAlignment.Left)
+        var rightLabel = createUILabelRange(CGFloat(origin + (self.scrollView.frame.width - 160)), align: NSTextAlignment.Right)
+        
+        self.scrollView.addSubview(leftLabel)
+        self.scrollView.addSubview(rightLabel)
+        visualizationHandler.rangeLabels.append(leftLabel)
+        visualizationHandler.rangeLabels.append(rightLabel)
+        
         rangeSlider.hidden = true
+        rightLabel.hidden = true
+        leftLabel.hidden = true
+    }
+    
+    func createUILabelRange(origin: CGFloat, align: NSTextAlignment) -> UILabel
+    {
+        let rangeLabel = UILabel()
+        rangeLabel.frame = CGRectMake(origin, self.scrollView.frame.height - 36, 80, 18);
+        rangeLabel.numberOfLines = 1
+        rangeLabel.font = UIFont(name: "HelveticaNeue-Thin", size: 10)
+        rangeLabel.textColor = Config.darkGrayTextColor
+        rangeLabel.textAlignment = align
+        rangeLabel.text = "May 30"
+        rangeLabel.backgroundColor = UIColor.whiteColor()
+        return rangeLabel
     }
     
     func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {

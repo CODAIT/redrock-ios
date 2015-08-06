@@ -34,7 +34,8 @@ class VisualizationHandler{
     var firstLoad = false
     
     var rangeSliderBarChart:RangeSliderUIControl = RangeSliderUIControl()
-    var dateRange = Array<String>()
+    var rangeLabels:Array<UILabel> = Array<UILabel>()
+    var dateRange: Array<String> = Array<String>()
     
     func reloadAppropriateView(viewNumber: Int){
         if var url = webViews[viewNumber].URL{
@@ -550,13 +551,25 @@ class VisualizationHandler{
         self.stackedbarData.removeAll(keepCapacity: false)
         self.wordcloudData.removeAll(keepCapacity: false)
         self.rangeSliderBarChart.hidden = true
+        if(self.rangeLabels.count > 0)
+        {
+            self.rangeLabels[0].hidden = true
+            self.rangeLabels[1].hidden = true
+        }
+        
     }
     
     func updateRangeSliderBarChart()
     {
         self.rangeSliderBarChart.lowerValue = 0.0
         self.rangeSliderBarChart.upperValue = 1.0
+        
+        self.rangeLabels[0].text = self.dateRange[0].substringToIndex(advance(dateRange[0].endIndex, -3))
+        self.rangeLabels[1].text = self.dateRange[self.dateRange.count-1].substringToIndex(advance(dateRange[self.dateRange.count-1].endIndex, -3))
+        
         self.rangeSliderBarChart.hidden = false
+        self.rangeLabels[0].hidden = false
+        self.rangeLabels[1].hidden = false
     }
     
     /*
