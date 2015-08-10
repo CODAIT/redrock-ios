@@ -293,6 +293,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         visualizationHandler.rangeLabels.append(leftLabel)
         visualizationHandler.rangeLabels.append(rightLabel)
         
+        /* send the touch began event to the uiView in that position 
+        instead of always try to scroll*/
+        self.scrollView.delaysContentTouches = false
+        
         rangeSlider.hidden = true
         rightLabel.hidden = true
         leftLabel.hidden = true
@@ -320,9 +324,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         var upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
         
         self.visualizationHandler.redrawStackedBarWithNewRange(lowerIndex, upperIndex: upperIndex)
-        
-        println("Range slider value changed: (\(lowerIndex) \(upperIndex))")
-        //println("Range slider value changed: (\( self.visualizationHandler.dateRange[lowerIndex]) \(self.visualizationHandler.dateRange[upperIndex]))")
     }
     
     /*
