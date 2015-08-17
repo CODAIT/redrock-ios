@@ -15,6 +15,7 @@ protocol TweetTableViewCellDelegate {
     func cellDidClose(closedCell: TweetTableViewCell)
     func cellDidBeginOpening(openingCell: TweetTableViewCell)
     func didTappedURLInsideTweetText(tappedURL: String)
+    func didTappedHashtagInsideTweetText(tappedHash: String)
     func userHandleClicked(clickedCell: TweetTableViewCell)
 }
 
@@ -59,6 +60,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     //Keep track of the row index of the cell
     var rowIndex:Int = 0
     var isURLTapped = false
+    var isHashTagTapped = false
     
     //User profile url by link
     var userProfileURL = ""
@@ -110,6 +112,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
             self.displayView.backgroundColor = UIColor.grayColor()
         }
     }
+    
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         self.displayView.backgroundColor = Config.tweetsTableBackgroundColor
     }
@@ -154,9 +157,16 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         if firstCharac != "@" && firstCharac != "#"
         {
             self.isURLTapped = true
+            self.isHashTagTapped = false
+        }
+        else if firstCharac == "#"
+        {
+            self.isHashTagTapped = true
+            self.isURLTapped = false
         }
         else
         {
+            self.isHashTagTapped = false
             self.isURLTapped = false
         }
     }
@@ -169,6 +179,10 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         if  self.isURLTapped
         {
             self.delegate?.didTappedURLInsideTweetText(text)
+        }
+        else if self.isHashTagTapped
+        {
+            self.delegate?.didTappedHashtagInsideTweetText(text)
         }
     }
     
