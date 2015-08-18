@@ -23,7 +23,7 @@ class VisualizationHandler{
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
     var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
     
-    var treemapData : [[String]]       = [[String]]()
+    var treemapData : String = ""
     var circlepackingData : [[String]]      = [[String]]()
     var worddistanceData : [[String]]      = [[String]]()
     var forcegraphData : [[String]]      = [[String]]()
@@ -87,48 +87,77 @@ class VisualizationHandler{
     }
     
     func transformDataForTreemapping(webView: WKWebView){
-        //Log(treemapData)
         self.loadingState(Config.visualizationsIndex.treemap.rawValue)
-        if self.treemapData.count > 0
-        {
-            var script9="var data7 = '{\"name\": \"all\",\"children\": ["
+        
+        var treemapDataTrimmed : String
+        
+        //println(self.treemapData)
+
+        if let rangeOfStart = self.treemapData.rangeOfString("\"profession\" : ["){
+            println("trimmed data")
+            treemapDataTrimmed = "{\"name\": \"Profession\",\"children\": ["+self.treemapData.substringFromIndex(rangeOfStart.endIndex)
+            //println(treemapDataTrimmed)
             
-            for r in 0..<treemapData.count{
-                script9+="{\"name\": \""
-                script9+=treemapData[r][0]
-                script9+="\",\"children\": [{\"name\": \""
-                script9+=treemapData[r][0]
-                script9+="\", \"size\": "
-                script9+=treemapData[r][1]
-                script9+="}]}"
-                if(r != (treemapData.count-1)){
-                    script9+=","
-                }
-            }
-            script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);"
+            var script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);";
             
-            //Log(script9)
+            Log(script9)
             
-            //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
-            
-            var treeScript = "var data7 = '{ \"children\": [ { \"children\": [ { \"rate\": -0.4066358024691358, \"value\": 769, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.35092180546726004, \"value\": 1021, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.44886363636363635, \"value\": 291, \"name\": \"White, Non-Hispanic\" }, { \"rate\": -0.4716981132075472, \"value\": 28, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.234860883797054, \"value\": 935, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.348458904109589, \"name\": \"25-44 years\" }, { \"children\": [ { \"rate\": -0.36470588235294116, \"value\": 324, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.06147540983606557, \"value\": 458, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.3368055555555556, \"value\": 573, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.14285714285714285, \"value\": 32, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.010443864229765013, \"value\": 774, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.18637048192771086, \"name\": \"65+ years\" }, { \"children\": [ { \"rate\": -0.4, \"value\": 72, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.4645669291338583, \"value\": 68, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.20833333333333334, \"value\": 19, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 1.4, \"value\": 12, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.18604651162790697, \"value\": 51, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.30407523510971785, \"name\": \"5-14 years\" }, { \"children\": [ { \"rate\": -0.5954198473282443, \"value\": 53, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.5423076923076923, \"value\": 119, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.575, \"value\": 17, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.75, \"value\": 7, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.2391304347826087, \"value\": 57, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.47401247401247404, \"name\": \"0-4 years\" }, { \"children\": [ { \"rate\": -0.39619651347068147, \"value\": 762, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.1719260065288357, \"value\": 761, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.2727272727272727, \"value\": 608, \"name\": \"White, Non-Hispanic\" }, { \"rate\": -0.23809523809523808, \"value\": 48, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.05090137857900318, \"value\": 895, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.2358936117325379, \"name\": \"45-64 years\" }, { \"children\": [ { \"rate\": -0.3829268292682927, \"value\": 253, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.46920821114369504, \"value\": 362, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.3368421052631579, \"value\": 63, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.6363636363636364, \"value\": 18, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.06116207951070336, \"value\": 307, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.3422950819672131, \"name\": \"15-24 years\" } ], \"rate\": -0.28656039777712783, \"name\": \"2006 to 2012\" }'; renderChart(data7);"
-            
-            //webView.evaluateJavaScript(script9, completionHandler: nil)
-            
-            webView.evaluateJavaScript(treeScript, completionHandler: nil)
-            
-            
+            webView.evaluateJavaScript(script9, completionHandler: nil)
+
             self.successState(Config.visualizationsIndex.treemap.rawValue)
+
         }
-        else
-        {
-            self.noDataState(Config.visualizationsIndex.treemap.rawValue)
+        else{
+            Log("Error processing professions")
+            self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
         }
+        
+        //webView.evaluateJavaScript(treemapData, completionHandler: nil)
+        //Log(treemapData)
+        //Log("JUST PASSED TREEMAPDATA")
+        
+
         
         if self.errorDescription[Config.visualizationsIndex.treemap.rawValue] != ""
         {
             self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
         }
+
+        
+        //if self.treemapData.count > 0
+        //{
+            //var script9="var data7 = '{ \"children\": [ { \"children\": ["
+        
+            /*
+            for r in 0..<treemapData.count{
+                script9+="{\"rate\": \""
+                script9+=treemapData[r][0]
+                script9+="\",\"value\": \""
+                script9+=treemapData[r][0]
+                script9+="\", \"name\": \""
+                script9+=treemapData[r][1]
+                script9+="\"}"
+                if(r != (treemapData.count-1)){
+                    script9+=","
+                }
+            }
+            script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);"
+            */
+            
+            //Log(script9)
+            
+            //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+            
+            //var treeScript = "var data7 = '{ \"children\": [ { \"children\": [ { \"rate\": -0.4066358024691358, \"value\": 769, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.35092180546726004, \"value\": 1021, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.44886363636363635, \"value\": 291, \"name\": \"White, Non-Hispanic\" }, { \"rate\": -0.4716981132075472, \"value\": 28, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.234860883797054, \"value\": 935, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.348458904109589, \"name\": \"25-44 years\" }, { \"children\": [ { \"rate\": -0.36470588235294116, \"value\": 324, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.06147540983606557, \"value\": 458, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.3368055555555556, \"value\": 573, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.14285714285714285, \"value\": 32, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.010443864229765013, \"value\": 774, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.18637048192771086, \"name\": \"65+ years\" }, { \"children\": [ { \"rate\": -0.4, \"value\": 72, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.4645669291338583, \"value\": 68, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.20833333333333334, \"value\": 19, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 1.4, \"value\": 12, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.18604651162790697, \"value\": 51, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.30407523510971785, \"name\": \"5-14 years\" }, { \"children\": [ { \"rate\": -0.5954198473282443, \"value\": 53, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.5423076923076923, \"value\": 119, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.575, \"value\": 17, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.75, \"value\": 7, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": 0.2391304347826087, \"value\": 57, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.47401247401247404, \"name\": \"0-4 years\" }, { \"children\": [ { \"rate\": -0.39619651347068147, \"value\": 762, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.1719260065288357, \"value\": 761, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.2727272727272727, \"value\": 608, \"name\": \"White, Non-Hispanic\" }, { \"rate\": -0.23809523809523808, \"value\": 48, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.05090137857900318, \"value\": 895, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.2358936117325379, \"name\": \"45-64 years\" }, { \"children\": [ { \"rate\": -0.3829268292682927, \"value\": 253, \"name\": \"Black or African American, Non-Hispanic\" }, { \"rate\": -0.46920821114369504, \"value\": 362, \"name\": \"Hispanic or Latino\" }, { \"rate\": -0.3368421052631579, \"value\": 63, \"name\": \"White, Non-Hispanic\" }, { \"rate\": 0.6363636363636364, \"value\": 18, \"name\": \"American Indian or Alaska Native, Non-Hispanic\" }, { \"rate\": -0.06116207951070336, \"value\": 307, \"name\": \"Asian or Pacific Islander, Non-Hispanic\" } ], \"rate\": -0.3422950819672131, \"name\": \"15-24 years\" } ], \"rate\": -0.28656039777712783, \"name\": \"2006 to 2012\" }'; renderChart(data7);"
+            
+            //webView.evaluateJavaScript(script9, completionHandler: nil)
+            
+        //}
+        //else
+        //{
+        //    self.noDataState(Config.visualizationsIndex.treemap.rawValue)
+        //}
+        
     }
     
     func reorderCirclepackingData(){

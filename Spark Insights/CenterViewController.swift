@@ -822,6 +822,28 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             return
         }
         
+        /*
+        var numberOfColumns = 2        // number of columns
+        var containerName = "profession" // name of container for data
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.treemap.rawValue)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if(data != nil){
+                    self.visualizationHandler.treemapData = data!
+                    Log("data for treemap!")
+                    Log(data!.count)
+                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue) //reload the current page
+                }
+                else{
+                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
+                    self.visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
+                }
+            })
+        })*/
+
+        
         var contentJson = json
         if contentJson != nil
         {
@@ -830,11 +852,25 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
                 contentJson = json!["profession"]
             }
             
-            if contentJson != nil
-            {
+                visualizationHandler.treemapData = contentJson!.description
+            
+                println(visualizationHandler.treemapData)
+            
+                //Log("What did we get back?")
+                //println(visualizationHandler.treemapData)
+                //Log("Was it anything?")
                 
-                if let professions = contentJson!["profession"].dictionaryObject as? Dictionary<String,Int>
+                visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+
+                /*
+                Log("if contentJson != nil")
+                
+                if let professions = contentJson!["profession"].dictionaryObject as? Dictionary<String,Dictionary<String,Int>>
                 {
+                    
+                    Log("not conversion error")
+                    //Log(professions)
                     var keys = professions.keys
                     var treemap = [[String]]()
                     for profession in keys
@@ -853,13 +889,14 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
                     visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
                     visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
                 }
+                */
 
-            }
+            /*
             else
             {
                 visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
                 visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
-            }
+            }*/
         }
         else
         {
