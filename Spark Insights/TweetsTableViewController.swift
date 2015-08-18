@@ -15,6 +15,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     var openedTweetCell = Array<TweetTableViewCell>()
     var emptySearchResult = false
     var errorMessage: String?
+    var twitterHashTagSearchURL = "https://twitter.com/search?src=typd&q="
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,14 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         if let displayViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetDisplayURL") as? DisplayUrlViewController
         {
             displayViewController.loadUrl = tappedURL
+            self.presentViewController(displayViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func didTappedHashtagInsideTweetText(tappedHash: String) {
+        if let displayViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetDisplayURL") as? DisplayUrlViewController
+        {
+            displayViewController.loadUrl = twitterHashTagSearchURL + tappedHash.stringByReplacingOccurrencesOfString("#",withString: "%23")
             self.presentViewController(displayViewController, animated: true, completion: nil)
         }
     }

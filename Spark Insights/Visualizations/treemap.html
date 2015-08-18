@@ -2,118 +2,368 @@
 <meta charset="utf-8">
 <style>
 
-*{
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+#chart {
+  width: 960px;
+  height: 760px;
 }
 
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: white;
+text {
+  pointer-events: none;
 }
 
-.node {
-    font: 20px sans-serif;
-    line-height: 32px;
-    overflow: hidden;
-    position: absolute;
-    font-size: 16px;
-    font-family: inherit;
-    color: rgba(255, 255, 255, 1.00);
+.grandparent text {
+  font-weight: bold;
+}
+
+rect {
+/*  fill: none; */
+  stroke: #fff;
+  stroke-width: 1px;
+}
+
+rect.parent,
+.grandparent rect {
+  stroke-width: 2px;
+}
+
+.grandparent:hover rect {
+  fill: darkgrey;
+}
+
+.children rect.parent,
+.grandparent rect {
+  cursor: pointer;
+}
+
+.children rect.child {
+  opacity: 0;
+}
+
+.children rect.parent {
+}
+
+.children:hover rect.child {
+  opacity: 1;
+  stroke-width: 1px;
+}
+
+.children:hover rect.parent {
+  opacity: 0;
+}
+
+.legend rect {
+  stroke-width: 0px;
+}
+
+.legend text {
+  text-anchor: middle;
+  pointer-events: auto;
+  font-size: 15px;
+  font-family: sans-serif;
+  fill: black;
 }
 
 </style>
+
+
+<p id="chart">
+<!--<div id="legend"></div>-->
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
-var toggle = true;
-var flareData = null;
+var margin = {top: 30, right: 0, bottom: 20, left: 0},
+    width = 960,
+    height = 760 - margin.top - margin.bottom,
+    formatNumber = d3.format(",%"),
+    colorDomain = [-.6, 0, .6],
+    colorRange = ["#373a93", 'white', "#936638"],
+    transitioning;
 
-var color = d3.scale.ordinal().range(["#C0E6FF","#7CC7FF","#5AAAFA","#5596E6","#4178BE","#325C80","#264A60","#1D3649","#152935","#010205"].reverse());
+// sets x and y scale to determine size of visible boxes
+var x = d3.scale.linear()
+    .domain([0, width])
+    .range([0, width]);
 
-function renderChart(data, w, h) {
+var y = d3.scale.linear()
+    .domain([0, height])
+    .range([0, height]);
+
+// adding a color scale
+var color = d3.scale.linear()
+    .domain(colorDomain)
+    .range(colorRange);
+
+// introduce color scale here
+
+var treemap = d3.layout.treemap()
+    .children(function(d, depth) { return depth ? null : d._children; })
+    .sort(function(a, b) { return a.value - b.value; })
+    .ratio(height / width * 0.5 * (1 + Math.sqrt(5)))
+    .round(false);
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.bottom + margin.top)
+    .style("margin-left", -margin.left + "px")
+    .style("margin.right", -margin.right + "px")
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .style("shape-rendering", "crispEdges");
+
+var grandparent = svg.append("g")
+    .attr("class", "grandparent");
+
+grandparent.append("rect")
+    .attr("y", -margin.top)
+    .attr("width", width)
+    .attr("height", margin.top);
+
+grandparent.append("text")
+    .attr("x", 6)
+    .attr("y", 6 - margin.top)
+    .attr("dy", ".75em");
+
+var legend = d3.select("#legend").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", 30)
+  .attr('class', 'legend')
+  .selectAll("g")
+      .data([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18])
+      .enter()
+      .append('g')
+
+// functions
+
+var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
+
+var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
+
+var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
+
+var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d"]);
+
+var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
+
+var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
+
+var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
+
+var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
+
+var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
+
+
+function returnColor(parentColor, number){
     
-    d3.selectAll("div").remove();
-    
-    var resizeConstant = 1.43
-
-    var margin = {top: 40, right: 40, bottom: 40, left: 40},
-    //width = 667; //- margin.left - margin.right,
-    //height = 500; //- margin.top - margin.bottom;
-
-    width = w * resizeConstant - margin.left - margin.right
-    height = h * resizeConstant - margin.top - margin.bottom
-
-    var treemap = d3.layout.treemap()
-    .size([width, height])
-    .sticky(true)
-    .value(function(d) { return d.size; });
-
-    var div = d3.select("body").append("div").attr("id","treemap")
-    .style("position", "relative")
-    .style("width", width + "px")
-    .style("height", height + "px")
-    .style("left", margin.left + "px")
-    .style("top", margin.top + "px");
-
-    flareData = data;
-    
-    var flareDataAsJson = JSON.parse(flareData);
-    
-    function drawTreemap(root) {
-        
-        var node = div.datum(root).selectAll(".node")
-        .data(treemap.nodes)
-        .enter();
-        
-        node.append("div")
-        .attr("class", "node")
-        .call(position)
-        .style("border", "1px solid white")
-        .style("background", function(d) { return d.children ? color(d.name) : null; });
-        //.text(function(d) {
-        //  if(!toggle){
-        //    return null;
-        //  }
-        //  return (d.children)? null : d.name/* + " (" + d.size+")" */;
-        //});
-        
-        node.append("text")
-        .attr("class", "node")
-        .call(positionText)
-        .text(function(d) {
-                if(!toggle){
-                  return null;
-                }
-                return (d.children)? null : d.name/* + " (" + d.size+")" */;
-              });
-
-        //d3.select("#treemap").on("click",function(event){
-          //div.datum(root).selectAll(".node").remove();
-          //toggle = !toggle;
-          //drawTreemap(flareData);
-          //console.log("clickme");
-        //});
-    };
-    
-    drawTreemap(flareDataAsJson);
+    if(parentColor == "1"){
+        return color1(number);
+    }
+    else if(parentColor == "2"){
+        return color2(number);
+    }
+    else if(parentColor == "3"){
+        return color3(number);
+    }
+    else if(parentColor == "4"){
+        return color4(number);
+    }
+    else if(parentColor == "5"){
+        return color5(number);
+    }
+    else if(parentColor == "6"){
+        return color6(number);
+    }
+    else if(parentColor == "7"){
+        return color7(number);
+    }
+    else if(parentColor == "8"){
+        return color8(number);
+    }
+    else{
+        return "#FF69B4";
+    }
 }
 
-function position() {
-  this.style("left", function(d) { return d.x + "px"; })
-      .style("top", function(d) { return d.y + "px"; })
-      .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
-      .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+
+function initialize(root) {
+    root.x = root.y = 0;
+    root.dx = width;
+    root.dy = height;
+    root.depth = 0;
+  }
+
+  // Aggregate the values for internal nodes. This is normally done by the
+  // treemap layout, but not here because of our custom implementation.
+  // We also take a snapshot of the original children (_children) to avoid
+  // the children being overwritten when when layout is computed.
+  function accumulate(d) {
+    return (d._children = d.children)
+      // recursion step, note that p and v are defined by reduce
+        ? d.value = d.children.reduce(function(p, v) {return p + accumulate(v); }, 0)
+        : d.value;
+  }
+
+
+
+  // Compute the treemap layout recursively such that each group of siblings
+  // uses the same size (1×1) rather than the dimensions of the parent cell.
+  // This optimizes the layout for the current zoom state. Note that a wrapper
+  // object is created for the parent node for each group of siblings so that
+  // the parent’s dimensions are not discarded as we recurse. Since each group
+  // of sibling was laid out in 1×1, we must rescale to fit using absolute
+  // coordinates. This lets us use a viewport to zoom.
+  function layout(d) {
+    if (d._children) {
+      // treemap nodes comes from the treemap set of functions as part of d3
+      treemap.nodes({_children: d._children});
+      d._children.forEach(function(c) {
+        c.x = d.x + c.x * d.dx;
+        c.y = d.y + c.y * d.dy;
+        c.dx *= d.dx;
+        c.dy *= d.dy;
+        c.parent = d;
+        // recursion
+        layout(c);
+      });
+    }
+  }
+
+function colorIncrements(d){
+    return (colorDomain[colorDomain.length - 1] - colorDomain[0])/18*d + colorDomain[0];
 }
 
-function positionText() {
-    this.style("left", function(d) { return d.x + 10 + "px"; })
-    .style("top", function(d) { return d.y + "px"; })
-    .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
-    .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+
+legend.append("rect")
+    .attr("x", function(d){return margin.left + d * 40})
+    .attr("y", 0)
+    .attr("fill", function(d) {return color(colorIncrements(d))})
+    .attr('width', '40px')
+    .attr('height', '40px')
+
+
+legend.append("text")
+        .text(function(d){return formatNumber(colorIncrements(d))})
+        .attr('y', 20)
+        .attr('x', function(d){return margin.left + d * 40 + 20});
+
+// determines if white or black will be better contrasting color
+function getContrast50(hexcolor){
+    return (parseInt(hexcolor.replace('#', ''), 16) > 0xffffff/3) ? 'black':'white';
 }
 
+
+function renderChart(data){
+
+var root = JSON.parse(data);
+
+  console.log(root)
+  initialize(root);
+  accumulate(root);
+  layout(root);
+  display(root);
+
+  function display(d) {
+    grandparent
+        .datum(d.parent)
+        .on("click", transition)
+      .select("text")
+        .text(name(d))
+
+    // color header based on grandparent's rate
+    grandparent
+      .datum(d.parent)
+      .select("rect")
+      .attr("fill", returnColor(1, d.name)); // function(){console.log(color(d.rate)); return color(d['rate'])})
+
+    var g1 = svg.insert("g", ".grandparent")
+        .datum(d)
+        .attr("class", "depth");
+
+    var g = g1.selectAll("g")
+        .data(d._children)
+      .enter().append("g");
+
+    g.filter(function(d) { return d._children; })
+        .classed("children", true)
+        .on("click", transition);
+
+    g.selectAll(".child")
+        .data(function(d) { return d._children || [d]; })
+      .enter().append("rect")
+        .attr("class", "child")
+        .call(rect);
+
+    g.append("rect")
+        .attr("class", "parent")
+        .call(rect)
+      .append("title")
+        .text(function(d) {console.log(typeof(d.value), d.value); return d.name + ', Cases of TB: ' + d.value + ', percent change: ' + formatNumber(11); });
+
+    g.append("text")
+        .attr("dy", ".75em")
+        .text(function(d) { return d.name; })
+        .call(text);
+
+    function transition(d) {
+      if (transitioning || !d) return;
+      transitioning = true;
+
+      var g2 = display(d),
+          t1 = g1.transition().duration(750),
+          t2 = g2.transition().duration(750);
+
+      // Update the domain only after entering new elements.
+      x.domain([d.x, d.x + d.dx]);
+      y.domain([d.y, d.y + d.dy]);
+
+      // Enable anti-aliasing during the transition.
+      svg.style("shape-rendering", null);
+
+      // Draw child nodes on top of parent nodes.
+      svg.selectAll(".depth").sort(function(a, b) { return a.depth - b.depth; });
+
+      // Fade-in entering text.
+      g2.selectAll("text").style("fill-opacity", 0);
+
+      // Transition to the new view.
+      t1.selectAll("text").call(text).style("fill-opacity", 0);
+      t2.selectAll("text").call(text).style("fill-opacity", 1);
+      t1.selectAll("rect").call(rect);
+      t2.selectAll("rect").call(rect);
+
+      // Remove the old node when the transition is finished.
+      t1.remove().each("end", function() {
+        svg.style("shape-rendering", "crispEdges");
+        transitioning = false;
+      });
+    }
+
+    return g;
+  }
+
+  function text(text) {
+    text.attr("x", function(d) { return x(d.x) + 6; })
+        .attr("y", function(d) { return y(d.y) + 6; })
+        .attr("fill", function(d){returnColor(2, d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
+  }
+
+  function rect(rect) {
+    rect.attr("x", function(d) { return x(d.x); })
+        .attr("y", function(d) { return y(d.y); })
+        .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
+        .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
+        .attr("fill", function(d){ return returnColor(3, d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
+  }
+
+  function name(d) {
+    return d.parent
+        ? name(d.parent) + "." + d.name
+        : d.name;
+  }
+
+}
+
+//var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
+//renderChart(data);
 
 </script>
-
-
-<!-- renderChart('{"name": "all","children": [{"name": "accountant","children": [{"name": "accountant", "size": 3938}]},{"name": "clown","children": [{"name": "clown", "size": 555}]},{"name": "programmer","children": [{"name": "programmer", "size": 6666}]},{"name": "marketer","children": [{"name": "marketer", "size": 4444}]},{"name": "engineer","children": [{"name": "engineer", "size": 5555}]},{"name": "cop","children": [{"name": "cop", "size": 743}]}]}'); -->

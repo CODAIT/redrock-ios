@@ -23,7 +23,7 @@ class VisualizationHandler{
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
     var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
     
-    var treemapData : [[String]]       = [[String]]()
+    var treemapData : String = ""
     var circlepackingData : [[String]]      = [[String]]()
     var worddistanceData : [[String]]      = [[String]]()
     var forcegraphData : [[String]]      = [[String]]()
@@ -87,43 +87,46 @@ class VisualizationHandler{
     }
     
     func transformDataForTreemapping(webView: WKWebView){
-        //Log(treemapData)
         self.loadingState(Config.visualizationsIndex.treemap.rawValue)
-        if self.treemapData.count > 0
-        {
-            var script9="var data7 = '{\"name\": \"all\",\"children\": ["
+        
+        var treemapDataTrimmed : String
+        
+        //println(self.treemapData)
+
+        if let rangeOfStart = self.treemapData.rangeOfString("\"profession\" : ["){
+            println("trimmed data")
+            treemapDataTrimmed = "{\"name\": \"Profession\",\"children\": ["+self.treemapData.substringFromIndex(rangeOfStart.endIndex)
+            //println(treemapDataTrimmed)
             
-            for r in 0..<treemapData.count{
-                script9+="{\"name\": \""
-                script9+=treemapData[r][0]
-                script9+="\",\"children\": [{\"name\": \""
-                script9+=treemapData[r][0]
-                script9+="\", \"size\": "
-                script9+=treemapData[r][1]
-                script9+="}]}"
-                if(r != (treemapData.count-1)){
-                    script9+=","
-                }
-            }
-            script9+="]}'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);"
+            treemapDataTrimmed = treemapDataTrimmed.stringByReplacingOccurrencesOfString("\n", withString: "")
             
-            //Log(script9)
+            var script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
             
-            //var treeScript = "var data7 = '{\"name\": \"all\",\"children\": [{\"name\": \"goblin\",\"children\": [{\"name\": \"goblin\", \"size\": 3938}]},{\"name\": \"demon\",\"children\": [{\"name\": \"demon\", \"size\": 6666}]},{\"name\": \"coffee\",\"children\": [{\"name\": \"coffee\", \"size\": 1777}]},{\"name\": \"cop\",\"children\": [{\"name\": \"cop\", \"size\": 743}]}]}'; renderChart(data7);"
+            
+            //var data = "'{ \"name\": \"Animals\", \"children\": [ { \"children\": [ { \"value\": 769, \"name\": \"Goats\" }, { \"value\": 935, \"name\": \"Cows\" } ], \"name\": \"Ungulates\" }, { \"children\": [ { \"value\": 253, \"name\": \"Bunny\" }, { \"value\": 307, \"name\": \"Rat\" } ], \"name\": \"Rodents\" }]}';"
+
+            //var script9 = "var data7 = \(data); var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
+
+            //renderChart(data);
+            
+            Log(script9)
             
             webView.evaluateJavaScript(script9, completionHandler: nil)
-            
+
             self.successState(Config.visualizationsIndex.treemap.rawValue)
+
         }
-        else
-        {
-            self.noDataState(Config.visualizationsIndex.treemap.rawValue)
+        else{
+            Log("Error processing professions")
+            self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
         }
         
         if self.errorDescription[Config.visualizationsIndex.treemap.rawValue] != ""
         {
             self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
         }
+
+        
     }
     
     func reorderCirclepackingData(){
