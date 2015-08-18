@@ -237,10 +237,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     /*
         creates the webviews
     */
-    func setupWebViews() {
+    func setupWebViews()
+    {
         for i in 0..<Config.getNumberOfVisualizations(){
-            let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[i], withExtension: "html")
-            let request = NSURLRequest(URL: filePath!)
+            let tempVisPath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[i].stringByAppendingPathExtension("html")!)
+            let request = NSURLRequest(URL: NSURL.fileURLWithPath(tempVisPath)!)
             
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             
@@ -252,15 +253,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
             //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
-            
-            myWebView.loadRequest(request)
+            myWebView.navigationDelegate = self
             
             // don't let webviews scroll
             myWebView.scrollView.scrollEnabled = false;
             myWebView.scrollView.bounces = false;
-            
-            //Use KVO to tell loading/not
-            myWebView.addObserver(self, forKeyPath: "loading", options: .New, context: nil)
             
             visualizationHandler.webViews.append(myWebView)
             self.scrollView.addSubview(myWebView)
@@ -271,9 +268,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             {
                 createSliderForBarChart(myOrigin)
             }
+            
+            myWebView.loadRequest(request)
         }
     }
-    
+
     func createSliderForBarChart(origin: CGFloat)
     {
         let rangeSlider = RangeSliderUIControl(frame: CGRectZero)
@@ -433,26 +432,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         }
     }
     
-    /*
-        Detect when loading is finished so that data can be transformed.
-    */
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
-        if let wv = object as? WKWebView {
-            switch keyPath {
-                case "loading": //new: 1 or 0
-                    if let val:AnyObject = change[NSKeyValueChangeNewKey] {
-                        if let val = val as? Bool {
-                            if val {
-                                //Log("We are loading")
-                            } else {
-                                //Log("I finished my load..." + wv.URL!.lastPathComponent!)
-                                visualizationHandler.transformData(wv)
-                            }
-                        }
-                }
-                default: break
-            }
-        }
+    // MARK: - WKNavigationDelegate
+    
+    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+        visualizationHandler.transformData(webView)
     }
     
     // MARK: - PageControlDelegate

@@ -45,8 +45,8 @@ class VisualizationHandler{
 
                 self.loadingState(viewNumber)
                 //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-                let filePath = NSBundle.mainBundle().URLForResource("Visualizations/"+Config.visualizationNames[viewNumber], withExtension: "html")
-                let request = NSURLRequest(URL: filePath!)
+                let filePath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[viewNumber].stringByAppendingPathExtension("html")!)
+                let request = NSURLRequest(URL: NSURL.fileURLWithPath(filePath)!)
                 webViews[viewNumber].loadRequest(request)
             }
         }
