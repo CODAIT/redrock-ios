@@ -4,7 +4,7 @@
 
 #chart {
   width: 960px;
-  height: 750px;
+  height: 500px;
 }
 
 text {
@@ -68,15 +68,12 @@ rect.parent,
 
 <p id="chart">
 <!--<div id="legend"></div>-->
-<!-- remove rate and replace value with size -->
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
-
-
 var margin = {top: 30, right: 0, bottom: 20, left: 0},
     width = 960,
-    height = 750 - margin.top - margin.bottom,
+    height = 500 - margin.top - margin.bottom,
     formatNumber = d3.format(",%"),
     colorDomain = [-.6, 0, .6],
     colorRange = ["#373a93", 'white', "#936638"],
@@ -100,7 +97,7 @@ var color = d3.scale.linear()
 
 var treemap = d3.layout.treemap()
     .children(function(d, depth) { return depth ? null : d._children; })
-    .sort(function(a, b) { return a.size - b.size; })
+    .sort(function(a, b) { return a.value - b.value; })
     .ratio(height / width * 0.5 * (1 + Math.sqrt(5)))
     .round(false);
 
@@ -135,7 +132,14 @@ var legend = d3.select("#legend").append("svg")
       .enter()
       .append('g')
 
+var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
+
 // functions
+
+function returnColor(number){
+    return color1(number);
+}
+
 
 function initialize(root) {
     root.x = root.y = 0;
@@ -151,8 +155,8 @@ function initialize(root) {
   function accumulate(d) {
     return (d._children = d.children)
       // recursion step, note that p and v are defined by reduce
-        ? d.size = d.children.reduce(function(p, v) {return p + accumulate(v); }, 0)
-        : d.size;
+        ? d.value = d.children.reduce(function(p, v) {return p + accumulate(v); }, 0)
+        : d.value;
   }
 
 
@@ -204,7 +208,7 @@ function getContrast50(hexcolor){
 }
 
 
-function renderChart(data, w, h){
+function renderChart(data){
 
 var root = JSON.parse(data);
 
@@ -225,8 +229,7 @@ var root = JSON.parse(data);
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill","#43ACD5")
-            //function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", returnColor(d.name)); // function(){console.log(color(d.rate)); return color(d['rate'])})
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)
@@ -250,7 +253,7 @@ var root = JSON.parse(data);
         .attr("class", "parent")
         .call(rect)
       .append("title")
-        .text(function(d) {console.log(typeof(d.size), d.size); return d.name + ', Cases of TB: ' + d.size + ', percent change: ' + 12 /*formatNumber(d.rate);*/ });
+        .text(function(d) {console.log(typeof(d.value), d.value); return d.name + ', Cases of TB: ' + d.value + ', percent change: ' + formatNumber(11); });
 
     g.append("text")
         .attr("dy", ".75em")
@@ -297,7 +300,7 @@ var root = JSON.parse(data);
   function text(text) {
     text.attr("x", function(d) { return x(d.x) + 6; })
         .attr("y", function(d) { return y(d.y) + 6; })
-        .attr("fill", "#F0F0F0");// function (d) {return getContrast50(color(parseFloat(d.rate)))});
+        .attr("fill", function(d){returnColor(d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
   }
 
   function rect(rect) {
@@ -305,7 +308,7 @@ var root = JSON.parse(data);
         .attr("y", function(d) { return y(d.y); })
         .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
         .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-        .attr("fill", "#F0F0F0");// function(d){return color(parseFloat(d.rate));});
+        .attr("fill", function(d){ return returnColor(d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
   }
 
   function name(d) {
@@ -316,7 +319,9 @@ var root = JSON.parse(data);
 
 }
 
-var data = '{ "name": "Animals", "children": [ { "children": [ { "size": 769, "name": "Goats" }, { "size": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "size": 253, "name": "Bunny" }, { "size": 307, "name": "Rat" } ], "name": "Rodents" }]}'
+var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
+
+
 
 renderChart(data);
 
