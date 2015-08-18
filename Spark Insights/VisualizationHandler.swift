@@ -102,15 +102,6 @@ class VisualizationHandler{
             
             var script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
             
-            
-            //var data = "'{ \"name\": \"Animals\", \"children\": [ { \"children\": [ { \"value\": 769, \"name\": \"Goats\" }, { \"value\": 935, \"name\": \"Cows\" } ], \"name\": \"Ungulates\" }, { \"children\": [ { \"value\": 253, \"name\": \"Bunny\" }, { \"value\": 307, \"name\": \"Rat\" } ], \"name\": \"Rodents\" }]}';"
-
-            //var script9 = "var data7 = \(data); var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
-
-            //renderChart(data);
-            
-            Log(script9)
-            
             webView.evaluateJavaScript(script9, completionHandler: nil)
 
             self.successState(Config.visualizationsIndex.treemap.rawValue)
