@@ -27,6 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         if Config.skipSearchScreen {
             displayContainerViewController(searchViewController!, searchText: "")
         }
+        
+        /*
+        NOTE: Copying Visualisations folder to '/tmp/www' to work around an issue with
+        loading the files from the bundle. Without this workaround WKNetworkDelegate methods
+        will not be called and we will get the following error "Could not create a sandbox extension for /".
+        */
+        let visFolder = NSBundle.mainBundle().resourcePath?.stringByAppendingPathComponent("Visualizations")
+        Config.visualisationFolderPath = copyFolderToTempFolder(visFolder)!
+        
         return true
     }
 
@@ -108,4 +117,32 @@ extension AppDelegate: ContainerViewControllerDelegate {
         }
     }
     
+}
+
+// MARK: Utils
+
+func copyFolderToTempFolder(filePath: String?) -> String?
+{
+    let fileMgr = NSFileManager.defaultManager()
+    let tmpPath = NSTemporaryDirectory().stringByAppendingPathComponent("www")
+    var error: NSErrorPointer = nil
+    if !fileMgr.createDirectoryAtPath(tmpPath, withIntermediateDirectories: true, attributes: nil, error: error) {
+        println("Couldn't create www subdirectory. \(error)")
+        return nil
+    }
+    let destPath = tmpPath
+    // Clean up old files
+    if fileMgr.fileExistsAtPath(destPath) {
+        if !fileMgr.removeItemAtPath(destPath, error: error) {
+            println("Couldn't delete folder /tmp/www. \(error)")
+        }
+    }
+    // Copy files to temp dir
+    if !fileMgr.fileExistsAtPath(destPath) {
+        if !fileMgr.copyItemAtPath(filePath!, toPath: destPath, error: error) {
+            println("Couldn't copy file to /tmp/www. \(error)")
+            return nil
+        }
+    }
+    return destPath
 }
