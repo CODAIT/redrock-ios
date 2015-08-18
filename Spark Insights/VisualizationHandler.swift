@@ -91,12 +91,8 @@ class VisualizationHandler{
         
         var treemapDataTrimmed : String
         
-        //println(self.treemapData)
-
         if let rangeOfStart = self.treemapData.rangeOfString("\"profession\" : ["){
-            println("trimmed data")
             treemapDataTrimmed = "{\"name\": \"Profession\",\"children\": ["+self.treemapData.substringFromIndex(rangeOfStart.endIndex)
-            //println(treemapDataTrimmed)
             
             treemapDataTrimmed = treemapDataTrimmed.stringByReplacingOccurrencesOfString("\n", withString: "")
             
@@ -356,13 +352,10 @@ class VisualizationHandler{
     }
     
     func redrawStackedBarWithNewRange(lowerIndex: Int, upperIndex: Int){
-        println("Range slider value changed: (\( dateRange[lowerIndex]) \(dateRange[upperIndex]))")
-        
         var firstIndex = 0
         while firstIndex < self.stackedbarData.count && dateRange[lowerIndex] != self.stackedbarData[firstIndex][0] {
             firstIndex++
         }
-        //Log("firstIndex... \(firstIndex)... self.stackedbarData[r][0]... \(self.stackedbarData[firstIndex][0])... dateRange[lowerIndex]... \(dateRange[lowerIndex])")
         
         var script9 = self.makeScriptForStackedBar(firstIndex, upperIndex: upperIndex)
         
