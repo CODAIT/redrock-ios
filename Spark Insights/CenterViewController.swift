@@ -852,10 +852,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
                 contentJson = json!["profession"]
             }
             
+                //visualizationHandler.treemapData = contentJson!["profession"].description
+
                 visualizationHandler.treemapData = contentJson!.description
-            
-                println(visualizationHandler.treemapData)
-            
+                
                 //Log("What did we get back?")
                 //println(visualizationHandler.treemapData)
                 //Log("Was it anything?")

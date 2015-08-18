@@ -4,7 +4,7 @@
 
 #chart {
   width: 960px;
-  height: 500px;
+  height: 760px;
 }
 
 text {
@@ -73,7 +73,7 @@ rect.parent,
 
 var margin = {top: 30, right: 0, bottom: 20, left: 0},
     width = 960,
-    height = 500 - margin.top - margin.bottom,
+    height = 760 - margin.top - margin.bottom,
     formatNumber = d3.format(",%"),
     colorDomain = [-.6, 0, .6],
     colorRange = ["#373a93", 'white', "#936638"],
@@ -132,12 +132,56 @@ var legend = d3.select("#legend").append("svg")
       .enter()
       .append('g')
 
-var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
-
 // functions
 
-function returnColor(number){
-    return color1(number);
+var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
+
+var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
+
+var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
+
+var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d"]);
+
+var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
+
+var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
+
+var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
+
+var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
+
+var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
+
+
+function returnColor(parentColor, number){
+    
+    if(parentColor == "1"){
+        return color1(number);
+    }
+    else if(parentColor == "2"){
+        return color2(number);
+    }
+    else if(parentColor == "3"){
+        return color3(number);
+    }
+    else if(parentColor == "4"){
+        return color4(number);
+    }
+    else if(parentColor == "5"){
+        return color5(number);
+    }
+    else if(parentColor == "6"){
+        return color6(number);
+    }
+    else if(parentColor == "7"){
+        return color7(number);
+    }
+    else if(parentColor == "8"){
+        return color8(number);
+    }
+    else{
+        return "#FF69B4";
+    }
 }
 
 
@@ -229,7 +273,7 @@ var root = JSON.parse(data);
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill", returnColor(d.name)); // function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", returnColor(1, d.name)); // function(){console.log(color(d.rate)); return color(d['rate'])})
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)
@@ -300,7 +344,7 @@ var root = JSON.parse(data);
   function text(text) {
     text.attr("x", function(d) { return x(d.x) + 6; })
         .attr("y", function(d) { return y(d.y) + 6; })
-        .attr("fill", function(d){returnColor(d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
+        .attr("fill", function(d){returnColor(2, d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
   }
 
   function rect(rect) {
@@ -308,7 +352,7 @@ var root = JSON.parse(data);
         .attr("y", function(d) { return y(d.y); })
         .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
         .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-        .attr("fill", function(d){ return returnColor(d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
+        .attr("fill", function(d){ return returnColor(3, d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
   }
 
   function name(d) {
@@ -319,10 +363,7 @@ var root = JSON.parse(data);
 
 }
 
-var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
-
-
-
-renderChart(data);
+//var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
+//renderChart(data);
 
 </script>
