@@ -71,7 +71,7 @@ rect.parent,
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
-var margin = {top: 30, right: 0, bottom: 20, left: 0},
+var margin = {top: 70, right: 0, bottom: 20, left: 0},
     width = 960,
     height = 760 - margin.top - margin.bottom,
     formatNumber = d3.format(",%"),
@@ -140,7 +140,7 @@ var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","
 
 var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
 
-var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d"]);
+var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571"]);
 
 var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
 
@@ -273,7 +273,7 @@ var root = JSON.parse(data);
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill", returnColor(1, d.name)); // function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", returnColor(1, "hello")); // function(){console.log(color(d.rate)); return color(d['rate'])})
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)

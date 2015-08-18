@@ -117,7 +117,7 @@ class VisualizationHandler{
 
         }
         else{
-            Log("Error processing professions")
+            //Log("Error processing professions")
             self.errorState(Config.visualizationsIndex.treemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.treemap.rawValue])
         }
         

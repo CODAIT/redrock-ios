@@ -248,8 +248,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
 
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
             visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-
-            Log("self.scrollView.frame.size.width: \(self.scrollView.frame.size.width)... self.scrollView.frame.size.height: \(self.scrollView.frame.size.height)")
             
             myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
             
