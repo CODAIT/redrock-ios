@@ -32,7 +32,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     
     // last visited page
+    var currentPage : Int = 0
     var previousPage : Int = 0
+    var pageChanged = false
    
     //Can update search
     var canUpdateSearch = false
@@ -403,11 +405,16 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         var fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
         
-        if(page >= Config.getNumberOfVisualizations()){
+        if (page >= Config.getNumberOfVisualizations()) {
             page = Config.getNumberOfVisualizations()-1
         }
-        if(previousPage != page){ //page was changed
+        if (currentPage != page) { //page was changed
             //Log("page was changed from \(previousPage) to \(page)")
+            pageChanged = true
+            previousPage = currentPage
+            currentPage = page
+            pageControlView.selectedIndex = page
+            
             if previousPage == Config.visualizationsIndex.timemap.rawValue{
                 //Log("left timemap so stop animation")
                 visualizationHandler.stopTimemap()
@@ -425,10 +432,25 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
                 //Log("entered forcegraph so start animation")
                 self.visualizationHandler.startForcegraph()
             }
-            
-            previousPage = page
-            //visualizationHandler.reloadAppropriateView(page)
-            pageControlView.selectedIndex = page
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        resetZoomOnLastPage()
+    }
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        resetZoomOnLastPage()
+    }
+    
+    // MARK: UIScrollViewDelegate helpers
+    
+    func resetZoomOnLastPage() {
+        if (pageChanged) {
+            pageChanged = false
+            // Resetting the zoom level on the previous page when it is no longer visible
+            var webViewScrollView = visualizationHandler.webViews[previousPage].scrollView
+            webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
         }
     }
     
