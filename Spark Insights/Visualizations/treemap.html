@@ -353,7 +353,7 @@ var root = JSON.parse(data);
         .attr("dy", ".75em")
         .text(function(d) { return d.name; })
         .style("font-size", function(d){
-          return determineFontSizeBasedOnRadiusAndText( (x(d.x + d.dx)-x(d.x))*0.1 , d.name, (x(d.x + d.dx)-x(d.x))*0.1 )+"px";
+          return determineFontSizeBasedOnRadiusAndText( (x(d.x + d.dx)-x(d.x))*0.3 , d.name, (x(d.x + d.dx)-x(d.x))*0.3 )+"px";
         } )
         .call(text);
 
@@ -417,7 +417,7 @@ var root = JSON.parse(data);
 
 }
 
-var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
-renderChart(data);
+//var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
+//renderChart(data);
 
 </script>
