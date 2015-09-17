@@ -854,12 +854,52 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
             {
                 contentJson = json!["profession"]
             }
-        
-            visualizationHandler.treemapData = contentJson!.description
-        
-            visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-            visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+            
+                //visualizationHandler.treemapData = contentJson!["profession"].description
 
+                visualizationHandler.treemapData = contentJson!.description
+                
+                //Log("What did we get back?")
+                //println(visualizationHandler.treemapData)
+                //Log("Was it anything?")
+                
+                visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+
+                /*
+                Log("if contentJson != nil")
+                
+                if let professions = contentJson!["profession"].dictionaryObject as? Dictionary<String,Dictionary<String,Int>>
+                {
+                    
+                    Log("not conversion error")
+                    //Log(professions)
+                    var keys = professions.keys
+                    var treemap = [[String]]()
+                    for profession in keys
+                    {
+                        if (professions[profession] != nil || professions[profession] != 0)
+                        {
+                            treemap.append([profession, String(professions[profession]!)])
+                        }
+                    }
+                    visualizationHandler.treemapData = treemap
+                    visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
+                    visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+                }
+                else
+                {
+                    visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
+                    visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
+                }
+                */
+
+            /*
+            else
+            {
+                visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
+                visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
+            }*/
         }
         else
         {

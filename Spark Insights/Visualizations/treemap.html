@@ -9,12 +9,10 @@
 
 text {
   pointer-events: none;
-  font-family: sans-serif;
 }
 
 .grandparent text {
-  /*font-weight: bold;*/
-  font-family: sans-serif;
+  font-weight: bold;
 }
 
 rect {
@@ -60,7 +58,7 @@ rect.parent,
 .legend text {
   text-anchor: middle;
   pointer-events: auto;
-  font-size: 20px;
+  font-size: 15px;
   font-family: sans-serif;
   fill: black;
 }
@@ -68,42 +66,10 @@ rect.parent,
 </style>
 
 
-<span id="ruler"></span>
 <p id="chart">
 <!--<div id="legend"></div>-->
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
-
-String.prototype.visualLength = function()
-{
-    var ruler = $("ruler");
-    ruler.innerHTML = this;
-    var myOffsetWidth = ruler.offsetWidth;
-    ruler.innerHTML = "";
-    return myOffsetWidth;
-}
-
-function $(id)
-{
-    return document.getElementById(id);
-}
-
-String.prototype.trimToPx = function(length)
-{
-    var tmp = this;
-    var trimmed = this;
-    if (tmp.visualLength() > length)
-    {
-        trimmed += "...";
-        while (trimmed.visualLength() > length)
-        {
-            tmp = tmp.substring(0, tmp.length-1);
-            trimmed = tmp + "...";
-        }
-    }
-    return trimmed;
-}
-
 
 var margin = {top: 70, right: 0, bottom: 20, left: 0},
     width = 960,
@@ -186,22 +152,9 @@ var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","
 
 var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
 
-function determineFontSizeBasedOnRadiusAndText(radius, text, testSize){
-
-    ruler.style.fontSize = (testSize)+"px";
-
-    if(text.visualLength() > ((radius*2) * 0.90) ){ //it's too big, overflowing bounds
-        testSize = testSize * ((radius*2) / text.visualLength() ) * 0.70; // it was too big, so make it smaller
-    }
-    else if(text.visualLength() < (radius) ) { //it's too small, less than half the diameter
-        testSize = testSize * 1.5 ; //make it a little bigger
-    }
-
-    return testSize;
-}
 
 function returnColor(parentColor, number){
-
+    
     if(parentColor == "1"){
         return color1(number);
     }
@@ -314,16 +267,13 @@ var root = JSON.parse(data);
         .datum(d.parent)
         .on("click", transition)
       .select("text")
-        .text( "back" /*name(d)*/ )
-        .attr("fill", "#FFF")
-        .attr("dx", "430px")
-        .attr("dy", "40px")
-        .style("font-size", 27);
+        .text(name(d))
+
     // color header based on grandparent's rate
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill", "#1C3648"); // function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", returnColor(1, "hello")); // function(){console.log(color(d.rate)); return color(d['rate'])})
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)
@@ -352,9 +302,6 @@ var root = JSON.parse(data);
     g.append("text")
         .attr("dy", ".75em")
         .text(function(d) { return d.name; })
-        .style("font-size", function(d){
-          return determineFontSizeBasedOnRadiusAndText( (x(d.x + d.dx)-x(d.x))*0.3 , d.name, (x(d.x + d.dx)-x(d.x))*0.3 )+"px";
-        } )
         .call(text);
 
     function transition(d) {
@@ -397,7 +344,6 @@ var root = JSON.parse(data);
   function text(text) {
     text.attr("x", function(d) { return x(d.x) + 6; })
         .attr("y", function(d) { return y(d.y) + 6; })
-        //.style("font-size", function(d){return determineFontSizeBasedOnRadiusAndText((x(d.x + d.dx) - x(d.x)), d.name, 20 )+"px";})
         .attr("fill", function(d){returnColor(2, d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
   }
 
@@ -406,7 +352,7 @@ var root = JSON.parse(data);
         .attr("y", function(d) { return y(d.y); })
         .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
         .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-        .attr("fill", function(d){ return returnColor(1, d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
+        .attr("fill", function(d){ return returnColor(3, d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
   }
 
   function name(d) {
