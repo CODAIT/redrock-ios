@@ -11,9 +11,11 @@
 import Foundation
 import UIKit
 import WebKit
+import MapKit
 
 class VisualizationHandler{
-    var webViews : [WKWebView] = [WKWebView]()
+    var visualizationViews : [UIView] = [UIView]()
+    
     var loadingViews = [UIActivityIndicatorView]()
     var resultsLabels = [UILabel]()
     var isloadingVisualization = [Bool]()
@@ -24,12 +26,12 @@ class VisualizationHandler{
     var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
     
     var treemapData : String = ""
-    var circlepackingData : [[String]]      = [[String]]()
-    var worddistanceData : [[String]]      = [[String]]()
-    var forcegraphData : [[String]]      = [[String]]()
-    var timemapData : [[String]] = [[String]]()
-    var stackedbarData : [[String]] = [[String]]()
-    var wordcloudData : [[String]] = [[String]]()
+    var circlepackingData : [[String]] = [[String]]()
+    var worddistanceData : [[String]]  = [[String]]()
+    var forcegraphData : [[String]]    = [[String]]()
+    var timemapData : [[String]]       = [[String]]()
+    var stackedbarData : [[String]]    = [[String]]()
+    var wordcloudData : [[String]]     = [[String]]()
     
     var firstLoad = false
     
@@ -38,20 +40,27 @@ class VisualizationHandler{
     var dateRange: Array<String> = Array<String>()
     
     func reloadAppropriateView(viewNumber: Int){
-        if var url = webViews[viewNumber].URL{
-            //Log("if var request = webViews[viewNumber].request! is \(request)")
-            
-            if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
-
-                self.loadingState(viewNumber)
-                //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-                let filePath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[viewNumber].stringByAppendingPathExtension("html")!)
-                let request = NSURLRequest(URL: NSURL.fileURLWithPath(filePath)!)
-                webViews[viewNumber].loadRequest(request)
-            }
+        
+        if let myMapView = visualizationViews[viewNumber] as? MKMapView {
+            println("TODO: reload a mapView")
+            // TODO: implement
         }
-        else{
-            //Log("NOT if var request = webViews[viewNumber].request!")
+        else if let myWebView = visualizationViews[viewNumber] as? WKWebView {
+            if var url = myWebView.URL{
+                //Log("if var request = webViews[viewNumber].request! is \(request)")
+                
+                if(viewNumber >= 0 && viewNumber < Config.getNumberOfVisualizations()){
+
+                    self.loadingState(viewNumber)
+                    //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
+                    let filePath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[viewNumber].stringByAppendingPathExtension("html")!)
+                    let request = NSURLRequest(URL: NSURL.fileURLWithPath(filePath)!)
+                    myWebView.loadRequest(request)
+                }
+            }
+            else{
+                //Log("NOT if var request = webViews[viewNumber].request!")
+            }
         }
     }
     
@@ -180,12 +189,17 @@ class VisualizationHandler{
     }
     
     func stopForcegraph(){
-        webViews[Config.visualizationsIndex.forcegraph.rawValue].evaluateJavaScript("stopAnimation();", completionHandler: nil)
+        
+        if let myWebView = visualizationViews[Config.visualizationsIndex.forcegraph.rawValue] as? WKWebView {
+            myWebView.evaluateJavaScript("stopAnimation();", completionHandler: nil)
+        }
 
     }
     
     func startForcegraph(){
-        webViews[Config.visualizationsIndex.forcegraph.rawValue].evaluateJavaScript("startAnimation();", completionHandler: nil)
+        if let myWebView = visualizationViews[Config.visualizationsIndex.forcegraph.rawValue] as? WKWebView {
+            myWebView.evaluateJavaScript("startAnimation();", completionHandler: nil)
+        }
     }
     
     func transformDataForForcegraph(webView: WKWebView){
@@ -253,11 +267,16 @@ class VisualizationHandler{
     }
     
     func stopTimemap(){
-        webViews[Config.visualizationsIndex.timemap.rawValue].evaluateJavaScript("stopAnimation();", completionHandler: nil)
+        if let myWebView = visualizationViews[Config.visualizationsIndex.timemap.rawValue] as? WKWebView {
+            myWebView.evaluateJavaScript("stopAnimation();", completionHandler: nil)
+        }
+        
     }
     
     func startTimemap(){
-        webViews[Config.visualizationsIndex.timemap.rawValue].evaluateJavaScript("startAnimation();", completionHandler: nil)
+        if let myWebView = visualizationViews[Config.visualizationsIndex.timemap.rawValue] as? WKWebView {
+            myWebView.evaluateJavaScript("startAnimation();", completionHandler: nil)
+        }
     }
 
     
@@ -359,7 +378,9 @@ class VisualizationHandler{
         
         var script9 = self.makeScriptForStackedBar(firstIndex, upperIndex: upperIndex)
         
-        webViews[Config.visualizationsIndex.stackedbar.rawValue].evaluateJavaScript(script9, completionHandler: nil)
+        if let myWebView = visualizationViews[Config.visualizationsIndex.stackedbar.rawValue] as? WKWebView {
+            myWebView.evaluateJavaScript(script9, completionHandler: nil)
+        }
         
     }
     
@@ -485,7 +506,7 @@ class VisualizationHandler{
     // MARK: Display states
     func loadingState(index: Int)
     {
-        self.webViews[index].hidden = true
+        self.visualizationViews[index].hidden = true
         self.loadingViews[index].startAnimating()
         self.loadingViews[index].hidden = false
         self.resultsLabels[index].hidden = true
@@ -493,7 +514,7 @@ class VisualizationHandler{
     
     func successState(index: Int)
     {
-        self.webViews[index].hidden = false
+        self.visualizationViews[index].hidden = false
         self.loadingViews[index].stopAnimating()
         self.loadingViews[index].hidden = true
         self.resultsLabels[index].hidden = true
@@ -503,7 +524,7 @@ class VisualizationHandler{
     {
         if !self.isloadingVisualization[index]
         {
-            self.webViews[index].hidden = true
+            self.visualizationViews[index].hidden = true
             self.loadingViews[index].stopAnimating()
             self.loadingViews[index].hidden = true
             self.resultsLabels[index].hidden = false
@@ -512,7 +533,7 @@ class VisualizationHandler{
     
     func errorState(index: Int, error: String)
     {
-        self.webViews[index].hidden = true
+        self.visualizationViews[index].hidden = true
         self.loadingViews[index].stopAnimating()
         self.loadingViews[index].hidden = true
         self.resultsLabels[index].text = error
@@ -522,7 +543,7 @@ class VisualizationHandler{
     //MARK: Clean WebViews
     func cleanWebViews()
     {
-        for var i = 0; i < self.webViews.count; i++
+        for var i = 0; i < self.visualizationViews.count; i++
         {
             self.loadingState(i)
             self.isloadingVisualization[i] = true

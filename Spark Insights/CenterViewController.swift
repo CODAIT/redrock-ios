@@ -10,6 +10,7 @@ import UIKit
 import WebKit
 import MessageUI
 import Social
+import MapKit
 
 @objc
 protocol CenterViewControllerDelegate {
@@ -18,7 +19,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -237,41 +238,62 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
     }
     
     /*
+        TODO: Change name from setupWebViews to something else like setupVisualizations
         creates the webviews
     */
     func setupWebViews()
     {
         for i in 0..<Config.getNumberOfVisualizations(){
+            
             let tempVisPath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[i].stringByAppendingPathExtension("html")!)
             let request = NSURLRequest(URL: NSURL.fileURLWithPath(tempVisPath)!)
             
             var myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             
-            var myWebView : WKWebView
-
-            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
-            visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-            
-            myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
-            
-            //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
-            myWebView.navigationDelegate = self
-            
-            // don't let webviews scroll
-            myWebView.scrollView.scrollEnabled = false;
-            myWebView.scrollView.bounces = false;
-            
-            visualizationHandler.webViews.append(myWebView)
-            self.scrollView.addSubview(myWebView)
-            // set initial loading state
-            myWebView.hidden = true
-            
-            if i == Config.visualizationsIndex.stackedbar.rawValue
+            if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
             {
-                createSliderForBarChart(myOrigin)
+                //TODO: implement
+                //create nativeTimemap
+                
+                var myMapView : MKMapView
+                myMapView = MKMapView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                myMapView.delegate = self
+                
+                visualizationHandler.visualizationViews.append(myMapView)
+                self.scrollView.addSubview(myMapView)
+                
+                
+                
             }
+            else //this visualization is one of the webviews
+            {
             
-            myWebView.loadRequest(request)
+                var myWebView : WKWebView
+
+                visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
+                visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
+                
+                myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                
+                //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
+                myWebView.navigationDelegate = self
+                
+                // don't let webviews scroll
+                myWebView.scrollView.scrollEnabled = false;
+                myWebView.scrollView.bounces = false;
+                
+                visualizationHandler.visualizationViews.append(myWebView)
+                self.scrollView.addSubview(myWebView)
+                // set initial loading state
+                myWebView.hidden = true
+                
+                if i == Config.visualizationsIndex.stackedbar.rawValue
+                {
+                    createSliderForBarChart(myOrigin)
+                }
+                
+                myWebView.loadRequest(request)
+            }
         }
     }
 
@@ -449,8 +471,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, UIScrollView
         if (pageChanged) {
             pageChanged = false
             // Resetting the zoom level on the previous page when it is no longer visible
-            var webViewScrollView = visualizationHandler.webViews[previousPage].scrollView
-            webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
+            
+            if let myWebView = visualizationHandler.visualizationViews[previousPage] as? WKWebView {
+                var webViewScrollView = myWebView.scrollView
+                webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
+            }
         }
     }
     
