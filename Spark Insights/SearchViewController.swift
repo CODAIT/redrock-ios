@@ -173,7 +173,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
 
     
     func searchClicked(gesture: UIGestureRecognizer?) {
-        var searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        var searchText = self.textField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         searchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
         
         var state = UIGestureRecognizerState.Ended
@@ -212,10 +212,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         let terms = searchTerms.componentsSeparatedByString(",")
         for var i = 0; i < terms.count; i++
         {
-            var term = terms[i]
+            let term = terms[i]
             if term != ""
             {
-                var aux = Array(term)
+                var aux = Array(term.characters)
                 if aux[0] != "-"
                 {
                     return true

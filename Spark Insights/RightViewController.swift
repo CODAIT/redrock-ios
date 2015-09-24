@@ -60,7 +60,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         doneViewHeightConstraintInitial = self.doneViewHeightConstraint.constant
         // UI Tweaks
-        var spacerView = UIView(frame: CGRectMake(0, 0, 10, textField.frame.size.height)) // Setting text inset
+        let spacerView = UIView(frame: CGRectMake(0, 0, 10, textField.frame.size.height)) // Setting text inset
         textField.leftViewMode = .Always
         textField.leftView = spacerView
         textField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSForegroundColorAttributeName: Config.sideSearchTextFieldPlaceholderColor])
@@ -68,12 +68,12 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.textField.returnKeyType = UIReturnKeyType.Done
         
         // Add Gesture Recognizers
-        var gr1a = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")
+        let gr1a = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")
         gr1a.direction = .Right
         gr1a.numberOfTouchesRequired = 1
         tableA.addGestureRecognizer(gr1a)
         
-        var gr1aa = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")
+        let gr1aa = UISwipeGestureRecognizer(target: self, action: "handleSwipeA:")
         gr1aa.direction = .Left
         gr1aa.numberOfTouchesRequired = 1
         tableA.addGestureRecognizer(gr1aa)
@@ -82,17 +82,17 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         // var gr2a = UILongPressGestureRecognizer(target: self, action: "handleLPA:")
         // tableA.addGestureRecognizer(gr2a)
         
-        var gr3a = UIPanGestureRecognizer(target: self, action: "handlePanA:")
+        let gr3a = UIPanGestureRecognizer(target: self, action: "handlePanA:")
         gr3a.delegate = self
         tableA.addGestureRecognizer(gr3a)
         
         
-        var gr1b = UISwipeGestureRecognizer(target: self, action: "handleSwipeB:")
+        let gr1b = UISwipeGestureRecognizer(target: self, action: "handleSwipeB:")
         gr1b.direction = .Right
         gr1b.numberOfTouchesRequired = 1
         tableB.addGestureRecognizer(gr1b)
         
-        var gr1bb = UISwipeGestureRecognizer(target: self, action: "handleSwipeB:")
+        let gr1bb = UISwipeGestureRecognizer(target: self, action: "handleSwipeB:")
         gr1bb.direction = .Left
         gr1bb.numberOfTouchesRequired = 1
         tableB.addGestureRecognizer(gr1bb)
@@ -101,7 +101,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         // var gr2b = UILongPressGestureRecognizer(target: self, action: "handleLPB:")
         // tableB.addGestureRecognizer(gr2b)
         
-        var gr3b = UIPanGestureRecognizer(target: self, action: "handlePanB:")
+        let gr3b = UIPanGestureRecognizer(target: self, action: "handlePanB:")
         gr3b.delegate = self
         tableB.addGestureRecognizer(gr3b)
         
@@ -125,10 +125,10 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         let terms = self.searchString?.componentsSeparatedByString(",")
         for var i = 0; i < terms?.count; i++
         {
-            var term = terms?[i]
+            let term = terms?[i]
             if term != ""
             {
-                var aux = Array(term!)
+                var aux = Array((term!).characters)
                 if aux[0] == "-"
                 {
                     aux.removeAtIndex(0)
@@ -145,7 +145,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     // MARK: - Gesture reconizer and actions
     func configureTapGestureEdit()
     {
-        var tapGesture = UILongPressGestureRecognizer(target: self, action: "editClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "editClicked:")
         tapGesture.minimumPressDuration = 0.001
         self.editView.addGestureRecognizer(tapGesture)
         self.editView.userInteractionEnabled = true
@@ -153,7 +153,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func configureTapGestureGo()
     {
-        var tapGesture = UILongPressGestureRecognizer(target: self, action: "goClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "goClicked:")
         tapGesture.minimumPressDuration = 0.001
         self.goView.addGestureRecognizer(tapGesture)
         self.goView.userInteractionEnabled = true
@@ -161,7 +161,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func configureTapGestureDone()
     {
-        var tapGesture = UILongPressGestureRecognizer(target: self, action: "doneClicked:")
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: "doneClicked:")
         tapGesture.minimumPressDuration = 0.001
         self.doneView.addGestureRecognizer(tapGesture)
         self.doneView.userInteractionEnabled = true
@@ -240,7 +240,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
                 {
                     stringSearch = stringSearch + "-" + excluding + ","
                 }
-                var aux = Array(stringSearch)
+                var aux = Array(stringSearch.characters)
                 aux.removeLast()
                 self.goView.alpha = 1.0
                 self.delegate?.executeActionOnGoClicked(String(aux))
@@ -279,18 +279,18 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         checkGoButtonCondition()
-        var list = (tableView === tableA) ? listA?.array : listB?.array
+        let list = (tableView === tableA) ? listA?.array : listB?.array
         return list!.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var list = (tableView === tableA) ? listA?.array : listB?.array
-        var identifier = (tableView === tableA) ? "IncludeCell" : "ExcludeCell"
+        let identifier = (tableView === tableA) ? "IncludeCell" : "ExcludeCell"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier) as UITableViewCell!
         
-        var label = cell.viewWithTag(100) as! UILabel
-        var cellText = list?[indexPath.row] as! String
+        let label = cell.viewWithTag(100) as! UILabel
+        let cellText = list?[indexPath.row] as! String
         label.text = cellText
         cell.backgroundColor = Config.darkBlueColor
         return cell
@@ -299,16 +299,16 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if (!textField.text.isEmpty) {
-            var searchText = self.textField.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        if (textField.text != nil) {
+            var searchText = self.textField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
             searchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             var terms = searchText.componentsSeparatedByString(",")
             for var i = 0; i < terms.count;  i++
             {
-                var term = terms[i]
+                let term = terms[i]
                 if term != ""
                 {
-                    var aux = Array(term)
+                    var aux = Array(term.characters)
                     if aux[0] == "-"
                     {
                         aux.removeAtIndex(0)
@@ -356,7 +356,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         tempView?.backgroundColor = Config.darkBlueColor
         tempView?.layer.borderColor = Config.lightSeaGreen.CGColor
         tempView?.layer.borderWidth = 1
-        var label = UILabel(frame: CGRectMake(0, 0, 130, 34))
+        let label = UILabel(frame: CGRectMake(0, 0, 130, 34))
         label.text = draggedName
         label.backgroundColor = Config.darkBlueColor
         label.textColor = draggedColor
@@ -369,26 +369,26 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleSwipe(gestureRecongnizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
-        var state = gestureRecongnizer.state
+        let state = gestureRecongnizer.state
         
-        var loc = gestureRecongnizer.locationInView(table)
+        let loc = gestureRecongnizer.locationInView(table)
         Log("SWIPE (\(stateToString(state))) (\(loc.x),\(loc.y))")
         
-        var indexPath = table.indexPathForRowAtPoint(loc)
+        let indexPath = table.indexPathForRowAtPoint(loc)
         
         if (indexPath == nil) {
             return
         }
         
-        var cell = table.cellForRowAtIndexPath(indexPath!)
+        let cell = table.cellForRowAtIndexPath(indexPath!)
         
         if (cell == nil) {
             return
         }
         
-        var label = cell?.viewWithTag(100) as! UILabel
-        var title = label.text
-        var color = label.textColor
+        let label = cell?.viewWithTag(100) as! UILabel
+        let title = label.text
+        let color = label.textColor
         
         if (indexPath!.row >= list.array!.count) {
             return
@@ -425,25 +425,25 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func handleLP(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
         Log(__FUNCTION__)
-        var state = gestureRecognizer.state
-        var loc = gestureRecognizer.locationInView(table)
+        let state = gestureRecognizer.state
+        let loc = gestureRecognizer.locationInView(table)
         Log("LP (\(stateToString(state))) (\(loc.x),\(loc.y))")
         
-        var indexPath = table.indexPathForRowAtPoint(loc)
+        let indexPath = table.indexPathForRowAtPoint(loc)
         
         if (indexPath == nil) {
             return
         }
         
-        var cell = table.cellForRowAtIndexPath(indexPath!)
+        let cell = table.cellForRowAtIndexPath(indexPath!)
         
         if (cell == nil) {
             return
         }
         
-        var label = cell?.viewWithTag(100) as! UILabel
-        var title = label.text
-        var color = label.textColor
+        let label = cell?.viewWithTag(100) as! UILabel
+        let title = label.text
+        let color = label.textColor
         
         if (indexPath!.row >= list.array!.count) {
             Log("Non in any row")
@@ -484,29 +484,29 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     func handlePan(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
         Log(__FUNCTION__)
         
-        var state = gestureRecognizer.state
-        var loc = gestureRecognizer.locationInView(self.view)
+        let state = gestureRecognizer.state
+        let loc = gestureRecognizer.locationInView(self.view)
         
         if (state == UIGestureRecognizerState.Began) {
             panning = true
             
             // Enabling startdrag on pan, this will not work well with a scrolling TableView
-            var tableLoc = gestureRecognizer.locationInView(table)
-            var indexPath = table.indexPathForRowAtPoint(tableLoc)
+            let tableLoc = gestureRecognizer.locationInView(table)
+            let indexPath = table.indexPathForRowAtPoint(tableLoc)
             
             if (indexPath == nil) {
                 return
             }
             
-            var cell = table.cellForRowAtIndexPath(indexPath!)
+            let cell = table.cellForRowAtIndexPath(indexPath!)
             
             if (cell == nil) {
                 return
             }
             
-            var label = cell?.viewWithTag(100) as! UILabel
-            var title = label.text
-            var color = label.textColor
+            let label = cell?.viewWithTag(100) as! UILabel
+            let title = label.text
+            let color = label.textColor
             
             if (indexPath!.row >= list.array!.count) {
                 Log("Non in any row")
@@ -527,13 +527,13 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
                 locInView = gestureRecognizer.locationInView(toTable)
                 if (CGRectContainsPoint(fromTable.bounds, locInView)) {
                     Log("Dropped in TO table")
-                    var rowData: AnyObject = fromList!.array!.removeAtIndex(draggedIndex)
+                    let rowData: AnyObject = fromList!.array!.removeAtIndex(draggedIndex)
                     toList!.array!.append(rowData)
                     
                     var arr = [NSIndexPath(forRow: draggedIndex, inSection: 0)]
                     fromTable.deleteRowsAtIndexPaths(arr, withRowAnimation: UITableViewRowAnimation.Automatic)
                     
-                    var row = toList!.array!.count-1
+                    let row = toList!.array!.count-1
                     arr = [NSIndexPath(forRow: row, inSection: 0)]
                     toTable.insertRowsAtIndexPaths(arr, withRowAnimation: UITableViewRowAnimation.Automatic)
                     
@@ -634,8 +634,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             return "Cancelled"
         case .Failed:
             return "Failed"
-        default:
-            return "UNKNOWN"
         }
     }
     

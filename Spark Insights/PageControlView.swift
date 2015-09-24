@@ -45,8 +45,8 @@ class PageControlView: UIView {
     // MARK: UIView overrides
     
     override func intrinsicContentSize() -> CGSize {
-        var height = buttonHeight
-        var width = buttonWidth * buttonData.count
+        let height = buttonHeight
+        let width = buttonWidth * buttonData.count
         return CGSize(width: width, height: height)
     }
     
@@ -58,10 +58,10 @@ class PageControlView: UIView {
         }
         buttons = Array<UIButton>()
         
-        var height = buttonHeight
-        for (i,data) in enumerate(buttonData) {
-            var position = buttonWidth * i
-            var v = UIButton(frame: CGRect(x: position, y: 0, width: buttonWidth, height: height))
+        let height = buttonHeight
+        for (i,data) in buttonData.enumerate() {
+            let position = buttonWidth * i
+            let v = UIButton(frame: CGRect(x: position, y: 0, width: buttonWidth, height: height))
             v.setImage(UIImage(named: data.imageName), forState: UIControlState.Normal)
             v.setImage(UIImage(named: data.selectedImageName), forState: UIControlState.Disabled)
             v.setImage(UIImage(named: data.selectedImageName), forState: UIControlState.Highlighted)
@@ -82,7 +82,7 @@ class PageControlView: UIView {
     }
     
     private func refresh() {
-        for (i, btn) in enumerate(buttons) {
+        for (i, btn) in buttons.enumerate() {
             if i == selectedIndex {
                 selectButton(btn)
             } else {
@@ -104,7 +104,7 @@ class PageControlView: UIView {
     // MARK: Actions
     
     func buttonClicked(sender: UIButton) {
-        var index = Int(sender.frame.origin.x) / buttonWidth
+        let index = Int(sender.frame.origin.x) / buttonWidth
         selectedIndex = index
         delegate?.pageChanged?(index)
     }

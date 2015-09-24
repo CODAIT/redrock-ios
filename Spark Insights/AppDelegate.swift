@@ -33,8 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         loading the files from the bundle. Without this workaround WKNetworkDelegate methods
         will not be called and we will get the following error "Could not create a sandbox extension for /".
         */
-        let visFolder = NSBundle.mainBundle().resourcePath?.stringByAppendingPathComponent("Visualizations")
-        Config.visualisationFolderPath = copyFolderToTempFolder(visFolder)!
+        let visFolder = NSURL(fileURLWithPath: NSBundle.mainBundle().resourcePath!).URLByAppendingPathComponent("Visualizations")
+        Config.visualisationFolderPath = copyFolderToTempFolder(visFolder.path)!
         
         return true
     }
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
 
 // MARK: - SearchViewControllerDelegate
 
-extension AppDelegate: SearchViewControllerDelegate {
+extension AppDelegate {
     
     func displayContainerViewController(currentViewController: UIViewController, searchText: String) {
         if (containerViewController == nil) {
@@ -79,7 +79,7 @@ extension AppDelegate: SearchViewControllerDelegate {
         containerViewController!.searchText = searchText
         
         // Animate the transition to the new view controller
-        var tr = CATransition()
+        let tr = CATransition()
         tr.duration = 0.5
         tr.type = kCATransitionFade
         currentViewController.view.window!.layer.addAnimation(tr, forKey: kCATransition)
@@ -90,7 +90,7 @@ extension AppDelegate: SearchViewControllerDelegate {
 
 // MARK: - ContainerViewControllerDelegate
 
-extension AppDelegate: ContainerViewControllerDelegate {
+extension AppDelegate {
     
     func displaySearchViewController() {
         // On first launch
@@ -109,7 +109,7 @@ extension AppDelegate: ContainerViewControllerDelegate {
         // When returning to search
         if (containerViewController != nil) {
             // Animate the transition to the new view controller
-            var tr = CATransition()
+            let tr = CATransition()
             tr.duration = 0.2
             tr.type = kCATransitionFade
             containerViewController?.view.window!.layer.addAnimation(tr, forKey: kCATransition)
@@ -124,23 +124,32 @@ extension AppDelegate: ContainerViewControllerDelegate {
 func copyFolderToTempFolder(filePath: String?) -> String?
 {
     let fileMgr = NSFileManager.defaultManager()
-    let tmpPath = NSTemporaryDirectory().stringByAppendingPathComponent("www")
-    var error: NSErrorPointer = nil
-    if !fileMgr.createDirectoryAtPath(tmpPath, withIntermediateDirectories: true, attributes: nil, error: error) {
-        println("Couldn't create www subdirectory. \(error)")
+    let tmpPath = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("www")
+    let error: NSErrorPointer = nil
+    do {
+        try fileMgr.createDirectoryAtURL(tmpPath, withIntermediateDirectories: true, attributes: nil)
+    } catch let error1 as NSError {
+        error.memory = error1
+        print("Couldn't create www subdirectory. \(error)")
         return nil
     }
-    let destPath = tmpPath
+    let destPath = tmpPath.path!
     // Clean up old files
     if fileMgr.fileExistsAtPath(destPath) {
-        if !fileMgr.removeItemAtPath(destPath, error: error) {
-            println("Couldn't delete folder /tmp/www. \(error)")
+        do {
+            try fileMgr.removeItemAtPath(destPath)
+        } catch let error1 as NSError {
+            error.memory = error1
+            print("Couldn't delete folder /tmp/www. \(error)")
         }
     }
     // Copy files to temp dir
     if !fileMgr.fileExistsAtPath(destPath) {
-        if !fileMgr.copyItemAtPath(filePath!, toPath: destPath, error: error) {
-            println("Couldn't copy file to /tmp/www. \(error)")
+        do {
+            try fileMgr.copyItemAtPath(filePath!, toPath: destPath)
+        } catch let error1 as NSError {
+            error.memory = error1
+            print("Couldn't copy file to /tmp/www. \(error)")
             return nil
         }
     }
