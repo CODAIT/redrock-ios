@@ -527,6 +527,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         visualizationHandler.transformData(webView)
     }
     
+    
+    
     // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {

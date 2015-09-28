@@ -45,7 +45,7 @@ class VisualizationHandler{
             println("TODO: reload a NativeVisualizationView")
             
             if(viewNumber == Config.visualizationsIndex.timemap.rawValue){
-                Log("Let's load the timemap")
+                transformData(myNativeView)
             }
             
             // TODO: implement
@@ -69,34 +69,41 @@ class VisualizationHandler{
         }
     }
     
-    func transformData(webView: WKWebView){
+    func transformData(myView: UIView){
         // uses the path to determine which function to use
-        let delay = 0.2 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {
         
-            switch webView.URL!.lastPathComponent!{
-            case "treemap.html":
-                self.transformDataForTreemapping(webView)
-                break;
-            case "circlepacking.html":
-                self.transformDataForCirclepacking(webView)
-                break;
-            case "forcegraph.html":
-                self.transformDataForForcegraph(webView)
-                break;
-            case "timemap.html":
-                self.transformDataForTimemap(webView)
-                break;
-            case "stackedbar.html":
-                self.transformDataForStackedbar(webView)
-                break;
-            case "wordcloud.html":
-                self.transformDataForWordcloud(webView)
-            default:
-                break;
+        if let myNativeView = myView as? NativeVisualizationView {
+            println("TODO transform native vis!")
+            
+        }
+        else if let webView = myView as? WKWebView {
+            let delay = 0.2 * Double(NSEC_PER_SEC)
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue()) {
+            
+                switch webView.URL!.lastPathComponent!{
+                case "treemap.html":
+                    self.transformDataForTreemapping(webView)
+                    break;
+                case "circlepacking.html":
+                    self.transformDataForCirclepacking(webView)
+                    break;
+                case "forcegraph.html":
+                    self.transformDataForForcegraph(webView)
+                    break;
+                case "timemap.html":
+                    Log("let's transform the timemap data")
+                    self.transformDataForTimemap(webView)
+                    break;
+                case "stackedbar.html":
+                    self.transformDataForStackedbar(webView)
+                    break;
+                case "wordcloud.html":
+                    self.transformDataForWordcloud(webView)
+                default:
+                    break;
+                }
             }
-        
         }
     }
     

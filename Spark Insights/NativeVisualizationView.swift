@@ -13,6 +13,4 @@ class NativeVisualizationView :UIView {
 
 }
 
-/*protocol NativeVisualizationViewDelegate {
-
-}*/
+//protocol NativeVisualizationViewDelegate {}
