@@ -271,41 +271,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 // THE MAP
                 mySuperView.addSubview(myMapView)
-                
-                
-                // THE STUFF ON THE MAP, THE CIRCLES
-                // THIS WILL MOVE TO VISUALIZATION HANDLER
-                let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
-                let properties = NSDictionary(contentsOfFile: filePath!)
-                
-                let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
-                let countries = NSDictionary(contentsOfFile: countriesFilePath!)
-                
-                let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
-
-                for myCountryString in countriesArray{
-                    let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
-                    
-                    let latitude    = Double(myCountry["latitude"]! as! NSNumber)
-                    let longitude   = Double(myCountry["longitude"]! as! NSNumber)
-                    
-                    let mapWidth    = Double(self.scrollView.frame.size.width)
-                    let mapHeight   = Double(self.scrollView.frame.size.height)
-                    
-                    // get x value
-                    let x = (longitude+180.0)*(mapWidth/360.0)
-                    
-                    // convert from degrees to radians
-                    let latRad = latitude*M_PI/180.0;
-                    
-                    // get y value
-                    let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
-                    let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
-                    
-                    let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, 20, 20))
-                    
-                    mySuperView.addSubview(circleView)
-                }
             }
             else //this visualization is one of the webviews
             {

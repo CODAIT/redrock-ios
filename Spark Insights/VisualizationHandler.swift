@@ -74,7 +74,9 @@ class VisualizationHandler{
         
         if let myNativeView = myView as? NativeVisualizationView {
             println("TODO transform native vis!")
-            
+            //TODO: currently, only the timemap is a native view
+            // later we need a switch like we have for the other views
+            self.transformDataForTimemapIOS(myNativeView)
         }
         else if let webView = myView as? WKWebView {
             let delay = 0.2 * Double(NSEC_PER_SEC)
@@ -291,13 +293,41 @@ class VisualizationHandler{
         }
     }
 
-    func transformDataForTimemapIOS(mapView: MKMapView){
-        // this is probably unnecessary
-        displayTimemapIOS(mapView)
-    }
-    
-    func displayTimemapIOS(mapView: MKMapView){
+    func transformDataForTimemapIOS(myView: NativeVisualizationView){
+        Log("TODO: here we will transplant methods for doing the circle bubbles")
+        // THE STUFF ON THE MAP, THE CIRCLES
+        // THIS WILL MOVE TO VISUALIZATION HANDLER
+        let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
+        let properties = NSDictionary(contentsOfFile: filePath!)
         
+        let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
+        let countries = NSDictionary(contentsOfFile: countriesFilePath!)
+        
+        let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
+        
+        for myCountryString in countriesArray{
+            let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
+            
+            let latitude    = Double(myCountry["latitude"]! as! NSNumber)
+            let longitude   = Double(myCountry["longitude"]! as! NSNumber)
+            
+            let mapWidth    = Double(scrollViewWidth)
+            let mapHeight   = Double(scrollViewHeight)
+            
+            // get x value
+            let x = (longitude+180.0)*(mapWidth/360.0)
+            
+            // convert from degrees to radians
+            let latRad = latitude*M_PI/180.0;
+            
+            // get y value
+            let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
+            let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+            
+            let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, 20, 20))
+            
+            myView.addSubview(circleView)
+        }
     }
     
     func transformDataForTimemap(webView: WKWebView){
