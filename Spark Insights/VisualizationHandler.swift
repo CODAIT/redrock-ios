@@ -279,6 +279,14 @@ class VisualizationHandler{
         }
     }
 
+    func transformDataForTimemapIOS(mapView: MKMapView){
+        // this is probably unnecessary
+        displayTimemapIOS(mapView)
+    }
+    
+    func displayTimemapIOS(mapView: MKMapView){
+        
+    }
     
     func transformDataForTimemap(webView: WKWebView){
         
