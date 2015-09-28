@@ -255,7 +255,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             {
                 Log("Config.visualizationsIndex.timemap.rawValue")
                 
-                let mySuperView : UIView = UIView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                //NOW WRITE THIS INTO VISUALIZATION HANDLER
+                //THEN DO THE TIME SERIES WITH THE CIRCLES
+                
+                let mySuperView : NativeVisualizationView = NativeVisualizationView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
                 let image = UIImage(named: "mercator_projection.png")
@@ -271,7 +274,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 
                 // THE STUFF ON THE MAP, THE CIRCLES
-                
+                // THIS WILL MOVE TO VISUALIZATION HANDLER
                 let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
                 let properties = NSDictionary(contentsOfFile: filePath!)
                 
@@ -730,6 +733,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     }
     
     func handleLocationCallBack(json: JSON?, error: NSError?) {
+        Log("handleLocationCallBack")
+        
         if (error != nil) {
             visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = "\(error!.localizedDescription)"
             visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: "\(error!.localizedDescription)")
@@ -1071,7 +1076,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.changeLastUpdated(true, waitingResponse: false)
     }
     
-    func populateUI(json: JSON){
+    func populateUI(json: JSON){ //THIS IS ONLY USED FOR DUMMY DATA NOW
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
         

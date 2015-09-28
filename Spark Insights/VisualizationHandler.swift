@@ -41,8 +41,13 @@ class VisualizationHandler{
     
     func reloadAppropriateView(viewNumber: Int){
         
-        if let myMapView = visualizationViews[viewNumber] as? MKMapView {
-            println("TODO: reload a mapView")
+        if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
+            println("TODO: reload a NativeVisualizationView")
+            
+            if(viewNumber == Config.visualizationsIndex.timemap.rawValue){
+                Log("Let's load the timemap")
+            }
+            
             // TODO: implement
         }
         else if let myWebView = visualizationViews[viewNumber] as? WKWebView {
