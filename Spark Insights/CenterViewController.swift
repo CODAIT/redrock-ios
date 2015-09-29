@@ -245,8 +245,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     func setupWebViews()
     {
         for i in 0..<Config.getNumberOfVisualizations(){
-            let tempVisPath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[i].stringByAppendingPathExtension("html")!)
-            let request = NSURLRequest(URL: NSURL.fileURLWithPath(tempVisPath)!)
+            let tempVisPath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[i]).URLByAppendingPathExtension("html").path!)
+            let request = NSURLRequest(URL: tempVisPath)
             
             let myOrigin = CGFloat(i) * self.scrollView.frame.size.width
             

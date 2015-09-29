@@ -41,7 +41,7 @@ class VisualizationHandler{
     
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
-            println("TODO: reload a NativeVisualizationView")
+            print("TODO: reload a NativeVisualizationView")
             
             if(viewNumber == Config.visualizationsIndex.timemap.rawValue){
                 transformData(myNativeView)
@@ -57,8 +57,8 @@ class VisualizationHandler{
 
                     self.loadingState(viewNumber)
                     //webViews[viewNumber].scalesPageToFit = Config.scalePagesToFit[viewNumber]
-                    let filePath = Config.visualisationFolderPath.stringByAppendingPathComponent(Config.visualizationNames[viewNumber].stringByAppendingPathExtension("html")!)
-                    let request = NSURLRequest(URL: NSURL.fileURLWithPath(filePath)!)
+                    let filePath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[viewNumber]).URLByAppendingPathExtension("html").path!)
+                    let request = NSURLRequest(URL: filePath)
                     myWebView.loadRequest(request)
                 }
             }
@@ -72,7 +72,7 @@ class VisualizationHandler{
         // uses the path to determine which function to use
         
         if let myNativeView = myView as? NativeVisualizationView {
-            println("TODO transform native vis!")
+            print("TODO transform native vis!")
             //TODO: currently, only the timemap is a native view
             // later we need a switch like we have for the other views
             self.transformDataForTimemapIOS(myNativeView)
@@ -582,7 +582,7 @@ class VisualizationHandler{
     
     func errorState(index: Int, error: String)
     {
-        if self.webViews.count > index {
+        if self.visualizationViews.count > index {
             self.visualizationViews[index].hidden = true
             self.loadingViews[index].stopAnimating()
             self.loadingViews[index].hidden = true
