@@ -40,7 +40,6 @@ class VisualizationHandler{
     var dateRange: Array<String> = Array<String>()
     
     func reloadAppropriateView(viewNumber: Int){
-        
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
             println("TODO: reload a NativeVisualizationView")
             
@@ -119,7 +118,7 @@ class VisualizationHandler{
             
             treemapDataTrimmed = treemapDataTrimmed.stringByReplacingOccurrencesOfString("\n", withString: "")
             
-            var script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
+            let script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
             
             webView.evaluateJavaScript(script9, completionHandler: nil)
 
@@ -140,7 +139,7 @@ class VisualizationHandler{
     }
     
     func reorderCirclepackingData(){
-        circlepackingData.sort({$0[2] < $1[2]})
+        circlepackingData.sortInPlace({$0[2] < $1[2]})
     }
     
     func transformDataForCirclepacking(webView: WKWebView){
@@ -243,7 +242,7 @@ class VisualizationHandler{
                     script9+=", \"target\": "
                     script9+="\(r+1)"
                     script9+=", \"distance\": "
-                    var myInteger = Int((self.forcegraphData[r][1] as NSString).floatValue*10000)
+                    let myInteger = Int((self.forcegraphData[r][1] as NSString).floatValue*10000)
                     script9+="\(myInteger)"
                     script9+="}"
                     if(r != (self.forcegraphData.count-1)){
@@ -351,9 +350,9 @@ class VisualizationHandler{
                     script9+=self.timemapData[r][1]
                     script9+="\", \"y\":"
                     
-                    var value = self.timemapData[r][2]
-                    if(value.toInt() > biggestValue){
-                        biggestValue = value.toInt()!
+                    let value = self.timemapData[r][2]
+                    if(Int(value) > biggestValue){
+                        biggestValue = Int(value)!
                         //Log("biggestValue is \(biggestValue)")
                     }
                     
@@ -388,7 +387,7 @@ class VisualizationHandler{
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
         for r in firstIndex..<self.stackedbarData.count{
-            if (find(self.dateRange, self.stackedbarData[r][0]) == nil)
+            if (self.dateRange.indexOf(self.stackedbarData[r][0]) == nil)
             {
                 self.dateRange.append(self.stackedbarData[r][0])
             }
@@ -426,7 +425,7 @@ class VisualizationHandler{
             firstIndex++
         }
         
-        var script9 = self.makeScriptForStackedBar(firstIndex, upperIndex: upperIndex)
+        let script9 = self.makeScriptForStackedBar(firstIndex, upperIndex: upperIndex)
         
         if let myWebView = visualizationViews[Config.visualizationsIndex.stackedbar.rawValue] as? WKWebView {
             myWebView.evaluateJavaScript(script9, completionHandler: nil)
@@ -445,7 +444,7 @@ class VisualizationHandler{
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
-                var script9 = self.makeScriptForStackedBar(0)
+                let script9 = self.makeScriptForStackedBar(0)
                 
                 //Log(script9)
                 
@@ -489,7 +488,7 @@ class VisualizationHandler{
                 var maxSize = 0; var minSize = 100000;
                 
                 for r in 0..<self.wordcloudData.count{
-                    var thisTopicNumber = self.wordcloudData[r][0]
+                    let thisTopicNumber = self.wordcloudData[r][0]
                     if( thisTopicNumber != currentTopicNumber){
                         //switch topics
                         script9+="], ["
@@ -504,7 +503,7 @@ class VisualizationHandler{
                     script9+="{\"text\": \""
                     script9+=self.wordcloudData[r][1]
                     script9+="\", \"size\": \""
-                    var number = Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000))
+                    let number = Int(((self.wordcloudData[r][2] as NSString).doubleValue*100000))
                     if number > maxSize{
                         maxSize = number
                     }
@@ -583,11 +582,13 @@ class VisualizationHandler{
     
     func errorState(index: Int, error: String)
     {
-        self.visualizationViews[index].hidden = true
-        self.loadingViews[index].stopAnimating()
-        self.loadingViews[index].hidden = true
-        self.resultsLabels[index].text = error
-        self.resultsLabels[index].hidden = false
+        if self.webViews.count > index {
+            self.visualizationViews[index].hidden = true
+            self.loadingViews[index].stopAnimating()
+            self.loadingViews[index].hidden = true
+            self.resultsLabels[index].text = error
+            self.resultsLabels[index].hidden = false
+        }
     }
     
     //MARK: Clean WebViews
@@ -622,8 +623,8 @@ class VisualizationHandler{
         self.rangeSliderBarChart.lowerValue = 0.0
         self.rangeSliderBarChart.upperValue = 1.0
         
-        self.rangeLabels[0].text = self.dateRange[0].substringToIndex(advance(dateRange[0].endIndex, -3))
-        self.rangeLabels[1].text = self.dateRange[self.dateRange.count-1].substringToIndex(advance(dateRange[self.dateRange.count-1].endIndex, -3))
+        self.rangeLabels[0].text = self.dateRange[0].substringToIndex(dateRange[0].endIndex.advancedBy(-3))
+        self.rangeLabels[1].text = self.dateRange[self.dateRange.count-1].substringToIndex(dateRange[self.dateRange.count-1].endIndex.advancedBy(-3))
         
         self.rangeSliderBarChart.hidden = false
         self.rangeLabels[0].hidden = false

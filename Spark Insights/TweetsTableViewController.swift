@@ -86,7 +86,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     {
         if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
         {
-            var tweetSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            let tweetSheet:SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
             tweetSheet.setInitialText(tweetCell.userScreenName.titleLabel!.text)
             //tweetSheet.addImage(self.screenShot())
             self.presentViewController(tweetSheet, animated: true, completion: {
@@ -109,7 +109,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         let scale = UIScreen.mainScreen().scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
         
-        layer.renderInContext(UIGraphicsGetCurrentContext())
+        layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
@@ -137,31 +137,31 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         {
             if errorMessage != nil
             {
-                var emptySearch = self.tableView.dequeueReusableCellWithIdentifier("NoDataCell", forIndexPath: indexPath) as! UITableViewCell
+                let emptySearch = self.tableView.dequeueReusableCellWithIdentifier("NoDataCell", forIndexPath: indexPath) 
                 emptySearch.backgroundColor = Config.tweetsTableBackgroundColor
-                var label = emptySearch.viewWithTag(500) as! UILabel
+                let label = emptySearch.viewWithTag(500) as! UILabel
                 label.text = errorMessage
                 return emptySearch
             }
             else if emptySearchResult
             {
-                var emptySearch = self.tableView.dequeueReusableCellWithIdentifier("NoDataCell", forIndexPath: indexPath) as! UITableViewCell
+                let emptySearch = self.tableView.dequeueReusableCellWithIdentifier("NoDataCell", forIndexPath: indexPath) 
                 emptySearch.backgroundColor = Config.tweetsTableBackgroundColor
                 return emptySearch
             }
             else
             {
-                var loadingCell = self.tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) as! UITableViewCell
+                let loadingCell = self.tableView.dequeueReusableCellWithIdentifier("LoadingCell", forIndexPath: indexPath) 
                 loadingCell.backgroundColor = Config.tweetsTableBackgroundColor
                 return loadingCell
             }
         }
         else
         {
-            var tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
+            let tweetCell = self.tableView.dequeueReusableCellWithIdentifier("TweetTableCellView", forIndexPath: indexPath) as! TweetTableViewCell
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                var tweet = self.getTweetObject(indexPath.row)
+                let tweet = self.getTweetObject(indexPath.row)
                 let user_profile_image = (self.tweets[indexPath.row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                 let timeToDisplay = tweet.getDateTimeToDisplay("MMM dd")
                 
@@ -196,7 +196,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
     {
         let user_name = tweets[row]["user"]["name"].stringValue
         let user_screen_name = tweets[row]["user"]["screen_name"].stringValue
-        let user_profile_image = (tweets[row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        // let user_profile_image = (tweets[row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         let dateTime = tweets[row]["created_at"].stringValue
         //let retweet_count = tweets[row]["retweet_count"].stringValue
         //let favorite_count = tweets[row]["favorite_count"].stringValue
@@ -204,7 +204,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         let text = tweets[row]["text"].stringValue
         let userID = tweets[row]["user"]["id"].stringValue
         
-        var tweet = TwitterTweet()
+        let tweet = TwitterTweet()
         tweet.setUserName(user_name)
         tweet.setUserhandle(user_screen_name, addAt: true)
         if (followers_count == "")
@@ -213,7 +213,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         }
         else
         {
-            tweet.setFollowers(followers_count.toInt()!)
+            tweet.setFollowers(Int(followers_count)!)
         }
 
         /*if (favorite_count == "")

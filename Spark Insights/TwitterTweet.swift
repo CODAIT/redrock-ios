@@ -86,11 +86,11 @@ class TwitterTweet
     
     func transformTweetDateTime(dateTimeString: String, stringFormat: String)
     {
-        var dateFormat = NSDateFormatter()
+        let dateFormat = NSDateFormatter()
         dateFormat.dateFormat = stringFormat
         dateFormat.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        var dateTime = dateFormat.dateFromString(dateTimeString)
-        var localDateTime = dateTime?.dateByAddingTimeInterval(self.timeInterval)
+        let dateTime = dateFormat.dateFromString(dateTimeString)
+        let localDateTime = dateTime?.dateByAddingTimeInterval(self.timeInterval)
         self.dateTime = localDateTime!
     }
     
@@ -128,8 +128,8 @@ class TwitterTweet
     {
         let currentDate = NSDate()
         let localCurrentDate = currentDate.dateByAddingTimeInterval(self.timeInterval)
-        var secondsFromNow = localCurrentDate.timeIntervalSinceDate(self.dateTime)
-        var dateFormat = NSDateFormatter()
+        let secondsFromNow = localCurrentDate.timeIntervalSinceDate(self.dateTime)
+        let dateFormat = NSDateFormatter()
         if secondsFromNow > self.seconsToDisplayDate
         {
             dateFormat.dateFormat = dateFormatString//self.displayDateFormat
@@ -137,9 +137,9 @@ class TwitterTweet
         }
         else
         {
-            var seconds = Int(secondsFromNow % 60)
-            var minutes = Int((secondsFromNow / 60) % 60)
-            var hours = Int((secondsFromNow / 3600))
+            let seconds = Int(secondsFromNow % 60)
+            let minutes = Int((secondsFromNow / 60) % 60)
+            let hours = Int((secondsFromNow / 3600))
             
             var stringTime = ""
             if hours > 0

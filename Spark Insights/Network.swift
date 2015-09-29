@@ -34,9 +34,9 @@ class Network
     
     func getDataFromServer(include: String, exclude:String)
     {
-        var customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}").invertedSet
-        var encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
-        var encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}").invertedSet
+        let encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        let encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
 
         if (Config.serverMakeSingleRequest) {
             self.executeFullRequest(encodeInclude!, exclude: encodeExclude!)
@@ -204,7 +204,7 @@ class Network
             {
                 urlPath += key + "=" + paremeters[key]! + "&"
             }
-            var aux = Array(urlPath)
+            var aux = Array(urlPath.characters)
             aux.removeLast()
             urlPath = String(aux)
         }
@@ -232,7 +232,6 @@ class Network
             
             if Config.displayRequestTimer
             {
-                let end = CACurrentMediaTime()
                 let elapsedTime = CACurrentMediaTime() - self.startTime
                 dispatch_async(dispatch_get_main_queue(), {
                     self.delegate?.displayRequestTime("\(elapsedTime)")
@@ -240,9 +239,9 @@ class Network
             }
             if error != nil {
                 // There was an error in the network request
-                Log("Error: \(error.localizedDescription)")
+                Log("Error: \(error!.localizedDescription)")
                 
-                callbackOnMainThread(nil, error)
+                callbackOnMainThread(nil, error: error)
                 return
             }
             
@@ -252,21 +251,29 @@ class Network
             {
                 if httpResponse.statusCode != 200
                 {
-                    Log(NSString(data: data, encoding: NSUTF8StringEncoding)!)
+                    Log(NSString(data: data!, encoding: NSUTF8StringEncoding)!)
                     
-                    var errorDesc = "Server Error. Status Code: \(httpResponse.statusCode)"
+                    let errorDesc = "Server Error. Status Code: \(httpResponse.statusCode)"
                     err =  NSError(domain: "Network", code: 0, userInfo: [NSLocalizedDescriptionKey: errorDesc])
-                    callbackOnMainThread(nil, err)
+                    callbackOnMainThread(nil, error: err)
                     return
                 }
             }
             
-            var jsonResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &err)
+            var jsonResult: AnyObject?
+            do {
+                jsonResult = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+            } catch let error as NSError {
+                err = error
+                jsonResult = nil
+            } catch {
+                fatalError()
+            }
             if err != nil {
                 // There was an error parsing JSON
                 Log("JSON Error: \(err!.localizedDescription)")
                 
-                callbackOnMainThread(nil, err)
+                callbackOnMainThread(nil, error: err)
                 return
             }
             
@@ -279,14 +286,14 @@ class Network
                 Log(errorDesc)
                 
                 err =  NSError(domain: "Network", code: 0, userInfo: [NSLocalizedDescriptionKey: msg])
-                callbackOnMainThread(nil, err)
+                callbackOnMainThread(nil, error: err)
                 return
             }
             
             // Success
             Log("Request completed: Status = OK")
             
-            callbackOnMainThread(json, nil)
+            callbackOnMainThread(json, error: nil)
         })
         task.resume()
     }

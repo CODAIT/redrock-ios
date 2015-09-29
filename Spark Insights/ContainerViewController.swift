@@ -62,7 +62,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
     // Necessary because if you go back to the main search screen and the side search is opened,
     // we need to close that
     func toggleRightPanel(close: Bool) {
-        var notAlreadyExpanded = (currentState != .RightPanelExpanded)
+        let notAlreadyExpanded = (currentState != .RightPanelExpanded)
         if close
         {
             if !notAlreadyExpanded
@@ -96,7 +96,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
         }
     }
     
-    func animateRightPanel(#shouldExpand: Bool) {
+    func animateRightPanel(shouldExpand shouldExpand: Bool) {
         if (shouldExpand) {
             self.rightViewController.searchString = self.searchText
             self.rightViewController.tableA.reloadData()
@@ -116,7 +116,7 @@ extension ContainerViewController: CenterViewControllerDelegate {
         delegate?.displaySearchViewController?()
     }
     
-    func animateCenterPanelXPosition(#targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
+    func animateCenterPanelXPosition(targetPosition targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.centerViewController.view.frame.origin.x = targetPosition
             }, completion: completion)

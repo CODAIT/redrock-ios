@@ -331,6 +331,8 @@
 		CE79DA3D1B1640C0003F01F6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = IBM;
 				TargetAttributes = {

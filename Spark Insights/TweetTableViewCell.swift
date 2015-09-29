@@ -19,7 +19,7 @@ protocol TweetTableViewCellDelegate {
     func userHandleClicked(clickedCell: TweetTableViewCell)
 }
 
-class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextLabelDelegate{
+class TweetTableViewCell: UITableViewCell, ContextLabelDelegate{
 
     // Delegate
     weak var delegate: TweetTableViewCellDelegate?
@@ -153,7 +153,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     // MARK: Context Label delegate
     func contextLabel(contextLabel: ContextLabel, beganTouchOf text: String, with linkRangeResult: LinkRangeResult) {
         //Avoid row be selected
-        var firstCharac = Array(text)[0]
+        let firstCharac = Array(text.characters)[0]
         if firstCharac != "@" && firstCharac != "#"
         {
             self.isURLTapped = true
@@ -230,8 +230,8 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
     
     func swipeableCellChanged(gesture: UIPanGestureRecognizer)
     {
-        var currentPoint = gesture.translationInView(self.displayView)
-        var deltaX = currentPoint.x - self.panStartPoint.x
+        let currentPoint = gesture.translationInView(self.displayView)
+        let deltaX = currentPoint.x - self.panStartPoint.x
         var panningLeft = false
         if (currentPoint.x < self.panStartPoint.x) {  //1
             panningLeft = true
@@ -239,14 +239,14 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         if (self.startingRightLayoutConstraintConstant == 0) { //2
             //The cell was closed and is now opening
             if (!panningLeft) {
-                var constant = max(-deltaX, 0); //3
+                let constant = max(-deltaX, 0); //3
                 if (constant == 0) { //4
                     self.resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
                 } else { //5
                     self.contentViewRightConstraint.constant = constant
                 }
             } else {
-                var constant = min(-deltaX, self.twitterImageTotalWidth()) //6
+                let constant = min(-deltaX, self.twitterImageTotalWidth()) //6
                 if (constant == self.twitterImageTotalWidth()) { //7
                     self.setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
                 } else { //8
@@ -256,16 +256,16 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
         else {
             //The cell was at least partially open.
-            var adjustment = self.startingRightLayoutConstraintConstant - deltaX //1
+            let adjustment = self.startingRightLayoutConstraintConstant - deltaX //1
             if (!panningLeft) {
-                var constant = max(adjustment, 0) //2
+                let constant = max(adjustment, 0) //2
                 if (constant == 0) { //3
                     self.resetConstraintContstantsToZero(true, notifyDelegateDidClose: false)
                 } else { //4
                     self.contentViewRightConstraint.constant = constant;
                 }
             } else {
-                var constant = min(adjustment, self.twitterImageTotalWidth()); //5
+                let constant = min(adjustment, self.twitterImageTotalWidth()); //5
                 if (constant == self.twitterImageTotalWidth()) { //6
                     self.setConstraintsToShowAllButtons(true, notifyDelegateDidOpen: false)
                 } else { //7
@@ -281,7 +281,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         if (self.startingRightLayoutConstraintConstant == 0)
         { //1
             //Cell was opening
-            var halfOfButtonOne = CGRectGetWidth(self.twitterBirdView.frame) / 2; //2
+            let halfOfButtonOne = CGRectGetWidth(self.twitterBirdView.frame) / 2; //2
             if (self.contentViewRightConstraint.constant >= halfOfButtonOne)
             { //3
                 //Open all the way
@@ -294,7 +294,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         }
         else {
             //Cell was closing
-            var imageWidth = CGRectGetWidth(self.twitterBirdView.frame); //4
+            let imageWidth = CGRectGetWidth(self.twitterBirdView.frame); //4
             if (self.contentViewRightConstraint.constant >= imageWidth)
             { //5
                 //Re-open all the way
@@ -366,6 +366,7 @@ class TweetTableViewCell: UITableViewCell, UIGestureRecognizerDelegate, ContextL
         })
     }
     
+    // MARK: UIGestureRecognizerDelegate
     override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true;
     }

@@ -67,7 +67,7 @@ class HelpPopupTableViewController: UITableViewController {
         }
         else
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TitleCell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("TitleCell", forIndexPath: indexPath) 
             cell.backgroundColor = Config.lightGrayColor
             cell.frame.height
             

@@ -10,6 +10,6 @@ import Foundation
 
 func Log(msg: AnyObject) {
     #if DEBUGLOG
-        println(msg)
+        print(msg)
     #endif
 }

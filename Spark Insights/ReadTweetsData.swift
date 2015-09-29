@@ -23,11 +23,12 @@ class ReadTweetsData
         if let filePath = getJSONFilePath()
         {
             var readError:NSError?
-            if let data = NSData(contentsOfFile:filePath,
-                options: NSDataReadingOptions.DataReadingUncached,
-                error:&readError)
-            {
+            do {
+                let data = try NSData(contentsOfFile:filePath,
+                    options: NSDataReadingOptions.DataReadingUncached)
                 return data
+            } catch let error as NSError {
+                readError = error
             }
             
         }
@@ -39,10 +40,12 @@ class ReadTweetsData
         if let fileData = ReadTweetsData.getJSONSwift()
         {
             var parseError: NSError?
-            if let JSONObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments, error: &parseError)
-            {
+            do {
+                let JSONObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments)
                 let jsonTweets = JSON(JSONObject!)
                 return jsonTweets["tweets"]
+            } catch let error as NSError {
+                parseError = error
             }
         }
         
@@ -62,7 +65,7 @@ class ReadTweetsData
             let favorite_count = tweets[i]["favorite_count"].stringValue
             let text = tweets[i]["text"].stringValue
             
-            var tweet = TwitterTweet()
+            let tweet = TwitterTweet()
             tweet.setUserName(user_name)
             tweet.setUserhandle(user_screen_name, addAt: true)
             if (favorite_count == "")
@@ -71,7 +74,7 @@ class ReadTweetsData
             }
             else
             {
-                tweet.setFavorites(favorite_count.toInt()!)
+                tweet.setFavorites(Int(favorite_count)!)
             }
             if (retweet_count == "")
             {
@@ -79,7 +82,7 @@ class ReadTweetsData
             }
             else
             {
-                tweet.setRetweets(retweet_count.toInt()!)
+                tweet.setRetweets(Int(retweet_count)!)
             }
             tweet.setTweetText(text)
             tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
