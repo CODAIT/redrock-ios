@@ -11,9 +11,14 @@ import UIKit
 
 class CircleView :UIView {
     
+    var myOriginX :CGFloat!
+    var myOriginY :CGFloat!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clearColor()
+        self.myOriginX = frame.origin.x
+        self.myOriginY = frame.origin.y
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -21,7 +26,7 @@ class CircleView :UIView {
     }
     
     override func drawRect(rect: CGRect) {
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         
         CGContextSetLineWidth(context, 5.0)
         
@@ -33,5 +38,7 @@ class CircleView :UIView {
     func changeRadiusTo(newRadius: CGFloat){
         self.frame.size.width = newRadius
         self.frame.size.height = newRadius
+        self.frame.origin = CGPoint(x: self.myOriginX - newRadius/2, y: self.myOriginY - newRadius/2)
+        self.setNeedsDisplay()
     }
 }

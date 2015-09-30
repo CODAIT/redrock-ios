@@ -40,6 +40,8 @@ class VisualizationHandler{
     var dateRange: Array<String> = Array<String>()
     
     var countryCircleViews = [String: CircleView]()
+    var timemapTimer : NSTimer!
+    var indexOfLastDate = 0;
     
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
@@ -281,17 +283,17 @@ class VisualizationHandler{
 
     }
     
+    //TODO update for native
     func stopTimemap(){
-        if let myWebView = visualizationViews[Config.visualizationsIndex.timemap.rawValue] as? WKWebView {
-            myWebView.evaluateJavaScript("stopAnimation();", completionHandler: nil)
-        }
-        
+        //Log("stopTimemap")
+        timemapTimer.invalidate()
+        timemapTimer = nil;
     }
     
+    //TODO update for native
     func startTimemap(){
-        if let myWebView = visualizationViews[Config.visualizationsIndex.timemap.rawValue] as? WKWebView {
-            myWebView.evaluateJavaScript("startAnimation();", completionHandler: nil)
-        }
+        //Log("startTimemap")
+        self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
     }
 
     func xFromCountryDictionary(myCountry: NSDictionary) -> Double{
@@ -322,7 +324,7 @@ class VisualizationHandler{
 
     
     func transformDataForTimemapIOS(myView: NativeVisualizationView){
-        Log("TODO: here we will transplant methods for doing the circle bubbles")
+        //Log("TODO: here we will transplant methods for doing the circle bubbles")
         let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
         let properties = NSDictionary(contentsOfFile: filePath!)
         
@@ -339,19 +341,22 @@ class VisualizationHandler{
                 let x = xFromCountryDictionary(myCountry)
                 let y = yFromCountryDictionary(myCountry)
                 
-                let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, 20, 20))
+                let circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
                 
                 countryCircleViews[myCountryString] = (circleView)
                 
                 myView.addSubview(circleView)
             }
         }
+    }
+    
+    @objc func tickTimemap()
+    {
+        //Log("tickTimemap().... indexOfLastDate is \(indexOfLastDate)")
+        let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
+        let countries = NSDictionary(contentsOfFile: countriesFilePath!)
+        let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
         
-        //normalize for the largest circle
-        
-        // loop through data
-        
-        // zero the radii
         for countryName in countriesArray
         {
             countryCircleViews[countryName]!.changeRadiusTo(0.0)
@@ -360,11 +365,12 @@ class VisualizationHandler{
         // set the radii
         var lastDate :String = "";
         var currentDate :String = "";
-        var i = 0;
-        while( currentDate == lastDate ){ // and you're not at the end
+        var i = indexOfLastDate;
+        
+        while( currentDate == lastDate){ // and you're not at the end
             
             //let myCountryPosition : NSDictionary = properties![timemapData[i][1]]! as! NSDictionary //use the country name to get the country position
-
+            
             //let x = xFromCountryDictionary(myCountryPosition)
             //let y = yFromCountryDictionary(myCountryPosition)
             
@@ -377,16 +383,18 @@ class VisualizationHandler{
             //change the radius associated with the string
             countryCircleViews[timemapData[i][1]]?.changeRadiusTo(radius)
             
-            //let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, radius, radius))
-            
-            //myView.addSubview(circleView)
-            
             lastDate = timemapData[i][0]
             i++
+            if( i >= timemapData.count ){
+                //Log("Reached the end of timemap data.... it's time to loop.")
+                i = 0
+            }
             currentDate = timemapData[i][0]
         }
+        
+        indexOfLastDate = i
+        visualizationViews[Config.visualizationsIndex.timemap.rawValue].setNeedsDisplay()
     }
-    
     
     /*
     func transformDataForTimemap(webView: WKWebView){
@@ -580,7 +588,7 @@ class VisualizationHandler{
                 }
                 script9+="]]; var maxSize = \(maxSize); var minSize = \(minSize); renderChart(data2, maxSize, minSize);"
                 
-                Log("maxSize: \(maxSize).... and script9")
+                //Log("maxSize: \(maxSize).... and script9")
                 Log(script9)
                 
                 //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
