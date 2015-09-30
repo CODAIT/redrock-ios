@@ -286,6 +286,8 @@ class VisualizationHandler{
     //TODO update for native
     func stopTimemap(){
         //Log("stopTimemap")
+        //todo: make circles invisible so they dont show up on other screens
+        
         timemapTimer.invalidate()
         timemapTimer = nil;
     }
