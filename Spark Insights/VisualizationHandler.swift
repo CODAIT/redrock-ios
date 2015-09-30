@@ -39,6 +39,8 @@ class VisualizationHandler{
     var rangeLabels:Array<UILabel> = Array<UILabel>()
     var dateRange: Array<String> = Array<String>()
     
+    var countryCircleViews = [String: CircleView]()
+    
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
             print("TODO: reload a NativeVisualizationView")
@@ -92,10 +94,10 @@ class VisualizationHandler{
                 case "forcegraph.html":
                     self.transformDataForForcegraph(webView)
                     break;
-                case "timemap.html":
-                    Log("let's transform the timemap data")
-                    self.transformDataForTimemap(webView)
-                    break;
+                //case "timemap.html":
+                //    Log("let's transform the timemap data")
+                //    self.transformDataForTimemap(webView)
+                //    break;
                 case "stackedbar.html":
                     self.transformDataForStackedbar(webView)
                     break;
@@ -292,10 +294,35 @@ class VisualizationHandler{
         }
     }
 
+    func xFromCountryDictionary(myCountry: NSDictionary) -> Double{
+        let longitude   = Double(myCountry["longitude"]! as! NSNumber)
+        
+        let mapWidth    = Double(scrollViewWidth)
+        
+        // get x value
+        let x = (longitude+180.0)*(mapWidth/360.0)
+        
+        return x
+    }
+    
+    func yFromCountryDictionary(myCountry: NSDictionary) -> Double{
+        let latitude    = Double(myCountry["latitude"]! as! NSNumber)
+        
+        let mapWidth    = Double(scrollViewWidth)
+        let mapHeight   = Double(scrollViewHeight)
+        
+        // convert from degrees to radians
+        let latRad = latitude*M_PI/180.0;
+        
+        // get y value
+        let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
+        let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+        return y
+    }
+
+    
     func transformDataForTimemapIOS(myView: NativeVisualizationView){
         Log("TODO: here we will transplant methods for doing the circle bubbles")
-        // THE STUFF ON THE MAP, THE CIRCLES
-        // THIS WILL MOVE TO VISUALIZATION HANDLER
         let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
         let properties = NSDictionary(contentsOfFile: filePath!)
         
@@ -304,32 +331,67 @@ class VisualizationHandler{
         
         let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
         
-        for myCountryString in countriesArray{
-            let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
+        if(countryCircleViews.isEmpty){ //initialize it if you havent
+            for myCountryString in countriesArray{
+                
+                let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
+                
+                let x = xFromCountryDictionary(myCountry)
+                let y = yFromCountryDictionary(myCountry)
+                
+                let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, 20, 20))
+                
+                countryCircleViews[myCountryString] = (circleView)
+                
+                myView.addSubview(circleView)
+            }
+        }
+        
+        //normalize for the largest circle
+        
+        // loop through data
+        
+        // zero the radii
+        for countryName in countriesArray
+        {
+            countryCircleViews[countryName]!.changeRadiusTo(0.0)
+        }
+        
+        // set the radii
+        var lastDate :String = "";
+        var currentDate :String = "";
+        var i = 0;
+        while( currentDate == lastDate ){ // and you're not at the end
             
-            let latitude    = Double(myCountry["latitude"]! as! NSNumber)
-            let longitude   = Double(myCountry["longitude"]! as! NSNumber)
+            //let myCountryPosition : NSDictionary = properties![timemapData[i][1]]! as! NSDictionary //use the country name to get the country position
+
+            //let x = xFromCountryDictionary(myCountryPosition)
+            //let y = yFromCountryDictionary(myCountryPosition)
             
-            let mapWidth    = Double(scrollViewWidth)
-            let mapHeight   = Double(scrollViewHeight)
+            var radius : CGFloat = 0.0
             
-            // get x value
-            let x = (longitude+180.0)*(mapWidth/360.0)
+            if let n = NSNumberFormatter().numberFromString(timemapData[i][2]) {
+                radius = CGFloat(n)
+            }
             
-            // convert from degrees to radians
-            let latRad = latitude*M_PI/180.0;
+            //change the radius associated with the string
+            countryCircleViews[timemapData[i][1]]?.changeRadiusTo(radius)
             
-            // get y value
-            let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
-            let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+            //let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, radius, radius))
             
-            let circleView = CircleView(frame: CGRectMake( CGFloat(x)-10.0, CGFloat(y)-10.0, 20, 20))
+            //myView.addSubview(circleView)
             
-            myView.addSubview(circleView)
+            lastDate = timemapData[i][0]
+            i++
+            currentDate = timemapData[i][0]
         }
     }
     
+    
+    /*
     func transformDataForTimemap(webView: WKWebView){
+        
+        Log("This function should be deprecated now!")
         
         //Log(timemapData)
         
@@ -382,6 +444,7 @@ class VisualizationHandler{
             self.errorState(Config.visualizationsIndex.timemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.timemap.rawValue])
         }
     }
+    */
     
     func makeScriptForStackedBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["

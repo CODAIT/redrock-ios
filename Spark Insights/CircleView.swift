@@ -29,4 +29,9 @@ class CircleView :UIView {
         
         CGContextStrokePath(context);
     }
+    
+    func changeRadiusTo(newRadius: CGFloat){
+        self.frame.size.width = newRadius
+        self.frame.size.height = newRadius
+    }
 }
