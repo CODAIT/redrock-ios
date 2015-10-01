@@ -36,7 +36,7 @@ height = h * resizeConstant;
 var color = d3.scale.category20();
 
 force = d3.layout.force()
-.charge(-1500)
+.charge(-1200)
 .linkDistance(10)
 .size([width, height]);
 
@@ -52,9 +52,9 @@ var maxNodeSize = d3.max(graph.nodes, function(d) {return d.value;});
 var maxLinkLength = d3.max(graph.links, function(d){return d.distance;});
 var minLinkLength = d3.min(graph.links, function(d){return d.distance;});
 
-var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([5,50 * resizeConstant]);
+var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([10,65 * resizeConstant]);
 
-var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([20,(150*resizeConstant*resizeConstant)]);
+var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([45,(210*resizeConstant*resizeConstant)]);
 
 /*
 var n = graph.nodes.length
