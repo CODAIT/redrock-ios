@@ -68,6 +68,7 @@
             chart = nv.models.lineChart()
             .duration(1000)
             .isArea(true)
+            .interpolate("basis")
             .showYAxis(true)
             .showLegend(true)
             chart.x(function(d,i) {
