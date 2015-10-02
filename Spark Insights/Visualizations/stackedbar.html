@@ -65,14 +65,12 @@
         chartData = transformData(data);
 
         nv.addGraph(function() {
-            chart = nv.models.multiBarChart()
-            .showControls(false)
-            .groupSpacing(0.5)
-            .hideable(true)
+            chart = nv.models.lineChart()
             .duration(1000)
+            .isArea(true)
+            .interpolate("basis")
             .showYAxis(true)
             .showLegend(true)
-            .stacked(true);
             chart.x(function(d,i) {
                     //return d.x
                     return i;
@@ -83,7 +81,6 @@
             chart.color(["#325d80","#94d9d1"]);
             chart.margin({left: 80, right:80,top:80,bottom:80});
             chart.tooltips(true);
-            chart.reduceXTicks(true);
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
@@ -99,7 +96,7 @@
             .call(chart);
 
             nv.utils.windowResize(chart.update);
-                    
+
             d3.select(".nv-legendWrap").attr("transform", "translate(0, -50)");
 
             /*
@@ -175,7 +172,7 @@
         return copy;
     }
 
-    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
+    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "11/20", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}]);
 
     </script>
 </body>
