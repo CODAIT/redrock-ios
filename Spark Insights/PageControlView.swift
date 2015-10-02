@@ -26,7 +26,7 @@ class PageControlView: UIView {
     var buttonWidth = 50
     var buttonHeight = 60
     var buttonImageEdgeInsets = UIEdgeInsetsMake(20, 15, 20, 15)
-    var buttonBackgroundColor = Config.lightGrayColor
+    var buttonBackgroundColor = UIColor.grayColor()
     var buttonSelectedBackgroundColor = UIColor.blueColor()
 
     var selectedIndex = 0 {
