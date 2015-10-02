@@ -124,8 +124,12 @@ extension ContainerViewController: CenterViewControllerDelegate {
     
 }
 
-private extension UIStoryboard {
+extension UIStoryboard {
     class func mainStoryboard() -> UIStoryboard { return UIStoryboard(name: "Main", bundle: NSBundle.mainBundle()) }
+    
+    class func leftViewController() -> LeftViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("LeftViewController") as? LeftViewController
+    }
     
     class func rightViewController() -> RightViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? RightViewController

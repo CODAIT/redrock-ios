@@ -20,7 +20,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -33,6 +33,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     
+    var leftViewController: LeftViewController!
+    var leftViewOpen = false
+    
     // last visited page
     var currentPage : Int = 0
     var previousPage : Int = 0
@@ -43,27 +46,20 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     @IBOutlet weak var headerLabel: UIButton!
     
-    @IBOutlet weak var foundUsersNumberLabel: UILabel!
-    @IBOutlet weak var foundTweetsNumberLabel: UILabel!
-    @IBOutlet weak var searchedTweetsNumberLabel: UILabel!
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var holderView: UIView!
     @IBOutlet weak var footerView: UIView!
-    @IBOutlet weak var leftView: UIView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var scrollViewLoadingView: UIView!
     
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
     
-    @IBOutlet weak var tweetsFooterView: UIView!
-    @IBOutlet weak var tweetsFooterLabel: UILabel!
-    @IBOutlet weak var tweetsFooterSeparatorLine: UIView!
+    @IBOutlet weak var holderViewLeadingEdge: NSLayoutConstraint!
+    @IBOutlet weak var footerViewLeadingEdge: NSLayoutConstraint!
     
-    @IBOutlet weak var searchButtonView: UIView!
-    
-    var tweetsTableViewController: TweetsTableViewController!
     var firstLoad = true
     /* TODO: replace this function with equiv
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
@@ -82,12 +78,12 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         visualizationHandler.firstLoad = true
-        self.setupTweetsTableView()
         self.setupScrollView()
         visualizationHandler.searchText = searchText!
         //Log(visualizationHandler.searchText)
 
-        pageControlView.buttonSelectedBackgroundColor = Config.tealColor
+        pageControlView.buttonBackgroundColor = UIColor.clearColor()
+        pageControlView.buttonSelectedBackgroundColor = Config.darkBlueColor
         
         for i in 0..<Config.visualizationNames.count{
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
@@ -96,14 +92,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         pageControlView.delegate = self
         self.pageControlViewWidthConstraint.constant = CGFloat(pageControlView.buttonData.count * pageControlView.buttonWidth)
         
-        //Display time of last update
-        self.configureGestureRecognizerForTweetFooterView()
-        self.changeLastUpdated(false, waitingResponse: true)
-        
-        //search icon
-        self.configureGestureRecognizerForSearchIconView()
-        
         self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
+        
+        addLeftPanelViewController()
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,6 +106,45 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.resetViewController()
     }
     
+    func addLeftPanelViewController() {
+        leftViewController = UIStoryboard.leftViewController()
+        leftViewController.view.frame = CGRectMake(-350, 0, 354, 768)
+        leftViewController.delegate = self
+        view.addSubview(leftViewController.view)
+        addChildViewController(leftViewController)
+        leftViewController.didMoveToParentViewController(self)
+    }
+    
+    @IBAction func toggleFeedButtonClicked(sender: UIButton) {
+        toggleLeftPanel()
+    }
+    
+    // MARK: - LeftViewControllerDelegate
+    
+    func toggleLeftPanel() {
+        if (leftViewOpen) {
+            // animate out
+            self.animateLeftPanelXPosition(targetPosition: -350)
+            leftViewOpen = false
+        } else {
+            // animate in
+            self.animateLeftPanelXPosition(targetPosition: 0)
+            leftViewOpen = true
+        }
+    }
+    
+    func animateLeftPanelXPosition(targetPosition targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
+        leftViewController.onAnimationStart()
+        footerView.layoutIfNeeded()
+        self.footerViewLeadingEdge.constant = targetPosition + 350
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+            self.leftViewController.view.frame.origin.x = targetPosition
+            self.footerView.layoutIfNeeded()
+            }, completion: { finished in
+                self.leftViewController.onAnimationComplete()
+        })
+    }
+    
     // MARK: - Reset UI
     
     func resetViewController() {
@@ -122,91 +152,37 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         Log("Resetting \(__FILE__)")
     }
     
-    func configureGestureRecognizerForSearchIconView()
-    {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: "searchClicked:")
-        tapGesture.minimumPressDuration = 0.001
-        self.searchButtonView.addGestureRecognizer(tapGesture)
-        self.searchButtonView.userInteractionEnabled = true
-    }
-    
-    func configureGestureRecognizerForTweetFooterView()
-    {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: "updateSearchRequested:")
-        tapGesture.minimumPressDuration = 0.001
-        self.tweetsFooterView.addGestureRecognizer(tapGesture)
-        self.tweetsFooterView.userInteractionEnabled = true
-    }
-    
-    func updateSearchRequested(gesture: UIGestureRecognizer)
-    {
-        if self.canUpdateSearch
-        {
-            if gesture.state == UIGestureRecognizerState.Began
-            {
-                self.tweetsFooterView.alpha = 0.5
-            }
-            else if gesture.state == UIGestureRecognizerState.Ended
-            {
-                let currentSearch = self.searchText
-                self.searchText = currentSearch
-                self.tweetsFooterView.alpha = 0.5
-                changeLastUpdated(false, waitingResponse: true)
-            }
-        }
-        
-    }
-    
-    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
-    {
-        let dateNow = NSDate()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "E, MMM d hh:mm aa"
-        dateFormat.timeZone = NSTimeZone.localTimeZone()
-        if waitingResponse
-        {
-             self.tweetsFooterLabel.text = "Waiting ..."
-        }
-        else
-        {
-           self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
-        }
-        self.canUpdateSearch = false
-        self.tweetsFooterView.backgroundColor = Config.darkBlueColor
-        self.tweetsFooterSeparatorLine.hidden = false
-        self.tweetsFooterView.alpha = 1.0
-        if callWaitToSearch && Config.displayRefreshAvailable
-        {
-           self.waitToUpdateSearch()
-        }
-    }
-    
-    func waitToUpdateSearch()
-    {
-        // 5min until new update be available
-        let delay = 300.0 * Double(NSEC_PER_SEC)
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-        dispatch_after(time, dispatch_get_main_queue()) {
-            self.canUpdateSearch = true
-            UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
-                self.tweetsFooterLabel.text = "Refresh Available"
-                self.tweetsFooterView.backgroundColor = Config.mediumGreen
-                self.tweetsFooterSeparatorLine.hidden = true
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-    
-    func setupTweetsTableView()
-    {
-        self.tweetsTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TweetsTableViewController") as?TweetsTableViewController
-        
-        addChildViewController(tweetsTableViewController)
-        let height = self.view.frame.height - self.footerView.frame.height - self.headerView.frame.height - self.lineSeparatorWidth - self.statusBarSeparator.frame.height
-        self.tweetsTableViewController.view.frame = CGRectMake(0, headerView.frame.height+self.statusBarSeparator.frame.height , self.leftView.frame.width, height);
-        self.leftView.addSubview(self.tweetsTableViewController.view)
-        tweetsTableViewController.didMoveToParentViewController(self)
-    }
+//    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
+//    {
+//        let dateNow = NSDate()
+//        let dateFormat = NSDateFormatter()
+//        dateFormat.dateFormat = "E, MMM d hh:mm aa"
+//        dateFormat.timeZone = NSTimeZone.localTimeZone()
+//        if waitingResponse
+//        {
+//             self.tweetsFooterLabel.text = "Loading ..."
+//        }
+//        else
+//        {
+//           self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
+//        }
+//    }
+//    
+//    func waitToUpdateSearch()
+//    {
+//        // 5min until new update be available
+//        let delay = 300.0 * Double(NSEC_PER_SEC)
+//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+//        dispatch_after(time, dispatch_get_main_queue()) {
+//            self.canUpdateSearch = true
+//            UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
+//                self.tweetsFooterLabel.text = "Refresh Available"
+//                self.tweetsFooterView.backgroundColor = Config.mediumGreen
+//                self.tweetsFooterSeparatorLine.hidden = true
+//                self.view.layoutIfNeeded()
+//                }, completion: nil)
+//        }
+//    }
     
     func formatNumberToDisplay(number: Int64) -> String
     {
@@ -478,7 +454,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             pageChanged = false
             // Resetting the zoom level on the previous page when it is no longer visible
             if let myWebView = visualizationHandler.visualizationViews[previousPage] as? WKWebView {
-                var webViewScrollView = myWebView.scrollView
+                let webViewScrollView = myWebView.scrollView
                 webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
             }
         }
@@ -500,21 +476,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
     
-    func searchClicked(gesture: UIGestureRecognizer) {
-        if gesture.state == UIGestureRecognizerState.Began
-        {
-            self.searchButtonView.alpha = 0.5
-        }
-        else if gesture.state == UIGestureRecognizerState.Ended
-        {
-            delegate?.toggleRightPanel?(false)
-            self.searchButtonView.alpha = 1.0
-        }
+    @IBAction func searchClicked(sender: UIButton) {
+        delegate?.toggleRightPanel?(false)
     }
     
     // MARK - Actions
     
-    @IBAction func shareScreenClicked(sender: UIButton){
+    @IBAction func shareButtonClicked(sender: UIButton) {
         
         let mailComposeViewController = configuredMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
@@ -563,30 +531,30 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     func cleanViews()
     {
-        if self.tweetsTableViewController != nil
+        if leftViewController != nil && leftViewController.tweetsTableViewController != nil
         {
-            tweetsTableViewController.emptySearchResult = false
-            tweetsTableViewController.errorMessage = nil
-            tweetsTableViewController.tweets = []
-            tweetsTableViewController.tableView.reloadData()
+            leftViewController.tweetsTableViewController.emptySearchResult = false
+            leftViewController.tweetsTableViewController.errorMessage = nil
+            leftViewController.tweetsTableViewController.tweets = []
+            leftViewController.tweetsTableViewController.tableView.reloadData()
         }
         
-        if self.searchedTweetsNumberLabel != nil
+        if leftViewController != nil
         {
-            self.searchedTweetsNumberLabel.text = ""
+            if leftViewController.searchedTweetsNumberLabel != nil
+            {
+                leftViewController.searchedTweetsNumberLabel.text = ""
+            }
+            if leftViewController.foundUsersNumberLabel != nil
+            {
+                leftViewController.foundUsersNumberLabel.text = ""
+            }
+            if leftViewController.foundTweetsNumberLabel != nil
+            {
+                leftViewController.foundTweetsNumberLabel.text = ""
+            }
         }
-        if self.foundUsersNumberLabel != nil
-        {
-            self.foundUsersNumberLabel.text = ""
-        }
-        if self.foundTweetsNumberLabel != nil
-        {
-            self.foundTweetsNumberLabel.text = ""
-        }
-        if self.tweetsFooterView != nil && self.tweetsFooterLabel != nil
-        {
-            self.changeLastUpdated(false, waitingResponse: true)
-        }
+        
         if self.headerLabel != nil
         {
             self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
@@ -661,12 +629,12 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     }
     
     func responseProcessed() {
-        self.changeLastUpdated(true, waitingResponse: false)
+        
     }
     
     func handleTweetsCallBack(json: JSON?, error: NSError?) {
         if ((error) != nil) {
-            self.tweetsTableViewController.errorMessage = error!.localizedDescription
+            leftViewController.tweetsTableViewController.errorMessage = error!.localizedDescription
         }
         else if json != nil
         {
@@ -681,24 +649,24 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             {
                 if tweetsContent["tweets"].count == 0
                 {
-                    self.tweetsTableViewController.emptySearchResult = true
+                    leftViewController.tweetsTableViewController.emptySearchResult = true
                 }
-                self.tweetsTableViewController.tweets = tweetsContent["tweets"]
+                leftViewController.tweetsTableViewController.tweets = tweetsContent["tweets"]
             }
             else
             {
-                self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
+                leftViewController.tweetsTableViewController.errorMessage = Config.serverErrorMessage
             }
         }
         else
         {
-            self.tweetsTableViewController.errorMessage = Config.serverErrorMessage
+            leftViewController.tweetsTableViewController.errorMessage = Config.serverErrorMessage
         }
-        self.tweetsTableViewController.tableView.reloadData()
+        leftViewController.tweetsTableViewController.tableView.reloadData()
     }
     
     func handleLocationCallBack(json: JSON?, error: NSError?) {
-        Log("handleLocationCallBack")
+        // Log("handleLocationCallBack")
         
         if (error != nil) {
             visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = "\(error!.localizedDescription)"
@@ -969,36 +937,36 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     func handleTopMetrics(json: JSON?, error: NSError?) {
         if (error != nil) {
-            self.searchedTweetsNumberLabel.text = "Error"
-            self.foundTweetsNumberLabel.text = "Error"
-            self.foundUsersNumberLabel.text = "Error"
+            leftViewController.searchedTweetsNumberLabel.text = "Error"
+            leftViewController.foundTweetsNumberLabel.text = "Error"
+            leftViewController.foundUsersNumberLabel.text = "Error"
             return
         }
         else
         {
             if json!["totalusers"] != nil
             {
-                self.foundUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
+                leftViewController.foundUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
             }
             else
             {
-                self.foundUsersNumberLabel.text = "Error"
+                leftViewController.foundUsersNumberLabel.text = "Error"
             }
             if json!["totaltweets"] != nil
             {
-                self.searchedTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
+                leftViewController.searchedTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
             }
             else
             {
-                self.searchedTweetsNumberLabel.text = "Error"
+                leftViewController.searchedTweetsNumberLabel.text = "Error"
             }
             if json!["totalfilteredtweets"] != nil
             {
-                self.foundTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalfilteredtweets"].intValue))
+                leftViewController.foundTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalfilteredtweets"].intValue))
             }
             else
             {
-                self.foundTweetsNumberLabel.text = "Error"
+                leftViewController.foundTweetsNumberLabel.text = "Error"
             }
         }
     }
@@ -1027,13 +995,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             }
         }
         return tableData
-    }
-    
-    // Keeping this in case we switch back to using one call
-    func displayRequestError(message: String) {
-        self.tweetsFooterLabel.numberOfLines = 4
-        self.tweetsFooterLabel.text = message
-        self.tweetsFooterView.backgroundColor = UIColor.redColor()
     }
     
     //MARK: Dummy Data
@@ -1080,8 +1041,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         } else {
             populateUI(json)
         }
-        
-        self.changeLastUpdated(true, waitingResponse: false)
     }
     
     func populateUI(json: JSON){ //THIS IS ONLY USED FOR DUMMY DATA NOW
