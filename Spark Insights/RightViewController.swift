@@ -20,14 +20,10 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var tableA: UITableView!
     @IBOutlet weak var tableB: UITableView!
     
-    @IBOutlet weak var goView: UIView!
-    @IBOutlet weak var editView: UIView!
     @IBOutlet weak var doneView: UIView!
-    @IBOutlet weak var toolbarSeparator: UIView!
-    
-    @IBOutlet weak var doneViewBottonConstraint: NSLayoutConstraint!
-    @IBOutlet weak var doneViewHeightConstraint: NSLayoutConstraint!
-    private var doneViewHeightConstraintInitial: CGFloat! 
+    @IBOutlet weak var doneHolderView: UIView!
+    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     
     private var listA: RefArray?
     private var listB: RefArray?
@@ -58,7 +54,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        doneViewHeightConstraintInitial = self.doneViewHeightConstraint.constant
         // UI Tweaks
         let spacerView = UIView(frame: CGRectMake(0, 0, 10, textField.frame.size.height)) // Setting text inset
         textField.leftViewMode = .Always
@@ -107,15 +102,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         // Set TextFieldDelegate
         self.textField.delegate = self
-        
-        //toolbar
-        self.configureTapGestureEdit()
-        self.configureTapGestureGo()
-        self.configureTapGestureDone()
-        
-        //hide done view
-        self.doneViewHeightConstraint.constant = 0
-        self.doneViewBottonConstraint.constant = -self.doneView.frame.height
     }
     
     func setListTerms()
@@ -142,109 +128,30 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    // MARK: - Gesture reconizer and actions
-    func configureTapGestureEdit()
-    {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: "editClicked:")
-        tapGesture.minimumPressDuration = 0.001
-        self.editView.addGestureRecognizer(tapGesture)
-        self.editView.userInteractionEnabled = true
-    }
-    
-    func configureTapGestureGo()
-    {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: "goClicked:")
-        tapGesture.minimumPressDuration = 0.001
-        self.goView.addGestureRecognizer(tapGesture)
-        self.goView.userInteractionEnabled = true
-    }
-    
-    func configureTapGestureDone()
-    {
-        let tapGesture = UILongPressGestureRecognizer(target: self, action: "doneClicked:")
-        tapGesture.minimumPressDuration = 0.001
-        self.doneView.addGestureRecognizer(tapGesture)
-        self.doneView.userInteractionEnabled = true
-    }
-    
-    func editClicked(gesture: UIGestureRecognizer)
-    {
-        if gesture.state == UIGestureRecognizerState.Began
-        {
-            self.editView.alpha = 0.5
-        }
-        else if gesture.state == UIGestureRecognizerState.Ended
-        {
-            self.canEditRow = true
-            self.tableA.setEditing(true, animated: true)
-            self.tableB.setEditing(true, animated: true)
-            UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
-                self.doneViewBottonConstraint.constant = 0
-                self.doneViewHeightConstraint.constant = self.doneViewHeightConstraintInitial
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-
-            self.doneViewBottonConstraint.constant = 0
-            self.editView.alpha = 1.0
-        }
-    }
+    // MARK: - Actions
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return canEditRow
     }
     
-    func doneClicked(gesture: UIGestureRecognizer)
+    @IBAction func goClicked(sender: UIButton)
     {
-        if gesture.state == UIGestureRecognizerState.Began
+        if validateBeforeGo()
         {
-            self.goView.hidden = true
-            self.editView.hidden = true
-            self.toolbarSeparator.hidden = true
-            self.doneView.alpha = 0.5
-        }
-        else if gesture.state == UIGestureRecognizerState.Ended
-        {
-            self.canEditRow = false
-            self.goView.hidden = false
-            self.editView.hidden = false
-            self.toolbarSeparator.hidden = false
-            tableA.setEditing(false, animated: true)
-            tableB.setEditing(false, animated: true)
-            UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
-                self.doneView.alpha = 1.0
-                self.doneViewBottonConstraint.constant = -self.doneView.frame.height
-                self.doneViewHeightConstraint.constant = 0
-                self.view.layoutIfNeeded()
-                }, completion: nil)
-        }
-    }
-    
-    func goClicked(gesture: UIGestureRecognizer)
-    {
-        if gesture.state == UIGestureRecognizerState.Began
-        {
-            self.goView.alpha = 0.5
-        }
-        else if gesture.state == UIGestureRecognizerState.Ended
-        {
-            if validateBeforeGo()
+            var stringSearch = ""
+            let includeList = self.listA?.array as! Array<String>
+            let excludeList:Array = self.listB?.array as! Array<String>
+            for including in includeList
             {
-                var stringSearch = ""
-                let includeList = self.listA?.array as! Array<String>
-                let excludeList:Array = self.listB?.array as! Array<String>
-                for including in includeList
-                {
-                    stringSearch = stringSearch + including + ","
-                }
-                for excluding in excludeList
-                {
-                    stringSearch = stringSearch + "-" + excluding + ","
-                }
-                var aux = Array(stringSearch.characters)
-                aux.removeLast()
-                self.goView.alpha = 1.0
-                self.delegate?.executeActionOnGoClicked(String(aux))
+                stringSearch = stringSearch + including + ","
             }
+            for excluding in excludeList
+            {
+                stringSearch = stringSearch + "-" + excluding + ","
+            }
+            var aux = Array(stringSearch.characters)
+            aux.removeLast()
+            self.delegate?.executeActionOnGoClicked(String(aux))
         }
     }
     
@@ -256,7 +163,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         else
         {
-            self.goView.alpha = 1.0
             let animation = CABasicAnimation(keyPath: "position")
             animation.duration = 0.05
             animation.repeatCount = 2
@@ -267,6 +173,14 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             return false
         }
         
+    }
+    
+    func enableDelete() {
+        deleteButton.hidden = false
+    }
+    
+    func disableDelete() {
+        deleteButton.hidden = true
     }
     
     // MARK: - UITableViewDataSource
@@ -330,7 +244,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     // MARK: - Drag and Drop
     
     func cancelDragging() {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         if (!dragging) {
             return
         }
@@ -345,10 +259,12 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         toTable = nil
         fromList = nil
         toList = nil
+        
+        disableDelete()
     }
     
     func startDragging(draggingIndex: Int, draggedName: String, draggedColor: UIColor, location: CGPoint) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         dragging = true
         draggedIndex = draggingIndex
         tempView = UIView(frame: CGRectMake(0, 0, 130, 34))
@@ -366,13 +282,15 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.parentViewController!.view.addSubview(tempView!)
         tempView?.center = location
         beginDraggingRect = tempView?.frame
+        
+        enableDelete()
     }
     
     func handleSwipe(gestureRecongnizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
         let state = gestureRecongnizer.state
         
         let loc = gestureRecongnizer.locationInView(table)
-        Log("SWIPE (\(stateToString(state))) (\(loc.x),\(loc.y))")
+        // Log("SWIPE (\(stateToString(state))) (\(loc.x),\(loc.y))")
         
         let indexPath = table.indexPathForRowAtPoint(loc)
         
@@ -406,7 +324,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleSwipeA(gestureRecognizer: UIGestureRecognizer) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         fromTable = tableA
         toTable = tableB
         fromList = listA
@@ -415,7 +333,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleSwipeB(gestureRecognizer: UIGestureRecognizer) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         fromTable = tableB
         toTable = tableA
         fromList = listB
@@ -424,10 +342,10 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLP(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         let state = gestureRecognizer.state
         let loc = gestureRecognizer.locationInView(table)
-        Log("LP (\(stateToString(state))) (\(loc.x),\(loc.y))")
+        // Log("LP (\(stateToString(state))) (\(loc.x),\(loc.y))")
         
         let indexPath = table.indexPathForRowAtPoint(loc)
         
@@ -446,7 +364,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         let color = label.textColor
         
         if (indexPath!.row >= list.array!.count) {
-            Log("Non in any row")
+            // Log("Non in any row")
             return
         }
         
@@ -464,7 +382,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLPA(gestureRecognizer: UIGestureRecognizer) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         fromTable = tableA
         toTable = tableB
         fromList = listA
@@ -473,7 +391,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLPB(gestureRecognizer: UIGestureRecognizer) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         fromTable = tableB
         toTable = tableA
         fromList = listB
@@ -482,7 +400,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handlePan(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         
         let state = gestureRecognizer.state
         let loc = gestureRecognizer.locationInView(self.view)
@@ -509,7 +427,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             let color = label.textColor
             
             if (indexPath!.row >= list.array!.count) {
-                Log("Non in any row")
+                // Log("Non in any row")
                 return
             }
             
@@ -520,13 +438,13 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
             if (dragging) {
                 var locInView = gestureRecognizer.locationInView(fromTable)
                 if (CGRectContainsPoint(fromTable.bounds, locInView)) {
-                    Log("Dropped in FROM table")
+                    // Log("Dropped in FROM table")
                     return cancel()
                 }
                 
                 locInView = gestureRecognizer.locationInView(toTable)
                 if (CGRectContainsPoint(fromTable.bounds, locInView)) {
-                    Log("Dropped in TO table")
+                    // Log("Dropped in TO table")
                     let rowData: AnyObject = fromList!.array!.removeAtIndex(draggedIndex)
                     toList!.array!.append(rowData)
                     
@@ -541,12 +459,32 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
                     return
                 }
                 
-                 cancel()
+                locInView = gestureRecognizer.locationInView(doneHolderView)
+                if (CGRectContainsPoint(doneHolderView.bounds, locInView)) {
+                    // Log("Dropped in TO DELETE")
+                    fromList!.array!.removeAtIndex(draggedIndex)
+                    let arr = [NSIndexPath(forRow: draggedIndex, inSection: 0)]
+                    fromTable.deleteRowsAtIndexPaths(arr, withRowAnimation: UITableViewRowAnimation.Automatic)
+                    
+                    self.cancelDragging()
+                    return
+                }
+                
+                cancel()
             }
         }
         
         if (dragging) {
             tempView?.center = loc
+            
+            let locInView = gestureRecognizer.locationInView(doneHolderView)
+            if (CGRectContainsPoint(doneHolderView.bounds, locInView)) {
+                // Log("In DELETE")
+                
+                return
+            } else {
+                
+            }
         }
         
     }
@@ -566,7 +504,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handlePanA(gestureRecognizer: UIGestureRecognizer) {
-        Log("PAN:" + __FUNCTION__)
+        // Log("PAN:" + __FUNCTION__)
         fromTable = tableA
         toTable = tableB
         fromList = listA
@@ -575,7 +513,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handlePanB(gestureRecognizer: UIGestureRecognizer) {
-        Log(__FUNCTION__)
+        // Log(__FUNCTION__)
         fromTable = tableB
         toTable = tableA
         fromList = listB
@@ -607,13 +545,11 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     {
         if listA?.array?.count == 0
         {
-            self.goView.userInteractionEnabled = false
-            self.goView.alpha = 0.5
+            goButton.enabled = false
         }
         else
         {
-            self.goView.userInteractionEnabled = true
-            self.goView.alpha = 1.0
+            goButton.enabled = true
         }
     }
     
