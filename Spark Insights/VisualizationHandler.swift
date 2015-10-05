@@ -361,7 +361,9 @@ class VisualizationHandler{
         
         for countryName in countriesArray
         {
-            countryCircleViews[countryName]!.changeRadiusTo(0.0)
+            if let myCircleView = countryCircleViews[countryName] {
+                myCircleView.changeRadiusTo(0.0)
+            }
         }
         
         // set the radii
