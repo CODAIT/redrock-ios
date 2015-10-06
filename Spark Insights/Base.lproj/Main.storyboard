@@ -1149,9 +1149,9 @@
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                     </textField>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ev5-KW-g8z">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ev5-KW-g8z" userLabel="Bottom Bar">
                                         <rect key="frame" x="0.0" y="538" width="325" height="1"/>
-                                        <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Hl3-ye-dvk"/>
                                             <constraint firstAttribute="width" constant="325" id="cB4-DN-MFH"/>
@@ -1169,17 +1169,17 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iY7-F5-F9b">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iY7-F5-F9b" userLabel="Include Bar">
                                         <rect key="frame" x="20" y="129" width="100" height="1"/>
-                                        <color key="backgroundColor" red="0.0" green="0.70196078431372544" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="NGj-QW-5sh"/>
                                             <constraint firstAttribute="width" constant="100" id="OOY-g4-cA8"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CWJ-0s-4wF">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CWJ-0s-4wF" userLabel="Exclude Bar">
                                         <rect key="frame" x="169" y="129" width="100" height="1"/>
-                                        <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="8e1-uP-eqi"/>
                                             <constraint firstAttribute="width" constant="100" id="xTM-9I-IEK"/>
