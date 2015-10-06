@@ -48,7 +48,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var scrollView: ResizingScrollView!
     @IBOutlet weak var holderView: UIView!
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var headerView: UIView!
@@ -58,6 +58,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     @IBOutlet weak var pageControlView: PageControlView!
     
     @IBOutlet weak var holderViewLeadingEdge: NSLayoutConstraint!
+    @IBOutlet weak var dummyViewLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var footerViewLeadingEdge: NSLayoutConstraint!
     
     var firstLoad = true
@@ -135,13 +136,15 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     func animateLeftPanelXPosition(targetPosition targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
         leftViewController.onAnimationStart()
-        footerView.layoutIfNeeded()
+        self.scrollView.viewWillResize()
         self.footerViewLeadingEdge.constant = targetPosition + 350
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.leftViewController.view.frame.origin.x = targetPosition
             self.footerView.layoutIfNeeded()
             }, completion: { finished in
+                self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()
+                self.scrollView.viewDidResize()
         })
     }
     
@@ -241,7 +244,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 myMapView.image = image
                 
                 visualizationHandler.visualizationViews.append(mySuperView)
-                self.scrollView.addSubview(mySuperView)
+                self.scrollView.addVisualisation(mySuperView)
                 
                 
                 // THE MAP
@@ -265,7 +268,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 myWebView.scrollView.bounces = false;
                 
                 visualizationHandler.visualizationViews.append(myWebView)
-                self.scrollView.addSubview(myWebView)
+                self.scrollView.addVisualisation(myWebView)
                 // set initial loading state
                 myWebView.hidden = true
                 

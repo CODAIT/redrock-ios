@@ -765,11 +765,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRv-zE-Rs9">
                                         <rect key="frame" x="0.0" y="0.0" width="1024" height="624"/>
                                         <subviews>
-                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="at8-Vv-AL8">
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="at8-Vv-AL8" customClass="ResizingScrollView" customModule="RedRock" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="624"/>
                                             </scrollView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="at8-Vv-AL8" secondAttribute="trailing" id="79r-jM-5mZ"/>
                                             <constraint firstItem="at8-Vv-AL8" firstAttribute="leading" secondItem="VRv-zE-Rs9" secondAttribute="leading" id="Fj9-V1-5vl"/>
@@ -863,7 +863,7 @@
                                         </variation>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.92549019607843142" green="0.94117647058823528" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="l6b-Ns-gk2" firstAttribute="leading" secondItem="xSs-G1-UdG" secondAttribute="leading" id="1da-dw-QYj"/>
                                     <constraint firstItem="l6b-Ns-gk2" firstAttribute="top" secondItem="VRv-zE-Rs9" secondAttribute="bottom" id="5Hg-me-gyr"/>
@@ -893,12 +893,13 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
+                        <outlet property="dummyViewLeadingEdge" destination="WBw-k7-Cuo" id="hLF-YN-5SW"/>
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="O8h-4D-Fnt"/>
                         <outlet property="footerViewLeadingEdge" destination="1da-dw-QYj" id="Sx6-wL-82P"/>
                         <outlet property="headerLabel" destination="K4a-nJ-SKi" id="5QL-Jk-ZoJ"/>
                         <outlet property="headerView" destination="2qF-XA-JiK" id="hVc-Je-lrj"/>
                         <outlet property="holderView" destination="xSs-G1-UdG" id="Rnt-D4-Er5"/>
-                        <outlet property="holderViewLeadingEdge" destination="WBw-k7-Cuo" id="Opo-8K-aW3"/>
+                        <outlet property="holderViewLeadingEdge" destination="oWR-kT-bDB" id="HFv-vr-hrG"/>
                         <outlet property="pageControlView" destination="ifN-uh-2Nl" id="ca0-vT-6cT"/>
                         <outlet property="pageControlViewWidthConstraint" destination="AuT-wr-vPD" id="5bs-ZQ-ceb"/>
                         <outlet property="scrollView" destination="at8-Vv-AL8" id="QvF-vV-Ur7"/>
