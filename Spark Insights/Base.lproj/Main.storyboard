@@ -1169,12 +1169,12 @@
                                                         <rect key="frame" x="8" y="8" width="309" height="45"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="16" maxY="0.0"/>
-                                                        <state key="normal" title="Go" image="RR2.0_Forward_TEAL"/>
+                                                        <state key="normal" title="Go" image="RR2.0_Forward_WHITE"/>
                                                         <state key="disabled">
                                                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
-                                                        <state key="highlighted" image="RR2.0_Forward_WHITE">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <state key="highlighted" image="RR2.0_Forward_LightBlue">
+                                                            <color key="titleColor" red="0.30588235294117649" green="0.49411764705882355" blue="0.76470588235294112" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <connections>
                                                             <action selector="goClicked:" destination="Pkp-zW-FqT" eventType="touchUpInside" id="iEM-v9-fym"/>
@@ -1278,7 +1278,7 @@
     </scenes>
     <resources>
         <image name="Forward_WHITE" width="41" height="41"/>
-        <image name="RR2.0_Forward_TEAL" width="21" height="21"/>
+        <image name="RR2.0_Forward_LightBlue" width="21" height="21"/>
         <image name="RR2.0_Forward_WHITE" width="21" height="21"/>
         <image name="RR2.0_Information_Blue" width="21" height="21"/>
         <image name="RR2.0_Information_WHITE" width="21" height="21"/>
