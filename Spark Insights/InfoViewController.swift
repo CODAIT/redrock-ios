@@ -1,5 +1,5 @@
 //
-//  HelpPopupTableViewController.swift
+//  InfoViewController.swift
 //  RedRock
 //
 //  Created by Barbara Gomes on 7/21/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HelpPopupTableViewController: UITableViewController {
+class InfoViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         

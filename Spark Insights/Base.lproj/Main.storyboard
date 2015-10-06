@@ -856,9 +856,7 @@
                                                     </mask>
                                                 </variation>
                                                 <connections>
-                                                    <segue destination="7sr-cZ-znR" kind="popoverPresentation" popoverAnchorView="ZKq-dl-Nln" id="DBp-fz-1Xb">
-                                                        <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
-                                                    </segue>
+                                                    <action selector="showInfoView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6wq-av-RAy"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -936,25 +934,25 @@
             </objects>
             <point key="canvasLocation" x="266" y="401"/>
         </scene>
-        <!--Help Popup Table View Controller-->
+        <!--Info View Controller-->
         <scene sceneID="Xyy-Q7-dKq">
             <objects>
-                <tableViewController id="7sr-cZ-znR" customClass="HelpPopupTableViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="InfoViewController" id="7sr-cZ-znR" customClass="InfoViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="Afi-EP-RIr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="405"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.87058823529411766" green="0.90980392156862744" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TitleCell" rowHeight="45" id="Wje-T0-Lvo">
-                                <rect key="frame" x="0.0" y="22" width="320" height="45"/>
+                                <rect key="frame" x="0.0" y="22" width="300" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wje-T0-Lvo" id="dFr-Oc-qAA">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ec8-FO-Ca5">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ec8-FO-Ca5">
                                             <rect key="frame" x="115" y="12" width="90" height="20.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -969,10 +967,10 @@
                                 <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                             <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ChartHelpCell" rowHeight="100" id="l7S-Os-7VI" customClass="ChartHelpDecriptionTableViewCell" customModule="RedRock" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="67" width="320" height="100"/>
+                                <rect key="frame" x="0.0" y="67" width="300" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l7S-Os-7VI" id="HwU-fH-Bmr">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f58-cm-kb1">
@@ -982,13 +980,13 @@
                                                 <constraint firstAttribute="width" constant="21" id="pdE-gO-H7k"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chart Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iAt-Sz-Cfe">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Chart Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iAt-Sz-Cfe">
                                             <rect key="frame" x="60" y="25" width="232" height="19.5"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8M-GV-YpD">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8M-GV-YpD">
                                             <rect key="frame" x="60" y="59.5" width="232" height="17"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1033,10 +1031,12 @@
                             <outlet property="delegate" destination="7sr-cZ-znR" id="uXM-gX-u43"/>
                         </connections>
                     </tableView>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="600"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WP7-pP-Qgi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="276" y="1127.5"/>
+            <point key="canvasLocation" x="-96" y="1204"/>
         </scene>
         <!--Right View Controller-->
         <scene sceneID="eb2-ha-XHF">

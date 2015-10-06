@@ -120,6 +120,18 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         toggleLeftPanel()
     }
     
+    @IBAction func showInfoView(sender: UIButton) {
+        let controller = UIStoryboard.infoViewController()
+        controller?.modalPresentationStyle = UIModalPresentationStyle.Popover
+        
+        let popover = controller?.popoverPresentationController
+        popover?.sourceView = sender
+        popover?.sourceRect = sender.bounds
+        popover?.permittedArrowDirections = UIPopoverArrowDirection.Any
+        
+        self.presentViewController(controller!, animated: true, completion: nil)
+    }
+    
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {
