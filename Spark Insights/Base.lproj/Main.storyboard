@@ -1054,7 +1054,7 @@
                                 <rect key="frame" x="275" y="0.0" width="325" height="600"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="34" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="HfT-Go-2j7">
-                                        <rect key="frame" x="20" y="120" width="133" height="398"/>
+                                        <rect key="frame" x="20" y="138" width="133" height="380"/>
                                         <color key="backgroundColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="133" id="lPQ-OM-w3h"/>
@@ -1098,7 +1098,7 @@
                                         </connections>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="34" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="xPW-IQ-rHq">
-                                        <rect key="frame" x="169" y="120" width="133" height="398"/>
+                                        <rect key="frame" x="169" y="138" width="133" height="380"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="133" id="SJY-MZ-nWe"/>
@@ -1139,10 +1139,10 @@
                                         </connections>
                                     </tableView>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ybR-4K-vNL">
-                                        <rect key="frame" x="10" y="20" width="282" height="44"/>
+                                        <rect key="frame" x="10" y="20" width="282" height="62"/>
                                         <color key="backgroundColor" red="0.066666666666666666" green="0.11764705882352941" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="H4B-zn-kX6"/>
+                                            <constraint firstAttribute="height" constant="62" id="H4B-zn-kX6"/>
                                             <constraint firstAttribute="width" constant="282" id="yqF-pk-ak8"/>
                                         </constraints>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1158,19 +1158,19 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Include" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gsj-pB-4Lm">
-                                        <rect key="frame" x="20" y="82" width="75" height="27"/>
+                                        <rect key="frame" x="20" y="100" width="75" height="27"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exclude" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nla-1W-EJu">
-                                        <rect key="frame" x="169" y="82" width="82.5" height="27"/>
+                                        <rect key="frame" x="169" y="100" width="82.5" height="27"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="23"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iY7-F5-F9b">
-                                        <rect key="frame" x="20" y="111" width="100" height="1"/>
+                                        <rect key="frame" x="20" y="129" width="100" height="1"/>
                                         <color key="backgroundColor" red="0.0" green="0.70196078431372544" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="NGj-QW-5sh"/>
@@ -1178,7 +1178,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CWJ-0s-4wF">
-                                        <rect key="frame" x="169" y="111" width="100" height="1"/>
+                                        <rect key="frame" x="169" y="129" width="100" height="1"/>
                                         <color key="backgroundColor" red="0.0" green="0.70196078429999997" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="8e1-uP-eqi"/>
