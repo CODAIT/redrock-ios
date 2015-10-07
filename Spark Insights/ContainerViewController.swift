@@ -139,4 +139,7 @@ extension UIStoryboard {
         return mainStoryboard().instantiateViewControllerWithIdentifier("CenterViewController") as? CenterViewController
     }
     
+    class func infoViewController() -> InfoViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("InfoViewController") as? InfoViewController
+    }
 }
