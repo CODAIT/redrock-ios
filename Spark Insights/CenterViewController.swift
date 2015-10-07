@@ -106,6 +106,14 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.resetViewController()
     }
     
+    func reloadAllViews() {
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
+    }
+    
     func addLeftPanelViewController() {
         leftViewController = UIStoryboard.leftViewController()
         leftViewController.view.frame = CGRectMake(-350, 0, 354, 768)
@@ -126,10 +134,18 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             // animate out
             self.animateLeftPanelXPosition(targetPosition: -350)
             leftViewOpen = false
+            
+            // TODO RERENDER THE CHARTS AT NEW SIZE
+            visualizationHandler.scrollViewWidth = visualizationHandler.scrollViewWidth - 350
+            reloadAllViews()
         } else {
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
             leftViewOpen = true
+            
+            // TODO RERENDER THE CHARTS AT NEW SIZE
+            visualizationHandler.scrollViewWidth = visualizationHandler.scrollViewWidth + 350
+            reloadAllViews()
         }
     }
     
@@ -230,13 +246,18 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             {
                 Log("Config.visualizationsIndex.timemap.rawValue")
                 
+                visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
+                visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
+
+                Log("map size in setupWebViews... self.scrollView.frame.size.width.. \(self.scrollView.frame.size.width),  self.scrollView.frame.size.height.. \(self.scrollView.frame.size.height)");
+                
                 //NOW WRITE THIS INTO VISUALIZATION HANDLER
                 //THEN DO THE TIME SERIES WITH THE CIRCLES
                 
                 let mySuperView : NativeVisualizationView = NativeVisualizationView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
-                let image = UIImage(named: "mercator_projection.png")
+                let image = UIImage(named: "bluewebmercatorprojection_g.png")
                 myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
                 

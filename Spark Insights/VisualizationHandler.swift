@@ -41,7 +41,9 @@ class VisualizationHandler{
     
     var countryCircleViews = [String: CircleView]()
     var timemapTimer : NSTimer!
-    var indexOfLastDate = 0;
+    var indexOfLastDate = 0
+    let maxCircleSize = 300.0
+    var circleResizeConstant = 1.0 //this will change
     
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
@@ -286,7 +288,7 @@ class VisualizationHandler{
     //TODO update for native
     func stopTimemap(){
         //Log("stopTimemap")
-        //todo: make circles invisible so they dont show up on other screens
+        zeroTimemapCircles()
         
         timemapTimer.invalidate()
         timemapTimer = nil;
@@ -297,36 +299,87 @@ class VisualizationHandler{
         //Log("startTimemap")
         self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
     }
+    
+    func zeroTimemapCircles(){
+        let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
+        let countries = NSDictionary(contentsOfFile: countriesFilePath!)
+        
+        let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
+        if !countryCircleViews.isEmpty{
+            for myCountryString in countriesArray{
+                countryCircleViews[myCountryString]?.changeRadiusTo(0.0)
+            }
+        }
+    }
 
     func xFromCountryDictionary(myCountry: NSDictionary) -> Double{
         let longitude   = Double(myCountry["longitude"]! as! NSNumber)
         
-        let mapWidth    = Double(scrollViewWidth)
-        
-        // get x value
-        let x = (longitude+180.0)*(mapWidth/360.0)
-        
-        return x
+        return xFromLongitude(longitude)
     }
     
     func yFromCountryDictionary(myCountry: NSDictionary) -> Double{
         let latitude    = Double(myCountry["latitude"]! as! NSNumber)
         
+        return yFromLatitude(latitude)
+    }
+
+    func xFromLongitude(longitude: Double) -> Double{
+        let mapWidth    = Double(scrollViewWidth)
+        
+        // get x value
+        let x = (longitude+180.0)*(mapWidth/360.0)
+        
+        Log("xFromLongitude... longitude: \(longitude) becomes x: \(x)")
+        
+        return x
+    }
+    
+    func yFromLatitude(latitude: Double) -> Double{
         let mapWidth    = Double(scrollViewWidth)
         let mapHeight   = Double(scrollViewHeight)
         
+        // ORIGINAL ASPECT RATIO //2058 × 1746
+        // new aspect ratio // 1024 x 624
+        let originalHeightAspect = 1746.0/2058.0
+        let newHeightAspect = Double(scrollViewHeight/scrollViewWidth)
+        let resizeHeight = newHeightAspect/originalHeightAspect
+        let resizedLatitude = resizeHeight*latitude
+
+        
         // convert from degrees to radians
-        let latRad = latitude*M_PI/180.0;
+        let latRad = resizedLatitude*M_PI/180.0;
         
         // get y value
         let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
-        let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+        var y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+        
+        
+        Log("yFromLatitude... latitude: \(latitude) becomes y: \(y)")
+        
         return y
     }
-
     
     func transformDataForTimemapIOS(myView: NativeVisualizationView){
-        //Log("TODO: here we will transplant methods for doing the circle bubbles")
+        //it's not at the original aspect ratio! that's why it's distorted!
+        
+        //TODO only do this once
+        var biggestValue = 0.0
+        if self.timemapData.count > 0
+        {
+            biggestValue = 0
+            for r in 0..<self.timemapData.count{
+                
+                let value = self.timemapData[r][2]
+                if(Double(value) > biggestValue){
+                    biggestValue = Double(value)!
+                }
+            }
+        }
+        
+        circleResizeConstant = maxCircleSize / biggestValue //size of the biggest possible circle
+    
+        Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
         let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
         let properties = NSDictionary(contentsOfFile: filePath!)
         
@@ -345,7 +398,7 @@ class VisualizationHandler{
                 
                 let circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
                 
-                countryCircleViews[myCountryString] = (circleView)
+                countryCircleViews[myCountryString] = circleView
                 
                 myView.addSubview(circleView)
             }
@@ -372,16 +425,11 @@ class VisualizationHandler{
         var i = indexOfLastDate;
         
         while( currentDate == lastDate){ // and you're not at the end
-            
-            //let myCountryPosition : NSDictionary = properties![timemapData[i][1]]! as! NSDictionary //use the country name to get the country position
-            
-            //let x = xFromCountryDictionary(myCountryPosition)
-            //let y = yFromCountryDictionary(myCountryPosition)
-            
+
             var radius : CGFloat = 0.0
             
             if let n = NSNumberFormatter().numberFromString(timemapData[i][2]) {
-                radius = CGFloat(n)
+                radius = CGFloat(n) * CGFloat(circleResizeConstant)
             }
             
             //change the radius associated with the string
