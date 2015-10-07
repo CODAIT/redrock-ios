@@ -20,7 +20,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate,MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -35,6 +35,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     var leftViewController: LeftViewController!
     var leftViewOpen = false
+    
+    var bottomDrawerViewController: BottomDrawerViewController!
     
     // last visited page
     var currentPage : Int = 0
@@ -56,10 +58,12 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     @IBOutlet weak var statusBarSeparator: UIView!
     @IBOutlet weak var pageControlView: PageControlView!
+    @IBOutlet weak var bottomDrawerHolder: UIView!
     
     @IBOutlet weak var holderViewLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var dummyViewLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var footerViewLeadingEdge: NSLayoutConstraint!
+    @IBOutlet weak var bottomDrawerHolderBottomEdge: NSLayoutConstraint!
     
     var firstLoad = true
     /* TODO: replace this function with equiv
@@ -96,6 +100,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         
         addLeftPanelViewController()
+        addBottmDrawerViewController()
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,6 +121,26 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         view.addSubview(leftViewController.view)
         addChildViewController(leftViewController)
         leftViewController.didMoveToParentViewController(self)
+    }
+    
+    func addBottmDrawerViewController() {
+        bottomDrawerViewController = UIStoryboard.bottomDrawerViewController()
+        bottomDrawerHolder.addSubview(bottomDrawerViewController.view)
+        addChildViewController(bottomDrawerViewController)
+        bottomDrawerViewController.didMoveToParentViewController(self)
+        
+        // Set contraints
+        let views = [
+            "bottomDrawerControllerView": bottomDrawerViewController.view
+        ]
+        bottomDrawerViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        let viewConst_W = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[bottomDrawerControllerView]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        let viewConst_H = NSLayoutConstraint.constraintsWithVisualFormat("V:|-2-[bottomDrawerControllerView]-0-|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        bottomDrawerHolder.addConstraints(viewConst_W)
+        bottomDrawerHolder.addConstraints(viewConst_H)
+        
+        bottomDrawerViewController.edgeConstraint = bottomDrawerHolderBottomEdge
+        bottomDrawerViewController.state = BottomDrawerState.ClosedPartial
     }
     
     @IBAction func toggleFeedButtonClicked(sender: UIButton) {

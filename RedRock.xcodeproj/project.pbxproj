@@ -37,6 +37,7 @@
 		CE79DA831B19166C003F01F6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA801B19166C003F01F6 /* LICENSE */; };
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
 		CEBF07071BC31D71009C24DB /* ResizingScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF07061BC31D71009C24DB /* ResizingScrollView.swift */; settings = {ASSET_TAGS = (); }; };
+		CEBF07091BC47C5D009C24DB /* BottomDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF07081BC47C5D009C24DB /* BottomDrawerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CEC4A8EC1BBB3F70007FC071 /* LeftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */; };
 		CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */; };
@@ -99,6 +100,7 @@
 		CE79DA811B19166C003F01F6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		CEBF07061BC31D71009C24DB /* ResizingScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResizingScrollView.swift; sourceTree = "<group>"; };
+		CEBF07081BC47C5D009C24DB /* BottomDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerViewController.swift; sourceTree = "<group>"; };
 		CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftViewController.swift; sourceTree = "<group>"; };
 		CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
 				CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */,
 				CEBF07061BC31D71009C24DB /* ResizingScrollView.swift */,
+				CEBF07081BC47C5D009C24DB /* BottomDrawerViewController.swift */,
 				41ED94041B179DC400A80447 /* TweetsTableViewController.swift */,
 				CE79DA4A1B1640C0003F01F6 /* AppDelegate.swift */,
 				41ED940E1B17ABB400A80447 /* DisplayUrlViewController.swift */,
@@ -410,6 +413,7 @@
 				CEC4A8EC1BBB3F70007FC071 /* LeftViewController.swift in Sources */,
 				CEDBEADF1B22672400FB9695 /* Log.swift in Sources */,
 				419F69B51B72B8E40041D682 /* RangeSliderTrackLayer.swift in Sources */,
+				CEBF07091BC47C5D009C24DB /* BottomDrawerViewController.swift in Sources */,
 				F3222DFC1B19192D00FDE3B1 /* VisualizationHandler.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				CEBF07071BC31D71009C24DB /* ResizingScrollView.swift in Sources */,
