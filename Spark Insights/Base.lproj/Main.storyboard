@@ -910,6 +910,7 @@
                     <connections>
                         <outlet property="bottomDrawerHolder" destination="8wx-gI-ptP" id="jHJ-Aw-xKF"/>
                         <outlet property="bottomDrawerHolderBottomEdge" destination="W02-eO-t8A" id="PXJ-hj-2df"/>
+                        <outlet property="bottomDrawerHolderLeadingEdge" destination="OcN-17-8ff" id="kJ0-wh-dUy"/>
                         <outlet property="dummyView" destination="VRv-zE-Rs9" id="NC1-xj-Qod"/>
                         <outlet property="dummyViewLeadingEdge" destination="WBw-k7-Cuo" id="hLF-YN-5SW"/>
                         <outlet property="footerView" destination="l6b-Ns-gk2" id="O8h-4D-Fnt"/>

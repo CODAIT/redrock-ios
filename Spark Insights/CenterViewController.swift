@@ -63,6 +63,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     @IBOutlet weak var holderViewLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var dummyViewLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var footerViewLeadingEdge: NSLayoutConstraint!
+    @IBOutlet weak var bottomDrawerHolderLeadingEdge: NSLayoutConstraint!
     @IBOutlet weak var bottomDrawerHolderBottomEdge: NSLayoutConstraint!
     
     var firstLoad = true
@@ -199,9 +200,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         leftViewController.onAnimationStart()
         self.scrollView.viewWillResize()
         self.footerViewLeadingEdge.constant = targetPosition + 350
+        self.bottomDrawerHolderLeadingEdge.constant = targetPosition + 350
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.leftViewController.view.frame.origin.x = targetPosition
             self.footerView.layoutIfNeeded()
+            self.bottomDrawerHolder.layoutIfNeeded()
             }, completion: { finished in
                 self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()

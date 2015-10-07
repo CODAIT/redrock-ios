@@ -29,7 +29,7 @@ class BottomDrawerViewController: UIViewController {
     @IBOutlet weak var downButton: UIButton!
     @IBOutlet weak var upButton: UIButton!
     
-    var state: BottomDrawerState = BottomDrawerState.Open {
+    var state: BottomDrawerState = BottomDrawerState.ClosedFully {
         didSet {
             self.animateToState(state)
         }
