@@ -36,6 +36,7 @@ class VisualizationHandler{
     var firstLoad = false
     
     var rangeSliderBarChart:RangeSliderUIControl = RangeSliderUIControl()
+    
     var rangeLabels:Array<UILabel> = Array<UILabel>()
     var dateRange: Array<String> = Array<String>()
     
@@ -47,7 +48,7 @@ class VisualizationHandler{
     
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
-            print("TODO: reload a NativeVisualizationView")
+            //print("TODO: reload a NativeVisualizationView")
             
             if(viewNumber == Config.visualizationsIndex.timemap.rawValue){
                 transformData(myNativeView)
@@ -66,7 +67,13 @@ class VisualizationHandler{
                     let filePath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[viewNumber]).URLByAppendingPathExtension("html").path!)
                     let request = NSURLRequest(URL: filePath)
                     myWebView.loadRequest(request)
+                    
                 }
+                
+                if(viewNumber == Config.visualizationsIndex.timemap.rawValue){
+                    
+                }
+                
             }
             else{
                 //Log("NOT if var request = webViews[viewNumber].request!")
@@ -78,7 +85,7 @@ class VisualizationHandler{
         // uses the path to determine which function to use
         
         if let myNativeView = myView as? NativeVisualizationView {
-            print("TODO transform native vis!")
+            //print("TODO transform native vis!")
             //TODO: currently, only the timemap is a native view
             // later we need a switch like we have for the other views
             self.transformDataForTimemapIOS(myNativeView)
@@ -330,7 +337,7 @@ class VisualizationHandler{
         // get x value
         let x = (longitude+180.0)*(mapWidth/360.0)
         
-        Log("xFromLongitude... longitude: \(longitude) becomes x: \(x)")
+        //Log("xFromLongitude... longitude: \(longitude) becomes x: \(x)")
         
         return x
     }
@@ -352,10 +359,10 @@ class VisualizationHandler{
         
         // get y value
         let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
-        var y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
+        let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
         
         
-        Log("yFromLatitude... latitude: \(latitude) becomes y: \(y)")
+        //Log("yFromLatitude... latitude: \(latitude) becomes y: \(y)")
         
         return y
     }
@@ -379,7 +386,7 @@ class VisualizationHandler{
         
         circleResizeConstant = maxCircleSize / biggestValue //size of the biggest possible circle
     
-        Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
+        //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
         let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
         let properties = NSDictionary(contentsOfFile: filePath!)
         

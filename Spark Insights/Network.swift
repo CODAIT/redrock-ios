@@ -108,7 +108,7 @@ class Network
     
     private func executeWordDistanceRequest(include: String, exclude: String)
     {
-        Log("executeWordDistanceRequest")
+        //Log("executeWordDistanceRequest")
         var parameters = Dictionary<String,String>()
         parameters["user"] = "ssdemo"
         parameters["termsInclude"] = include
