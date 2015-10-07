@@ -114,6 +114,14 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.resetViewController()
     }
     
+    func reloadAllViews() {
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
+        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
+    }
+    
     func addLeftPanelViewController() {
         leftViewController = UIStoryboard.leftViewController()
         leftViewController.view.frame = CGRectMake(-350, 0, 354, 768)
@@ -162,14 +170,28 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {
-        if (leftViewOpen) {
+        if (leftViewOpen) { //get bigger
             // animate out
             self.animateLeftPanelXPosition(targetPosition: -350)
             leftViewOpen = false
-        } else {
+            
+            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
+            reloadAllViews()
+            
+            //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
+            let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * (1024.0))
+            repositionSliderForBarChart(myOrigin, widthShrinkFactor: -350.0)
+        } else { //get smaller
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
             leftViewOpen = true
+            
+            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
+            reloadAllViews()
+            
+            //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
+            let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * 674.0)
+            repositionSliderForBarChart(myOrigin, widthShrinkFactor: 350.0)
         }
     }
     
@@ -184,6 +206,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()
                 self.scrollView.viewDidResize()
+                // should move slider bar code here to be better
         })
     }
     
@@ -270,21 +293,18 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             
             if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
             {
-                Log("Config.visualizationsIndex.timemap.rawValue")
-                
-                //NOW WRITE THIS INTO VISUALIZATION HANDLER
-                //THEN DO THE TIME SERIES WITH THE CIRCLES
-                
+                visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
+                visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
+
                 let mySuperView : NativeVisualizationView = NativeVisualizationView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
-                let image = UIImage(named: "mercator_projection.png")
+                let image = UIImage(named: "bluewebmercatorprojection_g.png")
                 myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
                 
                 visualizationHandler.visualizationViews.append(mySuperView)
                 self.scrollView.addVisualisation(mySuperView)
-                
                 
                 // THE MAP
                 mySuperView.addSubview(myMapView)
@@ -345,6 +365,26 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         rangeSlider.hidden = true
         rightLabel.hidden = true
         leftLabel.hidden = true
+    }
+    
+    func repositionSliderForBarChart(newOrigin: CGFloat, widthShrinkFactor: CGFloat)
+    {
+        visualizationHandler.rangeSliderBarChart.frame = CGRect(x: newOrigin + 80, y: self.scrollView.frame.height - 55,
+            width: self.scrollView.frame.width - 160 - widthShrinkFactor, height: 18.0)
+        
+        for label in visualizationHandler.rangeLabels
+        {
+            label.hidden = true
+            if(label.textAlignment == NSTextAlignment.Left){
+                label.frame = CGRectMake(newOrigin + 80, self.scrollView.frame.height - 36, 80, 18);
+            }
+            else if(label.textAlignment == NSTextAlignment.Right){
+                label.frame = CGRectMake(newOrigin + (self.scrollView.frame.width - 160 - widthShrinkFactor), self.scrollView.frame.height - 36, 80, 18);
+            }
+            label.hidden = false
+        }
+        visualizationHandler.rangeSliderBarChart.hidden = false
+        
     }
     
     func createUILabelRange(origin: CGFloat, align: NSTextAlignment) -> UILabel
@@ -878,7 +918,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     self.visualizationHandler.treemapData = data!
-                    Log("data for treemap!")
                     Log(data!.count)
                     self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
                     self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue) //reload the current page

@@ -9,11 +9,11 @@
     <script src="datamaps.world.min.js"></script>
 
     <style>
-        
+
         *{
             -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
-        
+
         text {
             font: 12px sans-serif;
         }
@@ -123,8 +123,8 @@
 
         <div id="currDate" style="display:none">20-APR</div>
         <div id="separator" style="display:none"></div>
-        <div class="playicon" id="player" onclick='toggleAnimation();'></div> 
-        
+        <div class="playicon" id="player" onclick='toggleAnimation();'></div>
+
         <div id="rangeContainer">
             <input type="range" id="myRange" step="1" value="0" onchange="rangeValueChanged(this.value)">
 
@@ -133,7 +133,7 @@
                     <div id="maxValue">10-May</div>
                 </div>
         </div>
-        
+
     </div>
 <script>
 
@@ -193,22 +193,22 @@
     }
 
     function renderChart(data, biggestValue) {
-        
+
         //maxNumber = getMaxValue(data);
         //document.getElementById("test").innerHTML = "biggestValue: "+(biggestValue+1);
         var radiusScale = d3.scale.linear().domain([0.0,biggestValue]).range([0.0,8000.0]);
         scalefactor = radiusScale(scalefactor);
         //document.getElementById("test").innerHTML = "scalefactor: "+(scalefactor);
-        
+
        mapData = data[0].values;
        mapData = mapLatandLong(mapData);
        datesArr = getDistictDates(mapData);
        countriesArr = getDistictCountries(mapData);
        filteredMapData = getFilteredMapData();
        setDatesOnRange()
-       
+
        maxCount = getMaxCount(mapData);
-       
+
 
        //Set XY
        var xy = d3.geo.equirectangular()
@@ -241,22 +241,22 @@
       .data(mapData)
       .enter()
       .append("svg:text")
-          .attr("x", function(d, i) { 
-            return xy([+d["longitude"],+d["latitude"]])[0]; 
+          .attr("x", function(d, i) {
+            return xy([+d["longitude"],+d["latitude"]])[0];
           })
-          .attr("y", function(d, i) { 
-            return xy([+d["longitude"],+d["latitude"]])[1]; 
+          .attr("y", function(d, i) {
+            return xy([+d["longitude"],+d["latitude"]])[1];
           })
           .attr("class","labels")
           .attr("dy", "0.3em")
           .attr("text-anchor", "middle")
-          .text(function(d) { 
+          .text(function(d) {
             //debugger;
             return "";
           });
 
       displayCurrentValue(0);
-      
+
       //toggleAnimation();
 
     }
@@ -404,7 +404,7 @@
 
     function setLabels(){
       //labels.selectAll(".labels").remove();
-      
+
     }
 
     function displayCurrentValue(value){
@@ -416,7 +416,7 @@
       .attr("r",  function(d) {
             //document.getElementById("test").innerHTML = "getRadiusForDateAndCountry(filteredMapData[value],d.name): "+getRadiusForDateAndCountry(filteredMapData[value],d.name);
         return getRadiusForDateAndCountry(filteredMapData[value],d.name);
-            
+
             //radiusScale(getRadiusForDateAndCountry(filteredMapData[value],d.name)); //return getRadiusForDateAndCountry(datesArr[value],d.name); //Math.floor((Math.random() * 50) + 1); //
       });
 
