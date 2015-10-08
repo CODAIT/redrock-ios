@@ -40,6 +40,11 @@ ruler { visibility: hidden; white-space: nowrap; }
 </style>
 <body>
 <span id="ruler"></span>
+<p id="test"></p>
+<p id="test2"></p>
+<p id="width"></p>
+<p id="height"></p>
+<p id="shrink"></p>
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
@@ -127,6 +132,21 @@ function renderChart(data, w, h){
 
     var margin = 0,
     diameter = 550;
+    
+    var optimizedWidth = 1024
+    var optimizedHeight = 624
+    
+    var shrinkConstant = w/optimizedWidth
+
+/*
+var ruler = document.getElementById("ruler");
+var width = document.getElementById("width");
+width.innerHTML = w
+var height = document.getElementById("height");
+height.innerHTML = h
+var shrinkLabel = document.getElementById("shrink");
+shrinkLabel.innerHTML = shrinkConstant
+ */
 
     var resizeConstant = 1.43
 
@@ -139,10 +159,10 @@ function renderChart(data, w, h){
     zoomedInSize = resizeConstant * zoomedInSize
     zoomedOutSize = resizeConstant * zoomedOutSize
 
-    diameter = resizeConstant * diameter
 
-    var ruler = document.getElementById("ruler");
-    //var test = document.getElementById("test");
+
+    diameter = resizeConstant * diameter * shrinkConstant
+
     //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
 
     var svg = d3.select("body").append("svg")
