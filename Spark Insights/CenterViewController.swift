@@ -113,6 +113,20 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
         visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
         visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
+        makeVisibleRangeSliderBarChartAndLabels()
+    }
+    
+    func hideRangeSliderBarChartAndLabels(){
+        visualizationHandler.rangeSliderBarChart.hidden = true
+        visualizationHandler.rangeLabels[0].hidden = true
+        visualizationHandler.rangeLabels[1].hidden = true
+    }
+    
+    func makeVisibleRangeSliderBarChartAndLabels(){
+        visualizationHandler.rangeSliderBarChart.hidden = false
+        visualizationHandler.rangeLabels[0].hidden = false
+        visualizationHandler.rangeLabels[1].hidden = false
+
     }
     
     func addLeftPanelViewController() {
@@ -148,8 +162,11 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             self.animateLeftPanelXPosition(targetPosition: -350)
             leftViewOpen = false
             
+            hideRangeSliderBarChartAndLabels()
+            
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
             //reloadAllViews()
+            
 
             //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
             let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * (1024.0))
@@ -158,6 +175,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
             leftViewOpen = true
+            
+            hideRangeSliderBarChartAndLabels()
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
             //reloadAllViews()
@@ -358,7 +377,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             }
             label.hidden = false
         }
-        visualizationHandler.rangeSliderBarChart.hidden = false
         
     }
     

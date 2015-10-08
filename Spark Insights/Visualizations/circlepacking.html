@@ -147,6 +147,12 @@ height.innerHTML = h
 var shrinkLabel = document.getElementById("shrink");
 shrinkLabel.innerHTML = shrinkConstant
  */
+    var xPadding = 0
+
+    if( w > 1000) // we want to pad it on the left
+    {
+        xPadding = 250
+    }
 
     var resizeConstant = 1.43
 
@@ -169,7 +175,7 @@ shrinkLabel.innerHTML = shrinkConstant
     .attr("width", w)
     .attr("height", h)
     .append("g")
-    .attr("transform", "translate(" + ((diameter / 2)+45) + "," + ((diameter / 2)-25) + ")");
+    .attr("transform", "translate(" + ((diameter / 2)+45+xPadding) + "," + ((diameter / 2)-25) + ")");
 
     var pack = d3.layout.pack()
     .padding(10)
