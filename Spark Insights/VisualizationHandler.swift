@@ -8,6 +8,11 @@
 //  Copyright (c) 2015 IBM. All rights reserved.
 //
 
+// todo map padding vert
+// todo map scaling with size
+// cosmetic bubbles
+// break out map code into a new class
+
 import Foundation
 import UIKit
 import WebKit
