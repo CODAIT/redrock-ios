@@ -149,8 +149,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             leftViewOpen = false
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
-            reloadAllViews()
-            
+            //reloadAllViews()
+
             //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
             let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * (1024.0))
             repositionSliderForBarChart(myOrigin, widthShrinkFactor: -350.0)
@@ -160,7 +160,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             leftViewOpen = true
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
-            reloadAllViews()
+            //reloadAllViews()
             
             //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
             let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * 674.0)
@@ -179,6 +179,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()
                 self.scrollView.viewDidResize()
+                self.reloadAllViews()
+
                 // should move slider bar code here to be better
         })
     }
