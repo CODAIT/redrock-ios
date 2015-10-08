@@ -26,9 +26,11 @@ rect.parent,
   stroke-width: 2px;
 }
 
+/*
 .grandparent:hover rect {
-  fill: darkgrey;
+  fill: blue;
 }
+ */
 
 .children rect.parent,
 .grandparent rect {
@@ -71,9 +73,20 @@ rect.parent,
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
+function renderChart(data, w, h){
+
+    var heightResizeConstant = 1.0
+    // we have a large size chart
+    if(w > 1000){
+        heightResizeConstant = 0.77
+    }
+    else{
+        heightResizeConstant = 1.16
+    }
+
 var margin = {top: 70, right: 0, bottom: 20, left: 0},
     width = 960,
-    height = 760 - margin.top - margin.bottom,
+    height = 760*heightResizeConstant - margin.top - margin.bottom,
     formatNumber = d3.format(",%"),
     colorDomain = [-.6, 0, .6],
     colorRange = ["#373a93", 'white', "#936638"],
@@ -252,7 +265,6 @@ function getContrast50(hexcolor){
 }
 
 
-function renderChart(data){
 
 var root = JSON.parse(data);
 
@@ -364,6 +376,6 @@ var root = JSON.parse(data);
 }
 
 //var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
-//renderChart(data);
+//renderChart(data, 1024, 680);
 
 </script>
