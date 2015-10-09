@@ -24,53 +24,83 @@ USAGE:
 */
 class BottomDrawerViewController: UIViewController {
 
+    weak var currentControl: UIViewController?
     weak var edgeConstraint: NSLayoutConstraint?
     
     @IBOutlet weak var downButton: UIButton!
     @IBOutlet weak var upButton: UIButton!
+    @IBOutlet weak var controlHolderView: UIView!
+    
+    private var currentState: BottomDrawerState = BottomDrawerState.ClosedFully
     
     var state: BottomDrawerState = BottomDrawerState.ClosedFully {
         didSet {
-            self.animateToState(state)
+            currentState = state
+            self.animateToState(state, complete: {})
         }
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // Initialize views to match properties
-        upButton.hidden = true
-        edgeConstraint?.constant = CGFloat(state.rawValue)
+        downButton.hidden = true
+        edgeConstraint?.constant = CGFloat(currentState.rawValue)
     }
     
     @IBAction func buttonClicked(sender: AnyObject) {
         toggleOpenClose()
     }
     
-    func animateToState(state: BottomDrawerState) {
-        edgeConstraint?.constant = CGFloat(state.rawValue)
+    func animateToState(newState: BottomDrawerState, complete: () -> Void) {
+        self.currentState = newState
+        edgeConstraint?.constant = CGFloat(newState.rawValue)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.view.superview?.layoutIfNeeded()
             }) { (finished) -> Void in
+                complete()
                 self.syncButtonWithState()
         }
     }
     
-    func syncButtonWithState() {
-        switch state {
+    private func syncButtonWithState() {
+        switch currentState {
         case BottomDrawerState.Open:
             upButton.hidden = true
             downButton.hidden = false
         case BottomDrawerState.ClosedPartial:
             upButton.hidden = false
             downButton.hidden = true
-        default:
-            upButton.hidden = true
-            downButton.hidden = false
+        case BottomDrawerState.ClosedFully:
+            upButton.hidden = false
+            downButton.hidden = true
         }
     }
     
-    func toggleOpenClose() {
+    private func toggleOpenClose() {
+        self.state = (currentState == BottomDrawerState.Open) ? BottomDrawerState.ClosedPartial : BottomDrawerState.Open
+    }
+    
+    func addControl(controller: UIViewController) {
+        currentControl = controller
+        addChildViewController(currentControl!)
+        currentControl!.didMoveToParentViewController(self)
+        controlHolderView.addSubview(currentControl!.view)
         
-        self.state = (state == BottomDrawerState.Open) ? BottomDrawerState.ClosedPartial : BottomDrawerState.Open
+        let views = [
+            "control": currentControl!.view
+        ]
+        currentControl!.view.translatesAutoresizingMaskIntoConstraints = false
+        let viewConst_W = NSLayoutConstraint.constraintsWithVisualFormat("H:|[control]|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        let viewConst_H = NSLayoutConstraint.constraintsWithVisualFormat("V:|[control]|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        controlHolderView.addConstraints(viewConst_W)
+        controlHolderView.addConstraints(viewConst_H)
+    }
+    
+    func removeControl() {
+        currentControl?.willMoveToParentViewController(nil)
+        currentControl?.view.removeFromSuperview()
+        currentControl?.removeFromParentViewController()
     }
 
 }

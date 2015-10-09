@@ -20,7 +20,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate,MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -37,6 +37,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     var leftViewOpen = false
     
     var bottomDrawerViewController: BottomDrawerViewController!
+    var rangeSliderViewController: RangeSliderViewController!
+    var playBarViewController: PlayBarViewController!
     
     // last visited page
     var currentPage : Int = 0
@@ -149,7 +151,16 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         bottomDrawerHolder.addConstraints(viewConst_H)
         
         bottomDrawerViewController.edgeConstraint = bottomDrawerHolderBottomEdge
-        bottomDrawerViewController.state = BottomDrawerState.ClosedPartial
+        bottomDrawerViewController.state = BottomDrawerState.ClosedFully
+        
+        rangeSliderViewController = UIStoryboard.rangeSliderViewController()
+        bottomDrawerViewController.addControl(rangeSliderViewController!)
+        rangeSliderViewController!.rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
+        
+        playBarViewController = UIStoryboard.playBarViewController()
+        bottomDrawerViewController.addControl(playBarViewController!)
+        playBarViewController.delegate = self
+        
     }
     
     @IBAction func toggleFeedButtonClicked(sender: UIButton) {
@@ -168,6 +179,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.presentViewController(controller!, animated: true, completion: nil)
     }
     
+    // MARK: - PlayBarViewControllerDelegate
+    
+    func playPauseClicked() {
+        print("PlayBar: Play/Pause clicked")
+        playBarViewController.progress = (playBarViewController.progress + 10) % 100
+    }
+    
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {
@@ -178,10 +196,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
             //reloadAllViews()
-
-            //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
-            let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * (1024.0))
-            repositionSliderForBarChart(myOrigin, widthShrinkFactor: -350.0)
         } else { //get smaller
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
@@ -189,10 +203,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
             //reloadAllViews()
-            
-            //should move this code into animateLeftPanelXPosition so it's not hardcoded this ugly way
-            let myOrigin = (CGFloat(Config.visualizationsIndex.stackedbar.rawValue) * 674.0)
-            repositionSliderForBarChart(myOrigin, widthShrinkFactor: 350.0)
         }
     }
     
@@ -336,73 +346,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 // set initial loading state
                 myWebView.hidden = true
                 
-                if i == Config.visualizationsIndex.stackedbar.rawValue
-                {
-                    createSliderForBarChart(myOrigin)
-                }
-                
                 myWebView.loadRequest(request)
             }
         }
-    }
-
-    func createSliderForBarChart(origin: CGFloat)
-    {
-        let rangeSlider = RangeSliderUIControl(frame: CGRectZero)
-        rangeSlider.frame = CGRect(x: origin + 80, y: self.scrollView.frame.height - 55,
-            width: self.scrollView.frame.width - 160, height: 18.0)
-        rangeSlider.addTarget(self, action: "rangeSliderValueChanged:", forControlEvents: .ValueChanged)
-        
-        visualizationHandler.rangeSliderBarChart = rangeSlider
-        self.scrollView.addSubview(rangeSlider)
-        let leftLabel = createUILabelRange(CGFloat(origin + 80), align: NSTextAlignment.Left)
-        let rightLabel = createUILabelRange(CGFloat(origin + (self.scrollView.frame.width - 160)), align: NSTextAlignment.Right)
-        
-        self.scrollView.addSubview(leftLabel)
-        self.scrollView.addSubview(rightLabel)
-        visualizationHandler.rangeLabels.append(leftLabel)
-        visualizationHandler.rangeLabels.append(rightLabel)
-        
-        /* send the touch began event to the uiView in that position 
-        instead of always try to scroll*/
-        self.scrollView.delaysContentTouches = false
-        
-        rangeSlider.hidden = true
-        rightLabel.hidden = true
-        leftLabel.hidden = true
-    }
-    
-    func repositionSliderForBarChart(newOrigin: CGFloat, widthShrinkFactor: CGFloat)
-    {
-        visualizationHandler.rangeSliderBarChart.frame = CGRect(x: newOrigin + 80, y: self.scrollView.frame.height - 55,
-            width: self.scrollView.frame.width - 160 - widthShrinkFactor, height: 18.0)
-        
-        for label in visualizationHandler.rangeLabels
-        {
-            label.hidden = true
-            if(label.textAlignment == NSTextAlignment.Left){
-                label.frame = CGRectMake(newOrigin + 80, self.scrollView.frame.height - 36, 80, 18);
-            }
-            else if(label.textAlignment == NSTextAlignment.Right){
-                label.frame = CGRectMake(newOrigin + (self.scrollView.frame.width - 160 - widthShrinkFactor), self.scrollView.frame.height - 36, 80, 18);
-            }
-            label.hidden = false
-        }
-        visualizationHandler.rangeSliderBarChart.hidden = false
-        
-    }
-    
-    func createUILabelRange(origin: CGFloat, align: NSTextAlignment) -> UILabel
-    {
-        let rangeLabel = UILabel()
-        rangeLabel.frame = CGRectMake(origin, self.scrollView.frame.height - 36, 80, 18);
-        rangeLabel.numberOfLines = 1
-        rangeLabel.font = UIFont(name: "HelveticaNeue-Thin", size: 10)
-        rangeLabel.textColor = Config.darkGrayTextColor
-        rangeLabel.textAlignment = align
-        rangeLabel.text = "May 30"
-        rangeLabel.backgroundColor = UIColor.whiteColor()
-        return rangeLabel
     }
     
     func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {
@@ -450,44 +396,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.visualizationHandler.firstLoad = false
     }
     
-    func createActivityIndicatorView(origin: CGFloat, center: CGPoint) -> UIActivityIndicatorView
-    {
-        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        activityIndicator.frame = CGRectMake(origin, 0, 100, 100);
-        activityIndicator.center = center
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.color = Config.darkBlueColor
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }
-    
-    func createUILabelForError(origin: CGFloat, center: CGPoint) -> UILabel
-    {
-        let label = UILabel()
-        label.frame = CGRectMake(origin, 0, 300, 300);
-        label.numberOfLines = 3
-        label.center = center
-        label.textColor = Config.darkBlueColor
-        label.text = Config.noDataMessage
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
-        label.textAlignment = NSTextAlignment.Center
-        label.hidden = true
-        return label
-    }
-    
-    func createUILabel(text: String, origin: CGFloat) -> UILabel
-    {
-        let titleLabel = UILabel()
-        titleLabel.frame = CGRectMake(origin, 0, self.scrollView.frame.size.width, 40);
-        titleLabel.numberOfLines = 1
-        titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
-        titleLabel.textColor = Config.darkGrayTextColor
-        titleLabel.text = text
-        titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.backgroundColor = Config.lightWhiteIce
-        return titleLabel
-    }
-    
     // MARK: - UIScrollViewDelegate
     
     //detect when the page was changed
@@ -523,6 +431,20 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 //Log("entered forcegraph so start animation")
                 self.visualizationHandler.startForcegraph()
             }
+            
+            bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[page]!, complete: {
+                switch page {
+                case Config.visualizationsIndex.stackedbar.rawValue:
+                    self.rangeSliderViewController.view.hidden = false
+                    self.playBarViewController.view.hidden = true
+                case Config.visualizationsIndex.timemap.rawValue:
+                    self.rangeSliderViewController.view.hidden = true
+                    self.playBarViewController.view.hidden = false
+                default:
+                    self.rangeSliderViewController.view.hidden = true
+                    self.playBarViewController.view.hidden = true
+                }
+            })
         }
     }
     
@@ -552,7 +474,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
         visualizationHandler.transformData(webView)
     }
-    
     
     
     // MARK: - PageControlDelegate
@@ -1152,5 +1073,44 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
     }
     
+    // MARK: - Utilities
+    
+    func createActivityIndicatorView(origin: CGFloat, center: CGPoint) -> UIActivityIndicatorView
+    {
+        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityIndicator.frame = CGRectMake(origin, 0, 100, 100);
+        activityIndicator.center = center
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
+        activityIndicator.color = Config.darkBlueColor
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }
+    
+    func createUILabelForError(origin: CGFloat, center: CGPoint) -> UILabel
+    {
+        let label = UILabel()
+        label.frame = CGRectMake(origin, 0, 300, 300);
+        label.numberOfLines = 3
+        label.center = center
+        label.textColor = Config.darkBlueColor
+        label.text = Config.noDataMessage
+        label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
+        label.textAlignment = NSTextAlignment.Center
+        label.hidden = true
+        return label
+    }
+    
+    func createUILabel(text: String, origin: CGFloat) -> UILabel
+    {
+        let titleLabel = UILabel()
+        titleLabel.frame = CGRectMake(origin, 0, self.scrollView.frame.size.width, 40);
+        titleLabel.numberOfLines = 1
+        titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        titleLabel.textColor = Config.darkGrayTextColor
+        titleLabel.text = text
+        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.backgroundColor = Config.lightWhiteIce
+        return titleLabel
+    }
 }
 

@@ -26,7 +26,7 @@ class RangeSliderThumbLayer: CALayer {
             let thumbPath = UIBezierPath(roundedRect: thumbFrame, cornerRadius: cornerRadius)
             
             // Fill - with a subtle shadow
-            let shadowColor = Config.lightSeaGreen
+            let shadowColor = Config.darkBlueColorV2
             //CGContextSetShadowWithColor(ctx, CGSize(width: 0.0, height: 1.0), 1.0, shadowColor.CGColor)
             CGContextSetFillColorWithColor(ctx, slider.thumbTintColor.CGColor)
             CGContextAddPath(ctx, thumbPath.CGPath)
