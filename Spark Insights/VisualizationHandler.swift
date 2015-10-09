@@ -35,9 +35,6 @@ class VisualizationHandler{
     
     var firstLoad = false
     
-    var rangeSliderBarChart:RangeSliderUIControl = RangeSliderUIControl()
-    
-    var rangeLabels:Array<UILabel> = Array<UILabel>()
     var dateRange: Array<String> = Array<String>()
     
     var countryCircleViews = [String: CircleView]()
@@ -87,7 +84,6 @@ class VisualizationHandler{
         self.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
         self.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
         self.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
-        self.makeVisibleRangeSliderBarChartAndLabels()
         
     }
     
@@ -539,7 +535,6 @@ class VisualizationHandler{
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     webView.evaluateJavaScript(script9, completionHandler: nil)
-                    self.updateRangeSliderBarChart()
                     self.successState(Config.visualizationsIndex.stackedbar.rawValue)
                     
                 })
@@ -686,40 +681,6 @@ class VisualizationHandler{
         self.timemapData.removeAll(keepCapacity: false)
         self.stackedbarData.removeAll(keepCapacity: false)
         self.wordcloudData.removeAll(keepCapacity: false)
-        self.rangeSliderBarChart.hidden = true
-        if(self.rangeLabels.count > 0)
-        {
-            self.rangeLabels[0].hidden = true
-            self.rangeLabels[1].hidden = true
-        }
-        
     }
-    
-    func updateRangeSliderBarChart()
-    {
-        self.rangeSliderBarChart.lowerValue = 0.0
-        self.rangeSliderBarChart.upperValue = 1.0
-        
-        self.rangeLabels[0].text = self.dateRange[0].substringToIndex(dateRange[0].endIndex.advancedBy(-3))
-        self.rangeLabels[1].text = self.dateRange[self.dateRange.count-1].substringToIndex(dateRange[self.dateRange.count-1].endIndex.advancedBy(-3))
-        
-        self.rangeSliderBarChart.hidden = false
-        self.rangeLabels[0].hidden = false
-        self.rangeLabels[1].hidden = false
-    }
-    
-    func hideRangeSliderBarChartAndLabels(){
-        self.rangeSliderBarChart.hidden = true
-        self.rangeLabels[0].hidden = true
-        self.rangeLabels[1].hidden = true
-    }
-    
-    func makeVisibleRangeSliderBarChartAndLabels(){
-        self.rangeSliderBarChart.hidden = false
-        self.rangeLabels[0].hidden = false
-        self.rangeLabels[1].hidden = false
-        
-    }
-
     
 }

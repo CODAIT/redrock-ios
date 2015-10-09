@@ -142,4 +142,16 @@ extension UIStoryboard {
     class func infoViewController() -> InfoViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("InfoViewController") as? InfoViewController
     }
+    
+    class func bottomDrawerViewController() -> BottomDrawerViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("BottomDrawerViewController") as? BottomDrawerViewController
+    }
+    
+    class func rangeSliderViewController() -> RangeSliderViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("RangeSliderViewController") as? RangeSliderViewController
+    }
+    
+    class func playBarViewController() -> PlayBarViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("PlayBarViewController") as? PlayBarViewController
+    }
 }
