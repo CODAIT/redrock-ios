@@ -383,6 +383,8 @@ class VisualizationHandler{
             myView.frame.origin.y = CGFloat(Config.fullscreenMapTopPadding)
         }
         
+        myView.baseMapView!.frame = CGRectMake(0, 0, self.scrollViewWidth, self.scrollViewHeight)
+
         //TODO only do this once
         var biggestValue = 0.0
         if self.timemapData.count > 0
