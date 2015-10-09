@@ -276,11 +276,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
 
-                let mySuperView : NativeVisualizationView = NativeVisualizationView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                let mySuperView : TimeMapView = TimeMapView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
                 let image = UIImage(named: "bluewebmercatorprojection_whitebg.png")
-                
                 
                 myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
@@ -290,6 +289,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 // THE MAP
                 mySuperView.addSubview(myMapView)
+                mySuperView.baseMapView = myMapView
             }
             else //this visualization is one of the webviews
             {
