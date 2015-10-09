@@ -9,13 +9,16 @@
 import Foundation
 import UIKit
 
-class CircleView :UIView {
+class CircleView :UIImageView {
     
     var myOriginX :CGFloat!
     var myOriginY :CGFloat!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.image = UIImage(named: "Bubble-64.png")
+        
         self.backgroundColor = UIColor.clearColor()
         self.myOriginX = frame.origin.x
         self.myOriginY = frame.origin.y
@@ -36,9 +39,13 @@ class CircleView :UIView {
     }
     
     func changeRadiusTo(newRadius: CGFloat){
-        self.frame.size.width = newRadius
-        self.frame.size.height = newRadius
-        self.frame.origin = CGPoint(x: self.myOriginX - newRadius/2, y: self.myOriginY - newRadius/2)
-        self.setNeedsDisplay()
+        
+        UIView.animateWithDuration(0.7, delay: 0.1, options: .CurveEaseOut, animations: {
+                self.frame.size.width = newRadius
+                self.frame.size.height = newRadius
+                self.frame.origin = CGPoint(x: self.myOriginX - newRadius/2, y: self.myOriginY - newRadius/2)
+            }, completion: { finished in
+                //
+            })
     }
 }

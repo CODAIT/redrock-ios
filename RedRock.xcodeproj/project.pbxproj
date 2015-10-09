@@ -52,6 +52,7 @@
 		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
 		F32ACAE61B1FC05100D3D16E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32ACAE41B1FC05100D3D16E /* LoadingView.swift */; };
 		F38DD6261BB5C779003A47AA /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38DD6251BB5C779003A47AA /* CircleView.swift */; };
+		F3AA38A41BC855FB00760D0F /* TimeMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3AA38A31BC855FB00760D0F /* TimeMapView.swift */; settings = {ASSET_TAGS = (); }; };
 		F3D4D9441BB30EDB002E9E55 /* VisualizationsNativeData in Resources */ = {isa = PBXBuildFile; fileRef = F3D4D9431BB30EDB002E9E55 /* VisualizationsNativeData */; };
 /* End PBXBuildFile section */
 
@@ -117,6 +118,7 @@
 		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		F32ACAE41B1FC05100D3D16E /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F38DD6251BB5C779003A47AA /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		F3AA38A31BC855FB00760D0F /* TimeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeMapView.swift; sourceTree = "<group>"; };
 		F3D4D9431BB30EDB002E9E55 /* VisualizationsNativeData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = VisualizationsNativeData; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -298,6 +300,7 @@
 			children = (
 				F38DD6251BB5C779003A47AA /* CircleView.swift */,
 				F315A7D61BB9DA420070A66C /* NativeVisualizationView.swift */,
+				F3AA38A31BC855FB00760D0F /* TimeMapView.swift */,
 			);
 			name = VisualizationsNativeClasses;
 			sourceTree = "<group>";
@@ -436,6 +439,7 @@
 				F38DD6261BB5C779003A47AA /* CircleView.swift in Sources */,
 				CE79DA4D1B1640C0003F01F6 /* CenterViewController.swift in Sources */,
 				CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */,
+				F3AA38A41BC855FB00760D0F /* TimeMapView.swift in Sources */,
 				CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */,
 				CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */,
 				CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */,

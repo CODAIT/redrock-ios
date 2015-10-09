@@ -8,6 +8,10 @@
 //  Copyright (c) 2015 IBM. All rights reserved.
 //
 
+// todo map scaling with size
+// cosmetic bubbles
+// break out map code into a new class
+
 import Foundation
 import UIKit
 import WebKit
@@ -78,14 +82,20 @@ class VisualizationHandler{
         }
     }
     
+    func reloadAllViews() {
+        self.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
+        
+    }
+    
     func transformData(myView: UIView){
         // uses the path to determine which function to use
         
-        if let myNativeView = myView as? NativeVisualizationView {
-            //print("TODO transform native vis!")
-            //TODO: currently, only the timemap is a native view
-            // later we need a switch like we have for the other views
-            self.transformDataForTimemapIOS(myNativeView)
+        if let myTimeMapView = myView as? TimeMapView {
+            self.transformDataForTimemapIOS(myTimeMapView)
         }
         else if let webView = myView as? WKWebView {
             let delay = 0.2 * Double(NSEC_PER_SEC)
@@ -102,10 +112,6 @@ class VisualizationHandler{
                 case "forcegraph.html":
                     self.transformDataForForcegraph(webView)
                     break;
-                //case "timemap.html":
-                //    Log("let's transform the timemap data")
-                //    self.transformDataForTimemap(webView)
-                //    break;
                 case "stackedbar.html":
                     self.transformDataForStackedbar(webView)
                     break;
@@ -128,7 +134,7 @@ class VisualizationHandler{
             
             treemapDataTrimmed = treemapDataTrimmed.stringByReplacingOccurrencesOfString("\n", withString: "")
             
-            let script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7);";
+            let script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.scrollViewWidth); var h = \(self.scrollViewHeight); renderChart(data7, w, h);";
             
             webView.evaluateJavaScript(script9, completionHandler: nil)
 
@@ -304,6 +310,7 @@ class VisualizationHandler{
         self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
     }
     
+    // todo perhaps make the circles invisible too
     func zeroTimemapCircles(){
         let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
         let countries = NSDictionary(contentsOfFile: countriesFilePath!)
@@ -329,7 +336,7 @@ class VisualizationHandler{
     }
 
     func xFromLongitude(longitude: Double) -> Double{
-        let mapWidth    = Double(scrollViewWidth)
+        let mapWidth    = Double(scrollViewWidth) // make it the map width?
         
         // get x value
         let x = (longitude+180.0)*(mapWidth/360.0)
@@ -340,12 +347,12 @@ class VisualizationHandler{
     }
     
     func yFromLatitude(latitude: Double) -> Double{
-        let mapWidth    = Double(scrollViewWidth)
-        let mapHeight   = Double(scrollViewHeight)
+        let mapWidth    = Double(scrollViewWidth) // make it the map width?
+        let mapHeight   = Double(scrollViewHeight) // make it the map height?
         
         // ORIGINAL ASPECT RATIO //2058 × 1746
         // new aspect ratio // 1024 x 624
-        let originalHeightAspect = 1746.0/2058.0
+        let originalHeightAspect = 1746.0/2058.0 //badly hardcoded
         let newHeightAspect = Double(scrollViewHeight/scrollViewWidth)
         let resizeHeight = newHeightAspect/originalHeightAspect
         let resizedLatitude = resizeHeight*latitude
@@ -364,9 +371,17 @@ class VisualizationHandler{
         return y
     }
     
-    func transformDataForTimemapIOS(myView: NativeVisualizationView){
-        //it's not at the original aspect ratio! that's why it's distorted!
+    func transformDataForTimemapIOS(myView: TimeMapView){
         
+        if(CenterViewController.leftViewOpen){ //small
+            myView.frame.origin.y = CGFloat(Config.smallscreenMapTopPadding)
+        }
+        else{ //big
+            myView.frame.origin.y = CGFloat(Config.fullscreenMapTopPadding)
+        }
+        
+        myView.baseMapView!.frame = CGRectMake(0, 0, self.scrollViewWidth, self.scrollViewHeight)
+
         //TODO only do this once
         var biggestValue = 0.0
         if self.timemapData.count > 0
@@ -392,7 +407,9 @@ class VisualizationHandler{
         
         let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
         
-        if(countryCircleViews.isEmpty){ //initialize it if you havent
+        zeroTimemapCircles()
+        countryCircleViews.removeAll()
+        if(countryCircleViews.isEmpty){ //initialize it if you havent //this isnt being redone! redo it
             for myCountryString in countriesArray{
                 
                 let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
@@ -400,7 +417,8 @@ class VisualizationHandler{
                 let x = xFromCountryDictionary(myCountry)
                 let y = yFromCountryDictionary(myCountry)
                 
-                let circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
+                var circleView : CircleView                
+                circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
                 
                 countryCircleViews[myCountryString] = circleView
                 
@@ -451,64 +469,6 @@ class VisualizationHandler{
         indexOfLastDate = i
         visualizationViews[Config.visualizationsIndex.timemap.rawValue].setNeedsDisplay()
     }
-    
-    /*
-    func transformDataForTimemap(webView: WKWebView){
-        
-        Log("This function should be deprecated now!")
-        
-        //Log(timemapData)
-        
-        self.loadingState(Config.visualizationsIndex.timemap.rawValue)
-        if self.timemapData.count > 0
-        {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                
-                var biggestValue = 0
-                
-                var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
-                
-                for r in 0..<self.timemapData.count{
-                    script9+="{\"z\": \""
-                    script9+=self.timemapData[r][0]
-                    script9+="\", \"x\":\""
-                    script9+=self.timemapData[r][1]
-                    script9+="\", \"y\":"
-                    
-                    let value = self.timemapData[r][2]
-                    if(Int(value) > biggestValue){
-                        biggestValue = Int(value)!
-                        //Log("biggestValue is \(biggestValue)")
-                    }
-                    
-                    script9+=value
-                    script9+="}"
-                    if(r != (self.timemapData.count-1)){
-                        script9+=","
-                    }
-                }
-                script9+="]}]; renderChart(myData, \(biggestValue).);"
-                
-                //Log(script9)
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    webView.evaluateJavaScript(script9, completionHandler: nil)
-                    self.successState(Config.visualizationsIndex.timemap.rawValue)
-                })
-            })
-        }
-        else
-        {
-            self.noDataState(Config.visualizationsIndex.timemap.rawValue)
-        }
-        
-        if self.errorDescription[Config.visualizationsIndex.timemap.rawValue] != ""
-        {
-            self.errorState(Config.visualizationsIndex.timemap.rawValue, error: self.errorDescription[Config.visualizationsIndex.timemap.rawValue])
-        }
-    }
-    */
     
     func makeScriptForStackedBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
@@ -646,16 +606,6 @@ class VisualizationHandler{
                 //Log("maxSize: \(maxSize).... and script9")
                 Log(script9)
                 
-                //var script8 = "var data2 = [[  {\"text\": \"access\", \"size\": \"1238\", \"topic\": \"0\"},  {\"text\": \"streets\", \"size\": \"1020\", \"topic\": \"0\"},  {\"text\": \"transportation\", \"size\": \"982\", \"topic\": \"0\"},  {\"text\": \"system\", \"size\": \"824\", \"topic\": \"0\"},  {\"text\": \"pedestrian\", \"size\": \"767\", \"topic\": \"0\"},  {\"text\": \"provide\", \"size\": \"763\", \"topic\": \"0\"},  {\"text\": \"bicycle\", \"size\": \"719\", \"topic\": \"0\"},  {\"text\": \"major\", \"size\": \"696\", \"topic\": \"0\"},  {\"text\": \"coordinate\", \"size\": \"72\", \"topic\": \"0\"},  {\"text\": \"separated\", \"size\": \"68\", \"topic\": \"0\"}],         [  {\"text\": \"buildings\", \"size\": \"460\", \"topic\": \"1\"},  {\"text\": \"plan\", \"size\": \"451\", \"topic\": \"1\"},  {\"text\": \"policy\", \"size\": \"442\", \"topic\": \"1\"},  {\"text\": \"neighborhoods\", \"size\": \"327\", \"topic\": \"1\"},  {\"text\": \"civic\", \"size\": \"301\", \"topic\": \"1\"},  {\"text\": \"community\", \"size\": \"249\", \"topic\": \"1\"},  {\"text\": \"strategies\", \"size\": \"235\", \"topic\": \"1\"},  {\"text\": \"existing\", \"size\": \"222\", \"topic\": \"1\"},  {\"text\": \"lots\", \"size\": \"221\", \"topic\": \"1\"},  {\"text\": \"walkable\", \"size\": \"217\", \"topic\": \"1\"},  {\"text\": \"upper\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"added\", \"size\": \"46\", \"topic\": \"1\"},  {\"text\": \"long\", \"size\": \"43\", \"topic\": \"1\"}], [  {\"text\": \"development\", \"size\": \"818\", \"topic\": \"2\"},  {\"text\": \"transit\", \"size\": \"746\", \"topic\": \"2\"},  {\"text\": \"centers\", \"size\": \"647\", \"topic\": \"2\"},  {\"text\": \"mixed\", \"size\": \"640\", \"topic\": \"2\"},  {\"text\": \"urban\", \"size\": \"443\", \"topic\": \"2\"}  ], [  {\"text\": \"snorlax\", \"size\": \"3333\", \"topic\": \"3\"},  {\"text\": \"pikachu\", \"size\": \"222\", \"topic\": \"3\"}  ]];"
-                
-                //script8+=" renderChart(data2);"
-                
-                //println("WORDCLOUD STUFF")
-                //println(script9)
-                
-                //println("SCRIPT8")
-                //println(script8)
-                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     webView.evaluateJavaScript(script9, completionHandler: nil); //TODO: have completion handler?
                     
@@ -736,30 +686,5 @@ class VisualizationHandler{
         self.stackedbarData.removeAll(keepCapacity: false)
         self.wordcloudData.removeAll(keepCapacity: false)
     }
-    
-    /*
-    func populateCharts(json : JSON){ //used for dummy data
-        if(Config.useDummyData){
-            self.circlepackingData = [["1","spark","222"],["1","sparksummit","344"],["2","#ibm","111"],["3","bigdata","577"],["3","analytics","99"],["4","@mapr","233"],["4","hadoop","333"],["4","hdfs","288"],["4","hortonworks","555"],["1","#sparkinsight","444"],["3","datamining","55"]]
-            //self.reorderCirclepackingData()
-            
-            self.treemapData = [["data scientist","222"],["programmer","344"],["designer","111"],["roboticist","577"],["marketer","99"],["barista","233"],["ceo","333"],["founder","288"],["fortune500","555"],["analyst","444"],["gamedev","55"]]
-            
-            self.stackedbarData = [["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
-            
-            self.worddistanceData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
-            
-            self.wordcloudData = [["0", "link", "0.2"], ["0", "Very", "0.3"], ["0", "worry", "0.3"], ["0", "hold", "0.00001"], ["0", "City", "0.0002"], ["0", "Ackles", "0.01"], ["0", "places", "0.1"], ["0", "Followers", "0.001"], ["0", "donxe2x80x99t", "0.002"], ["0", "seems", "0.01"], ["1", "power", "0.1"], ["1", "keep", "0.22"], ["1", "Scherzinger", "0.3"], ["1", "@justinbieber:", "0.12"], ["1", "SUPER", "0.16"], ["1", "#ChoiceTVBreakOutStar", "0.09"], ["1", "#ChoiceMaleHottie", "0.35"], ["1", "call", "0.05"], ["1", "years", "0.2"], ["1", "change", "0.3"], ["2", "pretty", "0.15"], ["2", "needed", "0.12"], ["2", "like", "0.16"], ["2", "song", "0.002"], ["2", "SEHUN", "0.0000002"], ["2", "team", "0.01"], ["2", "Because", "0.012"], ["2", "needs", "0.004"], ["2", "forever", "0.12"], ["2", "stop", "0.17"], ["3", "fucking", "0.07"], ["3", "Followers", "0.16"], ["3", "#TheOriginals", "0.14"], ["3", "move", "0.02"], ["3", "close", "0.004"], ["3", "dream", "0.002"], ["3", "Update", "0.001"], ["3", "picture", "0.1"], ["3", "President", "0.015"], ["3", "play", "0.12"]]
-            
-            self.forcegraphData = [ [ "#datamining", "0.66010167854665769", "457" ], [ "#analytics", "0.66111733184244015", "3333" ], [ "#rstats", "0.69084306092036141", "361" ], [ "@hortonworks", "0.66914077012093209", "166" ], [ "#neo4j", "0.69127034015170996", "63" ], [ "#datascience", "0.67888717822606814", "4202" ], [ "#azure", "0.66226415367181413", "667" ], [ "@mapr", "0.66354464393456225", "165" ], [ "#deeplearning", "0.66175874534547685", "396" ], [ "#machinelearning", "0.6964340180591716", "2260" ], [ "#nosql", "0.75678772608504818", "877" ], [ "#sas", "0.70367785412709649", "145" ], [ "#mongodb", "0.6993281653000063", "225" ], [ "#hbase", "0.78010979167439309", "138" ], [ "#python", "0.69931247945181596", "2821" ], [ "#mapreduce", "0.72372695100578921", "62" ], [ "#apache", "0.75935793530857787", "244" ], [ "#cassandra", "0.76777460490727012", "128" ], [ "#hadoop", "0.82618702428574087", "1831" ], [ "#r", "0.76732526060916861", "277" ] ]
-            
-            self.timemapData =
-                [ [  "20-Apr", "United States", "754" ], [ "20-Apr", "United Kingdom", "347" ], [ "21-Apr", "United States", "1687" ], ["21-Apr", "United Kingdom", "555"], [ "22-Apr", "United States", "2222" ], ["22-Apr", "United Kingdom", "155"], [ "23-Apr", "United States", "4343" ], ["23-Apr", "United Kingdom", "1214"], [ "24-Apr", "United States", "9999" ], ["24-Apr", "United Kingdom", "3333"], [ "25-Apr", "United States", "1687" ], ["25-Apr", "United Kingdom", "555"], [ "26-Apr", "United States", "1687" ], ["26-Apr", "United Kingdom", "555"] ]
-        }
-        self.reloadAppropriateView(previousPage) //reload the current page
-        // other pages will get loaded when they are swiped to
-    }
-    */
-
     
 }

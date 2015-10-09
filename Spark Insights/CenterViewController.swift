@@ -34,7 +34,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     var visualizationHandler: VisualizationHandler = VisualizationHandler()
     
     var leftViewController: LeftViewController!
-    var leftViewOpen = false
+    static var leftViewOpen = false
     
     var bottomDrawerViewController: BottomDrawerViewController!
     var rangeSliderViewController: RangeSliderViewController!
@@ -117,14 +117,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.resetViewController()
     }
     
-    func reloadAllViews() {
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue)
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue)
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
-        visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
-    }
-    
     func addLeftPanelViewController() {
         leftViewController = UIStoryboard.leftViewController()
         leftViewController.view.frame = CGRectMake(-350, 0, 354, 768)
@@ -189,17 +181,17 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {
-        if (leftViewOpen) { //get bigger
+        if (CenterViewController.leftViewOpen) { //get bigger
             // animate out
             self.animateLeftPanelXPosition(targetPosition: -350)
-            leftViewOpen = false
+            CenterViewController.leftViewOpen = false
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
             //reloadAllViews()
         } else { //get smaller
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
-            leftViewOpen = true
+            CenterViewController.leftViewOpen = true
             
             visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
             //reloadAllViews()
@@ -219,7 +211,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()
                 self.scrollView.viewDidResize()
-                self.reloadAllViews()
+                self.visualizationHandler.reloadAllViews()
 
                 // should move slider bar code here to be better
         })
@@ -308,13 +300,22 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             
             if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
             {
+                var mapTopPadding = 0.0
+                if(CenterViewController.leftViewOpen){
+                    mapTopPadding = Config.smallscreenMapTopPadding
+                }
+                else{
+                    mapTopPadding = Config.fullscreenMapTopPadding
+                }
+                
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
 
-                let mySuperView : NativeVisualizationView = NativeVisualizationView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                let mySuperView : TimeMapView = TimeMapView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
-                let image = UIImage(named: "bluewebmercatorprojection_g.png")
+                let image = UIImage(named: "bluewebmercatorprojection_whitebg.png")
+                
                 myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
                 
@@ -323,6 +324,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 // THE MAP
                 mySuperView.addSubview(myMapView)
+                mySuperView.baseMapView = myMapView
             }
             else //this visualization is one of the webviews
             {
