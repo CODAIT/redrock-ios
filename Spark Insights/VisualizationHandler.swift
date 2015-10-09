@@ -25,6 +25,8 @@ class VisualizationHandler{
     var scrollViewHeight : CGFloat = 0.0 //set in CenterViewController
     var scrollViewWidth : CGFloat = 0.0 //set in CenterViewController
     
+    
+    //TODO CHANGE MAP TO ROBINSON PROJECTION
     var treemapData : String = ""
     var circlepackingData : [[String]] = [[String]]()
     var worddistanceData : [[String]]  = [[String]]()
@@ -470,7 +472,7 @@ class VisualizationHandler{
         }
         
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = "yyyy MMM dd HH"
+        dateStringFormatter.dateFormat = "yyyy MM/dd HH"
         dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
 
         // Aug 10 07
