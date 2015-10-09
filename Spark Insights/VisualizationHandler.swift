@@ -86,6 +86,17 @@ class VisualizationHandler{
         }
     }
     
+    func reloadAllViews() {
+        self.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue)
+        self.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue)
+        self.makeVisibleRangeSliderBarChartAndLabels()
+        
+        // TODO: PUSH DOWN THE MAP DEPENDING ON VIEW TYPE
+    }
+    
     func transformData(myView: UIView){
         // uses the path to determine which function to use
         
@@ -373,7 +384,12 @@ class VisualizationHandler{
     }
     
     func transformDataForTimemapIOS(myView: NativeVisualizationView){
-        //it's not at the original aspect ratio! that's why it's distorted!
+        if(CenterViewController.leftViewOpen){ //small
+            myView.frame.origin.y = CGFloat(Config.smallscreenMapTopPadding)
+        }
+        else{ //big
+            myView.frame.origin.y = CGFloat(Config.fullscreenMapTopPadding)
+        }
         
         //TODO only do this once
         var biggestValue = 0.0
@@ -408,7 +424,8 @@ class VisualizationHandler{
                 let x = xFromCountryDictionary(myCountry)
                 let y = yFromCountryDictionary(myCountry)
                 
-                let circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
+                var circleView : CircleView                
+                circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
                 
                 countryCircleViews[myCountryString] = circleView
                 
@@ -765,6 +782,20 @@ class VisualizationHandler{
         self.rangeLabels[0].hidden = false
         self.rangeLabels[1].hidden = false
     }
+    
+    func hideRangeSliderBarChartAndLabels(){
+        self.rangeSliderBarChart.hidden = true
+        self.rangeLabels[0].hidden = true
+        self.rangeLabels[1].hidden = true
+    }
+    
+    func makeVisibleRangeSliderBarChartAndLabels(){
+        self.rangeSliderBarChart.hidden = false
+        self.rangeLabels[0].hidden = false
+        self.rangeLabels[1].hidden = false
+        
+    }
+
     
     /*
     func populateCharts(json : JSON){ //used for dummy data
