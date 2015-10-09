@@ -314,6 +314,7 @@ class VisualizationHandler{
         self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
     }
     
+    // todo perhaps make the circles invisible too
     func zeroTimemapCircles(){
         let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
         let countries = NSDictionary(contentsOfFile: countriesFilePath!)
@@ -339,7 +340,7 @@ class VisualizationHandler{
     }
 
     func xFromLongitude(longitude: Double) -> Double{
-        let mapWidth    = Double(scrollViewWidth)
+        let mapWidth    = Double(scrollViewWidth) // make it the map width?
         
         // get x value
         let x = (longitude+180.0)*(mapWidth/360.0)
@@ -350,12 +351,12 @@ class VisualizationHandler{
     }
     
     func yFromLatitude(latitude: Double) -> Double{
-        let mapWidth    = Double(scrollViewWidth)
-        let mapHeight   = Double(scrollViewHeight)
+        let mapWidth    = Double(scrollViewWidth) // make it the map width?
+        let mapHeight   = Double(scrollViewHeight) // make it the map height?
         
         // ORIGINAL ASPECT RATIO //2058 × 1746
         // new aspect ratio // 1024 x 624
-        let originalHeightAspect = 1746.0/2058.0
+        let originalHeightAspect = 1746.0/2058.0 //badly hardcoded
         let newHeightAspect = Double(scrollViewHeight/scrollViewWidth)
         let resizeHeight = newHeightAspect/originalHeightAspect
         let resizedLatitude = resizeHeight*latitude
@@ -410,7 +411,9 @@ class VisualizationHandler{
         
         let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
         
-        if(countryCircleViews.isEmpty){ //initialize it if you havent
+        zeroTimemapCircles()
+        countryCircleViews.removeAll()
+        if(countryCircleViews.isEmpty){ //initialize it if you havent //this isnt being redone! redo it
             for myCountryString in countriesArray{
                 
                 let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
