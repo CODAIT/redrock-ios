@@ -14,6 +14,10 @@ class ResizingScrollView: UIScrollView {
     var page: Int = 0
     
     func addVisualisation(view: UIView) {
+        let newOrigin = CGFloat(childVisualisations.count) * self.frame.size.width
+        let newFrame = CGRectMake(newOrigin, 0, self.frame.size.width, self.frame.size.height)
+        view.frame = newFrame
+    
         childVisualisations.append(view)
         self.addSubview(view)
     }

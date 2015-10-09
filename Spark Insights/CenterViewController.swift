@@ -296,8 +296,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             let tempVisPath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[i]).URLByAppendingPathExtension("html").path!)
             let request = NSURLRequest(URL: tempVisPath)
             
-            let myOrigin = CGFloat(i) * self.scrollView.frame.size.width
-            
             if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
             {
                 var mapTopPadding = 0.0
@@ -310,13 +308,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-
-                let mySuperView : TimeMapView = TimeMapView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                
+                let mySuperView = TimeMapView()
                 
                 let myMapView : UIImageView
                 let image = UIImage(named: "bluewebmercatorprojection_whitebg.png")
                 
-                myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                myMapView = UIImageView(frame: CGRectMake(0, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
                 
                 visualizationHandler.visualizationViews.append(mySuperView)
@@ -334,7 +332,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
                 
-                myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                myWebView = WKWebView()
                 
                 //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
                 myWebView.navigationDelegate = self
