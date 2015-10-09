@@ -42,6 +42,9 @@ class VisualizationHandler{
     var indexOfLastDate = 0
     let maxCircleSize = 300.0
     var circleResizeConstant = 1.0 //this will change
+    var playBarReference : PlayBarViewController?
+    var timemapIsPlaying = true
+    //var playBarViewControllerProgress = 0.00
     
     func reloadAppropriateView(viewNumber: Int){
         if let myNativeView = visualizationViews[viewNumber] as? NativeVisualizationView {
@@ -293,8 +296,10 @@ class VisualizationHandler{
     
     //TODO update for native
     func stopTimemap(){
+        self.timemapIsPlaying = false
+
         //Log("stopTimemap")
-        zeroTimemapCircles()
+        //zeroTimemapCircles()
         
         timemapTimer.invalidate()
         timemapTimer = nil;
@@ -302,6 +307,8 @@ class VisualizationHandler{
     
     //TODO update for native
     func startTimemap(){
+        self.timemapIsPlaying = true
+
         //Log("startTimemap")
         self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
     }
@@ -462,6 +469,31 @@ class VisualizationHandler{
             currentDate = timemapData[i][0]
         }
         
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = "yyyy MMM dd HH"
+        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+
+        // Aug 10 07
+        // TODO playing with fire, as soon as the year rolls over this breaks
+        // the dates from backend need to be explicit!!
+        let firstDateString = "2015 "+timemapData[0][0]
+        let finalDateString = "2015 "+timemapData[timemapData.count-1][0]
+        let lastDateString = "2015 "+lastDate
+        
+        let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
+        let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
+        let lastDateForMath = dateStringFormatter.dateFromString(lastDateString)
+        
+        //Log("firstDateForMath... \(firstDateForMath)")
+        //Log("finalDateForMath... \(finalDateForMath)")
+        //Log("lastDateForMath... \(lastDateForMath)")
+
+        let playBarViewControllerProgress = ((lastDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)/((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)
+        
+        self.playBarReference?.progress = Float(playBarViewControllerProgress)*100
+        
+        //Log("playBarViewControllerProgress... \(playBarViewControllerProgress)")
+        
         indexOfLastDate = i
         visualizationViews[Config.visualizationsIndex.timemap.rawValue].setNeedsDisplay()
     }
@@ -498,6 +530,8 @@ class VisualizationHandler{
             }
         }
         script9+="]}]; renderChart(myData);"
+        
+        
         
         return script9
     }

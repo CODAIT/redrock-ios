@@ -152,6 +152,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         playBarViewController = UIStoryboard.playBarViewController()
         bottomDrawerViewController.addControl(playBarViewController!)
         playBarViewController.delegate = self
+        visualizationHandler.playBarReference = playBarViewController
         
     }
     
@@ -173,9 +174,15 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     // MARK: - PlayBarViewControllerDelegate
     
-    func playPauseClicked() {
-        print("PlayBar: Play/Pause clicked")
-        playBarViewController.progress = (playBarViewController.progress + 10) % 100
+    func playPauseClicked() { //stop and start the timemap
+        if(visualizationHandler.timemapIsPlaying){
+            visualizationHandler.stopTimemap()
+            playBarViewController.state = PlayBarState.Paused
+        }
+        else{
+            visualizationHandler.startTimemap()
+            playBarViewController.state = PlayBarState.Playing
+        }
     }
     
     // MARK: - LeftViewControllerDelegate
