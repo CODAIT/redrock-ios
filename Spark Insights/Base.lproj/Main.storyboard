@@ -1129,7 +1129,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="3Wp-wj-1bc"/>
                                     <constraint firstItem="SzB-TO-YjF" firstAttribute="centerX" secondItem="zjw-ul-cAP" secondAttribute="centerX" id="fQg-Io-ITD"/>
@@ -1229,7 +1229,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="SWr-p7-cxy" firstAttribute="leading" secondItem="mRv-pG-0VM" secondAttribute="leading" id="5eL-o7-Oic"/>
                                     <constraint firstItem="dRF-PU-TWk" firstAttribute="centerX" secondItem="mRv-pG-0VM" secondAttribute="centerX" id="7KN-zK-SGy"/>
@@ -1252,7 +1252,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="mRv-pG-0VM" firstAttribute="centerX" secondItem="KsI-ye-ovH" secondAttribute="centerX" id="6wU-xu-s5s"/>
                             <constraint firstItem="mRv-pG-0VM" firstAttribute="centerY" secondItem="KsI-ye-ovH" secondAttribute="centerY" id="fvp-6k-3KS"/>
