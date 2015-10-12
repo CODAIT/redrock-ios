@@ -425,10 +425,12 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             if previousPage == Config.visualizationsIndex.timemap.rawValue{
                 //Log("left timemap so stop animation")
                 visualizationHandler.stopTimemap()
+                playBarViewController.state = PlayBarState.Paused
             }
             if page == Config.visualizationsIndex.timemap.rawValue{
                 //Log("entered timemap so start animation")
                 visualizationHandler.startTimemap()
+                playBarViewController.state = PlayBarState.Playing
             }
             
             if previousPage == Config.visualizationsIndex.forcegraph.rawValue{
