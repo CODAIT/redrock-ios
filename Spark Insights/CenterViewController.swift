@@ -407,6 +407,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        let scrollView = scrollView as! ResizingScrollView
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
@@ -414,7 +415,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         if (page >= Config.getNumberOfVisualizations()) {
             page = Config.getNumberOfVisualizations()-1
         }
-        if (currentPage != page) { //page was changed
+        if (currentPage != page && scrollView.endedRelayout) { //page was changed
             //Log("page was changed from \(previousPage) to \(page)")
             pageChanged = true
             previousPage = currentPage

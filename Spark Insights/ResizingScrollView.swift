@@ -12,6 +12,7 @@ class ResizingScrollView: UIScrollView {
     
     var childVisualisations: [UIView] = []
     var page: Int = 0
+    var endedRelayout = true
     
     func addVisualisation(view: UIView) {
         let newOrigin = CGFloat(childVisualisations.count) * self.frame.size.width
@@ -45,6 +46,7 @@ class ResizingScrollView: UIScrollView {
     private func relayoutSubviews() {
         self.layoutIfNeeded()
         
+        endedRelayout = false
         let pageWidth = self.frame.size.width
         
         for (i, view) in childVisualisations.enumerate() {
@@ -56,6 +58,7 @@ class ResizingScrollView: UIScrollView {
         self.contentSize = CGSizeMake(pageWidth * CGFloat(childVisualisations.count), self.frame.size.height)
         let offset = pageWidth * CGFloat(page)
         self.setContentOffset(CGPointMake(offset, 0), animated: false)
+        endedRelayout = true
     }
 
 }
