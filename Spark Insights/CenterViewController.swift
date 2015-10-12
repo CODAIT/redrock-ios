@@ -229,6 +229,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     func resetViewController() {
         // Use this function to reset the view controller's UI to a clean state
         Log("Resetting \(__FILE__)")
+        
+        if (rangeSliderViewController != nil) { rangeSliderViewController.resetViewController() }
+        if (scrollView != nil) { scrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: false) }
     }
     
 //    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
@@ -578,6 +581,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         }
         self.visualizationHandler.cleanWebViews()
+        self.resetViewController()
     }
     
     func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)

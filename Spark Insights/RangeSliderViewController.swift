@@ -24,5 +24,10 @@ class RangeSliderViewController: UIViewController {
         
         sliderHolder.addSubview(rangeSlider)
     }
+    
+    func resetViewController() {
+        rangeSlider.lowerValue = 0.0
+        rangeSlider.upperValue = 1.0
+    }
 
 }
