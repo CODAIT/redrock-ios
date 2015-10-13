@@ -303,8 +303,10 @@ class VisualizationHandler{
         //Log("stopTimemap")
         //zeroTimemapCircles()
         
-        timemapTimer.invalidate()
-        timemapTimer = nil;
+        if timemapTimer != nil {
+            timemapTimer.invalidate()
+            timemapTimer = nil;
+        }
     }
     
     //TODO update for native

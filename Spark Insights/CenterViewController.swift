@@ -229,6 +229,9 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     func resetViewController() {
         // Use this function to reset the view controller's UI to a clean state
         Log("Resetting \(__FILE__)")
+        
+        if (rangeSliderViewController != nil) { rangeSliderViewController.resetViewController() }
+        if (scrollView != nil) { scrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: false) }
     }
     
 //    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
@@ -303,8 +306,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             let tempVisPath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[i]).URLByAppendingPathExtension("html").path!)
             let request = NSURLRequest(URL: tempVisPath)
             
-            let myOrigin = CGFloat(i) * self.scrollView.frame.size.width
-            
             if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
             {
                 var mapTopPadding = 0.0
@@ -317,13 +318,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-
-                let mySuperView : TimeMapView = TimeMapView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                
+                let mySuperView = TimeMapView()
                 
                 let myMapView : UIImageView
                 let image = UIImage(named: "robinsonmap.png")
                 
-                myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                myMapView = UIImageView(frame: CGRectMake(0, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image
                 
                 visualizationHandler.visualizationViews.append(mySuperView)
@@ -341,7 +342,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
                 visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
                 
-                myWebView = WKWebView(frame: CGRectMake(myOrigin, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
+                myWebView = WKWebView()
                 
                 //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
                 myWebView.navigationDelegate = self
@@ -409,6 +410,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     
     //detect when the page was changed
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        let scrollView = scrollView as! ResizingScrollView
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = Float(scrollView.contentOffset.x / pageWidth)
         var page : Int = Int(round(fractionalPage))
@@ -416,7 +418,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         if (page >= Config.getNumberOfVisualizations()) {
             page = Config.getNumberOfVisualizations()-1
         }
-        if (currentPage != page) { //page was changed
+        if (currentPage != page && scrollView.endedRelayout) { //page was changed
             //Log("page was changed from \(previousPage) to \(page)")
             pageChanged = true
             previousPage = currentPage
@@ -426,10 +428,12 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             if previousPage == Config.visualizationsIndex.timemap.rawValue{
                 //Log("left timemap so stop animation")
                 visualizationHandler.stopTimemap()
+                playBarViewController.state = PlayBarState.Paused
             }
             if page == Config.visualizationsIndex.timemap.rawValue{
                 //Log("entered timemap so start animation")
                 visualizationHandler.startTimemap()
+                playBarViewController.state = PlayBarState.Playing
             }
             
             if previousPage == Config.visualizationsIndex.forcegraph.rawValue{
@@ -577,6 +581,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         }
         self.visualizationHandler.cleanWebViews()
+        self.resetViewController()
     }
     
     func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
