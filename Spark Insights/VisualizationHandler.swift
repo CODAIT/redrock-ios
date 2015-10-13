@@ -339,6 +339,16 @@ class VisualizationHandler{
         
         return yFromLatitude(latitude)
     }
+    
+    func xForRobinson(myCountry: NSDictionary) -> Double{
+        let x = Double(myCountry["x"]! as! NSNumber)*Double(self.scrollViewWidth)
+        return x
+    }
+
+    func yForRobinson(myCountry: NSDictionary) -> Double{
+        let y = Double(myCountry["y"]! as! NSNumber)*Double(self.scrollViewHeight)
+        return y
+    }
 
     func xFromLongitude(longitude: Double) -> Double{
         let mapWidth    = Double(scrollViewWidth) // make it the map width?
@@ -404,8 +414,10 @@ class VisualizationHandler{
         circleResizeConstant = maxCircleSize / biggestValue //size of the biggest possible circle
     
         //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
-        let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
-        let properties = NSDictionary(contentsOfFile: filePath!)
+        //let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
+        //let properties = NSDictionary(contentsOfFile: filePath!)
+        
+        let robinsonProperties = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/countrypositions5", ofType: "plist")!)
         
         let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
         let countries = NSDictionary(contentsOfFile: countriesFilePath!)
@@ -417,10 +429,10 @@ class VisualizationHandler{
         if(countryCircleViews.isEmpty){ //initialize it if you havent //this isnt being redone! redo it
             for myCountryString in countriesArray{
                 
-                let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
+                let myCountry : NSDictionary = robinsonProperties![myCountryString]! as! NSDictionary
                 
-                let x = xFromCountryDictionary(myCountry)
-                let y = yFromCountryDictionary(myCountry)
+                let x = xForRobinson(myCountry)
+                let y = yForRobinson(myCountry)
                 
                 var circleView : CircleView                
                 circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))

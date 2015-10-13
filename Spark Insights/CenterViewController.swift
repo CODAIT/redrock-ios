@@ -321,7 +321,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 let mySuperView : TimeMapView = TimeMapView(frame: CGRectMake(myOrigin, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 
                 let myMapView : UIImageView
-                let image = UIImage(named: "bluewebmercatorprojection_whitebg.png")
+                let image = UIImage(named: "robinsonmap.png")
                 
                 myMapView = UIImageView(frame: CGRectMake(0, 0, self.scrollView.frame.size.width, self.scrollView.frame.size.height))
                 myMapView.image = image

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>Andorra</key><dict><key>x</key><real>0.4473314516</real><key>y</key><real>0.2666666667</real></dict>
+<key>United Arab Emirates</key><dict><key>x</key><real>0.6200532258</real><key>y</key><real>0.40932</real></dict>
+<key>Afghanistan</key><dict><key>x</key><real>0.6505887097</real><key>y</key><real>0.328415</real></dict>
+<key>Antigua and Barbuda</key><dict><key>x</key><real>0.2348354839</real><key>y</key><real>0.4643366667</real></dict>
+<key>Anguilla</key><dict><key>x</key><real>0.237183871</real><key>y</key><real>0.4675733333</real></dict>
+<key>Albania</key><dict><key>x</key><real>0.5041741935</real><key>y</key><real>0.276635</real></dict>
+<key>Armenia</key><dict><key>x</key><real>0.5832540323</real><key>y</key><real>0.2863433333</real></dict>
+<key>Netherlands Antilles</key><dict><key>x</key><real>0.2097806452</real><key>y</key><real>0.491845</real></dict>
+<key>Angola</key><dict><key>x</key><real>0.4986935484</real><key>y</key><real>0.67631</real></dict>
+<key>Antarctica</key><dict><key>x</key><real>0.5018258065</real><key>y</key><real>0.991845</real></dict>
+<key>Argentina</key><dict><key>x</key><real>0.2379669355</real><key>y</key><real>0.844595</real></dict>
+<key>American Samoa</key><dict><key>x</key><real>0.9990290323</real><key>y</key><real>0.7183816667</real></dict>
+<key>Austria</key><dict><key>x</key><real>0.4791193548</real><key>y</key><real>0.2264716667</real></dict>
+<key>Australia</key><dict><key>x</key><real>0.8815629032</real><key>y</key><real>0.7831066667</real></dict>
+<key>Aruba</key><dict><key>x</key><real>0.2074314516</real><key>y</key><real>0.491845</real></dict>
+<key>Azerbaijan</key><dict><key>x</key><real>0.5926491935</real><key>y</key><real>0.2831066667</real></dict>
+<key>Bosnia and Herzegovina</key><dict><key>x</key><real>0.4971282258</real><key>y</key><real>0.2555983333</real></dict>
+<key>Barbados</key><dict><key>x</key><real>0.237183871</real><key>y</key><real>0.4902266667</real></dict>
+<key>Bangladesh</key><dict><key>x</key><real>0.7390637097</real><key>y</key><real>0.4077016667</real></dict>
+<key>Belgium</key><dict><key>x</key><real>0.4611112903</real><key>y</key><real>0.2054366667</real></dict>
+<key>Burkina Faso</key><dict><key>x</key><real>0.4337080645</real><key>y</key><real>0.4950816667</real></dict>
+<key>Bulgaria</key><dict><key>x</key><real>0.5182677419</real><key>y</key><real>0.2653066667</real></dict>
+<key>Bahrain</key><dict><key>x</key><real>0.6098741935</real><key>y</key><real>0.3947566667</real></dict>
+<key>Burundi</key><dict><key>x</key><real>0.5409733871</real><key>y</key><real>0.66144</real></dict>
+<key>Benin</key><dict><key>x</key><real>0.448583871</real><key>y</key><real>0.5193533333</real></dict>
+<key>Bermuda</key><dict><key>x</key><real>0.2356185484</real><key>y</key><real>0.3397416667</real></dict>
+<key>Brunei</key><dict><key>x</key><real>0.8259725806</real><key>y</key><real>0.5549516667</real></dict>
+<key>Bolivia</key><dict><key>x</key><real>0.2285717742</real><key>y</key><real>0.7183816667</real></dict>
+<key>Brazil</key><dict><key>x</key><real>0.2638048387</real><key>y</key><real>0.6649833333</real></dict>
+<key>Bahamas</key><dict><key>x</key><real>0.1902064516</real><key>y</key><real>0.396375</real></dict>
+<key>Bhutan</key><dict><key>x</key><real>0.7359314516</real><key>y</key><real>0.3785766667</real></dict>
+<key>Bouvet Island</key><dict><key>x</key><real>0.4626072581</real><key>y</key><real>0.9125566667</real></dict>
+<key>Botswana</key><dict><key>x</key><real>0.519833871</real><key>y</key><real>0.75398</real></dict>
+<key>Belarus</key><dict><key>x</key><real>0.5237483871</real><key>y</key><real>0.181165</real></dict>
+<key>Belize</key><dict><key>x</key><real>0.1487096774</real><key>y</key><real>0.4562466667</real></dict>
+<key>Canada</key><dict><key>x</key><real>0.1706322581</real><key>y</key><real>0.16013</real></dict>
+<key>Cocos [Keeling] Islands</key><dict><key>x</key><real>0.1393137097</real><key>y</key><real>0.585695</real></dict>
+<key>Congo [DRC]</key><dict><key>x</key><real>0.5206169355</real><key>y</key><real>0.6051133333</real></dict>
+<key>Central African Republic</key><dict><key>x</key><real>0.5073064516</real><key>y</key><real>0.5339166667</real></dict>
+<key>Congo [Republic]</key><dict><key>x</key><real>0.5206169355</real><key>y</key><real>0.6051133333</real></dict>
+<key>Switzerland</key><dict><key>x</key><real>0.467375</real><key>y</key><real>0.2345633333</real></dict>
+<key>Côte dIvoire</key><dict><key>x</key><real>0.4203975806</real><key>y</key><real>0.5274433333</real></dict>
+<key>Cook Islands</key><dict><key>x</key><real>0.01795483871</real><key>y</key><real>0.7442716667</real></dict>
+<key>Chile</key><dict><key>x</key><real>0.2160443548</real><key>y</key><real>0.8510683333</real></dict>
+<key>Cameroon</key><dict><key>x</key><real>0.4830346774</real><key>y</key><real>0.5484783333</real></dict>
+<key>China</key><dict><key>x</key><real>0.7578540323</real><key>y</key><real>0.32356</real></dict>
+<key>Colombia</key><dict><key>x</key><real>0.1956870968</real><key>y</key><real>0.559805</real></dict>
+<key>Costa Rica</key><dict><key>x</key><real>0.1596709677</real><key>y</key><real>0.51288</real></dict>
+<key>Cuba</key><dict><key>x</key><real>0.1823766129</real><key>y</key><real>0.422265</real></dict>
+<key>Cape Verde</key><dict><key>x</key><real>0.3608919355</real><key>y</key><real>0.4562466667</real></dict>
+<key>Christmas Island</key><dict><key>x</key><real>0.7993516129</real><key>y</key><real>0.655275</real></dict>
+<key>Cyprus</key><dict><key>x</key><real>0.5448887097</real><key>y</key><real>0.3203233333</real></dict>
+<key>Czech Republic</key><dict><key>x</key><real>0.4885153226</real><key>y</key><real>0.2135283333</real></dict>
+<key>Germany</key><dict><key>x</key><real>0.4705072581</real><key>y</key><real>0.2005833333</real></dict>
+<key>Djibouti</key><dict><key>x</key><real>0.5856024194</real><key>y</key><real>0.491845</real></dict>
+<key>Denmark</key><dict><key>x</key><real>0.4728556452</real><key>y</key><real>0.1666016667</real></dict>
+<key>Dominica</key><dict><key>x</key><real>0.2356185484</real><key>y</key><real>0.474045</real></dict>
+<key>Dominican Republic</key><dict><key>x</key><real>0.2129120968</real><key>y</key><real>0.4465366667</real></dict>
+<key>Algeria</key><dict><key>x</key><real>0.4509330645</real><key>y</key><real>0.3785766667</real></dict>
+<key>Ecuador</key><dict><key>x</key><real>0.1753298387</real><key>y</key><real>0.5937866667</real></dict>
+<key>Estonia</key><dict><key>x</key><real>0.5143532258</real><key>y</key><real>0.147185</real></dict>
+<key>Egypt</key><dict><key>x</key><real>0.537058871</real><key>y</key><real>0.3866666667</real></dict>
+<key>Western Sahara</key><dict><key>x</key><real>0.396908871</real><key>y</key><real>0.3979933333</real></dict>
+<key>Eritrea</key><dict><key>x</key><real>0.5699435484</real><key>y</key><real>0.4708083333</real></dict>
+<key>Spain</key><dict><key>x</key><real>0.4337080645</real><key>y</key><real>0.284725</real></dict>
+<key>Ethiopia</key><dict><key>x</key><real>0.5715096774</real><key>y</key><real>0.525825</real></dict>
+<key>Finland</key><dict><key>x</key><real>0.5190508065</real><key>y</key><real>0.111585</real></dict>
+<key>Fiji</key><dict><key>x</key><real>0.9950919355</real><key>y</key><real>0.7394166667</real></dict>
+<key>Falkland Islands [Islas Malvinas]</key><dict><key>x</key><real>0.2708516129</real><key>y</key><real>0.9708083333</real></dict>
+<key>Micronesia</key><dict><key>x</key><real>0.9504629032</real><key>y</key><real>0.5630416667</real></dict>
+<key>Faroe Islands</key><dict><key>x</key><real>0.4305758065</real><key>y</key><real>0.12453</real></dict>
+<key>France</key><dict><key>x</key><real>0.4540645161</real><key>y</key><real>0.2345633333</real></dict>
+<key>Gabon</key><dict><key>x</key><real>0.4806854839</real><key>y</key><real>0.5921683333</real></dict>
+<key>United Kingdom</key><dict><key>x</key><real>0.4407548387</real><key>y</key><real>0.1795466667</real></dict>
+<key>Grenada</key><dict><key>x</key><real>0.2348354839</real><key>y</key><real>0.4853716667</real></dict>
+<key>Georgia</key><dict><key>x</key><real>0.5762072581</real><key>y</key><real>0.2685433333</real></dict>
+<key>French Guiana</key><dict><key>x</key><real>0.2622387097</real><key>y</key><real>0.55657</real></dict>
+<key>Guernsey</key><dict><key>x</key><real>0.4376225806</real><key>y</key><real>0.2135283333</real></dict>
+<key>Ghana</key><dict><key>x</key><real>0.4360564516</real><key>y</key><real>0.5242066667</real></dict>
+<key>Gibraltar</key><dict><key>x</key><real>0.4250951613</real><key>y</key><real>0.3170866667</real></dict>
+<key>Greenland</key><dict><key>x</key><real>0.3561943548</real><key>y</key><real>0.05333333333</real></dict>
+<key>Gambia</key><dict><key>x</key><real>0.3882959677</real><key>y</key><real>0.4837533333</real></dict>
+<key>Guinea</key><dict><key>x</key><real>0.4047379032</real><key>y</key><real>0.5064083333</real></dict>
+<key>Guadeloupe</key><dict><key>x</key><real>0.2348354839</real><key>y</key><real>0.4627183333</real></dict>
+<key>Equatorial Guinea</key><dict><key>x</key><real>0.4759879032</real><key>y</key><real>0.5759866667</real></dict>
+<key>Greece</key><dict><key>x</key><real>0.5112209677</real><key>y</key><real>0.3041416667</real></dict>
+<key>South Georgia and the South Sandwich Islands</key><dict><key>x</key><real>0.3554112903</real><key>y</key><real>0.991845</real></dict>
+<key>Guatemala</key><dict><key>x</key><real>0.1416629032</real><key>y</key><real>0.4708083333</real></dict>
+<key>Guam</key><dict><key>x</key><real>0.926191129</real><key>y</key><real>0.5322983333</real></dict>
+<key>Guinea-Bissau</key><dict><key>x</key><real>0.3914282258</real><key>y</key><real>0.491845</real></dict>
+<key>Guyana</key><dict><key>x</key><real>0.2426653226</real><key>y</key><real>0.55657</real></dict>
+<key>Gaza Strip</key><dict><key>x</key><real>0.5535008065</real><key>y</key><real>0.34945</real></dict>
+<key>Hong Kong</key><dict><key>x</key><real>0.8134451613</real><key>y</key><real>0.4190283333</real></dict>
+<key>Heard Island and McDonald Islands</key><dict><key>x</key><real>0.6967830645</real><key>y</key><real>0.9772816667</real></dict>
+<key>Honduras</key><dict><key>x</key><real>0.1534072581</real><key>y</key><real>0.4724266667</real></dict>
+<key>Croatia</key><dict><key>x</key><real>0.4885153226</real><key>y</key><real>0.24589</real></dict>
+<key>Haiti</key><dict><key>x</key><real>0.2011677419</real><key>y</key><real>0.440065</real></dict>
+<key>Hungary</key><dict><key>x</key><real>0.4986935484</real><key>y</key><real>0.232945</real></dict>
+<key>Indonesia</key><dict><key>x</key><real>0.8455459677</real><key>y</key><real>0.6051133333</real></dict>
+<key>Ireland</key><dict><key>x</key><real>0.4250951613</real><key>y</key><real>0.1876383333</real></dict>
+<key>Israel</key><dict><key>x</key><real>0.5535008065</real><key>y</key><real>0.3489016667</real></dict>
+<key>Isle of Man</key><dict><key>x</key><real>0.4321419355</real><key>y</key><real>0.1827833333</real></dict>
+<key>India</key><dict><key>x</key><real>0.697566129</real><key>y</key><real>0.4238833333</real></dict>
+<key>British Indian Ocean Territory</key><dict><key>x</key><real>0.6811241935</real><key>y</key><real>0.5840783333</real></dict>
+<key>Iraq</key><dict><key>x</key><real>0.5816879032</real><key>y</key><real>0.3429766667</real></dict>
+<key>Iran</key><dict><key>x</key><real>0.6208362903</real><key>y</key><real>0.3397416667</real></dict>
+<key>Iceland</key><dict><key>x</key><real>0.4000403226</real><key>y</key><real>0.1018766667</real></dict>
+<key>Italy</key><dict><key>x</key><real>0.4830346774</real><key>y</key><real>0.2653066667</real></dict>
+<key>Jersey</key><dict><key>x</key><real>0.4376225806</real><key>y</key><real>0.2135283333</real></dict>
+<key>Jamaica</key><dict><key>x</key><real>0.1862919355</real><key>y</key><real>0.448155</real></dict>
+<key>Jordan</key><dict><key>x</key><real>0.5613306452</real><key>y</key><real>0.3526866667</real></dict>
+<key>Japan</key><dict><key>x</key><real>0.8799967742</real><key>y</key><real>0.30576</real></dict>
+<key>Kenya</key><dict><key>x</key><real>0.5675943548</real><key>y</key><real>0.5792233333</real></dict>
+<key>Kyrgyzstan</key><dict><key>x</key><real>0.6717282258</real><key>y</key><real>0.276635</real></dict>
+<key>Cambodia</key><dict><key>x</key><real>0.7899556452</real><key>y</key><real>0.4934633333</real></dict>
+<key>Kiribati</key><dict><key>x</key><real>0.001512096774</real><key>y</key><real>0.5355333333</real></dict>
+<key>Comoros</key><dict><key>x</key><real>0.574641129</real><key>y</key><real>0.6390933333</real></dict>
+<key>Saint Kitts and Nevis</key><dict><key>x</key><real>0.2332693548</real><key>y</key><real>0.4562466667</real></dict>
+<key>North Korea</key><dict><key>x</key><real>0.8377169355</real><key>y</key><real>0.28958</real></dict>
+<key>South Korea</key><dict><key>x</key><real>0.8455459677</real><key>y</key><real>0.3122333333</real></dict>
+<key>Kuwait</key><dict><key>x</key><real>0.5949983871</real><key>y</key><real>0.3640133333</real></dict>
+<key>Cayman Islands</key><dict><key>x</key><real>0.1753298387</real><key>y</key><real>0.4335916667</real></dict>
+<key>Kazakhstan</key><dict><key>x</key><real>0.6505887097</real><key>y</key><real>0.232945</real></dict>
+<key>Laos</key><dict><key>x</key><real>0.7797774194</real><key>y</key><real>0.4368283333</real></dict>
+<key>Lebanon</key><dict><key>x</key><real>0.5566330645</real><key>y</key><real>0.3300316667</real></dict>
+<key>Saint Lucia</key><dict><key>x</key><real>0.2364016129</real><key>y</key><real>0.4821366667</real></dict>
+<key>Liechtenstein</key><dict><key>x</key><real>0.4736387097</real><key>y</key><real>0.232945</real></dict>
+<key>Sri Lanka</key><dict><key>x</key><real>0.7116596774</real><key>y</key><real>0.5290616667</real></dict>
+<key>Liberia</key><dict><key>x</key><real>0.4070870968</real><key>y</key><real>0.5403883333</real></dict>
+<key>Lesotho</key><dict><key>x</key><real>0.5315782258</real><key>y</key><real>0.8089966667</real></dict>
+<key>Lithuania</key><dict><key>x</key><real>0.5120040323</real><key>y</key><real>0.1714566667</real></dict>
+<key>Luxembourg</key><dict><key>x</key><real>0.4634604839</real><key>y</key><real>0.2135283333</real></dict>
+<key>Latvia</key><dict><key>x</key><real>0.5174846774</real><key>y</key><real>0.1617483333</real></dict>
+<key>Libya</key><dict><key>x</key><real>0.5002596774</real><key>y</key><real>0.3866666667</real></dict>
+<key>Morocco</key><dict><key>x</key><real>0.4196145161</real><key>y</key><real>0.3462133333</real></dict>
+<key>Monaco</key><dict><key>x</key><real>0.4642435484</real><key>y</key><real>0.2572166667</real></dict>
+<key>Moldova</key><dict><key>x</key><real>0.5284459677</real><key>y</key><real>0.2297083333</real></dict>
+<key>Montenegro</key><dict><key>x</key><real>0.5018258065</real><key>y</key><real>0.27178</real></dict>
+<key>Madagascar</key><dict><key>x</key><real>0.591866129</real><key>y</key><real>0.732945</real></dict>
+<key>Marshall Islands</key><dict><key>x</key><real>0.9950919355</real><key>y</key><real>0.621295</real></dict>
+<key>Macedonia [FYROM]</key><dict><key>x</key><real>0.5088725806</real><key>y</key><real>0.2750166667</real></dict>
+<key>Mali</key><dict><key>x</key><real>0.4321419355</real><key>y</key><real>0.4594816667</real></dict>
+<key>Myanmar [Burma]</key><dict><key>x</key><real>0.7578540323</real><key>y</key><real>0.4287383333</real></dict>
+<key>Mongolia</key><dict><key>x</key><real>0.7602032258</real><key>y</key><real>0.2426533333</real></dict>
+<key>Macau</key><dict><key>x</key><real>0.8087467742</real><key>y</key><real>0.422265</real></dict>
+<key>Northern Mariana Islands</key><dict><key>x</key><real>0.9269741935</real><key>y</key><real>0.4886083333</real></dict>
+<key>Martinique</key><dict><key>x</key><real>0.2364016129</real><key>y</key><real>0.4772816667</real></dict>
+<key>Mauritania</key><dict><key>x</key><real>0.4078701613</real><key>y</key><real>0.4303566667</real></dict>
+<key>Montserrat</key><dict><key>x</key><real>0.2340524194</real><key>y</key><real>0.4627183333</real></dict>
+<key>Malta</key><dict><key>x</key><real>0.4877322581</real><key>y</key><real>0.3138516667</real></dict>
+<key>Mauritius</key><dict><key>x</key><real>0.6286653226</real><key>y</key><real>0.7426533333</real></dict>
+<key>Maldives</key><dict><key>x</key><real>0.6944346774</real><key>y</key><real>0.5403883333</real></dict>
+<key>Malawi</key><dict><key>x</key><real>0.5566330645</real><key>y</key><real>0.7005833333</real></dict>
+<key>Mexico</key><dict><key>x</key><real>0.1103443548</real><key>y</key><real>0.4255016667</real></dict>
+<key>Malaysia</key><dict><key>x</key><real>0.7821266129</real><key>y</key><real>0.559805</real></dict>
+<key>Mozambique</key><dict><key>x</key><real>0.5652459677</real><key>y</key><real>0.7102916667</real></dict>
+<key>Namibia</key><dict><key>x</key><real>0.4994766129</real><key>y</key><real>0.75398</real></dict>
+<key>New Caledonia</key><dict><key>x</key><real>0.9849137097</real><key>y</key><real>0.7491266667</real></dict>
+<key>Niger</key><dict><key>x</key><real>0.4720733871</real><key>y</key><real>0.4611</real></dict>
+<key>Norfolk Island</key><dict><key>x</key><real>0.9841306452</real><key>y</key><real>0.7814883333</real></dict>
+<key>Nigeria</key><dict><key>x</key><real>0.4650266129</real><key>y</key><real>0.5161166667</real></dict>
+<key>Nicaragua</key><dict><key>x</key><real>0.1565387097</real><key>y</key><real>0.4886083333</real></dict>
+<key>Netherlands</key><dict><key>x</key><real>0.4618943548</real><key>y</key><real>0.198965</real></dict>
+<key>Norway</key><dict><key>x</key><real>0.4759879032</real><key>y</key><real>0.12453</real></dict>
+<key>Nepal</key><dict><key>x</key><real>0.7155741935</real><key>y</key><real>0.3737216667</real></dict>
+<key>Nauru</key><dict><key>x</key><real>0.9739524194</real><key>y</key><real>0.6099683333</real></dict>
+<key>Niue</key><dict><key>x</key><real>0.9950919355</real><key>y</key><real>0.7863433333</real></dict>
+<key>New Zealand</key><dict><key>x</key><real>0.9747354839</real><key>y</key><real>0.8979933333</real></dict>
+<key>Oman</key><dict><key>x</key><real>0.6294483871</real><key>y</key><real>0.4335916667</real></dict>
+<key>Panama</key><dict><key>x</key><real>0.1706322581</real><key>y</key><real>0.5209716667</real></dict>
+<key>Peru</key><dict><key>x</key><real>0.1902064516</real><key>y</key><real>0.655275</real></dict>
+<key>French Polynesia</key><dict><key>x</key><real>0.003078225806</real><key>y</key><real>0.72</real></dict>
+<key>Papua New Guinea</key><dict><key>x</key><real>0.9246258065</real><key>y</key><real>0.63424</real></dict>
+<key>Philippines</key><dict><key>x</key><real>0.8518096774</real><key>y</key><real>0.5031716667</real></dict>
+<key>Pakistan</key><dict><key>x</key><real>0.6670306452</real><key>y</key><real>0.354305</real></dict>
+<key>Poland</key><dict><key>x</key><real>0.4986935484</real><key>y</key><real>0.19411</real></dict>
+<key>Saint Pierre and Miquelon</key><dict><key>x</key><real>0.2778983871</real><key>y</key><real>0.2345633333</real></dict>
+<key>Pitcairn Islands</key><dict><key>x</key><real>0.02108629032</real><key>y</key><real>0.75398</real></dict>
+<key>Puerto Rico</key><dict><key>x</key><real>0.2183927419</real><key>y</key><real>0.4497733333</real></dict>
+<key>Palestinian Territories</key><dict><key>x</key><real>0.5527185484</real><key>y</key><real>0.3478316667</real></dict>
+<key>Portugal</key><dict><key>x</key><real>0.4188314516</real><key>y</key><real>0.28958</real></dict>
+<key>Palau</key><dict><key>x</key><real>0.890175</real><key>y</key><real>0.5274433333</real></dict>
+<key>Paraguay</key><dict><key>x</key><real>0.2465798387</real><key>y</key><real>0.7604533333</real></dict>
+<key>Qatar</key><dict><key>x</key><real>0.609091129</real><key>y</key><real>0.396375</real></dict>
+<key>Réunion</key><dict><key>x</key><real>0.6271</real><key>y</key><real>0.7442716667</real></dict>
+<key>Romania</key><dict><key>x</key><real>0.5167016129</real><key>y</key><real>0.241035</real></dict>
+<key>Serbia</key><dict><key>x</key><real>0.5064258065</real><key>y</key><real>0.255065</real></dict>
+<key>Russia</key><dict><key>x</key><real>0.7143653226</real><key>y</key><real>0.1283233333</real></dict>
+<key>Rwanda</key><dict><key>x</key><real>0.5410274194</real><key>y</key><real>0.6012833333</real></dict>
+<key>Saudi Arabia</key><dict><key>x</key><real>0.5880435484</real><key>y</key><real>0.4057783333</real></dict>
+<key>Solomon Islands</key><dict><key>x</key><real>0.9675741935</real><key>y</key><real>0.655135</real></dict>
+<key>Seychelles</key><dict><key>x</key><real>0.6254306452</real><key>y</key><real>0.6328916667</real></dict>
+<key>Sudan</key><dict><key>x</key><real>0.5427266129</real><key>y</key><real>0.4654833333</real></dict>
+<key>Sweden</key><dict><key>x</key><real>0.4906120968</real><key>y</key><real>0.1248116667</real></dict>
+<key>Singapore</key><dict><key>x</key><real>0.7902709677</real><key>y</key><real>0.5778683333</real></dict>
+<key>Saint Helena</key><dict><key>x</key><real>0.4215040323</real><key>y</key><real>0.71484</real></dict>
+<key>Slovenia</key><dict><key>x</key><real>0.4889129032</real><key>y</key><real>0.24071</real></dict>
+<key>Svalbard and Jan Mayen</key><dict><key>x</key><real>0.4923112903</real><key>y</key><real>0.01828</real></dict>
+<key>Slovakia</key><dict><key>x</key><real>0.5025080645</real><key>y</key><real>0.214955</real></dict>
+<key>Sierra Leone</key><dict><key>x</key><real>0.4016774194</real><key>y</key><real>0.519335</real></dict>
+<key>San Marino</key><dict><key>x</key><real>0.4826814516</real><key>y</key><real>0.25593</real></dict>
+<key>Senegal</key><dict><key>x</key><real>0.3920475806</real><key>y</key><real>0.4760183333</real></dict>
+<key>Somalia</key><dict><key>x</key><real>0.6027717742</real><key>y</key><real>0.5345533333</real></dict>
+<key>Suriname</key><dict><key>x</key><real>0.2521314516</real><key>y</key><real>0.5579666667</real></dict>
+<key>São Tomé and Príncipe</key><dict><key>x</key><real>0.4634217742</real><key>y</key><real>0.57904</real></dict>
+<key>El Salvador</key><dict><key>x</key><real>0.1450701613</real><key>y</key><real>0.4830433333</real></dict>
+<key>Syria</key><dict><key>x</key><real>0.5642524194</real><key>y</key><real>0.32383</real></dict>
+<key>Swaziland</key><dict><key>x</key><real>0.5449927419</real><key>y</key><real>0.7874216667</real></dict>
+<key>Turks and Caicos Islands</key><dict><key>x</key><real>0.2034153226</real><key>y</key><real>0.42568</real></dict>
+<key>Chad</key><dict><key>x</key><real>0.5030741935</real><key>y</key><real>0.47584</real></dict>
+<key>French Southern Territories</key><dict><key>x</key><real>0.6690483871</real><key>y</key><real>0.9899516667</real></dict>
+<key>Togo</key><dict><key>x</key><real>0.4447290323</real><key>y</key><real>0.5228466667</real></dict>
+<key>Thailand</key><dict><key>x</key><real>0.7766758065</real><key>y</key><real>0.4713366667</real></dict>
+<key>Tajikistan</key><dict><key>x</key><real>0.66395</real><key>y</key><real>0.2933916667</real></dict>
+<key>Tokelau</key><dict><key>x</key><real>0.9981629032</real><key>y</key><real>0.656305</real></dict>
+<key>Timor-Leste</key><dict><key>x</key><real>0.8610790323</real><key>y</key><real>0.6527933333</real></dict>
+<key>Turkmenistan</key><dict><key>x</key><real>0.6288290323</real><key>y</key><real>0.29222</real></dict>
+<key>Tunisia</key><dict><key>x</key><real>0.4713524194</real><key>y</key><real>0.3320233333</real></dict>
+<key>Tonga</key><dict><key>x</key><real>0.9953306452</real><key>y</key><real>0.7616666667</real></dict>
+<key>Turkey</key><dict><key>x</key><real>0.5529233871</real><key>y</key><real>0.2933916667</real></dict>
+<key>Trinidad and Tobago</key><dict><key>x</key><real>0.2362701613</real><key>y</key><real>0.5076283333</real></dict>
+<key>Tuvalu</key><dict><key>x</key><real>0.9958967742</real><key>y</key><real>0.6645</real></dict>
+<key>Taiwan</key><dict><key>x</key><real>0.8389870968</real><key>y</key><real>0.40929</real></dict>
+<key>Tanzania</key><dict><key>x</key><real>0.5597209677</real><key>y</key><real>0.6364033333</real></dict>
+<key>Ukraine</key><dict><key>x</key><real>0.5381951613</real><key>y</key><real>0.2184666667</real></dict>
+<key>Uganda</key><dict><key>x</key><real>0.5489580645</real><key>y</key><real>0.5778683333</real></dict>
+<key>United States</key><dict><key>x</key><real>0.1326080645</real><key>y</key><real>0.2980733333</real></dict>
+<key>Uruguay</key><dict><key>x</key><real>0.2623274194</real><key>y</key><real>0.83542</real></dict>
+<key>Uzbekistan</key><dict><key>x</key><real>0.6424241935</real><key>y</key><real>0.2781716667</real></dict>
+<key>U.S. Minor Outlying Islands</key><dict><key>x</key><real>0.9941975806</real><key>y</key><real>0.435045</real></dict>
+<key>U.S. Virgin Islands</key><dict><key>x</key><real>0.2277733871</real><key>y</key><real>0.4490933333</real></dict>
+<key>Vatican City</key><dict><key>x</key><real>0.4838145161</real><key>y</key><real>0.2723183333</real></dict>
+<key>Saint Vincent and the Grenadines</key><dict><key>x</key><real>0.2368370968</real><key>y</key><real>0.4807016667</real></dict>
+<key>Venezuela</key><dict><key>x</key><real>0.2209758065</real><key>y</key><real>0.5322116667</real></dict>
+<key>British Virgin Islands</key><dict><key>x</key><real>0.2277733871</real><key>y</key><real>0.4502633333</real></dict>
+<key>Vietnam</key><dict><key>x</key><real>0.8027330645</real><key>y</key><real>0.4912383333</real></dict>
+<key>Vanuatu</key><dict><key>x</key><real>0.9930645161</real><key>y</key><real>0.7089866667</real></dict>
+<key>Wallis and Futuna</key><dict><key>x</key><real>0.9953306452</real><key>y</key><real>0.723035</real></dict>
+<key>Samoa</key><dict><key>x</key><real>0.9964637097</real><key>y</key><real>0.7218633333</real></dict>
+<key>Kosovo</key><dict><key>x</key><real>0.5064733871</real><key>y</key><real>0.266465</real></dict>
+<key>Yemen</key><dict><key>x</key><real>0.6022056452</real><key>y</key><real>0.468995</real></dict>
+<key>Mayotte</key><dict><key>x</key><real>0.5925758065</real><key>y</key><real>0.6914266667</real></dict>
+<key>South Africa</key><dict><key>x</key><real>0.5206346774</real><key>y</key><real>0.8120066667</real></dict>
+<key>Zambia</key><dict><key>x</key><real>0.5336637097</real><key>y</key><real>0.6937666667</real></dict>
+<key>Zimbabwe</key><dict><key>x</key><real>0.5404612903</real><key>y</key><real>0.73123</real></dict>
+</dict>
+</plist>
