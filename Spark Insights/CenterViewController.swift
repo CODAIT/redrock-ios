@@ -427,7 +427,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             
             if previousPage == Config.visualizationsIndex.timemap.rawValue{
                 //Log("left timemap so stop animation")
-                visualizationHandler.stopTimemap()
+                visualizationHandler.stopTimemapAndMakeCirclesInvisible()
                 playBarViewController.state = PlayBarState.Paused
             }
             if page == Config.visualizationsIndex.timemap.rawValue{

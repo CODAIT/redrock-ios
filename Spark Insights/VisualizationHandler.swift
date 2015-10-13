@@ -296,12 +296,8 @@ class VisualizationHandler{
 
     }
     
-    //TODO update for native
     func stopTimemap(){
         self.timemapIsPlaying = false
-
-        //Log("stopTimemap")
-        //zeroTimemapCircles()
         
         if timemapTimer != nil {
             timemapTimer.invalidate()
@@ -309,7 +305,12 @@ class VisualizationHandler{
         }
     }
     
-    //TODO update for native
+    func stopTimemapAndMakeCirclesInvisible(){ //call this if we are leaving the page, so we don't want big circles to overlap
+        zeroTimemapCircles()
+        stopTimemap()
+    }
+    
+    
     func startTimemap(){
         self.timemapIsPlaying = true
 
