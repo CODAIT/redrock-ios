@@ -125,8 +125,14 @@
         },function(){
           d3.select("#canvas").on('click',
                function(event){
+                    
+                    //OK DO THE THING HERE!!!!!
+                                  
                     var coordinates = d3.mouse(this);
+                                  
+                    talkToApp();
                     showClickPoint(coordinates);
+
                     //toggle = !toggle;
                     //chart.showControls(toggle);
                     //chart.showYAxis(toggle);
@@ -149,6 +155,10 @@
                 .transition()
                 .attr("r", 0)
                 .remove();
+    }
+
+    function talkToApp(){
+        webkit.messageHandlers.callbackHandler.postMessage("Jon is stupid");
     }
 
     function transformData(data){
