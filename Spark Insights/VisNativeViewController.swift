@@ -32,7 +32,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         mapView = TimeMapView()
 
         let myMapView : UIImageView
-        let image = UIImage(named: "bluewebmercatorprojection_whitebg.png")
+        let image = UIImage(named: "robinsonmap.png")
 
         myMapView = UIImageView(frame: CGRectMake(0, CGFloat(mapTopPadding), view.frame.size.width, view.frame.size.height))
         myMapView.image = image
@@ -98,13 +98,10 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         super.clean()
     }
     
-    
-    //TODO update for native
     func stopTimemap(){
         self.timemapIsPlaying = false
         
-        //Log("stopTimemap")
-        //zeroTimemapCircles()
+        zeroTimemapCircles()
         
         if timemapTimer != nil {
             timemapTimer.invalidate()
@@ -112,7 +109,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         }
     }
     
-    //TODO update for native
     func startTimemap(){
         self.timemapIsPlaying = true
         
@@ -145,6 +141,16 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         let latitude    = Double(myCountry["latitude"]! as! NSNumber)
         
         return yFromLatitude(latitude)
+    }
+    
+    func xForRobinson(myCountry: NSDictionary) -> Double{
+        let x = Double(myCountry["x"]! as! NSNumber)*Double(self.view.bounds.size.height)
+        return x
+    }
+    
+    func yForRobinson(myCountry: NSDictionary) -> Double{
+        let y = Double(myCountry["y"]! as! NSNumber)*Double(self.view.bounds.size.height)
+        return y
     }
     
     func xFromLongitude(longitude: Double) -> Double{
@@ -211,8 +217,10 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         circleResizeConstant = maxCircleSize / biggestValue //size of the biggest possible circle
         
         //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
-        let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
-        let properties = NSDictionary(contentsOfFile: filePath!)
+        //let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
+        //let properties = NSDictionary(contentsOfFile: filePath!)
+        
+        let robinsonProperties = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/countrypositions5", ofType: "plist")!)
         
         let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
         let countries = NSDictionary(contentsOfFile: countriesFilePath!)
@@ -224,10 +232,10 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         if(countryCircleViews.isEmpty){ //initialize it if you havent //this isnt being redone! redo it
             for myCountryString in countriesArray{
                 
-                let myCountry : NSDictionary = properties![myCountryString]! as! NSDictionary
+                let myCountry : NSDictionary = robinsonProperties![myCountryString]! as! NSDictionary
                 
-                let x = xFromCountryDictionary(myCountry)
-                let y = yFromCountryDictionary(myCountry)
+                let x = xForRobinson(myCountry)
+                let y = yForRobinson(myCountry)
                 
                 var circleView : CircleView
                 circleView = CircleView(frame: CGRectMake( CGFloat(x), CGFloat(y), 0, 0))
