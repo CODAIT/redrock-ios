@@ -90,6 +90,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     
     override func onBlur() {
         stopTimemap()
+        zeroTimemapCircles()
         playBarController.state = .Paused
     }
     
@@ -100,21 +101,23 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     
     func stopTimemap(){
         self.timemapIsPlaying = false
+        invalidateTimer()
         
-        zeroTimemapCircles()
-        
-        if timemapTimer != nil {
-            timemapTimer.invalidate()
-            timemapTimer = nil;
-        }
     }
     
     func startTimemap(){
         self.timemapIsPlaying = true
         
-        //Log("startTimemap")
+        invalidateTimer()
         if self.chartData.count > 0 {
             self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func invalidateTimer() {
+        if timemapTimer != nil {
+            timemapTimer.invalidate()
+            timemapTimer = nil;
         }
     }
     
