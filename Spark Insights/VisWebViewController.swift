@@ -9,7 +9,8 @@
 import UIKit
 import WebKit
 
-class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNavigationDelegate {
+// make VisWebViewController handle callbacks
+class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNavigationDelegate, WKScriptMessageHandler {
 
     var mainFile: String {
         switch type! {
@@ -30,21 +31,49 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     var webView: WKWebView! = nil
     
+    func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        if(message.name == "callbackHandler") {
+            print("JavaScript is sending a message \(message.body)")
+        }
+        //userContentController(userContentController: WKUserContentController, didReceiveScriptMessage: <#T##WKScriptMessage#>)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView = createWKWebViewWithConfigurationForCallback()
+        visHolderView.addSubview(webView)
+    }
+    
+    func createWKWebViewWithConfigurationForCallback() -> WKWebView{
+        let contentController = WKUserContentController();
         
-        webView = WKWebView()
-        webView.frame = self.view.bounds
-        webView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        // THIS IS ANOTHER WAY TO PASS IN JAVASCRIPT
+        //let userScript = WKUserScript(
+        //    source: "redHeader()", //the name of our function
+        //    injectionTime: WKUserScriptInjectionTime.AtDocumentEnd,
+        //    forMainFrameOnly: true
+        //)
+        //contentController.addUserScript(userScript)
+        
+        contentController.addScriptMessageHandler(self, name: "callbackHandler") //THIS IS THE WAY WE WILL GET MESSAGES BACK FOR OURSELVES
+        
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
+        
+        let myWebView = WKWebView(frame: self.view.bounds, configuration: config)
+        
+        //WKWebView()
+        myWebView.frame = self.view.bounds
+        myWebView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         
         //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
-        webView.navigationDelegate = self
+        myWebView.navigationDelegate = self
         
         // don't let webviews scroll
-        webView.scrollView.scrollEnabled = false;
-        webView.scrollView.bounces = false;
+        myWebView.scrollView.scrollEnabled = false;
+        myWebView.scrollView.bounces = false;
         
-        visHolderView.addSubview(webView)
+        return myWebView
     }
     
     override func onDataSet() {

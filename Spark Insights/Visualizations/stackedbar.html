@@ -57,7 +57,6 @@
     </style>
 </head>
 <body>
-
 <div id="chart1" class='with-3d-shadow with-transitions'>
     <svg id="canvas"></svg>
 </div>
@@ -87,6 +86,16 @@
             chart.color(["#325d80","#94d9d1"]);
             chart.margin({left: 80, right:80,top:80,bottom:80});
             chart.tooltips(true);
+                    chart.tooltipContent(function() {
+                                        
+                                         var coordinates = 'some fake coordinates'
+                                         
+                                         talkToApp(coordinates);
+                                        
+                                         return coordinates
+                                         
+                                         }
+                                         )
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
@@ -126,11 +135,8 @@
           d3.select("#canvas").on('click',
                function(event){
                     
-                    //OK DO THE THING HERE!!!!!
-                                  
                     var coordinates = d3.mouse(this);
                                   
-                    talkToApp();
                     showClickPoint(coordinates);
 
                     //toggle = !toggle;
@@ -157,8 +163,16 @@
                 .remove();
     }
 
-    function talkToApp(){
-        webkit.messageHandlers.callbackHandler.postMessage("Jon is stupid");
+    function talkToApp(coordinates){
+        
+        //OK DO THE THING HERE!!!!!
+        try {
+            var ourmessage = "This is the message coming from stackedbar.html from the tooltip. Barbara, Jon, and Rosstin are the best. Passed coordinates are... "+coordinates;
+            webkit.messageHandlers.callbackHandler.postMessage(ourmessage);
+        } catch(err) {
+            console.log('The native context does not exist yet');
+        }
+        
     }
 
     function transformData(data){
