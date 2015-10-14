@@ -86,9 +86,9 @@
             chart.color(["#325d80","#94d9d1"]);
             chart.margin({left: 80, right:80,top:80,bottom:80});
             chart.tooltips(true);
-                    chart.tooltipContent(function() {
-                                        
-                                         var coordinates = 'some fake coordinates'
+                    chart.tooltipContent(function(key, y, e, graph) {
+                                         
+                                         var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
                                          
                                          talkToApp(coordinates);
                                         
