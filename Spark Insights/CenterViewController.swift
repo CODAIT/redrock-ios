@@ -20,7 +20,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
 
     var searchText: String? {
         didSet {
@@ -31,7 +31,8 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     weak var delegate: CenterViewControllerDelegate?
     var lineSeparatorWidth = CGFloat(4)
     
-    var visualizationHandler: VisualizationHandler = VisualizationHandler()
+    var visualisationsByIndex = [VisMasterViewController]()
+    var visualisationsByType = [VisTypes: VisMasterViewController]()
     
     var leftViewController: LeftViewController!
     static var leftViewOpen = false
@@ -85,15 +86,13 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        visualizationHandler.firstLoad = true
-        self.setupScrollView()
-        visualizationHandler.searchText = searchText!
-        //Log(visualizationHandler.searchText)
+        
+        self.scrollView.delegate = self
 
         pageControlView.buttonBackgroundColor = UIColor.clearColor()
         pageControlView.buttonSelectedBackgroundColor = Config.darkBlueColor
         
-        for i in 0..<Config.visualizationNames.count{
+        for i in 0..<Config.visualisationTypes.count{
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
         }
         
@@ -152,8 +151,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         playBarViewController = UIStoryboard.playBarViewController()
         bottomDrawerViewController.addControl(playBarViewController!)
         playBarViewController.delegate = self
-        visualizationHandler.playBarReference = playBarViewController
-        
     }
     
     @IBAction func toggleFeedButtonClicked(sender: UIButton) {
@@ -175,13 +172,15 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     // MARK: - PlayBarViewControllerDelegate
     
     func playPauseClicked() { //stop and start the timemap
-        if(visualizationHandler.timemapIsPlaying){
-            visualizationHandler.stopTimemap()
-            playBarViewController.state = PlayBarState.Paused
-        }
-        else{
-            visualizationHandler.startTimemap()
-            playBarViewController.state = PlayBarState.Playing
+        if let vis = visualisationsByType[VisTypes.TimeMap] as! VisNativeViewController? {
+            if(vis.timemapIsPlaying){
+                vis.stopTimemap()
+                playBarViewController.state = PlayBarState.Paused
+            }
+            else{
+                vis.startTimemap()
+                playBarViewController.state = PlayBarState.Playing
+            }
         }
     }
     
@@ -192,16 +191,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             // animate out
             self.animateLeftPanelXPosition(targetPosition: -350)
             CenterViewController.leftViewOpen = false
-            
-            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width + 350.0
-            //reloadAllViews()
         } else { //get smaller
             // animate in
             self.animateLeftPanelXPosition(targetPosition: 0)
             CenterViewController.leftViewOpen = true
-            
-            visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width - 350.0
-            //reloadAllViews()
         }
     }
     
@@ -217,8 +210,15 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             }, completion: { finished in
                 self.dummyViewLeadingEdge.constant = targetPosition + 350
                 self.leftViewController.onAnimationComplete()
+                
+                // Force scrollView to layout and update its frame
+                self.scrollView.setNeedsLayout()
+                self.scrollView.layoutIfNeeded()
+                
                 self.scrollView.viewDidResize()
-                self.visualizationHandler.reloadAllViews()
+                if !Network.waitingForResponse {
+                    self.reloadVisualisations()
+                }
 
                 // should move slider bar code here to be better
         })
@@ -302,108 +302,35 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     */
     func setupWebViews()
     {
-        for i in 0..<Config.getNumberOfVisualizations(){
-            let tempVisPath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: Config.visualizationNames[i]).URLByAppendingPathExtension("html").path!)
-            let request = NSURLRequest(URL: tempVisPath)
+        for visType in Config.visualisationTypes {
+            let vis = VisFactory.visualisationControllerForType(visType)!
+            vis.willMoveToParentViewController(self)
+            scrollView.addVisualisation(vis.view)
+            addChildViewController(vis)
             
-            if i == Config.visualizationsIndex.timemap.rawValue // this visualization is native iOS, not a webview
-            {
-                var mapTopPadding = 0.0
-                if(CenterViewController.leftViewOpen){
-                    mapTopPadding = Config.smallscreenMapTopPadding
-                }
-                else{
-                    mapTopPadding = Config.fullscreenMapTopPadding
-                }
-                
-                visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
-                visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-                
-                let mySuperView = TimeMapView()
-                
-                let myMapView : UIImageView
-                let image = UIImage(named: "robinsonmap.png")
-                
-                myMapView = UIImageView(frame: CGRectMake(0, CGFloat(mapTopPadding), self.scrollView.frame.size.width, self.scrollView.frame.size.height))
-                myMapView.image = image
-                
-                visualizationHandler.visualizationViews.append(mySuperView)
-                self.scrollView.addVisualisation(mySuperView)
-                
-                // THE MAP
-                mySuperView.addSubview(myMapView)
-                mySuperView.baseMapView = myMapView
-            }
-            else //this visualization is one of the webviews
-            {
+            visualisationsByIndex.append(vis)
+            visualisationsByType[visType] = vis
             
-                var myWebView : WKWebView
-
-                visualizationHandler.scrollViewWidth = self.scrollView.frame.size.width
-                visualizationHandler.scrollViewHeight = self.scrollView.frame.size.height
-                
-                myWebView = WKWebView()
-                
-                //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
-                myWebView.navigationDelegate = self
-                
-                // don't let webviews scroll
-                myWebView.scrollView.scrollEnabled = false;
-                myWebView.scrollView.bounces = false;
-                
-                visualizationHandler.visualizationViews.append(myWebView)
-                self.scrollView.addVisualisation(myWebView)
-                // set initial loading state
-                myWebView.hidden = true
-                
-                myWebView.loadRequest(request)
+            switch visType {
+            case .TimeMap:
+                vis.playBarController = playBarViewController
+            default:
+                break
             }
         }
     }
     
     func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {
         
-        let maxDate = Double(visualizationHandler.stackedbarData.count) - 1
-        
-        //Transform range from 0-1 to 0-count
-        let lowerIndex: Int = Int(round(maxDate * rangeSlider.lowerValue))
-        let upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
-        
-        self.visualizationHandler.redrawStackedBarWithNewRange(lowerIndex, upperIndex: upperIndex)
-    }
-    
-    /*
-        sets up the scrollview that contains the webviews
-    */
-    func setupScrollView() {
-        for i in 0..<Config.getNumberOfVisualizations() {
-            let myOrigin = CGFloat(i) * self.scrollView.frame.size.width
-            self.scrollView.delegate = self
+        if let vis = visualisationsByType[VisTypes.StackedBar] as! VisWebViewController? {
+            let maxDate = Double(vis.chartData.count) - 1
             
-            // scroll view center
-            var center = self.scrollView.center
-            center.x = myOrigin + center.x
+            //Transform range from 0-1 to 0-count
+            let lowerIndex: Int = Int(round(maxDate * rangeSlider.lowerValue))
+            let upperIndex: Int = Int(round(rangeSlider.upperValue * maxDate))
             
-            //Loading view
-            let activityIndicator = createActivityIndicatorView(myOrigin, center: center)
-            self.scrollView.addSubview(activityIndicator)
-            visualizationHandler.loadingViews.append(activityIndicator)
-            
-            //Results Label
-            let label = createUILabelForError(myOrigin, center: center)
-            self.scrollView.addSubview(label)
-            visualizationHandler.resultsLabels.append(label)
-            
-            //Title Labels
-            //self.scrollView.addSubview(createUILabel(Config.visualizationTitles[i], origin: myOrigin))
-            
-            //loading control
-            visualizationHandler.isloadingVisualization.append(true)
-            visualizationHandler.errorDescription.append("")
+            vis.redrawStackedBarWithNewRange(lowerIndex, upperIndex: upperIndex)
         }
-        
-        self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * CGFloat(Config.getNumberOfVisualizations()), self.scrollView.frame.size.height)
-        self.visualizationHandler.firstLoad = false
     }
     
     // MARK: - UIScrollViewDelegate
@@ -424,33 +351,16 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
             previousPage = currentPage
             currentPage = page
             pageControlView.selectedIndex = page
+
+            let currentVis = visualisationsByIndex[page]
+            currentVis.onFocus()
             
-            if previousPage == Config.visualizationsIndex.timemap.rawValue{
-                //Log("left timemap so stop animation")
-                visualizationHandler.stopTimemapAndMakeCirclesInvisible()
-                playBarViewController.state = PlayBarState.Paused
-            }
-            if page == Config.visualizationsIndex.timemap.rawValue{
-                //Log("entered timemap so start animation")
-                visualizationHandler.startTimemap()
-                playBarViewController.state = PlayBarState.Playing
-            }
-            
-            if previousPage == Config.visualizationsIndex.forcegraph.rawValue{
-                //Log("left forcegraph so stop animation")
-                self.visualizationHandler.stopForcegraph()
-            }
-            if page == Config.visualizationsIndex.forcegraph.rawValue{
-                //Log("entered forcegraph so start animation")
-                self.visualizationHandler.startForcegraph()
-            }
-            
-            bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[page]!, complete: {
-                switch page {
-                case Config.visualizationsIndex.stackedbar.rawValue:
+            bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[currentVis.type]!, complete: {
+                switch currentVis.type! {
+                case .StackedBar:
                     self.rangeSliderViewController.view.hidden = false
                     self.playBarViewController.view.hidden = true
-                case Config.visualizationsIndex.timemap.rawValue:
+                case .TimeMap:
                     self.rangeSliderViewController.view.hidden = true
                     self.playBarViewController.view.hidden = false
                 default:
@@ -474,20 +384,10 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     func resetZoomOnLastPage() {
         if (pageChanged) {
             pageChanged = false
-            // Resetting the zoom level on the previous page when it is no longer visible
-            if let myWebView = visualizationHandler.visualizationViews[previousPage] as? WKWebView {
-                let webViewScrollView = myWebView.scrollView
-                webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
-            }
+            
+            visualisationsByIndex[previousPage].onBlur()
         }
     }
-    
-    // MARK: - WKNavigationDelegate
-    
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-        visualizationHandler.transformData(webView)
-    }
-    
     
     // MARK: - PageControlDelegate
     
@@ -511,38 +411,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         } else {
             self.showSendMailErrorAlert()
         }
-    }
-    
-    func configuredMailComposeViewController() -> MFMailComposeViewController {
-        let mailComposerVC = MFMailComposeViewController()
-        mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setSubject("IBM RedRock")
-        mailComposerVC.addAttachmentData(UIImageJPEGRepresentation(getScreenShot(), 1)!, mimeType: "image/jpeg", fileName: "IBMSparkInsightsScreenShot.jpeg")
-        return mailComposerVC
-    }
-    
-    func getScreenShot() -> UIImage
-    {
-        let layer = UIApplication.sharedApplication().keyWindow!.layer
-        let scale = UIScreen.mainScreen().scale
-        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
-        
-        layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
-        
-        return screenshot
-    }
-    
-    func showSendMailErrorAlert() {
-        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
-        sendMailErrorAlert.show()
-    }
-    
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func headerTitleClicked(sender: AnyObject) {
@@ -580,7 +448,7 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         {
             self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         }
-        self.visualizationHandler.cleanWebViews()
+        self.cleanVisualisations()
         self.resetViewController()
     }
     
@@ -688,273 +556,35 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
     }
     
     func handleLocationCallBack(json: JSON?, error: NSError?) {
-        // Log("handleLocationCallBack")
-        
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: "\(error!.localizedDescription)")
-            return
-        }
-        let numberOfColumns = 3        // number of columns
-        let containerName = "location" // name of container for data //TODO: unknown
-        
-        var contentJson = json
-        if contentJson != nil
-        {
-            if Config.serverMakeSingleRequest
-            {
-                contentJson = json![containerName]
-            }
-            if contentJson != nil
-            {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.timemap.rawValue)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if(data != nil){
-                            self.visualizationHandler.timemapData = data!
-                            self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.timemap.rawValue] = false
-                            self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.timemap.rawValue) //reload the current page
-                        }
-                        else{
-                            self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
-                            self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
-                        }
-                    })
-                })
-            }
-            else
-            {
-                self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
-                self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
-            }
-        }
-        else
-        {
-            self.visualizationHandler.errorDescription[Config.visualizationsIndex.timemap.rawValue] = Config.serverErrorMessage
-            self.visualizationHandler.errorState(Config.visualizationsIndex.timemap.rawValue, error: Config.serverErrorMessage)
-        }
+        setJsonForVisType(json, error: error, type: .TimeMap)
     }
 
     func handleSentimentsCallBack(json: JSON?, error: NSError?) {
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: "\(error!.localizedDescription)")
-            return
-        }
-        let numberOfColumns = 4        // number of columns
-        let containerName = "sentiment" // name of container for data //TODO: unknown
-        
-        
-        var contentJson = json
-        if contentJson != nil
-        {
-            if Config.serverMakeSingleRequest
-            {
-                contentJson = json![containerName]
-            }
-            
-            if contentJson != nil
-            {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.stackedbar.rawValue)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if(data != nil){
-                            self.visualizationHandler.stackedbarData = data!
-                            self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.stackedbar.rawValue] = false
-                            self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.stackedbar.rawValue) //reload the current page
-                        }
-                        else{
-                            self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
-                            self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
-                        }
-                    })
-                })
-            }
-            else
-            {
-                self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
-                self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
-            }
-        }
-        else
-        {
-            self.visualizationHandler.errorDescription[Config.visualizationsIndex.stackedbar.rawValue] = Config.serverErrorMessage
-            self.visualizationHandler.errorState(Config.visualizationsIndex.stackedbar.rawValue, error: Config.serverErrorMessage)
-        }
-        
+        setJsonForVisType(json, error: error, type: .StackedBar)
     }
     
     func handleWordDistanceCallBack(json: JSON?, error: NSError?) {
-        //Log("handleWordDistanceCallBack")
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: "\(error!.localizedDescription)")
-            return
-        }
-        let numberOfColumns = 3        // number of columns
-        let containerName = "distance" // name of container for data
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.forcegraph.rawValue)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    //Log("forcegraph data wasn't nil")
-                    self.visualizationHandler.forcegraphData = data!
-                    self.visualizationHandler.searchText = self.searchText!
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.forcegraph.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.forcegraph.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.forcegraph.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.forcegraph.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })
+        setJsonForVisType(json, error: error, type: .ForceGraph)
     }
+    
     func handleWordClusterCallBack(json: JSON?, error: NSError?) {
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: "\(error?.localizedDescription)")
-            return
-        }
-        else if(json == nil){
-            self.visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = Config.serverErrorMessage
-            visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
-            return
-        }
-        
-        let numberOfColumns = 4        // number of columns
-        let containerName = "cluster" // name of container for data
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.circlepacking.rawValue)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.visualizationHandler.circlepackingData = data!
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.circlepacking.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.circlepacking.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.circlepacking.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.circlepacking.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })
+        setJsonForVisType(json, error: error, type: .CirclePacking)
     }
     
     func handleProfessionCallBack(json: JSON?, error: NSError?) {
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: "\(error!.localizedDescription)")
-            return
-        }
-        
-        /*
-        var numberOfColumns = 2        // number of columns
-        var containerName = "profession" // name of container for data
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            var data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.treemap.rawValue)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.visualizationHandler.treemapData = data!
-                    Log(data!.count)
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })*/
-
-        
-        var contentJson = json
-        if contentJson != nil
-        {
-            if Config.serverMakeSingleRequest
-            {
-                contentJson = json!["profession"]
+        setJsonForVisType(json, error: error, type: .TreeMap)
+    }
+    
+    func setJsonForVisType(json: JSON?, error: NSError?, type: VisTypes) {
+        if let vis = visualisationsByType[type] {
+            if error != nil {
+                vis.errorDescription = error?.localizedDescription
+                return
             }
-            
-                //visualizationHandler.treemapData = contentJson!["profession"].description
-
-                visualizationHandler.treemapData = contentJson!.description
-                
-                //Log("What did we get back?")
-                //println(visualizationHandler.treemapData)
-                //Log("Was it anything?")
-                
-                visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-                visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
-
-                /*
-                Log("if contentJson != nil")
-                
-                if let professions = contentJson!["profession"].dictionaryObject as? Dictionary<String,Dictionary<String,Int>>
-                {
-                    
-                    Log("not conversion error")
-                    //Log(professions)
-                    var keys = professions.keys
-                    var treemap = [[String]]()
-                    for profession in keys
-                    {
-                        if (professions[profession] != nil || professions[profession] != 0)
-                        {
-                            treemap.append([profession, String(professions[profession]!)])
-                        }
-                    }
-                    visualizationHandler.treemapData = treemap
-                    visualizationHandler.isloadingVisualization[Config.visualizationsIndex.treemap.rawValue] = false
-                    visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.treemap.rawValue)
-                }
-                else
-                {
-                    visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = "JSON conversion error."
-                    visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error:"JSON conversion error.")
-                }
-                */
-
-            /*
-            else
-            {
-                visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
-                visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
-            }*/
-        }
-        else
-        {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.treemap.rawValue] = Config.serverErrorMessage
-            visualizationHandler.errorState(Config.visualizationsIndex.treemap.rawValue, error: Config.serverErrorMessage)
+            vis.json = json
         }
     }
     
-    func handleWordCloudCallBack(json: JSON?, error: NSError?) {
-        if (error != nil) {
-            visualizationHandler.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] = "\(error!.localizedDescription)"
-            visualizationHandler.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: "\(error!.localizedDescription)")
-            return
-        }
-        let numberOfColumns = 3        // number of columns
-        let containerName = "topic" // name of container for data
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: json!, chartIndex: Config.visualizationsIndex.wordcloud.rawValue)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.visualizationHandler.wordcloudData = data!
-                    self.visualizationHandler.isloadingVisualization[Config.visualizationsIndex.wordcloud.rawValue] = false
-                    self.visualizationHandler.reloadAppropriateView(Config.visualizationsIndex.wordcloud.rawValue) //reload the current page
-                }
-                else{
-                    self.visualizationHandler.errorDescription[Config.visualizationsIndex.wordcloud.rawValue] = Config.serverErrorMessage
-                    self.visualizationHandler.errorState(Config.visualizationsIndex.wordcloud.rawValue, error: Config.serverErrorMessage)
-                }
-            })
-        })
-    }
     
     func handleTopMetrics(json: JSON?, error: NSError?) {
         if (error != nil) {
@@ -990,32 +620,6 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
                 leftViewController.foundTweetsNumberLabel.text = "Error"
             }
         }
-    }
-    
-    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON, chartIndex: Int) -> Array<Array<String>>? {
-        let col_cnt: Int? = numberOfColumns
-        let row_cnt: Int? = json[containerName].array?.count
-        
-        if(row_cnt == nil || col_cnt == nil){
-            visualizationHandler.errorState(chartIndex, error: Config.serverErrorMessage)
-            return nil
-        }
-        
-        var tableData = Array(count: row_cnt!, repeatedValue: Array(count: col_cnt!, repeatedValue: ""))
-        
-        // populates the 2d array
-        for (row, rowJson): (String, JSON) in json[containerName] {
-            for (col, cellJson): (String, JSON) in rowJson {
-                //println(row, col, cellJson)
-                let r: Int = Int(row)!
-                let c: Int = Int(col)!
-                //self.tableData[r][c] = cellJson.stringValue
-                //Log(cellJson.stringValue)
-                
-                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
-            }
-        }
-        return tableData
     }
     
     //MARK: Dummy Data
@@ -1068,37 +672,18 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
         
-        //Log("location")
         self.handleLocationCallBack(json, error: nil )
 
-        //Log("profession")
         self.handleProfessionCallBack(json, error: nil)
         
-        //Log("sentiment")
         self.handleSentimentsCallBack(json, error: nil)
         
-        //Log("distance")
         self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
         
-        //Log("topic") //topic??
-        //self.handleWordCloudCallBack(json, error: nil) // "topic" but not double-nested
-        
-        //Log("cluster") //cluster??
         self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
     }
     
-    // MARK: - Utilities
-    
-    func createActivityIndicatorView(origin: CGFloat, center: CGPoint) -> UIActivityIndicatorView
-    {
-        let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        activityIndicator.frame = CGRectMake(origin, 0, 100, 100);
-        activityIndicator.center = center
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.WhiteLarge
-        activityIndicator.color = Config.darkBlueColor
-        activityIndicator.startAnimating()
-        return activityIndicator
-    }
+    // MARK: - UI Utils
     
     func createUILabelForError(origin: CGFloat, center: CGPoint) -> UILabel
     {
@@ -1125,6 +710,53 @@ class CenterViewController: UIViewController, WKNavigationDelegate, MKMapViewDel
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.backgroundColor = Config.lightWhiteIce
         return titleLabel
+    }
+    
+    // MARK: - Visualisation Utils
+    
+    func cleanVisualisations() {
+        for v in visualisationsByIndex {
+            v.clean()
+        }
+    }
+    
+    func reloadVisualisations() {
+        for v in visualisationsByIndex {
+            v.onDataSet()
+        }
+    }
+    
+    // MARK: - Utils
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        mailComposerVC.setSubject("IBM RedRock")
+        mailComposerVC.addAttachmentData(UIImageJPEGRepresentation(getScreenShot(), 1)!, mimeType: "image/jpeg", fileName: "IBMSparkInsightScreenShot.jpeg")
+        return mailComposerVC
+    }
+    
+    func getScreenShot() -> UIImage
+    {
+        let layer = UIApplication.sharedApplication().keyWindow!.layer
+        let scale = UIScreen.mainScreen().scale
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+        
+        layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+        
+        return screenshot
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

@@ -26,6 +26,7 @@ protocol NetworkDelegate {
 class Network
 {
     var delegate: NetworkDelegate?
+    static var waitingForResponse = false
     private var requestCount = 0
     private var requestTotal = 0
     private var error = false
@@ -216,6 +217,7 @@ class Network
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         Log("Sending Request: " + req)
+        Network.waitingForResponse = true
         self.startTime = CACurrentMediaTime()
         let url: NSURL = NSURL(string: req)!
         let session = NSURLSession.sharedSession()
@@ -226,6 +228,7 @@ class Network
             
             func callbackOnMainThread(json: JSON?, error: NSError?) {
                 dispatch_async(dispatch_get_main_queue(), {
+                    Network.waitingForResponse = false
                     callBack(json: json, error: error)
                 })
             }
