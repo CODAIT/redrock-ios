@@ -61,7 +61,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             if contentJson != nil
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.timemap.rawValue)
+                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!)
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if(data != nil){
                             self.chartData = data!

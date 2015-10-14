@@ -169,7 +169,7 @@ class VisMasterViewController: UIViewController {
     
     // MARK: - Utils
     
-    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON, chartIndex: Int) -> Array<Array<String>>? {
+    func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>>? {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json[containerName].array?.count
         

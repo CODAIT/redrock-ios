@@ -352,14 +352,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             currentPage = page
             pageControlView.selectedIndex = page
 
-            visualisationsByIndex[page].onFocus()
+            let currentVis = visualisationsByIndex[page]
+            currentVis.onFocus()
             
-            bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[page]!, complete: {
-                switch page {
-                case Config.visualizationsIndex.stackedbar.rawValue:
+            bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[currentVis.type]!, complete: {
+                switch currentVis.type! {
+                case .StackedBar:
                     self.rangeSliderViewController.view.hidden = false
                     self.playBarViewController.view.hidden = true
-                case Config.visualizationsIndex.timemap.rawValue:
+                case .TimeMap:
                     self.rangeSliderViewController.view.hidden = true
                     self.playBarViewController.view.hidden = false
                 default:

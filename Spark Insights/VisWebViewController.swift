@@ -189,7 +189,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let containerName = "cluster" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!, chartIndex: Config.visualizationsIndex.circlepacking.rawValue)
+            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     self.chartData = data!
@@ -247,7 +247,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             if contentJson != nil
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!, chartIndex: Config.visualizationsIndex.stackedbar.rawValue)
+                    let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: contentJson!)
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if(data != nil){
                             self.chartData = data!
@@ -385,7 +385,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let containerName = "distance" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!, chartIndex: Config.visualizationsIndex.forcegraph.rawValue)
+            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
                     //Log("forcegraph data wasn't nil")
