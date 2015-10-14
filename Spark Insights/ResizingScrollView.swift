@@ -21,6 +21,9 @@ class ResizingScrollView: UIScrollView {
     
         childVisualisations.append(view)
         self.addSubview(view)
+        
+        let pageWidth = self.frame.size.width
+        self.contentSize = CGSizeMake(pageWidth * CGFloat(childVisualisations.count), self.frame.size.height)
     }
     
     // Call this method immediately before resizing the ScrollView
