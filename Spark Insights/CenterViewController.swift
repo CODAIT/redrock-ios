@@ -92,7 +92,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         pageControlView.buttonBackgroundColor = UIColor.clearColor()
         pageControlView.buttonSelectedBackgroundColor = Config.darkBlueColor
         
-        for i in 0..<Config.visualizationNames.count{
+        for i in 0..<Config.visualisationTypes.count{
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
         }
         
