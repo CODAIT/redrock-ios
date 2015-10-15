@@ -20,6 +20,8 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.clipsToBounds = true
 
         var mapTopPadding = 0.0
         if(CenterViewController.leftViewOpen){
