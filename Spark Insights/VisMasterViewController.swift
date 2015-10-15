@@ -140,7 +140,7 @@ class VisMasterViewController: UIViewController {
     
     func revealWithAnimation() {
         self.visHolderView.hidden = false
-        UIView.animateWithDuration(0.1, animations: {
+        UIView.animateWithDuration(1.0, animations: {
             self.visHolderView.alpha = 1.0
             }, completion: { finished in
                 self.visHolderView.hidden = false
