@@ -91,7 +91,14 @@ class TwitterTweet
         dateFormat.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         let dateTime = dateFormat.dateFromString(dateTimeString)
         let localDateTime = dateTime?.dateByAddingTimeInterval(self.timeInterval)
-        self.dateTime = localDateTime!
+        
+        if let myDateTime = localDateTime{ //check for nil
+            self.dateTime = myDateTime
+        }
+        else{
+            Log("ERROR: DATETIME WASN'T FORMATTED CORRECTLY in transformTweetDateTime... stringFormat: \(stringFormat)... dateTimeString: \(dateTimeString)")
+            self.dateTime = NSDate(timeIntervalSince1970: NSTimeInterval())
+        }
     }
     
     func getUserName() -> String

@@ -85,7 +85,7 @@ class ReadTweetsData
                 tweet.setRetweets(Int(retweet_count)!)
             }
             tweet.setTweetText(text)
-            tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
+            tweet.setDateTime(nil, stringFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", stringDate: dateTime)
             if let urlImage = NSURL(string: user_profile_image)
             {
                 if let dataImage = NSData(contentsOfURL: urlImage){
