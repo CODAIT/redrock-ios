@@ -13,8 +13,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     var countryCircleViews = [String: CircleView]()
     var timemapTimer : NSTimer!
     var indexOfLastDate = 0
-    let maxCircleSize = 300.0
-    var circleResizeConstant = 1.0 //this will change
+    var circleResizeConstant : Double = 1.0 //this will change from this value, just a default value
     var timemapIsPlaying = true
     var mapView: TimeMapView!
     
@@ -24,11 +23,14 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         view.clipsToBounds = true
 
         var mapTopPadding = 0.0
+        //var mapVerticalScaleConstant = 1.0
         if(CenterViewController.leftViewOpen){
             mapTopPadding = Config.smallscreenMapTopPadding
+            //mapVerticalScaleConstant = Config.smallscreenMapVerticalScaleConstant
         }
         else{
             mapTopPadding = Config.fullscreenMapTopPadding
+            //mapVerticalScaleConstant = Config.fullscreenMapVerticalScaleConstant
         }
 
         mapView = TimeMapView()
@@ -136,74 +138,29 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         }
     }
     
-    func xFromCountryDictionary(myCountry: NSDictionary) -> Double{
-        let longitude   = Double(myCountry["longitude"]! as! NSNumber)
-        
-        return xFromLongitude(longitude)
-    }
-    
-    func yFromCountryDictionary(myCountry: NSDictionary) -> Double{
-        let latitude    = Double(myCountry["latitude"]! as! NSNumber)
-        
-        return yFromLatitude(latitude)
-    }
-    
     func xForRobinson(myCountry: NSDictionary) -> Double{
-        let x = Double(myCountry["x"]! as! NSNumber)*Double(self.view.bounds.size.height)
+        let x = Double(myCountry["x"]! as! NSNumber)*Double(mapView.baseMapView!.frame.width)
         return x
     }
     
     func yForRobinson(myCountry: NSDictionary) -> Double{
-        let y = Double(myCountry["y"]! as! NSNumber)*Double(self.view.bounds.size.height)
-        return y
-    }
-    
-    func xFromLongitude(longitude: Double) -> Double{
-        let mapWidth    = Double(view.bounds.width) // make it the map width?
-        
-        // get x value
-        let x = (longitude+180.0)*(mapWidth/360.0)
-        
-        //Log("xFromLongitude... longitude: \(longitude) becomes x: \(x)")
-        
-        return x
-    }
-    
-    func yFromLatitude(latitude: Double) -> Double{
-        let mapWidth    = Double(view.bounds.width) // make it the map width?
-        let mapHeight   = Double(view.bounds.height) // make it the map height?
-        
-        // ORIGINAL ASPECT RATIO //2058 × 1746
-        // new aspect ratio // 1024 x 624
-        let originalHeightAspect = 1746.0/2058.0 //badly hardcoded
-        let newHeightAspect = Double(view.bounds.height/view.bounds.width)
-        let resizeHeight = newHeightAspect/originalHeightAspect
-        let resizedLatitude = resizeHeight*latitude
-        
-        
-        // convert from degrees to radians
-        let latRad = resizedLatitude*M_PI/180.0;
-        
-        // get y value
-        let mercN = log(tan((M_PI/4.0)+(latRad/2.0)));
-        let y     = (mapHeight/2.0)-(mapWidth*mercN/(2.0*M_PI));
-        
-        
-        //Log("yFromLatitude... latitude: \(latitude) becomes y: \(y)")
-        
+        let y = Double(myCountry["y"]! as! NSNumber)*Double(mapView.baseMapView!.frame.height)
         return y
     }
     
     func transformDataForTimemapIOS(){
         
+        var mapVerticalScaleConstant = 1.0
         if(CenterViewController.leftViewOpen){ //small
             mapView.frame.origin.y = CGFloat(Config.smallscreenMapTopPadding)
+            mapVerticalScaleConstant = Config.smallscreenMapVerticalScaleConstant
         }
         else{ //big
             mapView.frame.origin.y = CGFloat(Config.fullscreenMapTopPadding)
+            mapVerticalScaleConstant = Config.fullscreenMapVerticalScaleConstant
         }
         
-        mapView.baseMapView!.frame = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height)
+        mapView.baseMapView!.frame = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height*CGFloat(mapVerticalScaleConstant))
         
         //TODO only do this once
         var biggestValue = 0.0
@@ -219,7 +176,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             }
         }
         
-        circleResizeConstant = maxCircleSize / biggestValue //size of the biggest possible circle
+        circleResizeConstant = Config.maxCircleSize / biggestValue //size of the biggest possible circle
         
         //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
         //let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
