@@ -201,6 +201,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     func animateLeftPanelXPosition(targetPosition targetPosition: CGFloat, completion: ((Bool) -> Void)! = nil) {
         leftViewController.onAnimationStart()
         self.scrollView.viewWillResize()
+        self.hideAllVisualisations()
         self.footerViewLeadingEdge.constant = targetPosition + 350
         self.bottomDrawerHolderLeadingEdge.constant = targetPosition + 350
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
@@ -696,6 +697,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     func reloadVisualisations() {
         for v in visualisationsByIndex {
             v.onDataSet()
+        }
+    }
+    
+    func hideAllVisualisations() {
+        for v in visualisationsByIndex {
+            v.onHiddenState()
         }
     }
     

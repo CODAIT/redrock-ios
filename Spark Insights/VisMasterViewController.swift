@@ -123,6 +123,14 @@ class VisMasterViewController: UIViewController {
         messageLabel.hidden = false
     }
     
+    func onHiddenState() {
+        visHolderView.hidden = true
+        activityIndicator.stopAnimating()
+        activityIndicator.hidden = true
+        messageLabel.hidden = true
+    }
+    
+    
     func clean() {
         errorDescription = nil
         json = nil
