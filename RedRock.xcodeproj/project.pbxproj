@@ -45,6 +45,7 @@
 		CEBF07091BC47C5D009C24DB /* BottomDrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBF07081BC47C5D009C24DB /* BottomDrawerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CEC4A8EC1BBB3F70007FC071 /* LeftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CED444651BC81ADB00A0A6EE /* PlayBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED444641BC81ADB00A0A6EE /* PlayBarViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		CED444671BC8747900A0A6EE /* VisHolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED444661BC8747900A0A6EE /* VisHolderViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CEDBEADA1B2244CE00FB9695 /* YLGIFImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */; };
 		CEDBEADB1B2244CE00FB9695 /* YLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */; };
 		CEDBEADD1B22452300FB9695 /* animation_v1.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEADC1B22452300FB9695 /* animation_v1.gif */; };
@@ -113,6 +114,7 @@
 		CEBF07081BC47C5D009C24DB /* BottomDrawerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomDrawerViewController.swift; sourceTree = "<group>"; };
 		CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftViewController.swift; sourceTree = "<group>"; };
 		CED444641BC81ADB00A0A6EE /* PlayBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayBarViewController.swift; sourceTree = "<group>"; };
+		CED444661BC8747900A0A6EE /* VisHolderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisHolderViewController.swift; sourceTree = "<group>"; };
 		CEDBEAD81B2244CE00FB9695 /* YLGIFImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLGIFImage.swift; sourceTree = "<group>"; };
 		CEDBEAD91B2244CE00FB9695 /* YLImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YLImageView.swift; sourceTree = "<group>"; };
 		CEDBEADC1B22452300FB9695 /* animation_v1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = animation_v1.gif; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 				CE8BE3661BCC5D570000E95C /* VisWebViewController.swift */,
 				CE8BE3681BCD6C6A0000E95C /* VisNativeViewController.swift */,
 				CE8BE36A1BCDA2120000E95C /* VisFactory.swift */,
+				CED444661BC8747900A0A6EE /* VisHolderViewController.swift */,
 				CE79DA711B177901003F01F6 /* RightViewController.swift */,
 				CEC4A8EB1BBB3F70007FC071 /* LeftViewController.swift */,
 				CEBF07061BC31D71009C24DB /* ResizingScrollView.swift */,
@@ -438,6 +441,7 @@
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
 				CEA3FCA41BC6F08900DED3D1 /* RangeSliderViewController.swift in Sources */,
 				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,
+				CED444671BC8747900A0A6EE /* VisHolderViewController.swift in Sources */,
 				41ED94191B17DCB100A80447 /* ReadTweetsData.swift in Sources */,
 				CE8BE3651BCC5A2B0000E95C /* VisMasterViewController.swift in Sources */,
 				419F69B41B72B8E40041D682 /* RangeSliderThumbLayer.swift in Sources */,

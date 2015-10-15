@@ -46,6 +46,8 @@ class VisMasterViewController: UIViewController {
     var searchText: String = ""
     var playBarController: PlayBarViewController!
     
+    var visHolderChildren = [VisHolderViewController]()
+    
     // UI
     var visHolderView: UIView!
     var activityIndicator: UIActivityIndicatorView!
@@ -125,8 +127,24 @@ class VisMasterViewController: UIViewController {
         errorDescription = nil
         json = nil
         onLoadingState()
+        removeAllVisHolderChildren()
     }
     
+    func addVisHolderController(vc: VisHolderViewController) {
+        addChildViewController(vc)
+        visHolderView.addSubview(vc.view)
+        vc.didMoveToParentViewController(self)
+        visHolderChildren.append(vc)
+        
+        addConstrainsToCenterInView(vc.view)
+    }
+    
+    func removeAllVisHolderChildren() {
+        for vh in visHolderChildren {
+            vh.removeView()
+        }
+        visHolderChildren.removeAll()
+    }
     
     // MARK: - UI Utils
     

@@ -1163,6 +1163,118 @@
             </objects>
             <point key="canvasLocation" x="448" y="1135"/>
         </scene>
+        <!--Vis Holder View Controller-->
+        <scene sceneID="u3J-nU-jkL">
+            <objects>
+                <viewController storyboardIdentifier="VisHolderViewController" id="nkC-hT-19t" customClass="VisHolderViewController" customModule="RedRock" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ktM-SG-pa9"/>
+                        <viewControllerLayoutGuide type="bottom" id="vde-dy-nIR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qA8-nA-Nwj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgF-1y-8vp" userLabel="Top Bar">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="4"/>
+                                <color key="backgroundColor" red="0.9882352941176471" green="0.83529411764705885" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="5O2-Dp-Qrz"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="4" id="ZDR-An-3eP"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="ZDR-An-3eP"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HjS-17-CvV" userLabel="Holder View">
+                                <rect key="frame" x="0.0" y="4" width="600" height="442"/>
+                                <subviews>
+                                    <view alpha="0.94999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3J-sm-CqM" userLabel="Background Color View">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="442"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="d3J-sm-CqM" secondAttribute="bottom" id="9fX-RW-o1L"/>
+                                    <constraint firstItem="d3J-sm-CqM" firstAttribute="top" secondItem="HjS-17-CvV" secondAttribute="top" id="DSe-sr-nAC"/>
+                                    <constraint firstItem="d3J-sm-CqM" firstAttribute="leading" secondItem="HjS-17-CvV" secondAttribute="leading" id="iTQ-Ga-2sp"/>
+                                    <constraint firstAttribute="trailing" secondItem="d3J-sm-CqM" secondAttribute="trailing" id="ylR-IY-yxC"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfH-Qt-dPv" userLabel="Bottom Bar">
+                                <rect key="frame" x="0.0" y="446" width="600" height="4"/>
+                                <color key="backgroundColor" red="0.98823529409999999" green="0.83529411760000005" blue="0.0039215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="4" id="2Yc-lB-UFm"/>
+                                    <constraint firstAttribute="height" constant="4" id="MPm-82-ebZ"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="2Yc-lB-UFm"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qM-zO-ONY">
+                                <rect key="frame" x="500" y="5" width="90" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Ol6-cM-O71"/>
+                                    <constraint firstAttribute="width" constant="90" id="ZMV-YV-szm"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="17" maxY="0.0"/>
+                                <state key="normal" title="Close" image="RR2.0_Close_Blue">
+                                    <color key="titleColor" red="0.10980392156862745" green="0.21176470588235294" blue="0.28235294117647058" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="highlighted" image="RR2.0_CloseSelectedState_Blue">
+                                    <color key="titleColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="closeButtonClicked:" destination="nkC-hT-19t" eventType="touchUpInside" id="nqv-qJ-1Gd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="7qM-zO-ONY" firstAttribute="leading" secondItem="qA8-nA-Nwj" secondAttribute="leadingMargin" constant="235" id="2LB-2g-XPc"/>
+                            <constraint firstItem="pfH-Qt-dPv" firstAttribute="top" secondItem="HjS-17-CvV" secondAttribute="bottom" id="3qG-uv-Nmq"/>
+                            <constraint firstItem="bgF-1y-8vp" firstAttribute="top" secondItem="qA8-nA-Nwj" secondAttribute="top" id="5Of-TU-v2m"/>
+                            <constraint firstItem="bgF-1y-8vp" firstAttribute="top" secondItem="qA8-nA-Nwj" secondAttribute="top" id="FZF-dV-vTi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7qM-zO-ONY" secondAttribute="trailing" id="GIO-uo-OWC"/>
+                            <constraint firstAttribute="trailing" secondItem="HjS-17-CvV" secondAttribute="trailing" id="IQ3-BH-bhF"/>
+                            <constraint firstItem="7qM-zO-ONY" firstAttribute="top" secondItem="ktM-SG-pa9" secondAttribute="bottom" constant="5" id="O8I-SC-P1h"/>
+                            <constraint firstItem="HjS-17-CvV" firstAttribute="leading" secondItem="qA8-nA-Nwj" secondAttribute="leading" id="ShT-bo-koc"/>
+                            <constraint firstAttribute="trailing" secondItem="bgF-1y-8vp" secondAttribute="trailing" id="W5f-Zw-tVD"/>
+                            <constraint firstItem="bgF-1y-8vp" firstAttribute="leading" secondItem="qA8-nA-Nwj" secondAttribute="leading" id="WlI-pQ-DSw"/>
+                            <constraint firstItem="HjS-17-CvV" firstAttribute="top" secondItem="bgF-1y-8vp" secondAttribute="bottom" id="ZRA-Bl-zSz"/>
+                            <constraint firstAttribute="trailing" secondItem="pfH-Qt-dPv" secondAttribute="trailing" id="egS-US-jtW"/>
+                            <constraint firstAttribute="trailing" secondItem="bgF-1y-8vp" secondAttribute="trailing" id="hJ4-bG-cYH"/>
+                            <constraint firstItem="pfH-Qt-dPv" firstAttribute="leading" secondItem="qA8-nA-Nwj" secondAttribute="leading" id="hr0-Wv-qlG"/>
+                            <constraint firstItem="bgF-1y-8vp" firstAttribute="leading" secondItem="qA8-nA-Nwj" secondAttribute="leading" id="hyI-SU-VKa"/>
+                            <constraint firstItem="vde-dy-nIR" firstAttribute="top" secondItem="pfH-Qt-dPv" secondAttribute="bottom" constant="150" id="m5N-MC-dZ0"/>
+                            <constraint firstAttribute="trailing" secondItem="7qM-zO-ONY" secondAttribute="trailing" constant="10" id="v5D-uA-Xnp"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="5Of-TU-v2m"/>
+                                <exclude reference="W5f-Zw-tVD"/>
+                                <exclude reference="WlI-pQ-DSw"/>
+                                <exclude reference="2LB-2g-XPc"/>
+                                <exclude reference="GIO-uo-OWC"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="closeButton" destination="7qM-zO-ONY" id="eZR-l7-yq1"/>
+                        <outlet property="holderView" destination="HjS-17-CvV" id="ycT-0N-Fga"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ol-CN-S9Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1140" y="1198"/>
+        </scene>
         <!--Play Bar View Controller-->
         <scene sceneID="yEv-AN-mDW">
             <objects>
@@ -1217,6 +1329,7 @@
                                             <constraint firstAttribute="width" constant="44" id="MDR-F6-wlL"/>
                                         </constraints>
                                         <state key="normal" image="RR2.0_Play_Blue"/>
+                                        <state key="highlighted" image="RR2.0_Play_White"/>
                                         <connections>
                                             <action selector="buttonClicked:" destination="D99-fH-seQ" eventType="touchUpInside" id="Tdp-lp-BxU"/>
                                         </connections>
@@ -1228,6 +1341,7 @@
                                             <constraint firstAttribute="width" constant="44" id="xMI-BY-Qmb"/>
                                         </constraints>
                                         <state key="normal" image="RR2.0_Pause_Blue"/>
+                                        <state key="highlighted" image="RR2.0_Pause_White"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="tKe-aJ-UGC"/>
@@ -1547,13 +1661,17 @@
     </scenes>
     <resources>
         <image name="Forward_WHITE" width="41" height="41"/>
+        <image name="RR2.0_CloseSelectedState_Blue" width="15" height="15"/>
+        <image name="RR2.0_Close_Blue" width="15" height="15"/>
         <image name="RR2.0_DownArrow_Blue" width="33" height="10"/>
         <image name="RR2.0_Forward_LightBlue" width="21" height="21"/>
         <image name="RR2.0_Forward_WHITE" width="21" height="21"/>
         <image name="RR2.0_Information_Blue" width="21" height="21"/>
         <image name="RR2.0_Information_WHITE" width="21" height="21"/>
         <image name="RR2.0_Pause_Blue" width="8" height="8"/>
+        <image name="RR2.0_Pause_White" width="8" height="8"/>
         <image name="RR2.0_Play_Blue" width="8" height="8"/>
+        <image name="RR2.0_Play_White" width="8" height="8"/>
         <image name="RR2.0_Remove_White" width="21" height="21"/>
         <image name="RR2.0_ScrubberBody_Blue" width="314" height="22"/>
         <image name="RR2.0_ScrubberBody_BlueFilled" width="314" height="22"/>

@@ -36,6 +36,21 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             print("JavaScript is sending a message \(message.body)")
         }
         //userContentController(userContentController: WKUserContentController, didReceiveScriptMessage: <#T##WKScriptMessage#>)
+        
+        displayVisOverSentiment()
+    }
+    
+    func displayVisOverSentiment() {
+        let visHolder = UIStoryboard.visHolderViewController()!
+        self.addVisHolderController(visHolder)
+        
+        let vis = VisFactory.visualisationControllerForType(.TimeMap)!
+        visHolder.addVisualisationController(vis)
+        vis.onSuccessState()
+        
+        // TODO:
+        // make network call
+        // on response set json on vis
     }
     
     override func viewDidLoad() {

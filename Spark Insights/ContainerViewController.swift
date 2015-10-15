@@ -154,4 +154,8 @@ extension UIStoryboard {
     class func playBarViewController() -> PlayBarViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("PlayBarViewController") as? PlayBarViewController
     }
+    
+    class func visHolderViewController() -> VisHolderViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("VisHolderViewController") as? VisHolderViewController
+    }
 }
