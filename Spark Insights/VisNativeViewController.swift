@@ -176,7 +176,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             }
         }
         
-        circleResizeConstant = Config.maxCircleSize / biggestValue //size of the biggest possible circle
+        circleResizeConstant = Config.maxCircleSize * mapVerticalScaleConstant / biggestValue //size of the biggest possible circle
         
         //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
         //let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
