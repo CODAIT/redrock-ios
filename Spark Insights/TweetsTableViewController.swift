@@ -233,7 +233,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
             tweet.setRetweets(retweet_count.toInt()!)
         }*/
         tweet.setTweetText(text)
-        tweet.setDateTime(nil, stringFormat: "eee MMM dd HH:mm:ss ZZZZ yyyy", stringDate: dateTime)
+        tweet.setDateTime(nil, stringFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", stringDate: dateTime)
         tweet.setUserID(userID)
         
         return tweet
