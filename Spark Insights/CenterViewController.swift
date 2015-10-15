@@ -266,36 +266,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
 //        }
 //    }
     
-    func formatNumberToDisplay(number: Int64) -> String
-    {
-        let billion = Int64(999999999)
-        let million = Int64(999999)
-        let thousand = Int64(999)
-        var div = 0.0
-        var letter = ""
-        if number > billion
-        {
-            div = Double(number)/Double((billion+1))
-            letter = "B"
-        }
-        else if number > million
-        {
-            div = Double(number)/Double((million+1))
-            letter = "M"
-        }
-        else if number > thousand
-        {
-            div = Double(number)/Double((thousand+1))
-            letter = "K"
-        }
-        else
-        {
-            return String(number)
-        }
-        
-        return String(format: "%.1f", div) + String(letter)
-    }
-    
     /*
         TODO: Change name from setupWebViews to something else like setupVisualizations
         creates the webviews
@@ -582,6 +552,9 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 return
             }
             vis.json = json
+        } else {
+            Log("Unable to load data into visualisation. VisType: \(type) not found.")
+            
         }
     }
     
@@ -736,8 +709,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         return mailComposerVC
     }
     
-    func getScreenShot() -> UIImage
-    {
+    func getScreenShot() -> UIImage {
         let layer = UIApplication.sharedApplication().keyWindow!.layer
         let scale = UIScreen.mainScreen().scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
@@ -755,8 +727,38 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
         sendMailErrorAlert.show()
     }
+    
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func formatNumberToDisplay(number: Int64) -> String {
+        let billion = Int64(999999999)
+        let million = Int64(999999)
+        let thousand = Int64(999)
+        var div = 0.0
+        var letter = ""
+        if number > billion
+        {
+            div = Double(number)/Double((billion+1))
+            letter = "B"
+        }
+        else if number > million
+        {
+            div = Double(number)/Double((million+1))
+            letter = "M"
+        }
+        else if number > thousand
+        {
+            div = Double(number)/Double((thousand+1))
+            letter = "K"
+        }
+        else
+        {
+            return String(number)
+        }
+        
+        return String(format: "%.1f", div) + String(letter)
     }
 }
 
