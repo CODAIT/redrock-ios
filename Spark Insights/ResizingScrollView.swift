@@ -31,19 +31,11 @@ class ResizingScrollView: UIScrollView {
         let pageWidth = self.frame.size.width
         let fractionalPage = Float(self.contentOffset.x / pageWidth)
         page = Int(round(fractionalPage))
-        
-        UIView.animateWithDuration(0.2) { () -> Void in
-            self.alpha = 0
-        }
     }
     
     // Call this method immediately after resizing the ScrollView
     func viewDidResize() {
         relayoutSubviews()
-        
-        UIView.animateWithDuration(0.2) { () -> Void in
-            self.alpha = 1
-        }
     }
     
     private func relayoutSubviews() {
