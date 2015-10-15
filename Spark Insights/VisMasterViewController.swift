@@ -98,14 +98,14 @@ class VisMasterViewController: UIViewController {
     // MARK: - Display states
     
     func onLoadingState() {
-        visHolderView.hidden = true
+        hideWithAnimation()
         activityIndicator.startAnimating()
         activityIndicator.hidden = false
         messageLabel.hidden = true
     }
     
     func onSuccessState() {
-        visHolderView.hidden = false
+        revealWithAnimation()
         activityIndicator.stopAnimating()
         activityIndicator.hidden = true
         messageLabel.hidden = true
@@ -116,7 +116,7 @@ class VisMasterViewController: UIViewController {
     }
     
     func onErrorState() {
-        visHolderView.hidden = true
+        hideWithAnimation()
         activityIndicator.stopAnimating()
         activityIndicator.hidden = true
         messageLabel.text = errorDescription
@@ -124,10 +124,26 @@ class VisMasterViewController: UIViewController {
     }
     
     func onHiddenState() {
-        visHolderView.hidden = true
+        hideWithAnimation()
         activityIndicator.stopAnimating()
         activityIndicator.hidden = true
         messageLabel.hidden = true
+    }
+    
+    func hideWithAnimation() {
+        UIView.animateWithDuration(0.1, animations: {
+            self.visHolderView.alpha = 0.0
+            }, completion: { finished in
+                self.visHolderView.hidden = true
+        })
+    }
+    
+    func revealWithAnimation() {
+        self.visHolderView.hidden = false
+        UIView.animateWithDuration(0.1, animations: {
+            self.visHolderView.alpha = 1.0
+            }, completion: { finished in
+        })
     }
     
     
