@@ -44,13 +44,21 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
-        let vis = VisFactory.visualisationControllerForType(.TimeMap)!
+        let vis = VisFactory.visualisationControllerForType(.CirclePacking)!
         visHolder.addVisualisationController(vis)
-        vis.onSuccessState()
+        vis.onLoadingState()
         
         // TODO:
-        // make network call
-        // on response set json on vis
+        // wire up network call below
+        // populate vis when response returns
+        
+        Network.sharedInstance.sentimentAnalysisRequest("cats", sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
+            if error != nil {
+                vis.errorDescription = error?.localizedDescription
+                return
+            }
+            vis.json = json
+        }
     }
     
     override func viewDidLoad() {

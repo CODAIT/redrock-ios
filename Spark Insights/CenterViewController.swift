@@ -423,45 +423,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         self.resetViewController()
     }
     
-    func getIncludeAndExcludeSeparated() -> (include: String, exclude: String)
-    {
-        let terms = self.searchText!.componentsSeparatedByString(",")
-        var includeStr = ""
-        var excludeStr = ""
-        for var i = 0; i < terms.count; i++
-        {
-            let term = terms[i]
-            if term != ""
-            {
-                var aux = Array(term.characters)
-                if aux[0] == "-"
-                {
-                    aux.removeAtIndex(0)
-                    excludeStr = excludeStr + String(aux) + ","
-                }
-                else
-                {
-                    includeStr = includeStr + term + ","
-                }
-            }
-        }
-        
-        var vector = Array(includeStr.characters)
-        if vector.count > 0
-        {
-            vector.removeLast()
-        }
-        includeStr = String(vector)
-        vector = Array(excludeStr.characters)
-        if vector.count > 0
-        {
-            vector.removeLast()
-        }
-        excludeStr = String(vector)
-        
-        return (includeStr, excludeStr)
-
-    }
     // MARK: - Network
     
     func loadDataFromServer()
@@ -473,10 +434,9 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.onDummyRequestSuccess(nil)
             }
         } else {
-            let search = self.getIncludeAndExcludeSeparated()
-            let networkConnection = Network()
+            let networkConnection = Network.sharedInstance
             networkConnection.delegate = self
-            networkConnection.getDataFromServer(search.include, exclude: search.exclude)
+            networkConnection.searchRequest(self.searchText!)
         }
     }
     
@@ -552,6 +512,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 vis.errorDescription = error?.localizedDescription
                 return
             }
+            vis.searchText = self.searchText!
             vis.json = json
         } else {
             Log("Unable to load data into visualisation. VisType: \(type) not found.")
