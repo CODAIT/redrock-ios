@@ -129,11 +129,13 @@ var grandparent = svg.append("g")
 grandparent.append("rect")
     .attr("y", -margin.top)
     .attr("width", width)
+    .attr("fill", "#162838")
     .attr("height", margin.top);
 
 grandparent.append("text")
     .attr("x", 6)
     .attr("y", 6 - margin.top)
+    .attr("fill", "#fff")
     .attr("dy", ".75em");
 
 var legend = d3.select("#legend").append("svg")
@@ -147,23 +149,30 @@ var legend = d3.select("#legend").append("svg")
 
 // functions
 
-var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
+// change top bar to 1C3648
 
+var parentColor = d3.scale.ordinal().range(["1"]); //, "2", "3", "4", "5", "6", "7", "8"]);
+
+var color1 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color2 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color3 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color4 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color5 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color6 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color7 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+var color8 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
+
+
+/*
 var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
-
 var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
-
 var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571"]);
-
 var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
-
 var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
-
 var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
-
 var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
-
 var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
+ */
 
 
 function returnColor(parentColor, number){
@@ -257,7 +266,9 @@ legend.append("rect")
 legend.append("text")
         .text(function(d){return formatNumber(colorIncrements(d))})
         .attr('y', 20)
-        .attr('x', function(d){return margin.left + d * 40 + 20});
+        .attr('x', function(d){return margin.left + d * 40 + 20})
+        
+        ;
 
 // determines if white or black will be better contrasting color
 function getContrast50(hexcolor){
@@ -280,12 +291,13 @@ var root = JSON.parse(data);
         .on("click", transition)
       .select("text")
         .text(name(d))
-
+        .attr('font-family', 'Helvetica')
+        .attr('font-size', '25px')
     // color header based on grandparent's rate
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill", returnColor(1, "hello")); // function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", "#1C3648"); // function(){console.log(color(d.rate)); return color(d['rate'])})
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)
@@ -309,11 +321,15 @@ var root = JSON.parse(data);
         .attr("class", "parent")
         .call(rect)
       .append("title")
-        .text(function(d) {console.log(typeof(d.value), d.value); return d.name + ', Cases of TB: ' + d.value + ', percent change: ' + formatNumber(11); });
+        .text(function(d) {console.log(typeof(d.value), d.value); return d.name + ', Value: ' + d.value; })
+
+        ;
 
     g.append("text")
         .attr("dy", ".75em")
         .text(function(d) { return d.name; })
+        .attr('font-family', 'Helvetica')
+        .attr('font-size', '16px')
         .call(text);
 
     function transition(d) {
@@ -356,7 +372,7 @@ var root = JSON.parse(data);
   function text(text) {
     text.attr("x", function(d) { return x(d.x) + 6; })
         .attr("y", function(d) { return y(d.y) + 6; })
-        .attr("fill", function(d){returnColor(2, d.y)});// function (d) {return getContrast50(color(parseFloat(d.rate)))});
+        .attr("fill", "#fff");// function (d) {return getContrast50(color(parseFloat(d.rate)))});
   }
 
   function rect(rect) {
