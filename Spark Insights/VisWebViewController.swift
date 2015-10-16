@@ -52,7 +52,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         // wire up network call below
         // populate vis when response returns
         
-        Network.sharedInstance.sentimentAnalysisRequest("cats", sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
+        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
             if error != nil {
                 vis.errorDescription = error?.localizedDescription
                 return
