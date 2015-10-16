@@ -36,7 +36,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         mapView = TimeMapView()
 
         let myMapView : UIImageView
-        let image = UIImage(named: "robinsonmap.png")
+        let image = UIImage(named: "robinsonmap_for_coordinates_clear_2.png")
 
         myMapView = UIImageView(frame: CGRectMake(0, CGFloat(mapTopPadding), view.frame.size.width, view.frame.size.height))
         myMapView.image = image
@@ -46,6 +46,8 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         mapView.baseMapView = myMapView
         
         visHolderView.addSubview(mapView)
+        
+        visHolderView.backgroundColor = Config.mapBackgroundColor
         
         if json != nil {
             transformDataForTimemapIOS()
