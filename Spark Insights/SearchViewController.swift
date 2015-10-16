@@ -44,7 +44,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         
         if (Config.searchViewAnimation) {
             YLGIFImage.setPrefetchNum(5)
-            let path = NSBundle.mainBundle().URLForResource("animation_v1", withExtension: "gif")?.absoluteString as String!
+            let path = NSBundle.mainBundle().URLForResource("searchwaiting2", withExtension: "gif")?.absoluteString as String!
             topImageView.image = YLGIFImage(contentsOfFile: path)
         }
         
@@ -204,6 +204,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             }
         }
     
+    }
+    
+    @IBAction func liveClicked(sender: UIButton) {
+        print("live clicked")
     }
     
     /* Find at least one include term*/
