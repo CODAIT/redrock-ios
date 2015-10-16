@@ -10,7 +10,7 @@ import UIKit
 
 class VisFactory {
 
-    class func visualisationControllerForType(type: VisTypes) -> VisMasterViewController? {
+    class func visualizationControllerForType(type: VisTypes) -> VisMasterViewController? {
         switch type {
         case .TreeMap, .CirclePacking, .ForceGraph, .StackedBar:
             return VisWebViewController(type: type)

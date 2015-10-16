@@ -25,6 +25,8 @@ protocol NetworkDelegate {
 
 class Network
 {
+    static let sharedInstance = Network()
+    
     var delegate: NetworkDelegate?
     static var waitingForResponse = false
     private var requestCount = 0
@@ -33,25 +35,62 @@ class Network
     private var startTime = CACurrentMediaTime()
     // MARK: Call Requests
     
-    func getDataFromServer(include: String, exclude:String)
+    func sentimentAnalysisRequest(searchText: String, sentiment: SentimentTypes, startDatetime: String, endDatetime: String, callBack: (json: JSON?, error: NSError?) -> ()) {
+        // http://bdavm155.svl.ibm.com:16666/ss/sentiment/analysis?user=barbara&termsInclude=love&termsExclude=&top=100&sentiment=1&startDatetime=2015-08-01T00:00:00Z&endDatetime=2015-11-10T23:59:59Z
+        
+        let encode = encodeIncludExcludeFromString(searchText)
+        
+        var sentimentString: String
+        switch sentiment {
+        case .Positive:
+            sentimentString = "1"
+        case .Negitive:
+            sentimentString = "0"
+        }
+        
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = "ssdemo"
+        parameters["termsInclude"] = encode.include
+        parameters["termsExclude"] = encode.exclude
+        parameters["top"] = Config.tweetsTopParameter
+        parameters["sentiment"] = sentimentString
+        parameters["startDatetime"] = startDatetime
+        parameters["endDatetime"] = endDatetime
+        let req = self.createRequest(Config.serverSentimentAnalysis, paremeters: parameters)
+        executeRequest(req, callBack: callBack)
+    }
+    
+    func searchRequest(searchText: String)
     {
-        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}").invertedSet
-        let encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
-        let encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        let encode = encodeIncludExcludeFromString(searchText)
 
         if (Config.serverMakeSingleRequest) {
-            self.executeFullRequest(encodeInclude!, exclude: encodeExclude!)
+            self.executeFullRequest(encode.include, exclude: encode.exclude)
         }
         else {
-            self.executeTweetRequest(encodeInclude!, exclude: encodeExclude!)
-            self.executeSentimentRequest(encodeInclude!, exclude: encodeExclude!)
-            self.executeLocationRequest(encodeInclude!, exclude: encodeExclude!)
-            self.executeWordClusterRequest(encodeInclude!, exclude: encodeExclude!) //not imp yet
-            self.executeProfessionRequest(encodeInclude!, exclude: encodeExclude!)
-            self.executeWordDistanceRequest(encodeInclude!, exclude: encodeExclude!)
+            self.executeTweetRequest(encode.include, exclude: encode.exclude)
+            self.executeSentimentRequest(encode.include, exclude: encode.exclude)
+            self.executeLocationRequest(encode.include, exclude: encode.exclude)
+            self.executeWordClusterRequest(encode.include, exclude: encode.exclude) //not imp yet
+            self.executeProfessionRequest(encode.include, exclude: encode.exclude)
+            self.executeWordDistanceRequest(encode.include, exclude: encode.exclude)
             //self.executeWordCloudRequest()
             //TODO: Find out if we have specific request for top metrics
         }
+    }
+    
+    func encodeIncludExcludeFromString(searchText: String) -> (include: String, exclude: String) {
+        let search = self.getIncludeAndExcludeSeparated(searchText)
+        let encode = encodeIncludExclude(search.include, exclude: search.exclude)
+        return encode
+    }
+    
+    func encodeIncludExclude(include: String, exclude: String) -> (include: String, exclude: String) {
+        let customAllowedSet =  NSCharacterSet(charactersInString:"=\"#%/<>?@\\^`{|}").invertedSet
+        let encodeInclude = include.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        let encodeExclude = exclude.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)
+        
+        return (encodeInclude!, encodeExclude!)
     }
     
     //MARK: Data
@@ -299,5 +338,46 @@ class Network
             callbackOnMainThread(json, error: nil)
         })
         task.resume()
+    }
+    
+    // MARK: - Utils
+    func getIncludeAndExcludeSeparated(searchText: String) -> (include: String, exclude: String)
+    {
+        let terms = searchText.componentsSeparatedByString(",")
+        var includeStr = ""
+        var excludeStr = ""
+        for var i = 0; i < terms.count; i++
+        {
+            let term = terms[i]
+            if term != ""
+            {
+                var aux = Array(term.characters)
+                if aux[0] == "-"
+                {
+                    aux.removeAtIndex(0)
+                    excludeStr = excludeStr + String(aux) + ","
+                }
+                else
+                {
+                    includeStr = includeStr + term + ","
+                }
+            }
+        }
+        
+        var vector = Array(includeStr.characters)
+        if vector.count > 0
+        {
+            vector.removeLast()
+        }
+        includeStr = String(vector)
+        vector = Array(excludeStr.characters)
+        if vector.count > 0
+        {
+            vector.removeLast()
+        }
+        excludeStr = String(vector)
+        
+        return (includeStr, excludeStr)
+        
     }
 }
