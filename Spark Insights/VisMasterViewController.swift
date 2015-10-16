@@ -13,6 +13,7 @@ enum VisTypes {
     case CirclePacking
     case ForceGraph
     case StackedBar
+    case StackedBarDrilldownCirclePacking
     case TimeMap
 }
 
