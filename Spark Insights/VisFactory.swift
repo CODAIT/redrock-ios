@@ -12,7 +12,7 @@ class VisFactory {
 
     class func visualizationControllerForType(type: VisTypes) -> VisMasterViewController? {
         switch type {
-        case .TreeMap, .CirclePacking, .ForceGraph, .StackedBar:
+        case .TreeMap, .CirclePacking, .ForceGraph, .StackedBar, .StackedBarDrilldownCirclePacking:
             return VisWebViewController(type: type)
         case .TimeMap:
             return VisNativeViewController(type: type)

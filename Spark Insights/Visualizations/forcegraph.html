@@ -101,6 +101,18 @@ force
     node.append("circle")
     .attr("stroke","rgba(0,0,0,0)")
     .attr("r", function(d){return radiusScale(d.value);})
+    .attr("fill", function(d) {
+          if(d.name.charAt(0) == '#'){
+            return "#00B39F";
+          }
+          else if(d.name.charAt(0) == '@'){
+            return "#325C80";
+          }
+          else{
+            return "#edc01b";
+          }
+        }
+      )
 
     node.append("text")
     .attr("x", function(d){return 4+radiusScale(d.value);})

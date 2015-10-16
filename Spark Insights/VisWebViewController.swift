@@ -22,6 +22,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             return "stackedbar.html"
         case .ForceGraph:
             return "forcegraph.html"
+        case .StackedBarDrilldownCirclePacking:
+            return "StackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve.html"
         default:
             return "none"
         }
@@ -44,7 +46,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
-        let vis = VisFactory.visualizationControllerForType(.CirclePacking)!
+        let vis = VisFactory.visualizationControllerForType(.StackedBarDrilldownCirclePacking)!
         visHolder.addVisualisationController(vis)
         vis.onLoadingState()
         
@@ -152,6 +154,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     self.transformDataForForcegraph()
                 case .StackedBar:
                     self.transformDataForStackedbar()
+                case .StackedBarDrilldownCirclePacking:
+                    self.transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve()
                 default:
                     return
                 }
@@ -239,6 +243,82 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let numberOfColumns = 4        // number of columns
         let containerName = "cluster" // name of container for data
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if(data != nil){
+                    self.chartData = data!
+                    loadData()
+                }
+                else{
+                    self.errorDescription = Config.serverErrorMessage
+                }
+            })
+        })
+        
+    }
+
+    func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
+        //Log(circlepackingData)
+        
+        onLoadingState()
+        
+        func loadData() {
+            if self.chartData.count > 0
+            {
+                // Reorder Circle Packing Data
+                self.chartData.sortInPlace({$0[1] < $1[1]})
+                
+                let viewSize = self.view.bounds.size
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
+                    
+                    var groupName : String = "uninitialized" // this isn't safe, there should be a better way
+                    
+                    for r in 0..<self.chartData.count{
+                        if(groupName != self.chartData[r][1]){
+                            // stop the group (unless it's the first one)
+                            if(groupName != "uninitialized"){
+                                script9+="]},"
+                            }
+                            // new group
+                            groupName = self.chartData[r][1]
+                            script9+="{\"name\": \""
+                            script9+=groupName
+                            script9+="\", \"children\": ["
+                        }
+                        else{
+                            //continue the group
+                            script9+=","
+                        }
+                        
+                        script9+="{\"name\": \""
+                        script9+=self.chartData[r][0]
+                        script9+="\", \"size\":"
+                        let aString : String = "\(Int(Float(self.chartData[r][2])!*(10000)))"
+                        script9+=aString
+                        script9+="}"
+                    }
+                    script9+="]}]}';var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);"
+                    //script9 = "heyRenderThisDataBro();"
+                    //Log(script9)
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.webView.evaluateJavaScript(script9, completionHandler: nil)
+                        
+                        self.onSuccessState()
+                    })
+                })
+                
+            }
+            else {
+                onNoDataState()
+            }
+        }
+        
+        let numberOfColumns = 3        // number of columns
+        let containerName = "topics" // name of container for data
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
@@ -384,6 +464,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                 let viewSize = self.view.bounds.size
                 //TODO: should have searchterm should be from actual searchterm
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    
+                    
                     
                     var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(self.searchText)\",\"value\":\(self.chartData[0][2]),\"group\":1}, " //the search text just arbitrarily takes the value of the first data point as its value
                     for r in 0..<self.self.chartData.count{
