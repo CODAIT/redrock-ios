@@ -21,16 +21,19 @@
         }
         html, body, #chart1, svg {
             margin:  0px;
-            padding-left: 8px;
+            padding-left: 0px;
             padding-top: 17px;
             height:  96%;
-            width:   98%;
         }
     
         .tick line {
             opacity: 0;
         }
-
+    
+    .nvd3 .nv-groups path.nv-line {
+        fill: none;
+        stroke-width: 0px;
+    }
     
 
     .nvd3 .nv-axis.nv-x path.domain {
@@ -83,8 +86,8 @@
             chart.y(function(d) {
                     return d.y
                     });
-            chart.color(["#325d80","#94d9d1"]);
-            chart.margin({left: 80, right:80,top:80,bottom:80});
+            chart.color(["#5cc3b8","#a5266d"]);
+            chart.margin({left: 0, right:0,top:80,bottom:80});
             chart.tooltips(true);
                     chart.tooltipContent(function(key, y, e, graph) {
                                          
