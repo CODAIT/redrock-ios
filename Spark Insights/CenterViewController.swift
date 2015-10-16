@@ -31,8 +31,8 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     weak var delegate: CenterViewControllerDelegate?
     var lineSeparatorWidth = CGFloat(4)
     
-    var visualisationsByIndex = [VisMasterViewController]()
-    var visualisationsByType = [VisTypes: VisMasterViewController]()
+    var visualizationsByIndex = [VisMasterViewController]()
+    var visualizationsByType = [VisTypes: VisMasterViewController]()
     
     var leftViewController: LeftViewController!
     static var leftViewOpen = false
@@ -92,7 +92,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         pageControlView.buttonBackgroundColor = UIColor.clearColor()
         pageControlView.buttonSelectedBackgroundColor = Config.darkBlueColor
         
-        for i in 0..<Config.visualisationTypes.count{
+        for i in 0..<Config.visualizationTypes.count{
             pageControlView.buttonData.append(PageControlButtonData(imageName: Config.visualizationButtons[i], selectedImageName: Config.visualizationButtonsSelected[i]))
         }
         
@@ -172,7 +172,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     // MARK: - PlayBarViewControllerDelegate
     
     func playPauseClicked() { //stop and start the timemap
-        if let vis = visualisationsByType[VisTypes.TimeMap] as! VisNativeViewController? {
+        if let vis = visualizationsByType[VisTypes.TimeMap] as! VisNativeViewController? {
             if(vis.timemapIsPlaying){
                 vis.stopTimemap()
                 playBarViewController.state = PlayBarState.Paused
@@ -273,14 +273,14 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     */
     func setupWebViews()
     {
-        for visType in Config.visualisationTypes {
-            let vis = VisFactory.visualisationControllerForType(visType)!
+        for visType in Config.visualizationTypes {
+            let vis = VisFactory.visualizationControllerForType(visType)!
             vis.willMoveToParentViewController(self)
             scrollView.addVisualisation(vis.view)
             addChildViewController(vis)
             
-            visualisationsByIndex.append(vis)
-            visualisationsByType[visType] = vis
+            visualizationsByIndex.append(vis)
+            visualizationsByType[visType] = vis
             
             switch visType {
             case .TimeMap:
@@ -293,7 +293,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     func rangeSliderValueChanged(rangeSlider: RangeSliderUIControl) {
         
-        if let vis = visualisationsByType[VisTypes.StackedBar] as! VisWebViewController? {
+        if let vis = visualizationsByType[VisTypes.StackedBar] as! VisWebViewController? {
             let maxDate = Double(vis.chartData.count) - 1
             
             //Transform range from 0-1 to 0-count
@@ -323,7 +323,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             currentPage = page
             pageControlView.selectedIndex = page
 
-            let currentVis = visualisationsByIndex[page]
+            let currentVis = visualizationsByIndex[page]
             currentVis.onFocus()
             
             bottomDrawerViewController.animateToState(Config.visualizationDrawerStates[currentVis.type]!, complete: {
@@ -356,7 +356,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         if (pageChanged) {
             pageChanged = false
             
-            visualisationsByIndex[previousPage].onBlur()
+            visualizationsByIndex[previousPage].onBlur()
         }
     }
     
@@ -507,7 +507,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     func setJsonForVisType(json: JSON?, error: NSError?, type: VisTypes) {
-        if let vis = visualisationsByType[type] {
+        if let vis = visualizationsByType[type] {
             if error != nil {
                 vis.errorDescription = error?.localizedDescription
                 return
@@ -515,7 +515,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             vis.searchText = self.searchText!
             vis.json = json
         } else {
-            Log("Unable to load data into visualisation. VisType: \(type) not found.")
+            Log("Unable to load data into visualization. VisType: \(type) not found.")
             
         }
     }
@@ -650,19 +650,19 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     // MARK: - Visualisation Utils
     
     func cleanVisualisations() {
-        for v in visualisationsByIndex {
+        for v in visualizationsByIndex {
             v.clean()
         }
     }
     
     func reloadVisualisations() {
-        for v in visualisationsByIndex {
+        for v in visualizationsByIndex {
             v.onDataSet()
         }
     }
     
     func hideAllVisualisations() {
-        for v in visualisationsByIndex {
+        for v in visualizationsByIndex {
             v.onHiddenState()
         }
     }

@@ -44,7 +44,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
-        let vis = VisFactory.visualisationControllerForType(.CirclePacking)!
+        let vis = VisFactory.visualizationControllerForType(.CirclePacking)!
         visHolder.addVisualisationController(vis)
         vis.onLoadingState()
         
@@ -100,7 +100,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     override func onDataSet() {
-        let tempVisPath = NSURL(fileURLWithPath: Config.visualisationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: self.mainFile).path!)
+        let tempVisPath = NSURL(fileURLWithPath: Config.visualizationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: self.mainFile).path!)
         let request = NSURLRequest(URL: tempVisPath)
         webView.loadRequest(request)
         

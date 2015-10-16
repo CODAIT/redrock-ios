@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         will not be called and we will get the following error "Could not create a sandbox extension for /".
         */
         let visFolder = NSURL(fileURLWithPath: NSBundle.mainBundle().resourcePath!).URLByAppendingPathComponent("Visualizations")
-        Config.visualisationFolderPath = copyFolderToTempFolder(visFolder.path)!
+        Config.visualizationFolderPath = copyFolderToTempFolder(visFolder.path)!
         
         return true
     }
