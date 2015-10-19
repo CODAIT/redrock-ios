@@ -36,6 +36,12 @@ class Network
     // MARK: Call Requests
     
     func sentimentAnalysisRequest(searchText: String, sentiment: SentimentTypes, startDatetime: String, endDatetime: String, callBack: (json: JSON?, error: NSError?) -> ()) {
+
+        if(Config.useDummyData){
+            callCallbackAfterDelay("{\"name\": \" \",\"children\": [{\"name\": \"0\", \"children\": [{\"name\": \"Cats\", \"size\":236},{\"name\": \"RT\", \"size\":166},{\"name\": \"cats\", \"size\":134},{\"name\": \"amp;\", \"size\":105},{\"name\": \"CATS\", \"size\":57}]},{\"name\": \"1\", \"children\": [{\"name\": \"cats\", \"size\":224},{\"name\": \"like\", \"size\":177},{\"name\": \"pretty\", \"size\":147},{\"name\": \"its\", \"size\":136},{\"name\": \"hilarious.\", \"size\":120}]},{\"name\": \"2\", \"children\": [{\"name\": \"cats\", \"size\":678},{\"name\": \"RT\", \"size\":401},{\"name\": \"like\", \"size\":271},{\"name\": \"love\", \"size\":185},{\"name\": \"cat\", \"size\":90}]}]}", error: nil, callback: callBack)
+            return
+        }
+        
         // http://bdavm155.svl.ibm.com:16666/ss/sentiment/analysis?user=barbara&termsInclude=love&termsExclude=&top=100&sentiment=1&startDatetime=2015-08-01T00:00:00Z&endDatetime=2015-11-10T23:59:59Z
         
         let encode = encodeIncludExcludeFromString(searchText)
@@ -148,7 +154,6 @@ class Network
     
     private func executeWordDistanceRequest(include: String, exclude: String)
     {
-        //Log("executeWordDistanceRequest")
         var parameters = Dictionary<String,String>()
         parameters["user"] = "ssdemo"
         parameters["termsInclude"] = include
@@ -233,7 +238,7 @@ class Network
 
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
-        Log("createRequest")
+        //Log("createRequest")
         self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
         if paremeters.count > 0
@@ -380,4 +385,14 @@ class Network
         return (includeStr, excludeStr)
         
     }
+    
+    func callCallbackAfterDelay(json: JSON?, error: NSError?, callback: (json: JSON?, error: NSError?) -> ()) {
+        let delay = Config.dummyDataDelay * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            Network.waitingForResponse = false
+            callback(json: json, error: error)
+        }
+    }
+    
 }

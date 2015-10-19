@@ -36,13 +36,28 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         if(message.name == "callbackHandler") {
             print("JavaScript is sending a message \(message.body)")
+            
+            displayVisOverSentiment(transformDataForDisplayVisOverSentiment(message.body as! String));
         }
-        //userContentController(userContentController: WKUserContentController, didReceiveScriptMessage: <#T##WKScriptMessage#>)
-        
-        displayVisOverSentiment()
     }
     
-    func displayVisOverSentiment() {
+    func transformDataForDisplayVisOverSentiment(rawData: String) -> String{
+        if rawData.containsString("Positive"){
+            Log("positive sentiment detected")
+        }
+        else if rawData.containsString("Negative"){
+            Log("Negative sentiment detected")
+        }
+        else{
+            Log("ERROR: unsure what kind of sentiment this is in transformDataForDisplayVisOverSentiment in VisWebViewController.swift")
+        }
+        
+        //rawData.substringFromIndex(rawData)
+        
+        return rawData
+    }
+    
+    func displayVisOverSentiment(data: String) {
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
@@ -50,10 +65,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         visHolder.addVisualisationController(vis)
         vis.onLoadingState()
         
-        // TODO:
-        // wire up network call below
-        // populate vis when response returns
-        
+        // TODO: THE DATA IS HARDCODED!!!! FIX IT!!!!
         Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
             if error != nil {
                 vis.errorDescription = error?.localizedDescription
@@ -260,6 +272,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
 
     func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
+        //Log("transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve")
         //Log(circlepackingData)
         
         onLoadingState()
@@ -317,21 +330,33 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         
-        let numberOfColumns = 3        // number of columns
-        let containerName = "topics" // name of container for data
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
+        if Config.useDummyData{
+            let script9 = "heyRenderThisDataBro();"
+            //Log(script9)
+            
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                if(data != nil){
-                    self.chartData = data!
-                    loadData()
-                }
-                else{
-                    self.errorDescription = Config.serverErrorMessage
-                }
+                self.webView.evaluateJavaScript(script9, completionHandler: nil)
+                
+                self.onSuccessState()
             })
-        })
+        }
+        else{
+            let numberOfColumns = 3        // number of columns
+            let containerName = "topics" // name of container for data
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    if(data != nil){
+                        self.chartData = data!
+                        loadData()
+                    }
+                    else{
+                        self.errorDescription = Config.serverErrorMessage
+                    }
+                })
+            })
+        }
         
     }
     
