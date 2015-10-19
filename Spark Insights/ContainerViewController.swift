@@ -42,7 +42,18 @@ class ContainerViewController: UIViewController {
         
         centerViewController.didMoveToParentViewController(self)
     }
+ 
+    func applicationWillResignActive(application: UIApplication) {
+        if centerViewController != nil {
+            centerViewController.applicationWillResignActive(application)
+        }
+    }
     
+    func applicationDidBecomeActive(application: UIApplication) {
+        if centerViewController != nil {
+            centerViewController.applicationDidBecomeActive(application)
+        }
+    }
 }
 
 // MARK: - CenterViewControllerDelegate

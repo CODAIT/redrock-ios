@@ -20,15 +20,21 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate{
+class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate, WebSocketDelegate {
 
     var searchText: String? {
         didSet {
-            self.cleanViews()
-            self.loadDataFromServer()
+            switch Config.appState {
+            case .Historic:
+                self.cleanViews()
+                self.loadDataFromServer()
+            case .Live:
+                self.websocketConnect()
+            }
         }
     }
     weak var delegate: CenterViewControllerDelegate?
+    var socket: WebSocket?
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationsByIndex = [VisMasterViewController]()
@@ -71,18 +77,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     @IBOutlet weak var bottomDrawerHolderBottomEdge: NSLayoutConstraint!
     
     var firstLoad = true
-    /* TODO: replace this function with equiv
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        print("Webview \(webView.request) fail with error \(error)");
-    }
-    */
-    override func viewDidAppear(animated: Bool) {
-        if firstLoad
-        {
-            self.setupWebViews()
-        }
-        firstLoad = false
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,6 +115,26 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     override func viewWillAppear(animated: Bool) {
         self.resetViewController()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if firstLoad
+        {
+            self.setupWebViews()
+        }
+        firstLoad = false
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        websocketDisconnect()
+    }
+    
+    func applicationWillResignActive(application: UIApplication) {
+        websocketDisconnect()
+    }
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+        websocketConnect()
     }
     
     func addLeftPanelViewController() {
@@ -428,6 +442,55 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
         self.cleanVisualisations()
         self.resetViewController()
+    }
+    
+    // MARK: - WebSocket
+    
+    func websocketConnect() {
+        if Config.appState != .Live {
+            return
+        }
+        
+        if socket == nil {
+            socket = WebSocket(url: NSURL(string: "ws://localhost:8080/")!, protocols: ["chat", "superchat"])
+        }
+        
+        if !socket!.isConnected {
+            socket?.connect()
+        }
+    }
+    
+    func websocketDisconnect() {
+        if Config.appState != .Live {
+            return
+        }
+        
+        if (socket != nil && socket?.isConnected != nil) {
+            socket?.disconnect()
+        }
+    }
+    
+    // MARK: - WebSocketDelegate
+    
+    func websocketDidConnect(ws: WebSocket) {
+        print("websocket is connected")
+    }
+    
+    func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
+        if let e = error {
+            print("websocket is disconnected: \(e.localizedDescription)")
+        } else {
+            print("websocket disconnected")
+        }
+    }
+    
+    func websocketDidReceiveMessage(ws: WebSocket, text: String) {
+        print("Received text: \(text)")
+        // TODO: populate UI here or below if it comes as Data
+    }
+    
+    func websocketDidReceiveData(ws: WebSocket, data: NSData) {
+        print("Received data: \(data.length)")
     }
     
     // MARK: - Network
