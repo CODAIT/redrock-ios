@@ -114,6 +114,7 @@ extension AppDelegate {
             tr.type = kCATransitionFade
             containerViewController?.view.window!.layer.addAnimation(tr, forKey: kCATransition)
             containerViewController?.dismissViewControllerAnimated(false, completion: nil)
+            containerViewController = nil
         }
     }
     
