@@ -189,6 +189,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         {
             if searchText != "" && checkIncludeTerms(searchText)
             {
+                Config.appState = .Historic
                 delegate?.displayContainerViewController?(self, searchText: searchText)
             }
             else
@@ -207,7 +208,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func liveClicked(sender: UIButton) {
-        print("live clicked")
+        Config.appState = .Live
+        delegate?.displayContainerViewController?(self, searchText: Config.liveTag)
     }
     
     /* Find at least one include term*/

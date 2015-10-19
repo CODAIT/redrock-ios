@@ -50,6 +50,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     var canUpdateSearch = false
     
     @IBOutlet weak var headerLabel: UIButton!
+    @IBOutlet weak var searchButton: UIButton!
     
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
@@ -104,7 +105,13 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         addLeftPanelViewController()
         addBottmDrawerViewController()
         
-        
+        switch Config.appState {
+        case .Historic:
+            Log("CenterViewController viewDidLoad in historic mode")
+        case .Live:
+            Log("CenterViewController viewDidLoad in live mode")
+            searchButton.hidden = true
+        }
     }
 
     override func didReceiveMemoryWarning() {
