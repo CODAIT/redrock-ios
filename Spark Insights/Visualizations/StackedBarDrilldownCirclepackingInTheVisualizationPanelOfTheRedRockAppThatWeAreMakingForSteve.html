@@ -154,7 +154,7 @@ shrinkLabel.innerHTML = shrinkConstant
         xPadding = 250
     }
 
-    var resizeConstant = 1.43
+    var resizeConstant = 0.80
 
     w = resizeConstant * w
     h = resizeConstant * h
@@ -173,7 +173,7 @@ shrinkLabel.innerHTML = shrinkConstant
 
     var svg = d3.select("body").append("svg")
     .attr("width", w)
-    .attr("height", h)
+    .attr("height", h*2)
     .append("g")
     .attr("transform", "translate(" + ((diameter / 2)+45+xPadding) + "," + ((diameter / 2)-25) + ")");
 

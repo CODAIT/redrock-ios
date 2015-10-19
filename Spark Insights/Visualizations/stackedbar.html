@@ -168,7 +168,7 @@
         
         //OK DO THE THING HERE!!!!!
         try {
-            var ourmessage = "This is the message coming from stackedbar.html from the tooltip. Barbara, Jon, and Rosstin are the best. Passed coordinates are... "+coordinates;
+            var ourmessage = coordinates;
             webkit.messageHandlers.callbackHandler.postMessage(ourmessage);
         } catch(err) {
             console.log('The native context does not exist yet');
