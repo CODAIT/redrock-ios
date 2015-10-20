@@ -51,8 +51,6 @@
 		CEDBEADF1B22672400FB9695 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEDBEADE1B22672400FB9695 /* Log.swift */; };
 		CEDBEAE21B29EB4000FB9695 /* response_spark.json in Resources */ = {isa = PBXBuildFile; fileRef = CEDBEAE11B29EB4000FB9695 /* response_spark.json */; };
 		CEED47DF1BD16F44001F4491 /* searchwaiting2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEED47DC1BD16F43001F4491 /* searchwaiting2.gif */; settings = {ASSET_TAGS = (); }; };
-		CEED47E51BD59CBD001F4491 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED47E31BD59CBC001F4491 /* SSLSecurity.swift */; settings = {ASSET_TAGS = (); }; };
-		CEED47E61BD59CBD001F4491 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEED47E41BD59CBC001F4491 /* WebSocket.swift */; settings = {ASSET_TAGS = (); }; };
 		F3222DFA1B179FE700FDE3B1 /* Visualizations in Resources */ = {isa = PBXBuildFile; fileRef = F3222DF91B179FE700FDE3B1 /* Visualizations */; };
 		F32ACAE51B1FC05100D3D16E /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F32ACAE31B1FC05100D3D16E /* LoadingView.xib */; };
 		F32ACAE61B1FC05100D3D16E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32ACAE41B1FC05100D3D16E /* LoadingView.swift */; };
@@ -122,8 +120,6 @@
 		CEDBEADE1B22672400FB9695 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		CEDBEAE11B29EB4000FB9695 /* response_spark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = response_spark.json; sourceTree = "<group>"; };
 		CEED47DC1BD16F43001F4491 /* searchwaiting2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = searchwaiting2.gif; sourceTree = "<group>"; };
-		CEED47E31BD59CBC001F4491 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SSLSecurity.swift; sourceTree = "<group>"; };
-		CEED47E41BD59CBC001F4491 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		F3222DF91B179FE700FDE3B1 /* Visualizations */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Visualizations; sourceTree = "<group>"; };
 		F32ACAE31B1FC05100D3D16E /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		F32ACAE41B1FC05100D3D16E /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -246,7 +242,6 @@
 				CEED47DC1BD16F43001F4491 /* searchwaiting2.gif */,
 				419F69B01B72B8C30041D682 /* RangeSlider */,
 				41DE4C6A1B18E5A9002BD66A /* Utilities */,
-				CEED47E21BD59CBC001F4491 /* WebSocket */,
 				41ED94151B17DC4500A80447 /* Tweets */,
 				41ED94101B17C2EB00A80447 /* TweetCells */,
 				CEDBEAD11B21F27000FB9695 /* LoadingView */,
@@ -308,15 +303,6 @@
 			);
 			name = "YLGIFImage-Swift";
 			path = "Utilities/YLGIFImage-Swift";
-			sourceTree = "<group>";
-		};
-		CEED47E21BD59CBC001F4491 /* WebSocket */ = {
-			isa = PBXGroup;
-			children = (
-				CEED47E31BD59CBC001F4491 /* SSLSecurity.swift */,
-				CEED47E41BD59CBC001F4491 /* WebSocket.swift */,
-			);
-			path = WebSocket;
 			sourceTree = "<group>";
 		};
 		F3D4D9451BB30F4A002E9E55 /* VisualizationsNativeClasses */ = {
@@ -448,9 +434,7 @@
 				CEBF07091BC47C5D009C24DB /* BottomDrawerViewController.swift in Sources */,
 				CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */,
 				CEBF07071BC31D71009C24DB /* ResizingScrollView.swift in Sources */,
-				CEED47E61BD59CBD001F4491 /* WebSocket.swift in Sources */,
 				CED444651BC81ADB00A0A6EE /* PlayBarViewController.swift in Sources */,
-				CEED47E51BD59CBD001F4491 /* SSLSecurity.swift in Sources */,
 				41A7C98D1B5F10DD00AD7C6F /* InfoViewController.swift in Sources */,
 				419F69B61B72B8E40041D682 /* RangeSliderUIControl.swift in Sources */,
 				CE8BE3671BCC5D570000E95C /* VisWebViewController.swift in Sources */,
