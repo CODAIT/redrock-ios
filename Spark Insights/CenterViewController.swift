@@ -22,6 +22,8 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate {
 
+    var networkTimer : NSTimer!
+    
     var searchText: String? {
         didSet {
             switch Config.appState {
@@ -584,22 +586,34 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
     }
     
-    //MARK: Pretend Websocket
+    //MARK: Jury-Rigged Websocket
     
     // idempotent function that makes requests every X seconds
     // X is a number in config
     func startNetworkTimer(){
+        //self.networkTimerIsTiming = true
+        invalidateNetworkTimer()
         
         // make a request every X seconds
-        
-        
-        
+        self.networkTimer = NSTimer.scheduledTimerWithTimeInterval(Config.networkTimerInterval, target: self, selector: Selector("periodicPowertrackWordcountRequest"), userInfo: nil, repeats: true)
         
     }
     
     // idempotent function that stops the networktimer from making any further requests
     func stopNetworkTimer(){
-        
+        invalidateNetworkTimer()
+    }
+    
+    func invalidateNetworkTimer(){
+        if networkTimer != nil {
+            networkTimer.invalidate()
+            networkTimer = nil;
+        }
+    }
+    
+    func periodicPowertrackWordcountRequest(){
+        Log("periodicPowertrackWordcountRequest")
+        // call powertrackWordcountRequest here
     }
     
     //MARK: Dummy Data
