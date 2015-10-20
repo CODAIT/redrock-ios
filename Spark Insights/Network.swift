@@ -38,12 +38,27 @@ class Network
     
     func powertrackWordcountRequest(searchText: String, callBack: (json: JSON?, error: NSError?) -> ()) {
         
-//        if(Config.useDummyData){
-//            var dummyResponses = [
-//                "{\"tweets\":[{\"created_at\":\"2015-09-01T02:28:37.000Z\",\"text\":\"RT @IBMbigdata: Why IBM is making a strategic bet on #Spark? #SparkInsight http://t.co/mOsyVw0CxP http://t.co/72OoNeBXUz\",\"user\":{\"name\":\"Teresa Rojas\",\"screen_name\":\"etrojasc\",\"followers_count\":276,\"id\":\"id:twitter.com:128277489\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/633973942370217984/8vd23SQR_normal.jpg\"}},{\"created_at\":\"2015-09-01T01:08:59.000Z\",\"text\":\"Florentino se gasta todo el dinero en los fichajes, por eso en el Madrid aún tienen computadores IBM con Windows 98. 😂\",\"user\":{\"name\":\"⭐️Pedro⭐️\",\"screen_name\":\"Pedritho_FCB\",\"followers_count\":2170,\"id\":\"id:twitter.com:2760376963\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/618125567162994688/q-UfYQOI_normal.jpg\"}},{\"created_at\":\"2015-09-01T02:22:42.000Z\",\"text\":\"IBM SELECTRIC II CORRECTING ELECTRIC TYPEWRITER WHITE TAN 70s VINTAGE TYPES LITE http://t.co/9pPwS33wZb http://t.co/q6ZYokaPFa\",\"user\":{\"name\":\"Lowell Eastwood\",\"screen_name\":\"LowellEastwoodk\",\"followers_count\":4,\"id\":\"id:twitter.com:3303728401\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/627601159096700928/qMghGjBr_normal.jpg\"}},{\"created_at\":\"2015-09-01T02:23:02.000Z\",\"text\":\"$IBM: Bullish analyst action by Argus Research on IBM: http://t.co/kriPNV1p8i http://t.co/jI67sX2Ubf\",\"user\":{\"name\":\"Analyst Actions\",\"screen_name\":\"AnalystActions\",\"followers_count\":111,\"id\":\"id:twitter.com:2341530906\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/601131382060945410/KYX9mWKS_normal.jpg\"}},{\"created_at\":\"2015-09-01T01:09:42.000Z\",\"text\":\"IBM secures five-year AU$450 million partnership with ANZ http://t.co/R6JrVjcXod\",\"user\":{\"name\":\"gadgeTTechs\",\"screen_name\":\"gadgeTTechs\",\"followers_count\":1100,\"id\":\"id:twitter.com:447706221\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/2961824515/8e9071696c6156065e3a76e60c723c3b_normal.jpeg\"}},{\"created_at\":\"2015-09-01T01:07:05.000Z\",\"text\":\"Ibm 000-015 audition: leOJhmfnV\",\"user\":{\"name\":\"NevillLayla\",\"screen_name\":\"NevillLayla\",\"followers_count\":110,\"id\":\"id:twitter.com:1220269800\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/3344437024/3e01a8bcec43b16cdd5af14f47c2d9cf_normal.jpeg\"}},{\"created_at\":\"2015-09-01T01:06:31.000Z\",\"text\":\"Business Development Representative (Inside Software Sales): IBM Canada Ltd. (Markham ON.. #twitter #jobs #eluta http://t.co/3b9HT6OCOy\",\"user\":{\"name\":\"Jobs for Tweeters\",\"screen_name\":\"Tweet__Jobs\",\"followers_count\":586,\"id\":\"id:twitter.com:253315737\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/1246633057/eluta_no_text_normal.png\"}},{\"created_at\":\"2015-09-05T04:56:47.000Z\",\"text\":\"RT @AnjneyaParashar: Gain actionable insights from your big data in the cloud using VoltDB and IBM Softlayer http://t.co/mlhalpG7RV http://…\",\"user\":{\"name\":\"CodeBreaker\",\"screen_name\":\"CodeBreaker004\",\"followers_count\":5,\"id\":\"id:twitter.com:3313424060\",\"profile_image_url\":\"https://abs.twimg.com/sticky/default_profile_images/default_profile_2_normal.png\"}},{\"created_at\":\"2015-09-05T04:57:03.000Z\",\"text\":\"RT @JoanneGariepy: Why the IBM and Box partnership is important for you and your industry, in 6 quotes: http://t.co/o1c92QxK1o  #IBMandBox …\",\"user\":{\"name\":\"Roni Romano\",\"screen_name\":\"RoniRomanoCRM\",\"followers_count\":163,\"id\":\"id:twitter.com:3015367605\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/562724917154557952/JfI18mTJ_normal.jpeg\"}},{\"created_at\":\"2015-09-01T02:25:29.000Z\",\"text\":\"RT @IBMbigdata: Why IBM is making a strategic bet on #Spark? #SparkInsight http://t.co/mOsyVw0CxP http://t.co/72OoNeBXUz\",\"user\":{\"name\":\"Ana Lucia Vargas\",\"screen_name\":\"Analuvargas10\",\"followers_count\":141,\"id\":\"id:twitter.com:2397976027\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/637253710591184897/JI2FKRVt_normal.jpg\"}}],\"wordCount\":[{\"word\":\"ibm\",\"count\":19},{\"word\":\":\",\"count\":11},{\"word\":\".\",\"count\":3},{\"word\":\"?\",\"count\":3},{\"word\":\"!\",\"count\":2}]}",
-//                "{\"tweets\":[{\"created_at\":\"2015-09-01T00:59:59.000Z\",\"text\":\"Hurry, while they last! Get your free 45-day #IBM Spectrum Accelerate trial at  #VMworld, Booth 1645 #IBMVMworld  http://t.co/wzRjZX9CEQ\",\"user\":{\"name\":\"IBM Storage\",\"screen_name\":\"IBMStorage\",\"followers_count\":23402,\"id\":\"id:twitter.com:15999249\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/3779718046/249b1462ae77273fdfe0e141596f6f07_normal.jpeg\"}},{\"created_at\":\"2015-09-01T01:00:42.000Z\",\"text\":\"#ibm Rapidly develop Internet of Things apps with Docker Containers http://t.co/V0YDzWrpao via @developerWorks\",\"user\":{\"name\":\"Enrique de Nicolás ㋡\",\"screen_name\":\"enriquednicolas\",\"followers_count\":4666,\"id\":\"id:twitter.com:2207606742\",\"profile_image_url\":\"https://pbs.twimg.com/profile_images/529754503822581761/MQDjqCPL_normal.jpeg\"}}],\"wordCount\":[{\"word\":\"#ibm\",\"count\":2},{\"word\":\"!\",\"count\":1},{\"word\":\"#ibmvmworld\",\"count\":1},{\"word\":\"#vmworld\",\"count\":1},{\"word\":\",\",\"count\":1}]}"
-//            ]
-//            
+        if(Config.useDummyData){
+            // switch between 3 different responses randomly
+            
+            var path = "response_live_1"
+            let randomInt = arc4random_uniform(UInt32(3))
+            if (randomInt == 1)
+            {
+                path = "response_live_1"
+            }
+            else if (randomInt == 2)
+            {
+                path = "response_live_2"
+            }
+            else
+            {
+                path = "response_live_3"
+            }
+            
+            dispatchRequestForResource(path, callBack: callBack)
+            return
+        }
 //            let dummyResponse = dummyResponses[Int(arc4random_uniform(UInt32(dummyResponses.count)))]
 //            callCallbackAfterDelay(dummyResponse, error: nil, callback: callBack)
 //            return
@@ -58,6 +73,8 @@ class Network
         termsInclude = terms to include in the search separated by comma
         termsExclude = terms to exclude in the search separated by comma
         */
+            
+            
         
         let encode = encodeIncludExcludeFromString(searchText)
         
@@ -74,47 +91,11 @@ class Network
     
     func sentimentAnalysisRequest(searchText: String, sentiment: SentimentTypes, startDatetime: String, endDatetime: String, callBack: (json: JSON?, error: NSError?) -> ()) {
 
-        
-        
         if(Config.useDummyData){
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                
-                let filePath = NSBundle.mainBundle().pathForResource("response_drilldown", ofType:"json")
-                
-                var readError:NSError?
-                do {
-                    let fileData = try NSData(contentsOfFile:filePath!,
-                        options: NSDataReadingOptions.DataReadingUncached)
-                    // Read success
-                    var parseError: NSError?
-                    do {
-                        let JSONObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments)
-                        // Parse success
-                        let json = JSON(JSONObject!)
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.callCallbackAfterDelay(json, error: nil, callback: callBack)
-                        })
-                    } catch let error as NSError {
-                        parseError = error
-                        // Parse error
-                        // TODO: handle error
-                        Log("Error Parsing drilldown demo data: \(parseError?.localizedDescription)")
-                    }
-                } catch let error as NSError {
-                    readError = error
-                    // Read error
-                    // TODO: handle error
-                    Log("Error Reading drilldown demo data: \(readError?.localizedDescription)")
-                } catch {
-                    fatalError()
-                }
-                
-            })
-
+            let path = "response_drilldown"
+            dispatchRequestForResource(path, callBack: callBack)
             return
         }
-        
         
         let encode = encodeIncludExcludeFromString(searchText)
         
@@ -137,6 +118,45 @@ class Network
         let req = self.createRequest(Config.serverSentimentAnalysis, paremeters: parameters)
         
         executeRequest(req, callBack: callBack)
+    }
+    
+    
+    func dispatchRequestForResource(path: String, callBack: (json: JSON?, error: NSError?) -> ())
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            let filePath = NSBundle.mainBundle().pathForResource(path, ofType:"json")
+            
+            var readError:NSError?
+            do {
+                let fileData = try NSData(contentsOfFile:filePath!,
+                    options: NSDataReadingOptions.DataReadingUncached)
+                // Read success
+                var parseError: NSError?
+                do {
+                    let JSONObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments)
+                    // Parse success
+                    let json = JSON(JSONObject!)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.callCallbackAfterDelay(json, error: nil, callback: callBack)
+                    })
+                } catch let error as NSError {
+                    parseError = error
+                    // Parse error
+                    // TODO: handle error
+                    Log("Error Parsing drilldown demo data: \(parseError?.localizedDescription)")
+                }
+            } catch let error as NSError {
+                readError = error
+                // Read error
+                // TODO: handle error
+                Log("Error Reading drilldown demo data: \(readError?.localizedDescription)")
+            } catch {
+                fatalError()
+            }
+            
+        })
+
     }
     
     func searchRequest(searchText: String)
