@@ -57,11 +57,7 @@ function d3Legend() {
              var length = d3.select(this).select('text').node().getComputedTextLength() + 28;
              xpos = newxpos;
 
-             //TODO: 1) Make sure dot + text of every series fits horizontally, or clip text to fix
-             //      2) Consider making columns in line so dots line up
-             //         --all labels same width? or just all in the same column?
-             //         --optional, or forced always?
-             if (width < margin.left + margin.right + xpos + length) {
+                if (width < margin.left + margin.right + xpos + length) {
                newxpos = xpos = 5;
                ypos += 20;
              }

@@ -102,7 +102,6 @@ function d3LineWithLegend() {
           .call(legend);
 
 
-      //TODO: maybe margins should be adjusted based on what components are used: axes, axis labels, legend
       margin.top = legend.height();  //need to re-render to see update
 
       var g = wrap.select('g')
@@ -188,7 +187,6 @@ function d3LineWithLegend() {
     return chart;
   };
 
-  //TODO: consider directly exposing both axes
   //chart.xAxis = xAxis;
 
   //Expose the x-axis' tickFormat method.

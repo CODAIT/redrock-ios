@@ -29,7 +29,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.cleanViews()
                 self.loadDataFromServer()
             case .Live:
-                // TODO: Start live connection
+                startNetworkTimer() // TODO: Start live connection
                 print("Live: \(searchText)")
             }
         }
@@ -126,15 +126,21 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     override func viewDidDisappear(animated: Bool) {
-        // TODO: stop network call timer
+        stopNetworkTimer() // TODO: stop network call timer
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        // TODO: stop network call timer
+        stopNetworkTimer() // TODO: stop network call timer
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        // TODO: start network call timer if .Live
+        switch Config.appState {
+        case .Live: // TODO: start network call timer if .Live
+            startNetworkTimer()
+        default:
+            break
+        }
+        
     }
     
     func addLeftPanelViewController() {
@@ -576,6 +582,24 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 leftViewController.foundTweetsNumberLabel.text = "Error"
             }
         }
+    }
+    
+    //MARK: Pretend Websocket
+    
+    // idempotent function that makes requests every X seconds
+    // X is a number in config
+    func startNetworkTimer(){
+        
+        // make a request every X seconds
+        
+        
+        
+        
+    }
+    
+    // idempotent function that stops the networktimer from making any further requests
+    func stopNetworkTimer(){
+        
     }
     
     //MARK: Dummy Data
