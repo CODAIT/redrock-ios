@@ -20,7 +20,7 @@ protocol CenterViewControllerDelegate {
     optional func displaySearchViewController()
 }
 
-class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate, WebSocketDelegate {
+class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate {
 
     var searchText: String? {
         didSet {
@@ -29,12 +29,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.cleanViews()
                 self.loadDataFromServer()
             case .Live:
-                self.websocketConnect()
+                // Start live connection
+                print("Live: \(searchText)")
             }
         }
     }
     weak var delegate: CenterViewControllerDelegate?
-    var socket: WebSocket?
     var lineSeparatorWidth = CGFloat(4)
     
     var visualizationsByIndex = [VisMasterViewController]()
@@ -126,15 +126,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     override func viewDidDisappear(animated: Bool) {
-        websocketDisconnect()
+        
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        websocketDisconnect()
+        
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        websocketConnect()
+        
     }
     
     func addLeftPanelViewController() {
@@ -442,55 +442,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
         self.cleanVisualisations()
         self.resetViewController()
-    }
-    
-    // MARK: - WebSocket
-    
-    func websocketConnect() {
-        if Config.appState != .Live {
-            return
-        }
-        
-        if socket == nil {
-            socket = WebSocket(url: NSURL(string: "ws://localhost:8080/")!, protocols: ["chat", "superchat"])
-        }
-        
-        if !socket!.isConnected {
-            socket?.connect()
-        }
-    }
-    
-    func websocketDisconnect() {
-        if Config.appState != .Live {
-            return
-        }
-        
-        if (socket != nil && socket?.isConnected != nil) {
-            socket?.disconnect()
-        }
-    }
-    
-    // MARK: - WebSocketDelegate
-    
-    func websocketDidConnect(ws: WebSocket) {
-        print("websocket is connected")
-    }
-    
-    func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
-        if let e = error {
-            print("websocket is disconnected: \(e.localizedDescription)")
-        } else {
-            print("websocket disconnected")
-        }
-    }
-    
-    func websocketDidReceiveMessage(ws: WebSocket, text: String) {
-        print("Received text: \(text)")
-        // TODO: populate UI here or below if it comes as Data
-    }
-    
-    func websocketDidReceiveData(ws: WebSocket, data: NSData) {
-        print("Received data: \(data.length)")
     }
     
     // MARK: - Network
