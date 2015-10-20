@@ -37,12 +37,47 @@ class Network
     
     func sentimentAnalysisRequest(searchText: String, sentiment: SentimentTypes, startDatetime: String, endDatetime: String, callBack: (json: JSON?, error: NSError?) -> ()) {
 
+        
+        
         if(Config.useDummyData){
-            callCallbackAfterDelay("{\"name\": \" \",\"children\": [{\"name\": \"0\", \"children\": [{\"name\": \"Cats\", \"size\":236},{\"name\": \"RT\", \"size\":166},{\"name\": \"cats\", \"size\":134},{\"name\": \"amp;\", \"size\":105},{\"name\": \"CATS\", \"size\":57}]},{\"name\": \"1\", \"children\": [{\"name\": \"cats\", \"size\":224},{\"name\": \"like\", \"size\":177},{\"name\": \"pretty\", \"size\":147},{\"name\": \"its\", \"size\":136},{\"name\": \"hilarious.\", \"size\":120}]},{\"name\": \"2\", \"children\": [{\"name\": \"cats\", \"size\":678},{\"name\": \"RT\", \"size\":401},{\"name\": \"like\", \"size\":271},{\"name\": \"love\", \"size\":185},{\"name\": \"cat\", \"size\":90}]}]}", error: nil, callback: callBack)
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                let filePath = NSBundle.mainBundle().pathForResource("response_drilldown", ofType:"json")
+                
+                var readError:NSError?
+                do {
+                    let fileData = try NSData(contentsOfFile:filePath!,
+                        options: NSDataReadingOptions.DataReadingUncached)
+                    // Read success
+                    var parseError: NSError?
+                    do {
+                        let JSONObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments)
+                        // Parse success
+                        let json = JSON(JSONObject!)
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.callCallbackAfterDelay(json, error: nil, callback: callBack)
+                        })
+                    } catch let error as NSError {
+                        parseError = error
+                        // Parse error
+                        // TODO: handle error
+                        Log("Error Parsing drilldown demo data: \(parseError?.localizedDescription)")
+                    }
+                } catch let error as NSError {
+                    readError = error
+                    // Read error
+                    // TODO: handle error
+                    Log("Error Reading drilldown demo data: \(readError?.localizedDescription)")
+                } catch {
+                    fatalError()
+                }
+                
+            })
+
             return
         }
         
-        // http://bdavm155.svl.ibm.com:16666/ss/sentiment/analysis?user=barbara&termsInclude=love&termsExclude=&top=100&sentiment=1&startDatetime=2015-08-01T00:00:00Z&endDatetime=2015-11-10T23:59:59Z
         
         let encode = encodeIncludExcludeFromString(searchText)
         
@@ -63,6 +98,7 @@ class Network
         parameters["startDatetime"] = startDatetime
         parameters["endDatetime"] = endDatetime
         let req = self.createRequest(Config.serverSentimentAnalysis, paremeters: parameters)
+        
         executeRequest(req, callBack: callBack)
     }
     
@@ -238,7 +274,6 @@ class Network
 
     //MARK: Server
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
-        //Log("createRequest")
         self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
         if paremeters.count > 0

@@ -330,6 +330,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         
+        /*
         if Config.useDummyData{
             let script9 = "heyRenderThisDataBro();"
             //Log(script9)
@@ -341,6 +342,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             })
         }
         else{
+        */
             let numberOfColumns = 3        // number of columns
             let containerName = "topics" // name of container for data
             
@@ -356,7 +358,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     }
                 })
             })
-        }
+        //}
         
     }
     
