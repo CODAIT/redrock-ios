@@ -612,8 +612,17 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     func periodicPowertrackWordcountRequest(){
-        Log("periodicPowertrackWordcountRequest")
-        // call powertrackWordcountRequest here
+        Log("periodicPowertrackWordcountRequest") //im leaving this logger in for now so we can observe the requests firing off
+        Network.sharedInstance.powertrackWordcountRequest(searchText!) { (json, error) -> () in
+            // TODO POPULATE THE TWITTER THINGS TOO
+            self.populateLiveVisualizations(json!)
+        }
+    }
+    
+    func populateLiveVisualizations(json: JSON){
+        for vis in visualizationsByIndex {
+            vis.json = json
+        }
     }
     
     //MARK: Dummy Data
@@ -661,7 +670,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             populateUI(json)
         }
     }
-    
+
     func populateUI(json: JSON){ //THIS IS ONLY USED FOR DUMMY DATA NOW
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
