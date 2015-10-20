@@ -29,7 +29,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.cleanViews()
                 self.loadDataFromServer()
             case .Live:
-                // Start live connection
+                // TODO: Start live connection
                 print("Live: \(searchText)")
             }
         }
@@ -126,15 +126,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     override func viewDidDisappear(animated: Bool) {
-        
+        // TODO: stop network call timer
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        
+        // TODO: stop network call timer
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        
+        // TODO: start network call timer if .Live
     }
     
     func addLeftPanelViewController() {
