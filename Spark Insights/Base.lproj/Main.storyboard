@@ -388,7 +388,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OT6-QQ-yCM" userLabel="Tweet Table Holder">
-                                <rect key="frame" x="0.0" y="174" width="350" height="626"/>
+                                <rect key="frame" x="0.0" y="175" width="350" height="625"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -406,6 +406,7 @@
                             <constraint firstItem="gTH-32-0rw" firstAttribute="top" secondItem="T0i-yl-qn0" secondAttribute="bottom" constant="81" id="Oen-rD-718"/>
                             <constraint firstItem="k2m-qv-PN0" firstAttribute="top" secondItem="d1W-je-aKs" secondAttribute="top" constant="20" id="WdN-F1-zQx"/>
                             <constraint firstItem="vbg-St-jZJ" firstAttribute="top" secondItem="gTH-32-0rw" secondAttribute="bottom" constant="318" id="aMd-iP-0Co"/>
+                            <constraint firstItem="OT6-QQ-yCM" firstAttribute="top" secondItem="vbg-St-jZJ" secondAttribute="bottom" id="aYj-w9-S6r"/>
                             <constraint firstItem="bgd-Sq-sDD" firstAttribute="top" secondItem="i7i-h2-Srb" secondAttribute="bottom" id="bzo-Jh-pof"/>
                             <constraint firstItem="voU-nO-wsP" firstAttribute="top" secondItem="k2m-qv-PN0" secondAttribute="bottom" id="czv-ah-Sck"/>
                             <constraint firstItem="gTH-32-0rw" firstAttribute="leading" secondItem="d1W-je-aKs" secondAttribute="leading" constant="18" id="n5t-Rg-7O1"/>
@@ -419,6 +420,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Oen-rD-718"/>
+                                <exclude reference="Grd-93-Gp8"/>
                                 <exclude reference="aMd-iP-0Co"/>
                             </mask>
                         </variation>
