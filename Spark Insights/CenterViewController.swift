@@ -618,12 +618,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     func periodicPowertrackWordcountRequest(){
         Log("periodicPowertrackWordcountRequest") //im leaving this logger in for now so we can observe the requests firing off
         Network.sharedInstance.powertrackWordcountRequest(searchText!) { (json, error) -> () in
-            self.handleTweetsCallBack(json!, error: error)
-            self.populateLiveVisualizations(json!)
+            self.handleTweetsCallBack(json, error: error)
+            self.populateLiveVisualizations(json)
         }
     }
     
-    func populateLiveVisualizations(json: JSON){
+    func populateLiveVisualizations(json: JSON?){
+        guard json != nil else {
+            return
+        }
         for vis in visualizationsByIndex {
             vis.json = json
         }
