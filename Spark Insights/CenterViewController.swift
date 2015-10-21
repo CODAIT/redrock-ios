@@ -590,6 +590,9 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     // idempotent function that makes requests every X seconds
     // X is a number in config
+    
+    // TODO ST
+    
     func startNetworkTimer(){
         //self.networkTimerIsTiming = true
         invalidateNetworkTimer()
@@ -620,6 +623,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     func populateLiveVisualizations(json: JSON){
+        Log("populateLiveVisualizations")
         for vis in visualizationsByIndex {
             vis.json = json
         }
