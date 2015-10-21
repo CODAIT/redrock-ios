@@ -419,7 +419,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     @IBAction func headerTitleClicked(sender: AnyObject) {
-        delegate?.toggleRightPanel!(true)
         delegate?.displaySearchViewController?()
     }
     
