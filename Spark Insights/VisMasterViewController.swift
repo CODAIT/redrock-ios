@@ -238,10 +238,10 @@ class VisMasterViewController: UIViewController {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json.array?.count
         
-        Log("col_cnt: \(col_cnt)... row_cnt: \(row_cnt)")
+        //Log("col_cnt: \(col_cnt)... row_cnt: \(row_cnt)")
 
         if(row_cnt == nil || col_cnt == nil){
-            Log("row_cnt == nil || col_cnt == nil")
+            //Log("row_cnt == nil || col_cnt == nil")
             errorDescription = Config.serverErrorMessage
             return nil
         }
@@ -261,8 +261,8 @@ class VisMasterViewController: UIViewController {
             }
         }
         
-        Log("tableData")
-        Log(tableData)
+        //Log("tableData")
+        //Log(tableData)
         
         return tableData
         

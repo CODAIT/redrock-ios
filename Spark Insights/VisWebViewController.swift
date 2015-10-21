@@ -276,11 +276,11 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     func makeScriptForSidewaysBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
-        Log("makeScriptForSidewaysBar")
+        //Log("makeScriptForSidewaysBar")
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         
-        Log("self.chartData")
-        print(self.chartData)
+        //Log("self.chartData")
+        //print(self.chartData)
         
         for r in firstIndex..<self.chartData.count{
             
@@ -305,10 +305,10 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
         //Log(stackedbarData)
         
-        Log("transformDataForSidewaysbar")
+        //Log("transformDataForSidewaysbar")
         
         func loadData() {
-            Log("loadData")
+            //Log("loadData")
             //onLoadingState()
             
             if self.chartData.count > 0
@@ -317,14 +317,14 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     
                     let script9 = self.makeScriptForSidewaysBar(0)
                     
-                    Log("...SCRIPT9....")
-                    Log(script9)
-                    Log("....SCRIPT9...")
+                    //Log("...SCRIPT9....")
+                    //Log(script9)
+                    //Log("....SCRIPT9...")
                     
                     //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        Log("dispatch_async(dispatch_get_main_queue(), { () -> Void in")
+                        //Log("dispatch_async(dispatch_get_main_queue(), { () -> Void in")
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
                         self.onSuccessState()
                         
@@ -350,19 +350,19 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             if contentJson != nil
             {
-                Log("contentJson != nil")
+                //Log("contentJson != nil")
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    Log("dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)")
+                    //Log("dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)")
                     let data = self.returnArrayOfLiveData(numberOfColumns, containerName: containerName, json: contentJson!)
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if(data != nil){
-                            Log("data != nil")
+                            //Log("data != nil")
                             self.chartData = data!
                             loadData()
                         }
                         else{
-                            Log("data == nil")
+                            //Log("data == nil")
                             self.errorDescription = Config.serverErrorMessage
                         }
                     })
@@ -370,13 +370,13 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
             else
             {
-                Log("contentJson == nil?!?!?!???")
+                //Log("contentJson == nil?!?!?!???")
                 errorDescription = Config.serverErrorMessage
             }
         }
         else
         {
-            Log("else")
+            //Log("else")
             errorDescription = Config.serverErrorMessage
         }
     }
