@@ -22,6 +22,7 @@ class LeftViewController: UIViewController {
     @IBOutlet weak var feedButton: UIButton!
     @IBOutlet weak var tweetTableHolder: UIView!
     
+    @IBOutlet weak var foundTweetsTitleLabel: UILabel!
     @IBOutlet weak var foundUsersNumberLabel: UILabel!
     @IBOutlet weak var foundTweetsNumberLabel: UILabel!
     @IBOutlet weak var searchedTweetsNumberLabel: UILabel!
@@ -31,6 +32,13 @@ class LeftViewController: UIViewController {
         
         self.setupTweetsTableView()
         // Do any additional setup after loading the view.
+        
+        switch Config.appState {
+        case .Historic:
+            foundTweetsTitleLabel.text = "Found Tweets"
+        case .Live:
+            foundTweetsTitleLabel.text = "Retweets"
+        }
     }
 
     override func didReceiveMemoryWarning() {
