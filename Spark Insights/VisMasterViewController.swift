@@ -15,6 +15,7 @@ enum VisTypes {
     case StackedBar
     case StackedBarDrilldownCirclePacking
     case TimeMap
+    case SidewaysBar
 }
 
 @objc
@@ -32,7 +33,18 @@ class VisMasterViewController: UIViewController {
             guard json != nil else {
                 return
             }
-            onDataSet()
+            
+            switch Config.appState {
+            case .Historic:
+                onDataSet()
+            case .Live:
+                guard oldValue != nil else {
+                    onDataSet()
+                    break
+                }
+                // Skip reloading the webview
+                transformData()
+            }
         }
     }
     var chartData: [[String]] = [[String]]()
@@ -96,6 +108,10 @@ class VisMasterViewController: UIViewController {
         Log("Override onBlur")
     }
     
+    func transformData() {
+        Log("Override transformData")
+    }
+    
     // MARK: - Display states
     
     func onLoadingState() {
@@ -136,7 +152,7 @@ class VisMasterViewController: UIViewController {
             self.visHolderView.alpha = 0.0
             }, completion: { finished in
                 self.visHolderView.hidden = true
-        })
+        }) //bad access error?
     }
     
     func revealWithAnimation() {
@@ -213,6 +229,46 @@ class VisMasterViewController: UIViewController {
     
     // MARK: - Utils
     
+    //TODO -- WRITE A DIFFERENT FUNCTION FOR UNWRAPPING THE LIVE DATA
+    func returnArrayOfLiveData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>>? {
+        
+        //Log("returnArrayOfData... numberOfColumns: \(numberOfColumns)... containerName: \(containerName)...")
+        //print(json)
+        
+        let col_cnt: Int? = numberOfColumns
+        let row_cnt: Int? = json.array?.count
+        
+        Log("col_cnt: \(col_cnt)... row_cnt: \(row_cnt)")
+
+        if(row_cnt == nil || col_cnt == nil){
+            Log("row_cnt == nil || col_cnt == nil")
+            errorDescription = Config.serverErrorMessage
+            return nil
+        }
+        
+        var tableData = Array(count: row_cnt!, repeatedValue: Array(count: col_cnt!, repeatedValue: ""))
+        
+        // populates the 2d array
+        for (row, rowJson): (String, JSON) in json {
+            for (col, cellJson): (String, JSON) in rowJson {
+                print(row, col, cellJson)
+                let r: Int = Int(row)!
+                let c: Int = Int(col)!
+                //self.tableData[r][c] = cellJson.stringValue
+                //Log(cellJson.stringValue)
+                
+                tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
+            }
+        }
+        
+        Log("tableData")
+        Log(tableData)
+        
+        return tableData
+        
+    }
+    
+    
     func returnArrayOfData(numberOfColumns: Int, containerName: String, json: JSON) -> Array<Array<String>>? {
         let col_cnt: Int? = numberOfColumns
         let row_cnt: Int? = json[containerName].array?.count
@@ -236,6 +292,7 @@ class VisMasterViewController: UIViewController {
                 tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
             }
         }
+
         return tableData
     }
 }

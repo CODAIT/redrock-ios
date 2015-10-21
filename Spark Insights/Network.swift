@@ -56,6 +56,8 @@ class Network
                 path = "response_live_3"
             }
             
+            //Log("dispatching a request with path... \(path)")
+            
             dispatchRequestForResource(path, callBack: callBack)
             return
         }
@@ -135,7 +137,7 @@ class Network
                 var parseError: NSError?
                 do {
                     let JSONObject: AnyObject? = try NSJSONSerialization.JSONObjectWithData(fileData, options: NSJSONReadingOptions.AllowFragments)
-                    // Parse success
+                    //Log("Parse success")
                     let json = JSON(JSONObject!)
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.callCallbackAfterDelay(json, error: nil, callback: callBack)
@@ -144,13 +146,13 @@ class Network
                     parseError = error
                     // Parse error
                     // TODO: handle error
-                    Log("Error Parsing drilldown demo data: \(parseError?.localizedDescription)")
+                    Log("Error Parsing demo data: \(parseError?.localizedDescription)")
                 }
             } catch let error as NSError {
                 readError = error
                 // Read error
                 // TODO: handle error
-                Log("Error Reading drilldown demo data: \(readError?.localizedDescription)")
+                Log("Error Reading demo data: \(readError?.localizedDescription)")
             } catch {
                 fatalError()
             }
@@ -483,6 +485,8 @@ class Network
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue()) {
             Network.waitingForResponse = false
+            //Log("callCallbackAfterDelay... dispatch_after(time, dispatch_get_main_queue()... json...")
+            //print(json)
             callback(json: json, error: error)
         }
     }

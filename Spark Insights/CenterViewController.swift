@@ -594,6 +594,9 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     // idempotent function that makes requests every X seconds
     // X is a number in config
+    
+    // TODO ST
+    
     func startNetworkTimer(){
         //self.networkTimerIsTiming = true
         invalidateNetworkTimer()

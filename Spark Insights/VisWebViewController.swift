@@ -24,6 +24,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             return "forcegraph.html"
         case .StackedBarDrilldownCirclePacking:
             return "StackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve.html"
+        case .SidewaysBar:
+            return "sidewaysbar.html"
         default:
             return "none"
         }
@@ -147,7 +149,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         transformData()
     }
     
-    func transformData() {
+    override func transformData() {
             let delay = 0.2 * Double(NSEC_PER_SEC)
             let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
             dispatch_after(time, dispatch_get_main_queue()) {
@@ -166,6 +168,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     self.transformDataForForcegraph()
                 case .StackedBar:
                     self.transformDataForStackedbar()
+                case .SidewaysBar:
+                    self.transformDataForSidewaysbar()
                 case .StackedBarDrilldownCirclePacking:
                     self.transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve()
                 default:
@@ -270,10 +274,116 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         })
         
     }
+    
+    func makeScriptForSidewaysBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
+        Log("makeScriptForSidewaysBar")
+        var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
+        
+        Log("self.chartData")
+        print(self.chartData)
+        
+        for r in firstIndex..<self.chartData.count{
+            
+            script9+="{\"x\": \""
+            script9+=self.chartData[r][0]
+            script9+="\", \"y\":"
+            script9+=self.chartData[r][1]
+            script9+="}"
+            
+            // there's another data point so we need the comma
+            if(r != (self.chartData.count-1)){
+                script9+=","
+            }
+        }
+        script9+="]}]; renderChart(myData);"
+        
+        return script9
+    }
+
+    func transformDataForSidewaysbar(){
+        
+        //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
+        //Log(stackedbarData)
+        
+        Log("transformDataForSidewaysbar")
+        
+        func loadData() {
+            Log("loadData")
+            //onLoadingState()
+            
+            if self.chartData.count > 0
+            {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    
+                    let script9 = self.makeScriptForSidewaysBar(0)
+                    
+                    Log("...SCRIPT9....")
+                    Log(script9)
+                    Log("....SCRIPT9...")
+                    
+                    //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        Log("dispatch_async(dispatch_get_main_queue(), { () -> Void in")
+                        self.webView.evaluateJavaScript(script9, completionHandler: nil)
+                        self.onSuccessState()
+                        
+                    })
+                })
+            }
+            else
+            {
+                Log("onNoDataState()")
+                onNoDataState()
+            }
+        }
+        
+        let numberOfColumns = 2        // number of columns
+        let containerName = "wordCount" // name of container for data //TODO: unknown
+        
+        var contentJson = json
+        if contentJson != nil
+        {
+            contentJson = json![containerName]
+            
+            //print(contentJson)
+            
+            if contentJson != nil
+            {
+                Log("contentJson != nil")
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    Log("dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)")
+                    let data = self.returnArrayOfLiveData(numberOfColumns, containerName: containerName, json: contentJson!)
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if(data != nil){
+                            Log("data != nil")
+                            self.chartData = data!
+                            loadData()
+                        }
+                        else{
+                            Log("data == nil")
+                            self.errorDescription = Config.serverErrorMessage
+                        }
+                    })
+                })
+            }
+            else
+            {
+                Log("contentJson == nil?!?!?!???")
+                errorDescription = Config.serverErrorMessage
+            }
+        }
+        else
+        {
+            Log("else")
+            errorDescription = Config.serverErrorMessage
+        }
+    }
+
+ 
 
     func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
-        //Log("transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve")
-        //Log(circlepackingData)
         
         onLoadingState()
         
@@ -330,19 +440,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         
-        /*
-        if Config.useDummyData{
-            let script9 = "heyRenderThisDataBro();"
-            //Log(script9)
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.webView.evaluateJavaScript(script9, completionHandler: nil)
-                
-                self.onSuccessState()
-            })
-        }
-        else{
-        */
             let numberOfColumns = 3        // number of columns
             let containerName = "topics" // name of container for data
             
@@ -365,7 +462,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     func transformDataForStackedbar(){
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
-        
         //Log(stackedbarData)
         
         func loadData() {
