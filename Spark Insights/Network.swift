@@ -354,7 +354,7 @@ class Network
     private func executeRequest(req: String, callBack: (json: JSON?, error: NSError?) -> ()) {
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
-        //Log("Sending Request: " + req)
+        Log("Sending Request: " + req)
         Network.waitingForResponse = true
         self.startTime = CACurrentMediaTime()
         let url: NSURL = NSURL(string: req)!

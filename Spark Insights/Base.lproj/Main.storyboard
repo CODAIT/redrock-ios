@@ -430,6 +430,7 @@
                     <connections>
                         <outlet property="feedButton" destination="tpj-Jd-iwc" id="eJZ-ev-RYE"/>
                         <outlet property="foundTweetsNumberLabel" destination="RSe-kk-kUC" id="fF5-ZV-LI7"/>
+                        <outlet property="foundTweetsTitleLabel" destination="Lc4-HB-vRG" id="ylE-Pm-ivW"/>
                         <outlet property="foundUsersNumberLabel" destination="mcf-2o-hym" id="498-pr-84Y"/>
                         <outlet property="searchedTweetsNumberLabel" destination="QBJ-Fx-Lnh" id="AyS-Gt-SgD"/>
                         <outlet property="tweetTableHolder" destination="OT6-QQ-yCM" id="5MQ-sL-lJZ"/>

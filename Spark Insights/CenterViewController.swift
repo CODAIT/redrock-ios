@@ -563,29 +563,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
         else
         {
-            if json!["totalusers"] != nil
-            {
-                leftViewController.foundUsersNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalusers"].intValue))
-            }
-            else
-            {
-                leftViewController.foundUsersNumberLabel.text = "Error"
-            }
-            if json!["totaltweets"] != nil
-            {
-                leftViewController.searchedTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totaltweets"].intValue))
-            }
-            else
-            {
-                leftViewController.searchedTweetsNumberLabel.text = "Error"
-            }
-            if json!["totalfilteredtweets"] != nil
-            {
-                leftViewController.foundTweetsNumberLabel.text = self.formatNumberToDisplay(Int64(json!["totalfilteredtweets"].intValue))
-            }
-            else
-            {
-                leftViewController.foundTweetsNumberLabel.text = "Error"
+            switch Config.appState {
+            case .Historic:
+                self.setCountLabelWithJSONKey(json, key: "totaltweets", label: leftViewController.searchedTweetsNumberLabel)
+                self.setCountLabelWithJSONKey(json, key: "totalusers", label: leftViewController.foundUsersNumberLabel)
+                self.setCountLabelWithJSONKey(json, key: "totalfilteredtweets", label: leftViewController.foundTweetsNumberLabel)
+            case .Live:
+                self.setCountLabelWithJSONKey(json, key: "totalfilteredtweets", label: leftViewController.searchedTweetsNumberLabel)
+                self.setCountLabelWithJSONKey(json, key: "totalusers", label: leftViewController.foundUsersNumberLabel)
+                self.setCountLabelWithJSONKey(json, key: "totalretweets", label: leftViewController.foundTweetsNumberLabel)
             }
         }
     }
@@ -621,6 +607,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     func periodicPowertrackWordcountRequest(){
         //Log("periodicPowertrackWordcountRequest") //im leaving this logger in for now so we can observe the requests firing off
         Network.sharedInstance.powertrackWordcountRequest(searchText!) { (json, error) -> () in
+            self.handleTopMetrics(json, error: error)
             self.handleTweetsCallBack(json, error: error)
             self.populateLiveVisualizations(json)
         }
@@ -805,6 +792,14 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
         
         return String(format: "%.1f", div) + String(letter)
+    }
+    
+    func setCountLabelWithJSONKey(json: JSON?, key: String, label: UILabel) {
+        if json![key] != nil {
+            label.text = self.formatNumberToDisplay(Int64(json![key].intValue))
+        } else {
+            label.text = "Error"
+        }
     }
 }
 
