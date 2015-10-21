@@ -24,6 +24,7 @@ class ContainerViewController: UIViewController {
     
     var centerViewController: CenterViewController!
     var rightViewController: RightViewController!
+    var rightPickerViewController: RightPickerViewController!
     
     var currentState: SlideOutState = .BothCollapsed
     let centerPanelExpandedOffset: CGFloat = 325
@@ -99,26 +100,45 @@ extension ContainerViewController: CenterViewControllerDelegate {
     }
     
     func addRightPanelViewController() {
-        if (rightViewController == nil) {
-            rightViewController = UIStoryboard.rightViewController()
-            self.rightViewController.delegate = self
-            self.rightViewController.searchString = self.searchText
-            addChildSidePanelController(rightViewController!)
+        if (Config.appState == .Live) {
+            if (rightPickerViewController == nil) {
+                rightPickerViewController = UIStoryboard.rightPickerViewController()
+                self.rightPickerViewController.delegate = self
+                addChildSidePanelController(rightPickerViewController!)
+            }
+            return
+        } else {
+            if (rightViewController == nil) {
+                rightViewController = UIStoryboard.rightViewController()
+                self.rightViewController.delegate = self
+                self.rightViewController.searchString = self.searchText
+                addChildSidePanelController(rightViewController!)
+            }
         }
     }
     
     func animateRightPanel(shouldExpand shouldExpand: Bool) {
         if (shouldExpand) {
-            self.rightViewController.searchString = self.searchText
-            self.rightViewController.tableA.reloadData()
-            self.rightViewController.tableB.reloadData()
+            if self.rightViewController != nil {
+                self.rightViewController.searchString = self.searchText
+                self.rightViewController.tableA.reloadData()
+                self.rightViewController.tableB.reloadData()
+            }
             currentState = .RightPanelExpanded
             animateCenterPanelXPosition(targetPosition: -centerPanelExpandedOffset)
         } else {
             animateCenterPanelXPosition(targetPosition: 0) { _ in
                 self.currentState = .BothCollapsed
-                self.rightViewController!.view.removeFromSuperview()
-                self.rightViewController = nil;
+                
+                if self.rightPickerViewController != nil {
+                    self.rightPickerViewController!.view.removeFromSuperview()
+                    self.rightPickerViewController = nil;
+                }
+                
+                if self.rightViewController != nil {
+                    self.rightViewController!.view.removeFromSuperview()
+                    self.rightViewController = nil;
+                }
             }
         }
     }
@@ -144,6 +164,10 @@ extension UIStoryboard {
     
     class func rightViewController() -> RightViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("RightViewController") as? RightViewController
+    }
+    
+    class func rightPickerViewController() -> RightPickerViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("RightPickerViewController") as? RightPickerViewController
     }
     
     class func centerViewController() -> CenterViewController? {

@@ -30,6 +30,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var topImageView: UIImageView!
     @IBOutlet weak var searchButtonView: UIView!
+    @IBOutlet weak var liveButton: UIButton!
     
     private var recalculateConstrainstsForSearchView = true
     
@@ -65,6 +66,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         if (Config.searchViewAnimation) {
             topImageView.startAnimating()
         }
+        liveButton.setTitle("Live \(Config.liveSearches[Config.liveCurrentSearchIndex])", forState: UIControlState.Normal)
     }
     
     // MARK: - Reset UI
@@ -209,7 +211,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func liveClicked(sender: UIButton) {
         Config.appState = .Live
-        delegate?.displayContainerViewController?(self, searchText: Config.liveTag)
+        delegate?.displayContainerViewController?(self, searchText: Config.liveSearches[Config.liveCurrentSearchIndex])
     }
     
     /* Find at least one include term*/

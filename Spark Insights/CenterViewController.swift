@@ -24,9 +24,10 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
 
     var searchText: String? {
         didSet {
+            self.cleanViews()
+            
             switch Config.appState {
             case .Historic:
-                self.cleanViews()
                 self.loadDataFromServer()
             case .Live:
                 // TODO: Start live connection
@@ -57,6 +58,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     @IBOutlet weak var headerLabel: UIButton!
     @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var liveButton: UIButton!
     
     @IBOutlet weak var pageControlViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var dummyView: UIView!
@@ -102,9 +104,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         switch Config.appState {
         case .Historic:
             Log("CenterViewController viewDidLoad in historic mode")
+            searchButton.hidden = false
+            liveButton.hidden = true
         case .Live:
             Log("CenterViewController viewDidLoad in live mode")
             searchButton.hidden = true
+            liveButton.hidden = false
         }
     }
 
