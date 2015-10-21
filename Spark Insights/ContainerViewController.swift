@@ -27,7 +27,7 @@ class ContainerViewController: UIViewController {
     var rightPickerViewController: RightPickerViewController!
     
     var currentState: SlideOutState = .BothCollapsed
-    let centerPanelExpandedOffset: CGFloat = 325
+    let centerPanelExpandedOffset: CGFloat = 350
     
     var searchText: String?
     
