@@ -18,9 +18,6 @@ function d3Line() {
       x0 = x0 || x;
       y0 = y0 || y;
 
-      //TODO: reconsider points {x: #, y: #} instead of [x,y]
-      //TODO: data accessors so above won't really matter, but need to decide for internal use
-
       //add series data to each point for future ease of use
       data = data.map(function(series, i) {
         series.data = series.data.map(function(point) {
@@ -89,7 +86,6 @@ function d3Line() {
           return { 'data': d, 'series': vertices[i][2], 'point': vertices[i][3] }
       });
 
-      //TODO: Add very small amount of noise to prevent duplicates
       var pointPaths = wrap.select('.point-paths').selectAll('path')
           .data(voronoi);
       pointPaths.enter().append('path')

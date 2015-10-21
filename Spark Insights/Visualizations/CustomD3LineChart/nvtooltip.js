@@ -22,11 +22,10 @@
         width = container.width() + parseInt(container.css('padding-left'))  + parseInt(container.css('padding-right')),
         windowWidth = $(window).width(),
         windowHeight = $(window).height(),
-        scrollTop = $('body').scrollTop(),  //TODO: also adjust horizontal scroll
+        scrollTop = $('body').scrollTop(),
         left, top;
 
 
-    //TODO: implement other gravities
     switch (gravity) {
       case 'e':
       case 'w':

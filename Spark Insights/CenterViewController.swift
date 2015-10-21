@@ -22,6 +22,8 @@ protocol CenterViewControllerDelegate {
 
 class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDelegate, PageControlDelegate, LeftViewControllerDelegate, PlayBarViewControllerDelegate, MFMailComposeViewControllerDelegate, NetworkDelegate {
 
+    var networkTimer : NSTimer!
+    
     var searchText: String? {
         didSet {
             self.cleanViews()
@@ -30,7 +32,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             case .Historic:
                 self.loadDataFromServer()
             case .Live:
-                // TODO: Start live connection
+                startNetworkTimer() // TODO: Start live connection
                 print("Live: \(searchText)")
             }
         }
@@ -131,15 +133,21 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     override func viewDidDisappear(animated: Bool) {
-        // TODO: stop network call timer
+        stopNetworkTimer() // TODO: stop network call timer
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        // TODO: stop network call timer
+        stopNetworkTimer() // TODO: stop network call timer
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
-        // TODO: start network call timer if .Live
+        switch Config.appState {
+        case .Live: // TODO: start network call timer if .Live
+            startNetworkTimer()
+        default:
+            break
+        }
+        
     }
     
     func addLeftPanelViewController() {
@@ -583,6 +591,45 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
     }
     
+    //MARK: Jury-Rigged Websocket
+    
+    // idempotent function that makes requests every X seconds
+    // X is a number in config
+    func startNetworkTimer(){
+        //self.networkTimerIsTiming = true
+        invalidateNetworkTimer()
+        
+        // make a request every X seconds
+        self.networkTimer = NSTimer.scheduledTimerWithTimeInterval(Config.networkTimerInterval, target: self, selector: Selector("periodicPowertrackWordcountRequest"), userInfo: nil, repeats: true)
+        
+    }
+    
+    // idempotent function that stops the networktimer from making any further requests
+    func stopNetworkTimer(){
+        invalidateNetworkTimer()
+    }
+    
+    func invalidateNetworkTimer(){
+        if networkTimer != nil {
+            networkTimer.invalidate()
+            networkTimer = nil;
+        }
+    }
+    
+    func periodicPowertrackWordcountRequest(){
+        Log("periodicPowertrackWordcountRequest") //im leaving this logger in for now so we can observe the requests firing off
+        Network.sharedInstance.powertrackWordcountRequest(searchText!) { (json, error) -> () in
+            self.handleTweetsCallBack(json!, error: error)
+            self.populateLiveVisualizations(json!)
+        }
+    }
+    
+    func populateLiveVisualizations(json: JSON){
+        for vis in visualizationsByIndex {
+            vis.json = json
+        }
+    }
+    
     //MARK: Dummy Data
     
     func onDummyRequestSuccess(json: JSON) {
@@ -628,7 +675,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             populateUI(json)
         }
     }
-    
+
     func populateUI(json: JSON){ //THIS IS ONLY USED FOR DUMMY DATA NOW
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
