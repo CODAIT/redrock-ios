@@ -70,7 +70,7 @@
                             .hideable(true)
                             .duration(1000)
                             .showYAxis(true)
-                            .showLegend(true)
+                            .showLegend(false)
                             .stacked(true);
                             chart.x(function(d,i) {
                                     //return d.x
@@ -86,7 +86,7 @@
                             chart.xAxis
                             .axisLabel("")
                             .tickFormat(function(d, i) {
-                                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length-3);
+                                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length);
                                         });
                             chart.xAxis.rotateLabels(-30);
                             chart.yAxis
@@ -99,11 +99,13 @@
                             
                             nv.utils.windowResize(chart.update);
                             
+                            /*
                             d3.select('body')
                             .selectAll('.nv-x.nv-axis > g')
                             .selectAll('g')
                             .selectAll('text')
                             .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
+                             */
                             
                             return chart;
                             },function(){
@@ -162,7 +164,7 @@
             return copy;
         }
         
-        renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
+        //renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":22, "z":22},{"x": "11/20", "y":22, "z":22},{"x": "11/21", "y":22, "z":22},{"x": "11/22", "y":22, "z":22},{"x": "11/23", "y":22, "z":22}]}]);
         
             </script>
     </body>

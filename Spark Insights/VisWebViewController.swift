@@ -37,7 +37,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         if(message.name == "callbackHandler") {
-            print("JavaScript is sending a message \(message.body)")
+            Log("JavaScript is sending a message \(message.body)")
             
             displayVisOverSentiment(transformDataForDisplayVisOverSentiment(message.body as! String));
         }

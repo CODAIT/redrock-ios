@@ -33,7 +33,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.loadDataFromServer()
             case .Live:
                 startNetworkTimer() // TODO: Start live connection
-                print("Live: \(searchText)")
+                //print("Live: \(searchText)")
             }
         }
     }
@@ -594,12 +594,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     // idempotent function that makes requests every X seconds
     // X is a number in config
-    
-    // TODO ST
-    
+
     func startNetworkTimer(){
         //self.networkTimerIsTiming = true
         invalidateNetworkTimer()
+        
+        periodicPowertrackWordcountRequest() //TODO DO ONE REQUEST IMMEDIATELY
         
         // make a request every X seconds
         self.networkTimer = NSTimer.scheduledTimerWithTimeInterval(Config.networkTimerInterval, target: self, selector: Selector("periodicPowertrackWordcountRequest"), userInfo: nil, repeats: true)

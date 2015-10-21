@@ -251,7 +251,7 @@ class VisMasterViewController: UIViewController {
         // populates the 2d array
         for (row, rowJson): (String, JSON) in json {
             for (col, cellJson): (String, JSON) in rowJson {
-                print(row, col, cellJson)
+                //print(row, col, cellJson)
                 let r: Int = Int(row)!
                 let c: Int = Int(col)!
                 //self.tableData[r][c] = cellJson.stringValue
