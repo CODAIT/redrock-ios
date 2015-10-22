@@ -68,7 +68,13 @@
     var chartData = null;
     var chart = null;
     var toggle = true;
-    function renderChart(data) {
+    
+    var width = 0;
+    var height = 0;
+    
+    function renderChart(data, w, h) {
+        width = w
+        height = h
 
         chartData = transformData(data);
 
@@ -93,7 +99,7 @@
                                          
                                          var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
                                          
-                                         talkToApp(coordinates);
+                                         //talkToApp(coordinates);
                                         
                                          return coordinates
                                          
@@ -139,9 +145,20 @@
                     var coordinates = d3.mouse(this);
                                   
                     showClickPoint(coordinates);
+                                  
+                    //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
 
                     // TODO CONVERT THESE COORDINATES TO THE DATA WE NEED THEN SEND IT
-                    //talkToApp(coordinates);
+
+                    //var sentiment = "positive"
+                    //var date = coordinates
+                    
+                    var ratioX = coordinates[0]/width
+                    var ratioY = coordinates[1]/height
+                                  
+                    //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
+                    //talkToApp(ratioX+","+ratioY)
+                    talkToApp(ratioX+"")
                                   
                     //toggle = !toggle;
                     //chart.showControls(toggle);
@@ -206,7 +223,7 @@
         return copy;
     }
 
-    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "11/20", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}]);
+    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "11/20", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}], 1024, 600);
 
     </script>
 </body>

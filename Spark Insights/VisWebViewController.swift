@@ -45,7 +45,42 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
     }
     
-    func transformDataForDisplayVisOverSentiment(rawData: String) -> String{
+    func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
+        
+        Log("transformDataForDisplayVisOverSentiment")
+        Log(rawData)
+        
+        let doubleValue : Double = NSString(string: rawData).doubleValue
+
+        //TODO YEAR SHOULD BE INCLUDED IN ORIGINAL DATE NOT HARDCODED!
+        
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "YYYY MM/dd HH"
+        dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        //dateFormat.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        let startDate : NSDate = dateFormat.dateFromString("2015 "+dateRange[0].lowercaseString)! //absolute start date
+        let endDate : NSDate = dateFormat.dateFromString("2015 "+dateRange[dateRange.count-1].lowercaseString)! //absolute final date
+        
+        let denom = (endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
+        
+        let selectedDateAsTimeIntervalSinceStartDate = doubleValue*denom
+        
+        let selectedDateAsTimeIntervalSince1970 = startDate.timeIntervalSince1970 + selectedDateAsTimeIntervalSinceStartDate
+        
+        let selectedDate = NSDate(timeIntervalSince1970: NSTimeInterval(selectedDateAsTimeIntervalSince1970))
+        
+        //Log("startDate... \(startDate)... endDate... \(endDate)...")
+        //Log("startDate.timeIntervalSince1970... \(startDate.timeIntervalSince1970)... endDate.timeIntervalSince1970... \(endDate.timeIntervalSince1970)...")
+        //Log("denom... \(denom)...")
+        //Log("selectedDateAsTimeIntervalSinceStartDate... \(selectedDateAsTimeIntervalSinceStartDate)")
+        //Log("selectedDateAsTimeIntervalSince1970... \(selectedDateAsTimeIntervalSince1970)")
+        //Log("the selected date is approximately... \(selectedDate)")
+        
+        //Log("xRatio: \(doubleValue).... dateRange[0].lowercaseString: \(dateRange[0].lowercaseString).... dateRange[dateRange.count-1].lowercaseString: \(dateRange[dateRange.count-1].lowercaseString)")
+        
+        // convert the doubleValue into a date with a range
+                
+        /*
         if rawData.containsString("Positive"){
             Log("positive sentiment detected")
         }
@@ -54,14 +89,14 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
         else{
             Log("ERROR: unsure what kind of sentiment this is in transformDataForDisplayVisOverSentiment in VisWebViewController.swift")
-        }
+        }*/
         
         //rawData.substringFromIndex(rawData)
         
-        return rawData
+        return selectedDate
     }
     
-    func displayVisOverSentiment(data: String) {
+    func displayVisOverSentiment(selectedDate: NSDate) {
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
@@ -70,13 +105,29 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         visHolder.addVisualisationController(myDrilldown)
         myDrilldown.onLoadingState()
         
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        
+        let selectedDateAsString = dateFormat.stringFromDate(selectedDate)
+        
+        //TODO this is hardcoded to be one hour!! we should change it to be modular
+        let timeInterval = NSTimeInterval((Config.dateRangeIntervalForStackedbarDrilldownInSeconds))
+        
+        let endDateAsString = dateFormat.stringFromDate(selectedDate.dateByAddingTimeInterval(timeInterval))
+        
+        Log("selectedDateAsString: \(selectedDateAsString)... endDateAsString: \(endDateAsString)")
+        
         // TODO: THE DATA IS HARDCODED!!!! FIX IT!!!!
-        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
+        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsString, endDatetime: endDateAsString) { (json, error) -> () in
             if error != nil {
+                Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
                 self.myDrilldown.errorDescription = error?.localizedDescription
                 return
             }
             self.myDrilldown.json = json
+            //Log("self.myDrilldown.json = json....")
+            //print(json)
         }
     }
     
@@ -499,6 +550,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     
                     //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
                     
+                    //;var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);
+                    
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
                         self.onSuccessState()
@@ -549,7 +602,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     func makeScriptForStackedBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
-        
+        let viewSize = self.view.bounds.size
+
         for r in firstIndex..<self.chartData.count{
             if (self.dateRange.indexOf(self.chartData[r][0]) == nil)
             {
@@ -568,6 +622,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             if let unwrappedUpperIndex = upperIndex {
                 if(self.chartData[r][0] == dateRange[unwrappedUpperIndex]){
+                    
                     //it's the end of the range //get out of here
                     break
                 }
@@ -578,9 +633,10 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                 script9+=","
             }
         }
-        script9+="]}]; renderChart(myData);"
         
+        //;var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);
         
+        script9+="]}]; renderChart(myData, \(viewSize.width), \(viewSize.height));"
         
         return script9
     }
