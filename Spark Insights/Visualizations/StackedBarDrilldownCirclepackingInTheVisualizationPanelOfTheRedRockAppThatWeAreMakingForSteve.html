@@ -1,132 +1,117 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
-
-*{
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-.node {
-  cursor: pointer;
-   -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-
-.node:hover {
-  stroke: #E8E8E8;
-  stroke-width: 3px;
-}
-
-.node--leaf {
-  fill: white;
-}
-
-.label {
-  font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-anchor: middle;
-  /*text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;*/
-}
-
-.label,
-.node--root,
-.node--leaf {
-  pointer-events: none;
-}
-
-ruler { visibility: hidden; white-space: nowrap; }
-
-</style>
-<body>
-<span id="ruler"></span>
-<p id="test"></p>
-<p id="test2"></p>
-<p id="width"></p>
-<p id="height"></p>
-<p id="shrink"></p>
-<script src="d3.min.js" charset="utf-8"></script>
-<script>
-
-String.prototype.visualLength = function()
-{
-    var ruler = $("ruler");
-    ruler.innerHTML = this;
-    var myOffsetWidth = ruler.offsetWidth;
-    ruler.innerHTML = "";
-    return myOffsetWidth;
-}
-
-function $(id)
-{
-    return document.getElementById(id);
-}
-
-String.prototype.trimToPx = function(length)
-{
-    var tmp = this;
-    var trimmed = this;
-    if (tmp.visualLength() > length)
-    {
-        trimmed += "...";
-        while (trimmed.visualLength() > length)
-        {
-            tmp = tmp.substring(0, tmp.length-1);
-            trimmed = tmp + "...";
+    <style>
+        
+        /* DRILLDOWN CIRCLEPACKING BY RAPH */
+        
+        *{
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
+    
+    .node {
+        cursor: pointer;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
-    return trimmed;
-}
-
-var parentColor = d3.scale.ordinal().range(["1", "2", "3", "4", "5", "6", "7", "8"]);
-
-var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
-
-var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
-
-var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571", "#006d5d"]);
-
-var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
-
-var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
-
-var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
-
-var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
-
-var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
-
-
-function returnColor(parentColor, number){
-
-    if(parentColor == "1"){
-        return color1(number);
+    
+    //.node:hover {
+        stroke: #c8d2d2;
+        stroke-width: 6px;
+        stroke-location: outisde;
+        //stroke-dasharray : 6px, 18px;
+        //stroke-linecap : round;
+        
     }
-    else if(parentColor == "2"){
-        return color2(number);
+    
+    .node--leaf {
+        fill: white;
     }
-    else if(parentColor == "3"){
-        return color3(number);
+    
+    .label {
+        font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+        fill: #ffffff;
+        
+        
+        
+        /*text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;*/
     }
-    else if(parentColor == "4"){
-        return color4(number);
+    
+    .label,
+    .node--root,
+    .node--leaf {
+        pointer-events: none;
     }
-    else if(parentColor == "5"){
-        return color5(number);
-    }
-    else if(parentColor == "6"){
-        return color6(number);
-    }
-    else if(parentColor == "7"){
-        return color7(number);
-    }
-    else if(parentColor == "8"){
-        return color8(number);
-    }
-    else{
-        return "#FF69B4";
-    }
-}
+    
+    ruler { visibility: hidden; white-space: nowrap; }
+    
+        </style>
+    <body>
+        <span id="ruler"></span>
+        <p id="test"></p>
+        <p id="test2"></p>
+        <p id="width"></p>
+        <p id="height"></p>
+        <p id="shrink"></p>
+        <script src="d3.min.js" charset="utf-8"></script>
+        <script>
+            
+            String.prototype.visualLength = function()
+            {
+                var ruler = $("ruler");
+                ruler.innerHTML = this;
+                var myOffsetWidth = ruler.offsetWidth;
+                ruler.innerHTML = "";
+                return myOffsetWidth;
+            }
+        
+        function $(id)
+        {
+            return document.getElementById(id);
+        }
+        
+        String.prototype.trimToPx = function(length)
+        {
+            var tmp = this;
+            var trimmed = this;
+            if (tmp.visualLength() > length)
+            {
+                trimmed += "...";
+                while (trimmed.visualLength() > length)
+                {
+                    tmp = tmp.substring(0, tmp.length-1);
+                    trimmed = tmp + "...";
+                }
+            }
+            return trimmed;
+        }
+        
+        var parentColor = d3.scale.ordinal().range(["1", "2", "3"]);
+        
+        var color1 = d3.scale.ordinal().range(["#4278bc","#325c80","#264a60","#1c3648","#142834"]);
+        
+        var color2 = d3.scale.ordinal().range(["#855ca6","#734098","#552f72","#402255","#301940"]);
+        
+        var color3 = d3.scale.ordinal().range(["#d54326","#a53724","#872b1a","#6c120f","#40130f"]);
+        
+        
+        function returnColor(parentColor, number){
+            
+            if(parentColor == "1"){
+                return color1(number);
+            }
+            else if(parentColor == "2"){
+                return color2(number);
+            }
+            else if(parentColor == "3"){
+                return color3(number);
+            }
+            else{
+                return "#7C1C58";
+            }
+        }
 
 function renderChart(data, w, h){
 
@@ -134,7 +119,7 @@ function renderChart(data, w, h){
     var canvasHeight = h
 
     var margin = 0,
-    diameter = 550;
+    diameter = 600;
     
     //var optimizedWidth = 1024
     //var optimizedHeight = 624
