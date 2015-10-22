@@ -35,6 +35,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     var webView: WKWebView! = nil
     
+    var myDrilldown: VisMasterViewController! = nil
+    
     func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         if(message.name == "callbackHandler") {
             Log("JavaScript is sending a message \(message.body)")
@@ -63,17 +65,18 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
-        let vis = VisFactory.visualizationControllerForType(.StackedBarDrilldownCirclePacking)!
-        visHolder.addVisualisationController(vis)
-        vis.onLoadingState()
+        // TODO make a reference to this child
+        myDrilldown = VisFactory.visualizationControllerForType(.StackedBarDrilldownCirclePacking)!
+        visHolder.addVisualisationController(myDrilldown)
+        myDrilldown.onLoadingState()
         
         // TODO: THE DATA IS HARDCODED!!!! FIX IT!!!!
         Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: "2015-08-01T00:00:00Z", endDatetime: "2015-11-10T23:59:59Z") { (json, error) -> () in
             if error != nil {
-                vis.errorDescription = error?.localizedDescription
+                self.myDrilldown.errorDescription = error?.localizedDescription
                 return
             }
-            vis.json = json
+            self.myDrilldown.json = json
         }
     }
     
@@ -116,9 +119,19 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     override func onDataSet() {
+        Log("onDataSet... mainFile... \(mainFile)")
         let tempVisPath = NSURL(fileURLWithPath: Config.visualizationFolderPath).URLByAppendingPathComponent(NSURL(fileURLWithPath: self.mainFile).path!)
         let request = NSURLRequest(URL: tempVisPath)
         webView.loadRequest(request)
+        
+        switch type! {
+        case .StackedBar :
+            if let drilldown = myDrilldown{  //TODO reload my child
+                drilldown.onDataSet()
+            }
+        default:
+            break
+        }
         
     }
     
@@ -391,6 +404,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
  
 
     func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
+        
+        //Log("transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve")
         
         onLoadingState()
         

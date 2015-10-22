@@ -130,6 +130,9 @@ function returnColor(parentColor, number){
 
 function renderChart(data, w, h){
 
+    var canvasWidth = w
+    var canvasHeight = h
+
     var margin = 0,
     diameter = 550;
     
@@ -138,23 +141,30 @@ function renderChart(data, w, h){
     
     //var shrinkConstant = w/optimizedWidth
 
-/*
-var ruler = document.getElementById("ruler");
-var width = document.getElementById("width");
-width.innerHTML = w
-var height = document.getElementById("height");
-height.innerHTML = h
-var shrinkLabel = document.getElementById("shrink");
-shrinkLabel.innerHTML = shrinkConstant
- */
+//var ruler = document.getElementById("ruler");
+//var width = document.getElementById("width");
+//width.innerHTML = w
+//var height = document.getElementById("height");
+//height.innerHTML = h
+//var shrinkLabel = document.getElementById("shrink");
+//shrinkLabel.innerHTML = shrinkConstant
+
     var xPadding = 0
+    var yPadding = 0
+    var resizeConstant = 0.80
+    var canvasHeightAddition = 0
 
     if( w > 1000) // we want to pad it on the left
     {
-        xPadding = 250
+        xPadding = 200
+        yPadding = 10
     }
-
-    var resizeConstant = 0.80
+    else
+    {
+        xPadding = 150
+        yPadding = 100
+        canvasHeightAddition = 100
+    }
 
     w = resizeConstant * w
     h = resizeConstant * h
@@ -165,17 +175,15 @@ shrinkLabel.innerHTML = shrinkConstant
     zoomedInSize = resizeConstant * zoomedInSize
     zoomedOutSize = resizeConstant * zoomedOutSize
 
-
-
     diameter = resizeConstant * diameter
 
     //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
 
     var svg = d3.select("body").append("svg")
-    .attr("width", w)
-    .attr("height", h*2)
+    .attr("width", canvasWidth)
+    .attr("height", canvasHeight+canvasHeightAddition)
     .append("g")
-    .attr("transform", "translate(" + ((diameter / 2)+45+xPadding) + "," + ((diameter / 2)-25) + ")");
+    .attr("transform", "translate(" + ((diameter / 2)+100+xPadding) + "," + ((diameter / 2)-25+yPadding) + ")");
 
     var pack = d3.layout.pack()
     .padding(10)
