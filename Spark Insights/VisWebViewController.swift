@@ -112,6 +112,9 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         myWebView.scrollView.scrollEnabled = false;
         myWebView.scrollView.bounces = false;
         
+        let webViewScrollView = myWebView.scrollView
+        webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
+        
         return myWebView
     }
     
