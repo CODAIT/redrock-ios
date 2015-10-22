@@ -419,6 +419,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     @IBAction func headerTitleClicked(sender: AnyObject) {
+        CenterViewController.leftViewOpen = false
         delegate?.displaySearchViewController?()
     }
     
