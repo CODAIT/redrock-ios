@@ -112,9 +112,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         myWebView.scrollView.scrollEnabled = false;
         myWebView.scrollView.bounces = false;
         
-        let webViewScrollView = myWebView.scrollView
-        webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
-        
         return myWebView
     }
     
@@ -144,6 +141,13 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         default:
              break
         }
+    }
+    
+    override func onLoadingState() {
+        super.onLoadingState()
+        
+        let webViewScrollView = webView.scrollView
+        webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
     }
     
     // MARK: - WKNavigationDelegate
