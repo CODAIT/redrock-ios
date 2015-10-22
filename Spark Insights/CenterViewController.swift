@@ -799,7 +799,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         if json![key] != nil {
             label.text = self.formatNumberToDisplay(Int64(json![key].intValue))
         } else {
-            label.text = "Error"
+            label.text = ""
         }
     }
 }
