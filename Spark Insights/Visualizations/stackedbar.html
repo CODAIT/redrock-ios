@@ -24,10 +24,10 @@
             display: block;
         }
         html, body, #chart1, svg {
-            margin:  15px;
-            padding-top: 17px;
+            margin:  0px;
+            padding-top: 5px;
+            padding-left: 0px;
             height:  96%;
-            width: 98%;
         }
 
         .tick line {
@@ -93,7 +93,7 @@
         chartData = transformData(data);
 
         nv.addGraph(function() {
-            chart = nv.models.multiBarChart().showControls(false).stacked(true);
+            chart = nv.models.multiBarChart().showControls(false).stacked(true).showYAxis(false);
             chart.x(function(d,i) {
                     //return d.x
                     return i;

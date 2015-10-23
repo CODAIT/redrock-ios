@@ -66,7 +66,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
     }
     
-    // TODO THIS IS PROBABLY USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
+    // TODO THIS IS USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
     func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
         
         //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
@@ -126,25 +126,17 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         if(sentimentIsPositiveMa){
             Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
                 if error != nil {
-                    //Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
-                    //self.myDrilldown.errorDescription = error?.localizedDescription
                     return
                 }
                 self.myDrilldown.json = json
-                Log("self.myDrilldown.json = json....")
-                print(json)
             }
         }
         else{
             Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Negitive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
                 if error != nil {
-                    //Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
-                    //self.myDrilldown.errorDescription = error?.localizedDescription
                     return
                 }
                 self.myDrilldown.json = json
-                Log("self.myDrilldown.json = json....")
-                print(json)
             }
         }
     }
