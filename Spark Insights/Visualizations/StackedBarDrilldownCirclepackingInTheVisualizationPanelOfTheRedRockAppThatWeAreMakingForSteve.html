@@ -136,19 +136,22 @@ function renderChart(data, w, h){
 
     var xPadding = 0
     var yPadding = 0
-    var resizeConstant = 0.80
+    var resizeConstant = 0.82
     var canvasHeightAddition = 0
+    var canvasWidthAddition = 0
 
     if( w > 1000) // we want to pad it on the left
     {
-        xPadding = 200
-        yPadding = 10
+        xPadding = 166
+        yPadding = 1
     }
     else
     {
-        xPadding = 150
-        yPadding = 100
-        canvasHeightAddition = 100
+        xPadding = 95
+        yPadding = 50
+        canvasHeightAddition = 200
+        canvasWidthAddition = 100
+        resizeConstant = 1.00
     }
 
     w = resizeConstant * w
@@ -165,7 +168,7 @@ function renderChart(data, w, h){
     //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
 
     var svg = d3.select("body").append("svg")
-    .attr("width", canvasWidth)
+    .attr("width", canvasWidth+canvasWidthAddition)
     .attr("height", canvasHeight+canvasHeightAddition)
     .append("g")
     .attr("transform", "translate(" + ((diameter / 2)+100+xPadding) + "," + ((diameter / 2)-25+yPadding) + ")");
