@@ -120,20 +120,24 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         myDrilldown.onLoadingState()
         
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormat.dateFormat = "yyyy-MM-dd HH"
         dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
         let selectedDateAsString = dateFormat.stringFromDate(selectedDate)
+        
+        let selectedDateAsStringWithZero = "\(selectedDateAsString):00:00"
         
         //TODO this is hardcoded to be one hour!! we should change it to be modular
         let timeInterval = NSTimeInterval((Config.dateRangeIntervalForStackedbarDrilldownInSeconds))
         
         let endDateAsString = dateFormat.stringFromDate(selectedDate.dateByAddingTimeInterval(timeInterval))
         
-        Log("selectedDateAsString: \(selectedDateAsString)... endDateAsString: \(endDateAsString)")
+        let endDateAsStringWithZero = "\(endDateAsString):00:00"
+        
+        Log("selectedDateAsString: \(selectedDateAsStringWithZero)... endDateAsString: \(endDateAsStringWithZero)")
         
         // TODO: THE DATA IS HARDCODED!!!! FIX IT!!!!
-        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsString, endDatetime: endDateAsString) { (json, error) -> () in
+        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
             if error != nil {
                 Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
                 self.myDrilldown.errorDescription = error?.localizedDescription
