@@ -116,7 +116,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         invalidateTimer()
         if self.chartData.count > 0 {
-            self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
+            self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(Config.timemapTimeIntervalInSeconds, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
         }
     }
     
