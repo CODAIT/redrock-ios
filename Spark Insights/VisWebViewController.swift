@@ -120,19 +120,24 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         myDrilldown.onLoadingState()
         
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "yyyy-MM-dd HH"
+        
+        
+        //dateFormat.dateFormat = "yyyy-MM-dd HH"
+        //dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormat.dateFormat = "yyyy-MM-dd'T'HH"
+        
         dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
         let selectedDateAsString = dateFormat.stringFromDate(selectedDate)
         
-        let selectedDateAsStringWithZero = "\(selectedDateAsString):00:00"
+        let selectedDateAsStringWithZero = "\(selectedDateAsString):00:00.000Z"
         
         //TODO this is hardcoded to be one hour!! we should change it to be modular
         let timeInterval = NSTimeInterval((Config.dateRangeIntervalForStackedbarDrilldownInSeconds))
         
         let endDateAsString = dateFormat.stringFromDate(selectedDate.dateByAddingTimeInterval(timeInterval))
         
-        let endDateAsStringWithZero = "\(endDateAsString):00:00"
+        let endDateAsStringWithZero = "\(endDateAsString):00:00.000Z"
         
         Log("selectedDateAsString: \(selectedDateAsStringWithZero)... endDateAsString: \(endDateAsStringWithZero)")
         
