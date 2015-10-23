@@ -25,16 +25,24 @@
             padding-top: 17px;
             height:  96%;
         }
-    
+
         .tick line {
             opacity: 0;
         }
-    
+
     .nvd3 .nv-groups path.nv-line {
         fill: none;
         stroke-width: 0px;
     }
     
+    /*
+    #chart1 g.nv-scatter g.nv-series-0 path.nv-point
+    {
+        fill-opacity: 1;
+        stroke-opacity: 1;
+    }
+     */
+
 
     .nvd3 .nv-axis.nv-x path.domain {
   stroke-opacity: 1;
@@ -68,11 +76,12 @@
     var chartData = null;
     var chart = null;
     var toggle = true;
-    
+
     var width = 0;
     var height = 0;
-    
+
     function renderChart(data, w, h) {
+        
         width = w
         height = h
 
@@ -96,13 +105,13 @@
             chart.margin({left: 0, right:0,top:80,bottom:80});
             chart.tooltips(true);
                     chart.tooltipContent(function(key, y, e, graph) {
-                                         
+
                                          var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
-                                         
+
                                          //talkToApp(coordinates);
-                                        
+
                                          return coordinates
-                                         
+
                                          }
                                          )
             chart.xAxis
@@ -120,46 +129,33 @@
             .call(chart);
 
             nv.utils.windowResize(chart.update);
-
-            /*
-            d3.select('body')
-            .selectAll('.nv-x.nv-axis > g')
-            .selectAll('g')
-            .selectAll('text')
-            .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
-             */
-
-             /*
-             d3.select('body')
-             .selectAll('.nv-y.nv-axis > g')
-             .selectAll('g')
-             .selectAll('text')
-             .attr('transform', function(d) {return 'translate (0,0) rotate(-30 0,0)'});
-              */
-
+                    
             return chart;
         },function(){
           d3.select("#canvas").on('click',
                function(event){
-                    
+                                  
+                                  //console.log(event[0]); //pos?
+                                  //console.log(event[1]); //neg?
+
                     var coordinates = d3.mouse(this);
-                                  
+
                     showClickPoint(coordinates);
-                                  
+
                     //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
 
                     // TODO CONVERT THESE COORDINATES TO THE DATA WE NEED THEN SEND IT
 
                     //var sentiment = "positive"
                     //var date = coordinates
-                    
+
                     var ratioX = coordinates[0]/width
                     var ratioY = coordinates[1]/height
-                                  
+
                     //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
                     //talkToApp(ratioX+","+ratioY)
                     talkToApp(ratioX+"")
-                                  
+
                     //toggle = !toggle;
                     //chart.showControls(toggle);
                     //chart.showYAxis(toggle);
@@ -185,7 +181,7 @@
     }
 
     function talkToApp(coordinates){
-        
+
         //OK DO THE THING HERE!!!!!
         try {
             var ourmessage = coordinates;
@@ -193,7 +189,7 @@
         } catch(err) {
             console.log('The native context does not exist yet');
         }
-        
+
     }
 
     function transformData(data){

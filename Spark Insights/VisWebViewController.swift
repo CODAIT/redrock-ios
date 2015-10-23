@@ -32,6 +32,9 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     var dateRange: Array<String> = Array<String>()
+    var startDate: NSDate = NSDate()
+    var endDate: NSDate = NSDate()
+    var highestValue : Double = 0.0
     
     var webView: WKWebView! = nil
     
@@ -45,6 +48,8 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
     }
     
+    
+    // TODO THIS IS PROBABLY USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
     func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
         
         Log("transformDataForDisplayVisOverSentiment")
@@ -93,6 +98,16 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         //rawData.substringFromIndex(rawData)
         
+        //getPositiveAndNegativeSentimentValuesForGivenDate(selectedDate)
+        
+        // GET THE MAX VALUE VISIBLE ON SCREEN
+        // GET THE Y RATIO
+        // GET THE POS VALUE AND NEG VALUE AT THE GIVEN DATE
+        
+        // IF YOU ARE BELOW THE LOWEST VALUE, SELECT THE SENTIMENT OF THAT VALUE
+        // IF YOU ARE BETWEEN THE LOW AND HIGH VALUE, SELECT THE SENTIMENT OF THE HIGH VALUE
+        // IF YOU ARE ABOVE THE HIGH VALUE, DO NOTHING
+        
         return selectedDate
     }
     
@@ -100,7 +115,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
-        // TODO make a reference to this child
         myDrilldown = VisFactory.visualizationControllerForType(.StackedBarDrilldownCirclePacking)!
         visHolder.addVisualisationController(myDrilldown)
         myDrilldown.onLoadingState()
@@ -639,6 +653,56 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         script9+="]}]; renderChart(myData, \(viewSize.width), \(viewSize.height));"
         
         return script9
+    }
+    
+    func getPositiveAndNegativeSentimentValuesForGivenDate(givenDate: NSDate) -> (Double, Double) {
+        //change it into format for chart.... MM/dd hh
+        
+        var foundBiggerDate = false
+        
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateFormat = "YYYY MM/dd HH"
+        dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        
+        var posValue = 0.0
+        var negValue = 0.0
+
+        let dateWeAreLookingFor = dateFormat.stringFromDate(givenDate)
+        
+        Log("dateWeAreLookingFor \(dateWeAreLookingFor)")
+        
+        //Log("self.chartData")
+        //print(self.chartData)
+        
+        for r in 0..<self.chartData.count{
+            var currentDate = NSDate()
+            if(!foundBiggerDate){                
+                Log("self.chartData[r][0] \(self.chartData[r][0])")
+                
+                currentDate = dateFormat.dateFromString("2015 \(self.chartData[r][0])")!
+            }
+            if( !foundBiggerDate && currentDate.compare(givenDate) == .OrderedDescending){ //currentDate is later than givenDate
+                // found a greater date, break out
+                foundBiggerDate = true
+                Log("pos sentiment: \(chartData[r][1])")
+                Log("neg sentiment: \(chartData[r][2])")
+                posValue = (chartData[r][1] as NSString).doubleValue
+                negValue = (chartData[r][2] as NSString).doubleValue
+            }
+            else if(!foundBiggerDate && currentDate.compare(givenDate) == .OrderedAscending){ //currentDate is earlier than givenDate
+                
+            }
+            else if(!foundBiggerDate){ //dates are the same
+                foundBiggerDate = true
+                Log("pos sentiment: \(chartData[r][1])")
+                Log("neg sentiment: \(chartData[r][2])")
+                posValue = (chartData[r][1] as NSString).doubleValue
+                negValue = (chartData[r][2] as NSString).doubleValue
+            }
+        }
+        
+        return (posValue, negValue)
+        
     }
     
     func redrawStackedBarWithNewRange(lowerIndex: Int, upperIndex: Int){
