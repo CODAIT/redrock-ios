@@ -4516,7 +4516,7 @@ nv.models.line = function() {
         ;
 
     scatter
-        .pointSize(16) // default size
+        .pointSize(16) // default size //WAS 16
         .pointDomain([16,256]) //set to speed up calculation, needs to be unset if there is a custom size accessor
     ;
 

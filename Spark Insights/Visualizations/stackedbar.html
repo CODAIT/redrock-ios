@@ -9,9 +9,13 @@
 
     <style>
 
+    /* NEW STACKED BAR */
+
         *{
             -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
+
+
 
         text {
             font: 12px sans-serif;
@@ -20,24 +24,38 @@
             display: block;
         }
         html, body, #chart1, svg {
-            margin:  0px;
+            margin-top:  15px;
+            padding-top: 5px;
             padding-left: 0px;
-            padding-top: 17px;
             height:  96%;
         }
-    
+
         .tick line {
-            opacity: 0;
+            opacity: 0 !important;
         }
-    
+
+        /*
+        .tick {
+          opacity: 0 !important;
+        }
+         */
+
     .nvd3 .nv-groups path.nv-line {
         fill: none;
         stroke-width: 0px;
     }
-    
+
+    /*
+    #chart1 g.nv-scatter g.nv-series-0 path.nv-point
+    {
+        fill-opacity: 1;
+        stroke-opacity: 1;
+    }
+     */
+
 
     .nvd3 .nv-axis.nv-x path.domain {
-  stroke-opacity: 1;
+  stroke-opacity: 0;
 }
 
 .nvd3 .nv-axis path {
@@ -51,9 +69,6 @@
         fill: rgb(171, 171, 171);
         font-weight:normal !important;
  }
-    .tick {
-      opacity: 1.0 !important;
-    }
     circle {
     opacity: 0.8;
     }
@@ -68,23 +83,19 @@
     var chartData = null;
     var chart = null;
     var toggle = true;
-    
+
     var width = 0;
     var height = 0;
-    
+
     function renderChart(data, w, h) {
+
         width = w
         height = h
 
         chartData = transformData(data);
 
         nv.addGraph(function() {
-            chart = nv.models.lineChart()
-            .duration(1000)
-            .isArea(true)
-            .interpolate("basis")
-            .showYAxis(true)
-            .showLegend(true)
+            chart = nv.models.multiBarChart().showControls(false).stacked(true).showYAxis(false);
             chart.x(function(d,i) {
                     //return d.x
                     return i;
@@ -94,15 +105,19 @@
                     });
             chart.color(["#5cc3b8","#a5266d"]);
             chart.margin({left: 0, right:0,top:80,bottom:80});
+            //chart.groupSpacing(-0.001); //full bleed
             chart.tooltips(true);
+                    chart.reduceXTicks(false);
                     chart.tooltipContent(function(key, y, e, graph) {
-                                         
+
                                          var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
-                                         
-                                         //talkToApp(coordinates);
-                                        
+
+                                         talkToApp(coordinates);
+
+                                         console.log(coordinates);
+
                                          return coordinates
-                                         
+
                                          }
                                          )
             chart.xAxis
@@ -121,45 +136,35 @@
 
             nv.utils.windowResize(chart.update);
 
-            /*
-            d3.select('body')
-            .selectAll('.nv-x.nv-axis > g')
-            .selectAll('g')
-            .selectAll('text')
-            .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
-             */
-
-             /*
-             d3.select('body')
-             .selectAll('.nv-y.nv-axis > g')
-             .selectAll('g')
-             .selectAll('text')
-             .attr('transform', function(d) {return 'translate (0,0) rotate(-30 0,0)'});
-              */
-
             return chart;
         },function(){
           d3.select("#canvas").on('click',
                function(event){
-                    
+
+                                  //console.log(event[0]); //pos?
+                                  //console.log(event[1]); //neg?
+
                     var coordinates = d3.mouse(this);
-                                  
+
                     showClickPoint(coordinates);
-                                  
+
                     //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
 
                     // TODO CONVERT THESE COORDINATES TO THE DATA WE NEED THEN SEND IT
 
                     //var sentiment = "positive"
                     //var date = coordinates
-                    
+
                     var ratioX = coordinates[0]/width
                     var ratioY = coordinates[1]/height
-                                  
+
+                      if(ratioY > 0.15){
+
                     //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
                     //talkToApp(ratioX+","+ratioY)
-                    talkToApp(ratioX+"")
-                                  
+                    //talkToApp(ratioX+"")
+                      }
+
                     //toggle = !toggle;
                     //chart.showControls(toggle);
                     //chart.showYAxis(toggle);
@@ -185,7 +190,7 @@
     }
 
     function talkToApp(coordinates){
-        
+
         //OK DO THE THING HERE!!!!!
         try {
             var ourmessage = coordinates;
@@ -193,7 +198,7 @@
         } catch(err) {
             console.log('The native context does not exist yet');
         }
-        
+
     }
 
     function transformData(data){
