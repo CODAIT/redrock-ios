@@ -11,7 +11,7 @@ import WebKit
 
 // make VisWebViewController handle callbacks
 class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNavigationDelegate, WKScriptMessageHandler {
-
+    
     var mainFile: String {
         switch type! {
         case .TreeMap:
@@ -44,74 +44,61 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         if(message.name == "callbackHandler") {
             Log("JavaScript is sending a message \(message.body)")
             
-            displayVisOverSentiment(transformDataForDisplayVisOverSentiment(message.body as! String));
+            let rawData = (message.body as! String)
+            
+            displayVisOverSentiment(transformDataForDisplayVisOverSentiment(rawData), sentimentIsPositiveMa: isSentimentPositive(rawData));
         }
     }
     
+    func isSentimentPositive(rawData: String) -> Bool{
+        
+        if rawData.containsString("Positive"){
+            Log("positive sentiment detected")
+            return true
+        }
+        else if rawData.containsString("Negative"){
+            Log("Negative sentiment detected")
+            return false
+        }
+        else{
+            Log("ERROR: unsure what kind of sentiment this is in transformDataForDisplayVisOverSentiment in VisWebViewController.swift")
+            return false
+        }
+    }
     
     // TODO THIS IS PROBABLY USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
     func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
         
+        //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
+        
         Log("transformDataForDisplayVisOverSentiment")
         Log(rawData)
         
-        let doubleValue : Double = NSString(string: rawData).doubleValue
-
-        //TODO YEAR SHOULD BE INCLUDED IN ORIGINAL DATE NOT HARDCODED!
+        //rawData.substringFromIndex(advance(rawData.rangeofString("<p>")))
+        
+        //remove <h3>Positive Sentiment</h3><p>
+        // then remove </p>
+        
+        let nsstringDate :NSString = rawData
+        
+        var dateFromChart = nsstringDate.substringFromIndex(30) //isolate the date
+        dateFromChart = String(dateFromChart.characters.dropLast(4)) //isolate the date
+        
+        //Log("dateFromChart \(dateFromChart)")
         
         let dateFormat = NSDateFormatter()
         dateFormat.dateFormat = "YYYY MM/dd HH"
         dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        //dateFormat.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        let startDate : NSDate = dateFormat.dateFromString("2015 "+dateRange[0].lowercaseString)! //absolute start date
-        let endDate : NSDate = dateFormat.dateFromString("2015 "+dateRange[dateRange.count-1].lowercaseString)! //absolute final date
         
-        let denom = (endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970)
+        let myDate = dateFormat.dateFromString("2015 "+dateFromChart)!
         
-        let selectedDateAsTimeIntervalSinceStartDate = doubleValue*denom
+        //Log("myDate: \(myDate)")
         
-        let selectedDateAsTimeIntervalSince1970 = startDate.timeIntervalSince1970 + selectedDateAsTimeIntervalSinceStartDate
+        return myDate
         
-        let selectedDate = NSDate(timeIntervalSince1970: NSTimeInterval(selectedDateAsTimeIntervalSince1970))
-        
-        //Log("startDate... \(startDate)... endDate... \(endDate)...")
-        //Log("startDate.timeIntervalSince1970... \(startDate.timeIntervalSince1970)... endDate.timeIntervalSince1970... \(endDate.timeIntervalSince1970)...")
-        //Log("denom... \(denom)...")
-        //Log("selectedDateAsTimeIntervalSinceStartDate... \(selectedDateAsTimeIntervalSinceStartDate)")
-        //Log("selectedDateAsTimeIntervalSince1970... \(selectedDateAsTimeIntervalSince1970)")
-        //Log("the selected date is approximately... \(selectedDate)")
-        
-        //Log("xRatio: \(doubleValue).... dateRange[0].lowercaseString: \(dateRange[0].lowercaseString).... dateRange[dateRange.count-1].lowercaseString: \(dateRange[dateRange.count-1].lowercaseString)")
-        
-        // convert the doubleValue into a date with a range
-                
-        /*
-        if rawData.containsString("Positive"){
-            Log("positive sentiment detected")
-        }
-        else if rawData.containsString("Negative"){
-            Log("Negative sentiment detected")
-        }
-        else{
-            Log("ERROR: unsure what kind of sentiment this is in transformDataForDisplayVisOverSentiment in VisWebViewController.swift")
-        }*/
-        
-        //rawData.substringFromIndex(rawData)
-        
-        //getPositiveAndNegativeSentimentValuesForGivenDate(selectedDate)
-        
-        // GET THE MAX VALUE VISIBLE ON SCREEN
-        // GET THE Y RATIO
-        // GET THE POS VALUE AND NEG VALUE AT THE GIVEN DATE
-        
-        // IF YOU ARE BELOW THE LOWEST VALUE, SELECT THE SENTIMENT OF THAT VALUE
-        // IF YOU ARE BETWEEN THE LOW AND HIGH VALUE, SELECT THE SENTIMENT OF THE HIGH VALUE
-        // IF YOU ARE ABOVE THE HIGH VALUE, DO NOTHING
-        
-        return selectedDate
     }
     
-    func displayVisOverSentiment(selectedDate: NSDate) {
+    func displayVisOverSentiment(selectedDate: NSDate, sentimentIsPositiveMa: Bool) {
         let visHolder = UIStoryboard.visHolderViewController()!
         self.addVisHolderController(visHolder)
         
@@ -120,7 +107,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         myDrilldown.onLoadingState()
         
         let dateFormat = NSDateFormatter()
-        
         
         //dateFormat.dateFormat = "yyyy-MM-dd HH"
         //dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -139,18 +125,31 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let endDateAsStringWithZero = "\(endDateAsString):00:00.000Z"
         
-        Log("selectedDateAsString: \(selectedDateAsStringWithZero)... endDateAsString: \(endDateAsStringWithZero)")
         
-        // TODO: THE DATA IS HARDCODED!!!! FIX IT!!!!
-        Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
-            if error != nil {
-                Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
-                self.myDrilldown.errorDescription = error?.localizedDescription
-                return
+        
+        if(sentimentIsPositiveMa){
+            Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
+                if error != nil {
+                    //Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
+                    //self.myDrilldown.errorDescription = error?.localizedDescription
+                    return
+                }
+                self.myDrilldown.json = json
+                Log("self.myDrilldown.json = json....")
+                print(json)
             }
-            self.myDrilldown.json = json
-            //Log("self.myDrilldown.json = json....")
-            //print(json)
+        }
+        else{
+            Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Negitive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
+                if error != nil {
+                    //Log("ERROR in the Network.sharedInstance.sentimentAnalysisRequest!")
+                    //self.myDrilldown.errorDescription = error?.localizedDescription
+                    return
+                }
+                self.myDrilldown.json = json
+                Log("self.myDrilldown.json = json....")
+                print(json)
+            }
         }
     }
     
@@ -226,7 +225,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         case .ForceGraph :
             webView.evaluateJavaScript("startAnimation();", completionHandler: nil)
         default:
-             break
+            break
         }
     }
     
@@ -244,31 +243,31 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     override func transformData() {
-            let delay = 0.2 * Double(NSEC_PER_SEC)
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue()) {
-                
-                guard self.json != nil else {
-                    self.errorDescription = (self.errorDescription != nil) ? self.errorDescription : Config.serverErrorMessage
-                    return
-                }
-                
-                switch self.type! {
-                case .TreeMap:
-                    self.transformDataForTreemapping()
-                case .CirclePacking:
-                    self.transformDataForCirclepacking()
-                case .ForceGraph:
-                    self.transformDataForForcegraph()
-                case .StackedBar:
-                    self.transformDataForStackedbar()
-                case .SidewaysBar:
-                    self.transformDataForSidewaysbar()
-                case .StackedBarDrilldownCirclePacking:
-                    self.transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve()
-                default:
-                    return
-                }
+        let delay = 0.2 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            
+            guard self.json != nil else {
+                self.errorDescription = (self.errorDescription != nil) ? self.errorDescription : Config.serverErrorMessage
+                return
+            }
+            
+            switch self.type! {
+            case .TreeMap:
+                self.transformDataForTreemapping()
+            case .CirclePacking:
+                self.transformDataForCirclepacking()
+            case .ForceGraph:
+                self.transformDataForForcegraph()
+            case .StackedBar:
+                self.transformDataForStackedbar()
+            case .SidewaysBar:
+                self.transformDataForSidewaysbar()
+            case .StackedBarDrilldownCirclePacking:
+                self.transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve()
+            default:
+                return
+            }
         }
     }
     
@@ -393,7 +392,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         return script9
     }
-
+    
     func transformDataForSidewaysbar(){
         
         //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
@@ -474,9 +473,9 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             errorDescription = Config.serverErrorMessage
         }
     }
-
- 
-
+    
+    
+    
     func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
         
         //Log("transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve")
@@ -536,21 +535,21 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         
-            let numberOfColumns = 3        // number of columns
-            let containerName = "topics" // name of container for data
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if(data != nil){
-                        self.chartData = data!
-                        loadData()
-                    }
-                    else{
-                        self.errorDescription = Config.serverErrorMessage
-                    }
-                })
+        let numberOfColumns = 3        // number of columns
+        let containerName = "topics" // name of container for data
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if(data != nil){
+                    self.chartData = data!
+                    loadData()
+                }
+                else{
+                    self.errorDescription = Config.serverErrorMessage
+                }
             })
+        })
         //}
         
     }
@@ -594,7 +593,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         var contentJson = json
         if contentJson != nil
         {
-
+            
             contentJson = json![containerName]
             
             if contentJson != nil
@@ -626,7 +625,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     func makeScriptForStackedBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
         let viewSize = self.view.bounds.size
-
+        
         for r in firstIndex..<self.chartData.count{
             if (self.dateRange.indexOf(self.chartData[r][0]) == nil)
             {
@@ -675,7 +674,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         var posValue = 0.0
         var negValue = 0.0
-
+        
         let dateWeAreLookingFor = dateFormat.stringFromDate(givenDate)
         
         Log("dateWeAreLookingFor \(dateWeAreLookingFor)")
@@ -685,7 +684,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         for r in 0..<self.chartData.count{
             var currentDate = NSDate()
-            if(!foundBiggerDate){                
+            if(!foundBiggerDate){
                 Log("self.chartData[r][0] \(self.chartData[r][0])")
                 
                 currentDate = dateFormat.dateFromString("2015 \(self.chartData[r][0])")!

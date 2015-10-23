@@ -88,12 +88,7 @@
         chartData = transformData(data);
 
         nv.addGraph(function() {
-            chart = nv.models.lineChart()
-            .duration(1000)
-            .isArea(true)
-            .interpolate("basis")
-            .showYAxis(true)
-            .showLegend(true)
+            chart = nv.models.multiBarChart().showControls(false).stacked(true);
             chart.x(function(d,i) {
                     //return d.x
                     return i;
@@ -108,8 +103,10 @@
 
                                          var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
 
-                                         //talkToApp(coordinates);
+                                         talkToApp(coordinates);
 
+                                         console.log(coordinates);
+                                         
                                          return coordinates
 
                                          }
@@ -156,7 +153,7 @@
                                   
                     //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
                     //talkToApp(ratioX+","+ratioY)
-                    talkToApp(ratioX+"")
+                    //talkToApp(ratioX+"")
                       }
 
                     //toggle = !toggle;

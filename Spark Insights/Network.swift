@@ -105,7 +105,7 @@ class Network
         switch sentiment {
         case .Positive:
             sentimentString = "1"
-        case .Negitive:
+        case .Negitive: //TODO Negative is spelled wrong
             sentimentString = "0"
         }
         
