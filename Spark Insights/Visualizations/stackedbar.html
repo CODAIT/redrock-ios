@@ -9,9 +9,13 @@
 
     <style>
 
+    /* NEW STACKED BAR */
+
         *{
             -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
+
+
 
         text {
             font: 12px sans-serif;
@@ -20,21 +24,25 @@
             display: block;
         }
         html, body, #chart1, svg {
-            margin:  0px;
-            padding-left: 0px;
+            margin:  15px;
             padding-top: 17px;
             height:  96%;
+            width: 98%;
         }
 
         .tick line {
             opacity: 0;
         }
 
+        .tick {
+          opacity: 0 !important;
+        }
+
     .nvd3 .nv-groups path.nv-line {
         fill: none;
         stroke-width: 0px;
     }
-    
+
     /*
     #chart1 g.nv-scatter g.nv-series-0 path.nv-point
     {
@@ -45,7 +53,7 @@
 
 
     .nvd3 .nv-axis.nv-x path.domain {
-  stroke-opacity: 1;
+  stroke-opacity: 0;
 }
 
 .nvd3 .nv-axis path {
@@ -59,9 +67,6 @@
         fill: rgb(171, 171, 171);
         font-weight:normal !important;
  }
-    .tick {
-      opacity: 1.0 !important;
-    }
     circle {
     opacity: 0.8;
     }
@@ -81,7 +86,7 @@
     var height = 0;
 
     function renderChart(data, w, h) {
-        
+
         width = w
         height = h
 
@@ -106,7 +111,7 @@
                                          talkToApp(coordinates);
 
                                          console.log(coordinates);
-                                         
+
                                          return coordinates
 
                                          }
@@ -126,12 +131,12 @@
             .call(chart);
 
             nv.utils.windowResize(chart.update);
-                    
+
             return chart;
         },function(){
           d3.select("#canvas").on('click',
                function(event){
-                                  
+
                                   //console.log(event[0]); //pos?
                                   //console.log(event[1]); //neg?
 
@@ -150,7 +155,7 @@
                     var ratioY = coordinates[1]/height
 
                       if(ratioY > 0.15){
-                                  
+
                     //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
                     //talkToApp(ratioX+","+ratioY)
                     //talkToApp(ratioX+"")

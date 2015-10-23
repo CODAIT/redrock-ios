@@ -108,8 +108,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let dateFormat = NSDateFormatter()
         
-        //dateFormat.dateFormat = "yyyy-MM-dd HH"
-        //dateFormat.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormat.dateFormat = "yyyy-MM-dd'T'HH"
         
         dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -124,8 +122,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         let endDateAsString = dateFormat.stringFromDate(selectedDate.dateByAddingTimeInterval(timeInterval))
         
         let endDateAsStringWithZero = "\(endDateAsString):00:00.000Z"
-        
-        
         
         if(sentimentIsPositiveMa){
             Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Positive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
