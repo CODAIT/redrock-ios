@@ -69,6 +69,9 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     // TODO THIS IS USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
     func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
         
+        
+        //TODO if Steve wants the "inaccurate click with flowy chart" back then we need to revert back into the code approximated the datetime based on the click coordinate
+        
         //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
         
         Log("transformDataForDisplayVisOverSentiment")

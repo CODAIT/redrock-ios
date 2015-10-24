@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="nv.d3.css" rel="stylesheet" type="text/css">
+    <script src="d3.min.js" charset="utf-8"></script>
+    <script src="nv.d3.js"></script>
+    <script src="stream_layers.js"></script>
+
+    <style>
+
+    /* STACKED BAR FULLBLEED CONTINOUS FLOWY CHART VERSION */
+    /* it's hard to click on the tiny circles version */
+
+        *{
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+
+        text {
+            font: 12px sans-serif;
+        }
+        svg {
+            display: block;
+        }
+        html, body, #chart1, svg {
+            margin:  0px;
+            padding-left: 0px;
+            padding-top: 17px;
+            height:  96%;
+        }
+
+        .tick line {
+            opacity: 0;
+        }
+
+    .nvd3 .nv-groups path.nv-line {
+        fill: none;
+        stroke-width: 0px;
+    }
+
+
+    .nvd3 .nv-axis.nv-x path.domain {
+  stroke-opacity: 1;
+}
+
+.nvd3 .nv-axis path {
+       fill: none;
+    stroke: rgba(0, 0, 0, 0.32);
+    stroke-opacity: .75;
+    shape-rendering: crispEdges;
+ }
+
+ text{
+        fill: rgb(171, 171, 171);
+        font-weight:normal !important;
+ }
+    .tick {
+      opacity: 1.0 !important;
+    }
+    circle {
+    opacity: 0.8;
+    }
+    </style>
+</head>
+<body>
+<div id="chart1" class='with-3d-shadow with-transitions'>
+    <svg id="canvas"></svg>
+</div>
+<script>
+
+    var chartData = null;
+    var chart = null;
+    var toggle = true;
+    function renderChart(data) {
+
+        chartData = transformData(data);
+
+        nv.addGraph(function() {
+            chart = nv.models.lineChart()
+            .duration(1000)
+            .isArea(true)
+            .interpolate("basis")
+            .showYAxis(true)
+            .showLegend(true)
+            chart.x(function(d,i) {
+                    //return d.x
+                    return i;
+                    });
+            chart.y(function(d) {
+                    return d.y
+                    });
+            chart.color(["#5cc3b8","#a5266d"]);
+            chart.margin({left: 0, right:0,top:80,bottom:80});
+            chart.tooltips(true);
+                    chart.tooltipContent(function(key, y, e, graph) {
+
+                                         var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
+
+                                         talkToApp(coordinates);
+
+                                         return coordinates
+
+                                         }
+                                         )
+            chart.xAxis
+            .axisLabel("")
+            .tickFormat(function(d, i) {
+                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length); //was length-3 to clip some text
+            });
+            //chart.xAxis.rotateLabels(-30);
+            chart.yAxis
+            //.axisLabel("# of Tweets")
+            .tickFormat(d3.format(',.0d'));
+
+            d3.select('#chart1 svg')
+            .datum(chartData)
+            .call(chart);
+
+            nv.utils.windowResize(chart.update);
+
+            /*
+            d3.select('body')
+            .selectAll('.nv-x.nv-axis > g')
+            .selectAll('g')
+            .selectAll('text')
+            .attr('transform', function(d) {return 'translate (8,7) rotate(-30 0,0)'});
+             */
+
+             /*
+             d3.select('body')
+             .selectAll('.nv-y.nv-axis > g')
+             .selectAll('g')
+             .selectAll('text')
+             .attr('transform', function(d) {return 'translate (0,0) rotate(-30 0,0)'});
+              */
+
+            return chart;
+        },function(){
+          d3.select("#canvas").on('click',
+               function(event){
+
+                    var coordinates = d3.mouse(this);
+
+                    showClickPoint(coordinates);
+
+                    //toggle = !toggle;
+                    //chart.showControls(toggle);
+                    //chart.showYAxis(toggle);
+                    //chart.showLegend(toggle);
+                    chart.update();
+           });
+      });
+
+    }
+
+    function showClickPoint(cords){
+        var svg = d3.select("#canvas");
+        svg.append("circle")
+                .attr("class", "cursor")
+                .attr("r", 0)
+                .attr("fill","#43ACD5")
+                .attr("transform", "translate(" + cords[0]+","+cords[1] + ")")
+                .transition()
+                .attr("r", 20)
+                .transition()
+                .attr("r", 0)
+                .remove();
+    }
+
+    function talkToApp(coordinates){
+
+        //OK DO THE THING HERE!!!!!
+        try {
+            var ourmessage = "This is the message coming from stackedbar.html from the tooltip. Barbara, Jon, and Rosstin are the best. Passed coordinates are... "+coordinates;
+            webkit.messageHandlers.callbackHandler.postMessage(ourmessage);
+        } catch(err) {
+            console.log('The native context does not exist yet');
+        }
+
+    }
+
+    function transformData(data){
+        //Copy Object
+        var newData = data;
+        newData[0].key = "Positive Sentiment"
+        var newObj = clone(data[0]);
+        newObj.key = "Negative Sentiment";
+
+        newObj.values = newObj.values.map(function(itm,i,a){
+            return {
+            x: itm.x,
+            y: +itm.z
+          };
+        });
+
+        newData.push(newObj);
+        return newData;
+    }
+
+    function clone(obj) {
+        if (null == obj || "object" != typeof obj) return obj;
+        var copy = obj.constructor();
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+        }
+        return copy;
+    }
+
+    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "11/20", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}]);
+
+    </script>
+</body>
+</html>
