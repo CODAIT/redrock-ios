@@ -90,7 +90,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         //Log("dateFromChart \(dateFromChart)")
         
         let dateFormat = NSDateFormatter()
-        dateFormat.dateFormat = "YYYY MM/dd HH"
+        dateFormat.dateFormat = "YYYY MM/dd"
         dateFormat.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
         let myDate = dateFormat.dateFromString("2015 "+dateFromChart)!

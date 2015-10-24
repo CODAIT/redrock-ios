@@ -251,7 +251,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         }
         
         let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = "yyyy MM/dd HH"
+        dateStringFormatter.dateFormat = "yyyy MM/dd"
         dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
         // Aug 10 07
