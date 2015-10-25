@@ -220,11 +220,11 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
     }
     
-    override func onLoadingState() {
-        super.onLoadingState()
-        
+    override func onSuccessState() {
         let webViewScrollView = webView.scrollView
         webViewScrollView.zoomScale = webViewScrollView.minimumZoomScale
+        
+        super.onSuccessState()
     }
     
     // MARK: - WKNavigationDelegate
