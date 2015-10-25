@@ -15,6 +15,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     var indexOfLastDate = 0
     var circleResizeConstant : Double = 1.0 //this will change from this value, just a default value
     var timemapIsPlaying = true
+    var timemapDataIsInvalid = false
     var mapView: TimeMapView!
     
     override func viewDidLoad() {
@@ -55,6 +56,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     }
 
     override func onDataSet() {
+        //Log("onDataSet")
         onLoadingState()
         
         let numberOfColumns = 3        // number of columns
@@ -115,8 +117,15 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         self.timemapIsPlaying = true
         
         invalidateTimer()
-        if self.chartData.count > 0 {
+        
+        //Log("in startTimemap... chartData...")
+        //print(self.chartData)
+        
+        if self.chartData.count > 1 && !timemapDataIsInvalid {
             self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(Config.timemapTimeIntervalInSeconds, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
+        }
+        else{
+            Log("timemapdata is not greater than 1")
         }
     }
     
@@ -151,6 +160,9 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     }
     
     func transformDataForTimemapIOS(){
+        //Log("transformDataForTimemapIOS")
+        
+        timemapDataIsInvalid = false
         
         var mapVerticalScaleConstant = 1.0
         if(CenterViewController.leftViewOpen){ //small
@@ -170,13 +182,31 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         {
             biggestValue = 0
             for r in 0..<self.chartData.count{
-                
                 let value = self.chartData[r][2]
                 if(Double(value) > biggestValue){
                     biggestValue = Double(value)!
                 }
             }
         }
+        
+        /*
+        var numberOfDistinctDates = 0
+        // find the number of distinct dates in the array
+        if self.chartData.count <= 1
+        {
+            numberOfDistinctDates = self.chartData.count
+        }
+        else{
+            var set = NSMutableSet()
+        
+            for r in 0..<self.chartData.count{
+                set.addObject(self.chartData[r][0])
+            }
+            
+            numberOfDistinctDates = set.count
+        }
+        */
+        
         
         circleResizeConstant = Config.maxCircleSize * mapVerticalScaleConstant / biggestValue //size of the biggest possible circle
         
@@ -230,7 +260,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         var currentDate :String = "";
         var i = indexOfLastDate;
         
-        while( currentDate == lastDate){ // and you're not at the end
+        while( currentDate == lastDate && !timemapDataIsInvalid){ // and you're not at the end
             
             var radius : CGFloat = 0.0
             
@@ -246,37 +276,45 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             if( i >= chartData.count ){
                 //Log("Reached the end of timemap data.... it's time to loop.")
                 i = 0
+                currentDate = chartData[i][0]
+                if lastDate == currentDate {
+                    //Log("this dataset doesn't have more than one date!")
+                    //break out
+                    timemapDataIsInvalid = true
+                }
             }
             currentDate = chartData[i][0]
         }
         
-        let dateStringFormatter = NSDateFormatter()
-        dateStringFormatter.dateFormat = "yyyy MM/dd"
-        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        if(!timemapDataIsInvalid){
+            let dateStringFormatter = NSDateFormatter()
+            dateStringFormatter.dateFormat = "yyyy MM/dd"
+            dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+            
+            // Aug 10 07
+            // TODO playing with fire, as soon as the year rolls over this breaks
+            // the dates from backend need to be explicit!!
+            let firstDateString = "2015 "+chartData[0][0]
+            let finalDateString = "2015 "+chartData[chartData.count-1][0]
+            let lastDateString = "2015 "+lastDate
+            
+            let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
+            let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
+            let lastDateForMath = dateStringFormatter.dateFromString(lastDateString)
+            
+            //Log("firstDateForMath... \(firstDateForMath)")
+            //Log("finalDateForMath... \(finalDateForMath)")
+            //Log("lastDateForMath... \(lastDateForMath)")
         
-        // Aug 10 07
-        // TODO playing with fire, as soon as the year rolls over this breaks
-        // the dates from backend need to be explicit!!
-        let firstDateString = "2015 "+chartData[0][0]
-        let finalDateString = "2015 "+chartData[chartData.count-1][0]
-        let lastDateString = "2015 "+lastDate
-        
-        let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
-        let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
-        let lastDateForMath = dateStringFormatter.dateFromString(lastDateString)
-        
-        //Log("firstDateForMath... \(firstDateForMath)")
-        //Log("finalDateForMath... \(finalDateForMath)")
-        //Log("lastDateForMath... \(lastDateForMath)")
-        
-        let playBarViewControllerProgress = ((lastDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)/((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)
-        
-        self.playBarController?.progress = Float(playBarViewControllerProgress)*100
-        
-        //Log("playBarViewControllerProgress... \(playBarViewControllerProgress)")
+            let playBarViewControllerProgress = ((lastDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)/((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)
+            
+            self.playBarController?.progress = Float(playBarViewControllerProgress)*100
+            //Log("playBarViewControllerProgress... \(playBarViewControllerProgress)")
+        }
         
         indexOfLastDate = i
         self.view.setNeedsDisplay()
+        //Log("end of tickTimemap")
     }
 
 }
