@@ -747,8 +747,8 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         let layer = UIApplication.sharedApplication().keyWindow!.layer
         let scale = UIScreen.mainScreen().scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+        UIApplication.sharedApplication().keyWindow?.drawViewHierarchyInRect(layer.frame, afterScreenUpdates: true)
         
-        layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
