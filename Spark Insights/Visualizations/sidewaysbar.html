@@ -141,9 +141,9 @@
         function transformData(data){
             //Copy Object
             var newData = data;
-            newData[0].key = "Positive Sentiment"
+            newData[0].key = "Count"
             var newObj = clone(data[0]);
-            newObj.key = "Negative Sentiment";
+            newObj.key = "Negative";
             
             newObj.values = newObj.values.map(function(itm,i,a){
                                               return {

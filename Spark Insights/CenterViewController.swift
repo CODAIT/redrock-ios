@@ -32,7 +32,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             case .Historic:
                 self.loadDataFromServer()
             case .Live:
-                startNetworkTimer() // TODO: Start live connection
+                startNetworkTimer()
                 //print("Live: \(searchText)")
             }
         }
