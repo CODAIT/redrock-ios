@@ -163,7 +163,8 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         //Log("transformDataForTimemapIOS")
         
         timemapDataIsInvalid = false
-        
+        indexOfLastDate = 0
+
         var mapVerticalScaleConstant = 1.0
         if(CenterViewController.leftViewOpen){ //small
             mapView.frame.origin.y = CGFloat(Config.smallscreenMapTopPadding)
@@ -178,7 +179,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         //TODO only do this once
         var biggestValue = 0.0
-        if self.chartData.count > 0
+        if self.chartData.count > 1
         {
             biggestValue = 0
             for r in 0..<self.chartData.count{
@@ -189,30 +190,8 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             }
         }
         
-        /*
-        var numberOfDistinctDates = 0
-        // find the number of distinct dates in the array
-        if self.chartData.count <= 1
-        {
-            numberOfDistinctDates = self.chartData.count
-        }
-        else{
-            var set = NSMutableSet()
-        
-            for r in 0..<self.chartData.count{
-                set.addObject(self.chartData[r][0])
-            }
-            
-            numberOfDistinctDates = set.count
-        }
-        */
-        
         
         circleResizeConstant = Config.maxCircleSize * mapVerticalScaleConstant / biggestValue //size of the biggest possible circle
-        
-        //Log("map size in transformDataForTimemapIOS... scrollViewWidth.. \(scrollViewWidth),  scrollViewHeight.. \(scrollViewHeight)");
-        //let filePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryData", ofType: "plist")
-        //let properties = NSDictionary(contentsOfFile: filePath!)
         
         let robinsonProperties = NSDictionary(contentsOfFile: NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/countrypositions5", ofType: "plist")!)
         
