@@ -110,7 +110,7 @@ class Network
         }
         
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = encode.include
         parameters["termsExclude"] = encode.exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -198,7 +198,7 @@ class Network
     private func executeFullRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -209,7 +209,7 @@ class Network
     private func executeTweetRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -220,7 +220,7 @@ class Network
     private func executeSentimentRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverSentimentPath, paremeters: parameters)
@@ -230,7 +230,7 @@ class Network
     private func executeLocationRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverLocationPath, paremeters: parameters)
@@ -240,7 +240,7 @@ class Network
     private func executeProfessionRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverProfessionPath, paremeters: parameters)
@@ -250,7 +250,7 @@ class Network
     private func executeWordDistanceRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.wordDistanceTopParameter
@@ -261,7 +261,7 @@ class Network
     private func executeWordClusterRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["cluster"] = Config.wordClusterClusterParameter
