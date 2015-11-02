@@ -81,7 +81,7 @@ class Network
         let encode = encodeIncludExcludeFromString(searchText)
         
         var parameters = Dictionary<String,String>()
-        parameters["user"] = "ssdemo"
+        parameters["user"] = Config.userName
         parameters["termsInclude"] = encode.include
         parameters["termsExclude"] = encode.exclude
         parameters["batchSize"] = Config.liveBatchSize
