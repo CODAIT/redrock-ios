@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
             displayContainerViewController(searchViewController!, searchText: "")
         }
         
-        /* //TODO: this note seems to be out-of-date
+        /*
         NOTE: Copying Visualisations folder to '/tmp/www' to work around an issue with
         loading the files from the bundle. Without this workaround WKNetworkDelegate methods
         will not be called and we will get the following error "Could not create a sandbox extension for /".
