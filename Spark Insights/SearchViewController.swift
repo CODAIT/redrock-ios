@@ -31,6 +31,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var topImageView: UIImageView!
     @IBOutlet weak var searchButtonView: UIView!
     @IBOutlet weak var liveButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
     
     private var recalculateConstrainstsForSearchView = true
     
@@ -67,6 +68,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             topImageView.startAnimating()
         }
         liveButton.setTitle("Live \(Config.liveSearches[Config.liveCurrentSearchIndex])", forState: UIControlState.Normal)
+        loginButton.setTitle("Fakename@Fakeemail.com", forState: UIControlState.Normal)
     }
     
     // MARK: - Reset UI
@@ -213,6 +215,11 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         Config.appState = .Live
         delegate?.displayContainerViewController?(self, searchText: Config.liveSearches[Config.liveCurrentSearchIndex])
     }
+    
+    @IBAction func loginClicked(sender: UIButton) {
+        Log("loginClicked");
+    }
+
     
     /* Find at least one include term*/
     func checkIncludeTerms(searchTerms: String) -> Bool

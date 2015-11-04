@@ -202,6 +202,15 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         
         self.presentViewController(controller!, animated: true, completion: nil)
     }
+
+    @IBAction func showFeedbackView(sender: UIButton) {
+        let mailComposeViewController = feedbackMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.presentViewController(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
     
     // MARK: - PlayBarViewControllerDelegate
     
@@ -742,6 +751,14 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         mailComposerVC.addAttachmentData(UIImageJPEGRepresentation(getScreenShot(), 1)!, mimeType: "image/jpeg", fileName: "IBMSparkInsightScreenShot.jpeg")
         return mailComposerVC
     }
+    
+    func feedbackMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        mailComposerVC.setSubject("IBM RedRock Feedback")
+        return mailComposerVC
+    }
+
     
     func getScreenShot() -> UIImage {
         let layer = UIApplication.sharedApplication().keyWindow!.layer
