@@ -80,11 +80,23 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func showLoginAlertWithCancelButton(){
+        let alert = buildLoginAlert()
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     // TODO make an alert that forces the user to login
     // They can enter a valid email address
     // or.... they can force quit the app
     func showLoginAlert(){
-        Log("showLoginAlert")
+        let alert = buildLoginAlert()
+        
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func buildLoginAlert() -> UIAlertController{
         let alert = UIAlertController(title: Config.loginAlertTitle, message: Config.loginAlertMessage, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
@@ -98,8 +110,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             self.setLoginText()
         }))
         
-        Log("self.presentViewController(alert, animated: true, completion: nil)")
-        self.presentViewController(alert, animated: true, completion: nil)
+        return alert
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -114,10 +125,16 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     func setLoginText(){
         if let userName = NSUserDefaults.standardUserDefaults().stringForKey(Config.loginKeyForNSUserDefaults){
-            loginButton.setTitle(" \(userName) ", forState: UIControlState.Normal)
+            let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
+            if userName.stringByTrimmingCharactersInSet(whitespaceSet) != "" {
+                loginButton.setTitle(" \(userName) ", forState: UIControlState.Normal)
+            }
+            else{
+                loginButton.setTitle(Config.loginPleaseLogin, forState: UIControlState.Normal)
+            }
         }
         else{
-            loginButton.setTitle(" Please login ", forState: UIControlState.Normal)
+            loginButton.setTitle(Config.loginPleaseLogin, forState: UIControlState.Normal)
         }
     }
     
@@ -267,7 +284,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginClicked(sender: UIButton) {
         //Log("loginClicked");
-        showLoginAlert()
+        showLoginAlertWithCancelButton()
     }
 
     /* Find at least one include term*/
