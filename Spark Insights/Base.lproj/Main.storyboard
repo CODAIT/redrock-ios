@@ -941,7 +941,7 @@
                                                 <state key="normal" title="Feedback" image="RR2.0_Feedback_Blue">
                                                     <color key="titleColor" red="0.10980392160000001" green="0.21176470589999999" blue="0.28235294119999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
-                                                <state key="highlighted" image="RR2.0_Information_WHITE">
+                                                <state key="highlighted" image="RR2.0_Feedback_White">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <variation key="default">
@@ -1849,6 +1849,7 @@
         <image name="RR2.0_Close_Blue" width="15" height="15"/>
         <image name="RR2.0_DownArrow_Blue" width="33" height="10"/>
         <image name="RR2.0_Feedback_Blue" width="21" height="21"/>
+        <image name="RR2.0_Feedback_White" width="21" height="21"/>
         <image name="RR2.0_Forward_LightBlue" width="21" height="21"/>
         <image name="RR2.0_Forward_WHITE" width="21" height="21"/>
         <image name="RR2.0_Information_Blue" width="21" height="21"/>

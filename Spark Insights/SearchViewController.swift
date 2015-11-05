@@ -92,7 +92,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
-            //Log("Text field: \(textField.text)")
+            
+            NSUserDefaults.standardUserDefaults().setValue(textField.text, forKey: Config.loginKeyForNSUserDefaults)
+            
+            self.setLoginText()
         }))
         
         Log("self.presentViewController(alert, animated: true, completion: nil)")
@@ -105,7 +108,17 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             topImageView.startAnimating()
         }
         liveButton.setTitle("Live \(Config.liveSearches[Config.liveCurrentSearchIndex])", forState: UIControlState.Normal)
-        loginButton.setTitle("Fakename@Fakeemail.com", forState: UIControlState.Normal)
+        
+        setLoginText()
+    }
+    
+    func setLoginText(){
+        if let userName = NSUserDefaults.standardUserDefaults().stringForKey(Config.loginKeyForNSUserDefaults){
+            loginButton.setTitle(" \(userName) ", forState: UIControlState.Normal)
+        }
+        else{
+            loginButton.setTitle(" Please login ", forState: UIControlState.Normal)
+        }
     }
     
     // MARK: - Reset UI
@@ -212,7 +225,6 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
 
     }
 
-    
     func searchClicked(gesture: UIGestureRecognizer?) {
         var searchText = self.textField.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         searchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -257,7 +269,6 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         Log("loginClicked");
     }
 
-    
     /* Find at least one include term*/
     func checkIncludeTerms(searchTerms: String) -> Bool
     {

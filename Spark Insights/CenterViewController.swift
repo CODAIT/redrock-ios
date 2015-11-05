@@ -756,7 +756,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self
         mailComposerVC.setSubject("IBM RedRock Feedback")
-        mailComposerVC.setToRecipients(["sbeier@us.ibm.com"])
+        mailComposerVC.setToRecipients(["redrock@us.ibm.com"])
         
         return mailComposerVC
     }
