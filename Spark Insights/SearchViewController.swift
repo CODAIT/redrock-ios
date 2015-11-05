@@ -60,6 +60,43 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         searchHolderTopConstraintInitial = self.searchHolderTopConstraint.constant
         searchHolderBottomConstraintInitial = self.searchHolderBottomConstraint.constant
         appTitleTopConstraintInitial = self.appTitleTopConstraint.constant
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        checkIfUserHasLoggedIn()
+    }
+    
+    func checkIfUserHasLoggedIn(){
+        //TODO COMPLAIN THAT USER HAS NOT LOGGED IN
+        if let userName = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults){
+            Log("Found a username!! \(userName)")
+        }
+        else{
+            Log("NO USERNAME!!! COMPLAIN!!!!!")
+            showLoginAlert()
+        }
+    }
+    
+    // TODO make an alert that forces the user to login
+    // They can enter a valid email address
+    // or.... they can force quit the app
+    func showLoginAlert(){
+        Log("showLoginAlert")
+        let alert = UIAlertController(title: Config.loginAlertTitle, message: Config.loginAlertMessage, preferredStyle: .Alert)
+        
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.text = Config.loginDefaultText})
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            //Log("Text field: \(textField.text)")
+        }))
+        
+        Log("self.presentViewController(alert, animated: true, completion: nil)")
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
