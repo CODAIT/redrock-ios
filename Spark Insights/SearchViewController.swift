@@ -266,7 +266,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func loginClicked(sender: UIButton) {
-        Log("loginClicked");
+        //Log("loginClicked");
+        showLoginAlert()
     }
 
     /* Find at least one include term*/
