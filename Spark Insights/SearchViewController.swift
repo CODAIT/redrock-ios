@@ -71,7 +71,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     func checkIfUserHasLoggedIn(){
         //TODO COMPLAIN THAT USER HAS NOT LOGGED IN
-        if let userName = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults){
+        if let userName = Config.userName {
             Log("Found a username!! \(userName)")
         }
         else{
@@ -105,7 +105,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
             
-            NSUserDefaults.standardUserDefaults().setValue(textField.text, forKey: Config.loginKeyForNSUserDefaults)
+            Config.userName = textField.text
             
             self.setLoginText()
         }))
@@ -124,7 +124,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setLoginText(){
-        if let userName = NSUserDefaults.standardUserDefaults().stringForKey(Config.loginKeyForNSUserDefaults){
+        if let userName = Config.userName {
             let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
             if userName.stringByTrimmingCharactersInSet(whitespaceSet) != "" {
                 loginButton.setTitle(" \(userName) ", forState: UIControlState.Normal)
