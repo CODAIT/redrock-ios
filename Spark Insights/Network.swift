@@ -193,6 +193,22 @@ class Network
     }
     
     //MARK: Data
+    private func executeLoginRequest()
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults) as? String
+        let req = self.createRequest( Config.serverLogin, paremeters: parameters)
+        executeRequest(req, callBack: self.callFullResponseDelegate)
+    }
+    
+    private func executeLogoutRequest()
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults) as? String
+        let req = self.createRequest( Config.serverLogout, paremeters: parameters)
+        executeRequest(req, callBack: self.callFullResponseDelegate)
+    }
+    
     private func executeFullRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
