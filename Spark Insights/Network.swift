@@ -178,16 +178,15 @@ class Network
         }
     }
     
-    func loginRequest()
-    {
+    func loginRequest(callBack: (json: JSON?, error: NSError?) -> ()) {
         var parameters = Dictionary<String,String>()
         parameters["user"] = Config.userName!
-        let req = self.createRequest( Config.serverLogin, paremeters: parameters)
-        executeRequest(req, callBack: self.callFullResponseDelegate)
+        let req = self.createRequest(Config.serverLogin, paremeters: parameters)
+        executeRequest(req, callBack: callBack)
+        
     }
     
-    func logoutRequest()
-    {
+    func logoutRequest() {
         var parameters = Dictionary<String,String>()
         parameters["user"] = Config.userName!
         let req = self.createRequest( Config.serverLogout, paremeters: parameters)
