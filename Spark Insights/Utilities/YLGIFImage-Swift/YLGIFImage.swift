@@ -61,6 +61,10 @@ class YLGIFImage : UIImage {
         fatalError("init(coder:) has not been implemented")
     }
 
+    required convenience init(imageLiteral name: String) {
+        fatalError("init(imageLiteral:) has not been implemented")
+    }
+
     private func createSelf(cgImageSource: CGImageSource!, scale: CGFloat) -> Void {
         _cgImgSource = cgImageSource
         let imageProperties:NSDictionary = CGImageSourceCopyProperties(_cgImgSource!, nil)!
