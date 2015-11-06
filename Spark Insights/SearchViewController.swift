@@ -127,7 +127,23 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         if let userName = Config.userName {
             let whitespaceSet = NSCharacterSet.whitespaceCharacterSet()
             if userName.stringByTrimmingCharactersInSet(whitespaceSet) != "" {
-                loginButton.setTitle(" \(userName) ", forState: UIControlState.Normal)
+                
+                var sanitizedUsername = ""
+                var afterAtSign = false
+                for i in userName.characters {
+                    if(String(i).containsString("@")){
+                        afterAtSign = true
+                    }
+                    
+                    if(afterAtSign){
+                        sanitizedUsername = sanitizedUsername+String(i)
+                    }
+                    else{
+                        sanitizedUsername = sanitizedUsername+"*"
+                    }
+                }
+                
+                loginButton.setTitle(" \(sanitizedUsername) ", forState: UIControlState.Normal)
             }
             else{
                 loginButton.setTitle(Config.loginPleaseLogin, forState: UIControlState.Normal)
