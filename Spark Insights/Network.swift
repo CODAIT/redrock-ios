@@ -178,6 +178,22 @@ class Network
         }
     }
     
+    func loginRequest()
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = Config.userName!
+        let req = self.createRequest( Config.serverLogin, paremeters: parameters)
+        executeRequest(req, callBack: self.callFullResponseDelegate)
+    }
+    
+    func logoutRequest()
+    {
+        var parameters = Dictionary<String,String>()
+        parameters["user"] = Config.userName!
+        let req = self.createRequest( Config.serverLogout, paremeters: parameters)
+        executeRequest(req, callBack: nil)
+    }
+    
     func encodeIncludExcludeFromString(searchText: String) -> (include: String, exclude: String) {
         let search = self.getIncludeAndExcludeSeparated(searchText)
         let encode = encodeIncludExclude(search.include, exclude: search.exclude)
@@ -193,21 +209,6 @@ class Network
     }
     
     //MARK: Data
-    private func executeLoginRequest()
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults) as? String
-        let req = self.createRequest( Config.serverLogin, paremeters: parameters)
-        executeRequest(req, callBack: self.callFullResponseDelegate)
-    }
-    
-    private func executeLogoutRequest()
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = NSUserDefaults.standardUserDefaults().objectForKey(Config.loginKeyForNSUserDefaults) as? String
-        let req = self.createRequest( Config.serverLogout, paremeters: parameters)
-        executeRequest(req, callBack: self.callFullResponseDelegate)
-    }
     
     private func executeFullRequest(include: String, exclude: String)
     {
@@ -365,7 +366,7 @@ class Network
     }
     
 
-    private func executeRequest(req: String, callBack: (json: JSON?, error: NSError?) -> ()) {
+    private func executeRequest(req: String, callBack: ((json: JSON?, error: NSError?) -> ())?) {
         //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
         Log("Sending Request: " + req)
@@ -381,7 +382,9 @@ class Network
             func callbackOnMainThread(json: JSON?, error: NSError?) {
                 dispatch_async(dispatch_get_main_queue(), {
                     Network.waitingForResponse = false
-                    callBack(json: json, error: error)
+                    if callBack != nil {
+                        callBack!(json: json, error: error)
+                    }
                 })
             }
             
