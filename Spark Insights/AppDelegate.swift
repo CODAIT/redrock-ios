@@ -52,6 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SearchViewControllerDeleg
         if containerViewController != nil {
             containerViewController?.applicationWillResignActive(application)
         }
+        
+        Network.sharedInstance.logoutRequest()
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
