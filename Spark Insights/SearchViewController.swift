@@ -107,10 +107,19 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
             
             Config.userName = textField.text
             
+            self.sendLoginRequest()
+            
+            //TODO BLOCK UNTIL WE VALIDATE THIS REQUEST
+            // IF THE REQUEST IS REJECTED, DISPLAY AN ERROR MESSAGE FROM THE SERVER AND DON'T LEAVE
+            
             self.setLoginText()
         }))
         
         return alert
+    }
+    
+    func sendLoginRequest() {
+        
     }
     
     override func viewWillAppear(animated: Bool) {
