@@ -33,9 +33,9 @@ class LoadingView: UIView {
         })
         
         // Listen for taps
-        let tapRec = UITapGestureRecognizer()
-        tapRec.addTarget(self, action: "viewTapped")
-        view.addGestureRecognizer(tapRec)
+        // let tapRec = UITapGestureRecognizer()
+        // tapRec.addTarget(self, action: "viewTapped")
+        // view.addGestureRecognizer(tapRec)
     }
     
     func loadViewFromNib() -> UIView {

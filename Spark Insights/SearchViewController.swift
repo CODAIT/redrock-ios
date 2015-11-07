@@ -33,7 +33,11 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var liveButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
     
+    private var loadingView: LoadingView!
+    private var alert: UIAlertController!
+    
     private var recalculateConstrainstsForSearchView = true
+    private var tempUserName: String!
     
     var imageTitleTopConstraintInitial: CGFloat!
     var imageSearchTopConstraintInitial: CGFloat!
@@ -73,6 +77,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         //TODO COMPLAIN THAT USER HAS NOT LOGGED IN
         if let userName = Config.userName {
             Log("Found a username!! \(userName)")
+            tempUserName = Config.userName
         }
         else{
             Log("NO USERNAME!!! COMPLAIN!!!!!")
@@ -81,9 +86,13 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     }
     
     func showLoginAlertWithCancelButton(){
-        let alert = buildLoginAlert()
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+        alert = buildLoginAlert()
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action) -> Void in
+            self.alert = nil
+            self.hideLoadingView()
+        }))
         
+        self.showLoadingView()
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -91,8 +100,9 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     // They can enter a valid email address
     // or.... they can force quit the app
     func showLoginAlert(){
-        let alert = buildLoginAlert()
+        alert = buildLoginAlert()
         
+        self.showLoadingView()
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
@@ -100,29 +110,54 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         let alert = UIAlertController(title: Config.loginAlertTitle, message: Config.loginAlertMessage, preferredStyle: .Alert)
         
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-            textField.text = Config.loginDefaultText})
+            if self.tempUserName != nil {
+                textField.text = self.tempUserName
+            }
+        })
         
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
             
-            Config.userName = textField.text
-            
+            self.tempUserName = textField.text
             self.sendLoginRequest()
-            self.setLoginText() //TODO put this in the callback
         }))
         
         return alert
     }
     
     func sendLoginRequest() {
-        Network.sharedInstance.loginRequest() { (json, error) -> () in
-            //IF THE LOGIN IS VALID
-            //you're fine, exit
+        Network.sharedInstance.loginRequest(tempUserName, callback: { (json, error) -> () in
+            if (error != nil || json!["success"].boolValue == false) {
+                if (json != nil && json!["message"] != nil) {
+                    self.alert.message = json!["message"].stringValue
+                } else {
+                    self.alert.message = error?.localizedDescription
+                }
+                self.presentViewController(self.alert, animated: true, completion: nil)
+                return
+            }
             
-            //IF THE LOGIN IS NOT VALID
-            //trap the user here and display an error message
-        }
+            Config.userName = self.tempUserName
+            self.setLoginText()
+            self.hideLoadingView()
+        })
 
+    }
+    
+    func showLoadingView() {
+        if loadingView == nil {
+            loadingView = LoadingView(frame: self.view.bounds)
+            loadingView.holderView.alpha = 0
+            loadingView.activityIndicator.alpha = 0
+            self.view.addSubview(loadingView)
+        }
+        loadingView.hidden = false
+    }
+    
+    func hideLoadingView() {
+        if loadingView != nil {
+            loadingView.hidden = true
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

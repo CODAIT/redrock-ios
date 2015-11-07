@@ -178,19 +178,21 @@ class Network
         }
     }
     
-    func loginRequest(callBack: (json: JSON?, error: NSError?) -> ()) {
+    func loginRequest(userName: String, callback: (json: JSON?, error: NSError?) -> ()) {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = userName
         let req = self.createRequest(Config.serverLogin, paremeters: parameters)
-        executeRequest(req, callBack: callBack)
+        executeRequest(req, callBack: callback)
         
     }
     
     func logoutRequest() {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
-        let req = self.createRequest( Config.serverLogout, paremeters: parameters)
-        executeRequest(req, callBack: nil)
+        if Config.userName != nil {
+            var parameters = Dictionary<String,String>()
+            parameters["user"] = Config.userName!
+            let req = self.createRequest( Config.serverLogout, paremeters: parameters)
+            executeRequest(req, callBack: nil)
+        }
     }
     
     func encodeIncludExcludeFromString(searchText: String) -> (include: String, exclude: String) {
