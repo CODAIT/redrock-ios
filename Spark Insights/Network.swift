@@ -439,7 +439,7 @@ class Network
             let json = JSON(jsonResult as! NSDictionary)
             let status = json["status"].intValue
             
-            if( status == 1 ) {
+            if(status == 1 || (json["success"] != nil && !json["success"].boolValue)) {
                 let msg = json["message"].stringValue
                 let errorDesc = "Error: " + msg
                 Log(errorDesc)

@@ -24,6 +24,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
 
     var networkTimer : NSTimer!
     
+    var networkError: NSError!
     var searchText: String? {
         didSet {
             self.cleanViews()
@@ -331,6 +332,10 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             default:
                 break
             }
+            
+            if (networkError != nil) {
+                vis.errorDescription = networkError!.localizedDescription
+            }
         }
     }
     
@@ -560,6 +565,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         } else {
             Log("Unable to load data into visualization. VisType: \(type) not found.")
             
+        }
+        
+        if (error != nil) {
+            self.networkError = error
+        } else {
+            self.networkError = nil
         }
     }
     
