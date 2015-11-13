@@ -368,12 +368,12 @@ class Network
     
 
     private func executeRequest(req: String, callBack: ((json: JSON?, error: NSError?) -> ())?) {
-        //var escapedAddress = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+        var escapedReq = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         
-        Log("Sending Request: " + req)
+        Log("Sending Request: " + escapedReq!)
         Network.waitingForResponse = true
         self.startTime = CACurrentMediaTime()
-        let url: NSURL = NSURL(string: req)!
+        let url: NSURL = NSURL(string: escapedReq!)!
         let session = NSURLSession.sharedSession()
         session.configuration.timeoutIntervalForRequest = 300
         
