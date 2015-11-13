@@ -79,7 +79,7 @@ class Network
         let encode = encodeIncludExcludeFromString(searchText)
         
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = encode.include
         parameters["termsExclude"] = encode.exclude
         parameters["batchSize"] = Config.liveBatchSize
@@ -108,7 +108,7 @@ class Network
         }
         
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName
+        parameters["user"] = Config.userNameEncoded
         parameters["termsInclude"] = encode.include
         parameters["termsExclude"] = encode.exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -180,7 +180,7 @@ class Network
     
     func loginRequest(userName: String, callback: (json: JSON?, error: NSError?) -> ()) {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = userName
+        parameters["user"] = userName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
         let req = self.createRequest(Config.serverLogin, paremeters: parameters)
         executeRequest(req, callBack: callback)
         
@@ -189,7 +189,7 @@ class Network
     func logoutRequest() {
         if Config.userName != nil {
             var parameters = Dictionary<String,String>()
-            parameters["user"] = Config.userName!
+            parameters["user"] = Config.userNameEncoded!
             let req = self.createRequest( Config.serverLogout, paremeters: parameters)
             executeRequest(req, callBack: nil)
         }
@@ -214,7 +214,7 @@ class Network
     private func executeFullRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -225,7 +225,7 @@ class Network
     private func executeTweetRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.tweetsTopParameter
@@ -236,7 +236,7 @@ class Network
     private func executeSentimentRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverSentimentPath, paremeters: parameters)
@@ -246,7 +246,7 @@ class Network
     private func executeLocationRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverLocationPath, paremeters: parameters)
@@ -256,7 +256,7 @@ class Network
     private func executeProfessionRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         let req = self.createRequest(Config.serverProfessionPath, paremeters: parameters)
@@ -266,7 +266,7 @@ class Network
     private func executeWordDistanceRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["top"] = Config.wordDistanceTopParameter
@@ -277,7 +277,7 @@ class Network
     private func executeWordClusterRequest(include: String, exclude: String)
     {
         var parameters = Dictionary<String,String>()
-        parameters["user"] = Config.userName!
+        parameters["user"] = Config.userNameEncoded!
         parameters["termsInclude"] = include
         parameters["termsExclude"] = exclude
         parameters["cluster"] = Config.wordClusterClusterParameter
@@ -368,12 +368,10 @@ class Network
     
 
     private func executeRequest(req: String, callBack: ((json: JSON?, error: NSError?) -> ())?) {
-        var escapedReq = req.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
-        
-        Log("Sending Request: " + escapedReq!)
+        Log("Sending Request: " + req)
         Network.waitingForResponse = true
         self.startTime = CACurrentMediaTime()
-        let url: NSURL = NSURL(string: escapedReq!)!
+        let url: NSURL = NSURL(string: req)!
         let session = NSURLSession.sharedSession()
         session.configuration.timeoutIntervalForRequest = 300
         
