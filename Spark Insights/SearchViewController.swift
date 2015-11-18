@@ -73,7 +73,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         checkIfUserHasLoggedIn()
     }
     
-    func checkIfUserHasLoggedIn(){
+    func checkIfUserHasLoggedIn(){ //is this obsolete?
         //TODO COMPLAIN THAT USER HAS NOT LOGGED IN
         if let userName = Config.userName {
             Log("Found a username!! \(userName)")

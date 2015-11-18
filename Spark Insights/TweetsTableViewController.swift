@@ -197,7 +197,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         let user_name = tweets[row]["user"]["name"].stringValue
         let user_screen_name = tweets[row]["user"]["screen_name"].stringValue
         // let user_profile_image = (tweets[row]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-        let dateTime = tweets[row]["created_at"].stringValue
+        let dateTime = tweets[row]["created_at"].stringValue //todo check this format
         //let retweet_count = tweets[row]["retweet_count"].stringValue
         //let favorite_count = tweets[row]["favorite_count"].stringValue
         let followers_count = tweets[row]["user"]["followers_count"].stringValue
@@ -233,7 +233,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
             tweet.setRetweets(retweet_count.toInt()!)
         }*/
         tweet.setTweetText(text)
-        tweet.setDateTime(nil, stringFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", stringDate: dateTime)
+        tweet.setDateTime(nil, stringFormat: Config.dateFormat, stringDate: dateTime)
         tweet.setUserID(userID)
         
         return tweet

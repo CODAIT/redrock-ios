@@ -267,15 +267,18 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         if(!timemapDataIsInvalid){
             let dateStringFormatter = NSDateFormatter()
-            dateStringFormatter.dateFormat = "yyyy MM/dd"
+            //dateStringFormatter.dateFormat = "yyyy MM/dd" //TODO change this to match the other format
+            
+            dateStringFormatter.dateFormat = Config.dateFormat
+            
             dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
             
             // Aug 10 07
             // TODO playing with fire, as soon as the year rolls over this breaks
             // the dates from backend need to be explicit!!
-            let firstDateString = "2015 "+chartData[0][0]
-            let finalDateString = "2015 "+chartData[chartData.count-1][0]
-            let lastDateString = "2015 "+lastDate
+            let firstDateString = chartData[0][0]
+            let finalDateString = chartData[chartData.count-1][0]
+            let lastDateString = lastDate
             
             let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
             let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
