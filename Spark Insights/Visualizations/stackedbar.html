@@ -113,8 +113,17 @@
 
                                          // now you can send something different than what you display
                                          
+                                         var date = new Date(graph.point.x);
+                                         
+                                         
+                                         var yearNumber = date.getFullYear()
+                                         var monthNumber = date.getMonth()+1
+                                         var dayNumber = date.getDate()
+                                         
+                                         var shortDateWithYear = yearNumber+"/"+monthNumber+"/"+dayNumber;
+
                                          var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + graph.point.x + '</p>';
-                                         var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + y + '</p>';
+                                         var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + shortDateWithYear + '</p>';
                                          
                                          talkToApp(coordinatesWithLongDate);
 
