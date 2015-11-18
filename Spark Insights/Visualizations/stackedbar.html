@@ -113,19 +113,22 @@
 
                                          // now you can send something different than what you display
                                          
-                                         var coordinates = '<h3>' + key + '</h3>' +'<p>' + graph.point.x + '</p>';
+                                         var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + graph.point.x + '</p>';
+                                         var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + y + '</p>';
                                          
-                                         talkToApp(coordinates);
+                                         talkToApp(coordinatesWithLongDate);
 
-                                         console.log(coordinates);
+                                         console.log(coordinatesWithLongDate);
 
-                                         return coordinates
+                                         return coordinatesWithShortDate
 
                                          }
                                          )
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
+                        
+                        // TODO: configurable date format
                         
                         var date = new Date(chartData[0].values[d].x);
                         
