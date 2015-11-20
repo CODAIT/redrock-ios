@@ -20,6 +20,7 @@
         text {
             font: 12px sans-serif;
         }
+    
         svg {
             display: block;
         }
@@ -110,20 +111,43 @@
                     chart.reduceXTicks(true);
                     chart.tooltipContent(function(key, y, e, graph) {
 
-                                         var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
+                                         // now you can send something different than what you display
+                                         
+                                         var date = new Date(graph.point.x);
+                                         
+                                         
+                                         var yearNumber = date.getFullYear()
+                                         var monthNumber = date.getMonth()+1
+                                         var dayNumber = date.getDate()
+                                         
+                                         var shortDateWithYear = yearNumber+"/"+monthNumber+"/"+dayNumber;
 
-                                         talkToApp(coordinates);
+                                         var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + graph.point.x + '</p>';
+                                         var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + shortDateWithYear + '</p>';
+                                         
+                                         talkToApp(coordinatesWithLongDate);
 
-                                         console.log(coordinates);
+                                         console.log(coordinatesWithLongDate);
 
-                                         return coordinates
+                                         return coordinatesWithShortDate
 
                                          }
                                          )
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
-                        return chartData[0].values[d].x.substring(0,chartData[0].values[d].x.length); //was length-3 to clip some text
+                        
+                        // TODO: configurable date format
+                        
+                        var date = new Date(chartData[0].values[d].x);
+                        
+                        var monthNumber = date.getMonth()+1
+                        var dayNumber = date.getDate()
+                        
+                        return ""+monthNumber+"/"+dayNumber;
+                        
+                        //return chartData[0].values[d].x.substring(0,
+                        //                                          chartData[0].values[d].x.length); //was length-3 to clip some text
             });
             //chart.xAxis.rotateLabels(-30);
             chart.yAxis
@@ -228,7 +252,7 @@
         return copy;
     }
 
-    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "11/20", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}], 1024, 600);
+    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "2015/11/20 12:00:00", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}], 1024, 600);
 
     </script>
 </body>

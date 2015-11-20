@@ -60,7 +60,7 @@ class ReadTweetsData
             let user_name = tweets[i]["user"]["name"].stringValue
             let user_screen_name = tweets[i]["user"]["screen_name"].stringValue
             let user_profile_image = (tweets[i]["user"]["profile_image_url"].stringValue).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            let dateTime = tweets[i]["created_at"].stringValue
+            let dateTime = tweets[i]["created_at"].stringValue //todo check what this looks like
             let retweet_count = tweets[i]["retweet_count"].stringValue
             let favorite_count = tweets[i]["favorite_count"].stringValue
             let text = tweets[i]["text"].stringValue
@@ -85,7 +85,7 @@ class ReadTweetsData
                 tweet.setRetweets(Int(retweet_count)!)
             }
             tweet.setTweetText(text)
-            tweet.setDateTime(nil, stringFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z", stringDate: dateTime)
+            tweet.setDateTime(nil, stringFormat: Config.dateFormat, stringDate: dateTime)
             if let urlImage = NSURL(string: user_profile_image)
             {
                 if let dataImage = NSData(contentsOfURL: urlImage){
