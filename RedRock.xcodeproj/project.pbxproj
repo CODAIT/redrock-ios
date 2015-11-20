@@ -620,6 +620,7 @@
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUGLOG";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.ipad.alterj.RedRock;
 				PRODUCT_NAME = RedRock;
 				PROVISIONING_PROFILE = "960432f8-dca8-45cb-b9c6-e7754f2c87b5";
 			};
@@ -633,6 +634,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				INFOPLIST_FILE = "Spark Insights/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.ipad.alterj.RedRock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6a171cbf-0f3a-44f7-9724-9536ab2cff8b";
 			};
