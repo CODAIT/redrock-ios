@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -1464,16 +1464,29 @@
                                     </mask>
                                 </variation>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAe-Ab-QLr">
+                                <rect key="frame" x="476" y="39" width="124" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="ZHs-6K-I4R"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="oAe-Ab-QLr" firstAttribute="leading" secondItem="mRv-pG-0VM" secondAttribute="trailing" constant="8" id="5sR-tD-Vrg"/>
                             <constraint firstItem="mRv-pG-0VM" firstAttribute="centerX" secondItem="KsI-ye-ovH" secondAttribute="centerX" id="6wU-xu-s5s"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oAe-Ab-QLr" secondAttribute="trailing" constant="-20" id="G0o-0x-R9h"/>
                             <constraint firstItem="mRv-pG-0VM" firstAttribute="centerY" secondItem="KsI-ye-ovH" secondAttribute="centerY" id="fvp-6k-3KS"/>
+                            <constraint firstItem="oAe-Ab-QLr" firstAttribute="centerY" secondItem="KsI-ye-ovH" secondAttribute="centerY" id="yI7-HU-244"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="100"/>
                     <connections>
+                        <outlet property="dateLabel" destination="oAe-Ab-QLr" id="zUn-W8-HlH"/>
                         <outlet property="pauseButton" destination="SWr-p7-cxy" id="vxt-c1-7dW"/>
                         <outlet property="playButton" destination="t64-oC-GuJ" id="7nc-Ks-W9T"/>
                         <outlet property="progressBar" destination="iHj-P3-h3U" id="hQ7-Xv-X8x"/>

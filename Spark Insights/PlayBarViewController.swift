@@ -26,9 +26,18 @@ class PlayBarViewController: UIViewController {
     
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
     
     weak var delegate: PlayBarViewControllerDelegate?
     
+    // Usage Example: playBar.date = NSDate()
+    var date: NSDate? {
+        didSet {
+            let dateStringFormatter = NSDateFormatter()
+            dateStringFormatter.dateFormat = Config.dateFormatMonthDay
+            dateLabel.text = dateStringFormatter.stringFromDate(date!)
+        }
+    }
     // Usage Example: playBar.progress = 45.5
     var progress: Float = 0 {
         didSet {

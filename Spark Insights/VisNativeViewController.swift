@@ -291,6 +291,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             let playBarViewControllerProgress = ((lastDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)/((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)
             
             self.playBarController?.progress = Float(playBarViewControllerProgress)*100
+            self.playBarController?.date = dateStringFormatter.dateFromString(currentDate)!
             //Log("playBarViewControllerProgress... \(playBarViewControllerProgress)")
         }
         
