@@ -1441,6 +1441,20 @@
                                             <action selector="buttonClicked:" destination="D99-fH-seQ" eventType="touchUpInside" id="6xM-Kw-M11"/>
                                         </connections>
                                     </button>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Ni9-Ns-YPj">
+                                        <rect key="frame" x="29" y="7" width="278" height="31"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Sg5-xM-sCI"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="sliderTouchDown:" destination="D99-fH-seQ" eventType="touchDown" id="v4w-jf-b2b"/>
+                                            <action selector="sliderTouchUp:" destination="D99-fH-seQ" eventType="touchUpOutside" id="8bJ-sb-6d1"/>
+                                            <action selector="sliderTouchUp:" destination="D99-fH-seQ" eventType="touchUpInside" id="QSg-Zy-6dI"/>
+                                            <action selector="sliderValueChanged:" destination="D99-fH-seQ" eventType="valueChanged" id="ECS-bQ-WsB"/>
+                                            <outletCollection property="gestureRecognizers" destination="gwv-1s-mE5" appends="YES" id="mxo-FW-0Mh"/>
+                                            <outletCollection property="gestureRecognizers" destination="yxJ-ba-871" appends="YES" id="1aE-yI-4al"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -1451,10 +1465,13 @@
                                     <constraint firstItem="t64-oC-GuJ" firstAttribute="leading" secondItem="mRv-pG-0VM" secondAttribute="leading" id="JiY-2b-7Zv"/>
                                     <constraint firstItem="dRF-PU-TWk" firstAttribute="centerY" secondItem="mRv-pG-0VM" secondAttribute="centerY" id="NrC-J4-9BO"/>
                                     <constraint firstAttribute="height" constant="44" id="Onl-a0-AQa"/>
+                                    <constraint firstItem="Ni9-Ns-YPj" firstAttribute="leading" secondItem="mRv-pG-0VM" secondAttribute="leading" constant="31" id="P1K-K5-pB9"/>
                                     <constraint firstItem="D4e-hb-Shs" firstAttribute="centerY" secondItem="mRv-pG-0VM" secondAttribute="centerY" id="ShI-hO-soF"/>
                                     <constraint firstItem="t64-oC-GuJ" firstAttribute="top" secondItem="mRv-pG-0VM" secondAttribute="top" id="V5p-jX-Pnt"/>
                                     <constraint firstItem="SWr-p7-cxy" firstAttribute="top" secondItem="mRv-pG-0VM" secondAttribute="top" id="Y1O-co-kgq"/>
                                     <constraint firstAttribute="bottom" secondItem="SWr-p7-cxy" secondAttribute="bottom" id="el6-3y-Vq6"/>
+                                    <constraint firstItem="Ni9-Ns-YPj" firstAttribute="centerY" secondItem="mRv-pG-0VM" secondAttribute="centerY" id="fkd-uG-7c3"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ni9-Ns-YPj" secondAttribute="trailing" constant="31" id="lSJ-Da-QmX"/>
                                     <constraint firstItem="t64-oC-GuJ" firstAttribute="leading" secondItem="SWr-p7-cxy" secondAttribute="trailing" id="tnz-kq-hws"/>
                                     <constraint firstAttribute="bottom" secondItem="t64-oC-GuJ" secondAttribute="bottom" id="vPH-1K-r2U"/>
                                 </constraints>
@@ -1492,9 +1509,20 @@
                         <outlet property="progressBar" destination="iHj-P3-h3U" id="hQ7-Xv-X8x"/>
                         <outlet property="progressBarHolder" destination="D4e-hb-Shs" id="g4h-6s-PoX"/>
                         <outlet property="progressBarLeadingEdge" destination="o2N-Fi-7aV" id="B91-Ja-MCF"/>
+                        <outlet property="slider" destination="Ni9-Ns-YPj" id="di2-3O-JN2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nl2-HV-YLp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="gwv-1s-mE5">
+                    <connections>
+                        <action selector="sliderTapped:" destination="D99-fH-seQ" id="vVt-jT-pGp"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="yxJ-ba-871">
+                    <connections>
+                        <action selector="sliderPan:" destination="D99-fH-seQ" id="eah-M1-Vdr"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="448" y="1310"/>
         </scene>

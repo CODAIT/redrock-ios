@@ -77,6 +77,10 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
                                 self.transformDataForTimemapIOS()
                             }
                             self.onSuccessState()
+                            
+                            if self.playBarController.state == .Playing {
+                                self.startTimemap()
+                            }
                         }
                         else{
                             self.errorDescription = Config.serverErrorMessage
