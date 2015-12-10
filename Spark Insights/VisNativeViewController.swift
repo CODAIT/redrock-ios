@@ -220,6 +220,80 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         }
     }
     
+    func setTimemapDateBasedOnPercentageProgressOfBar(barProgress: Double)
+    {
+        // figure out which date is correct for barProgress ratio
+        // then skip to it
+        // do the opposite of the math
+
+        // ok, i assume i have bar progress, then I need to find the date
+        
+        var dateToSkipToAsString : String
+        
+        if(!timemapDataIsInvalid){
+            let dateStringFormatter = NSDateFormatter()
+            
+            dateStringFormatter.dateFormat = Config.dateFormat
+            
+            dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+
+            
+            let firstDateString = chartData[0][0]
+            let finalDateString = chartData[chartData.count-1][0]
+            
+            let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
+            let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
+            
+            //timeIntervalSince1970 is in seconds, I believe
+            let weShouldSkipToThisDateAsTimeIntervalSince1970 = (barProgress * ((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)) + (firstDateForMath?.timeIntervalSince1970)!
+            
+            //convert into a date that we can search up and skip to
+            
+            let dateToSkipTo = NSDate( timeIntervalSince1970: weShouldSkipToThisDateAsTimeIntervalSince1970)
+            
+            dateToSkipToAsString = dateStringFormatter.stringFromDate(dateToSkipTo)
+            
+            // set the radii
+            var lastDate :String = "";
+            var currentDate :String = "";
+            // TARGET DATE IS dateToSkipToAsString
+            var i = indexOfLastDate;
+
+            // skip to where you should be
+            while( currentDate != dateToSkipToAsString && !timemapDataIsInvalid){ // and you're not at the end
+                
+                lastDate = chartData[i][0]
+                i++
+                if( i >= chartData.count ){
+                    //Log("Reached the end of timemap data.... it's time to loop.")
+                    i = 0
+                    currentDate = chartData[i][0]
+                    if lastDate == currentDate {
+                        //Log("this dataset doesn't have more than one date!")
+                        //break out
+                        timemapDataIsInvalid = true
+                    }
+                }
+                currentDate = chartData[i][0]
+                if(currentDate == dateToSkipToAsString){
+                    Log("You did it, you made it to the correct location... \(i)")
+                }
+            }
+            
+            if(timemapDataIsInvalid){
+                Log("Timemap data is invalid for scrubbing!")
+            }
+            else{
+                indexOfLastDate = i
+                self.view.setNeedsDisplay()
+                tickTimemap()
+            }
+            
+        }
+        
+        Log("end of setTimemapDateBasedOnPercentageProgressOfBar")
+    }
+    
     @objc func tickTimemap()
     {
         //Log("tickTimemap().... indexOfLastDate is \(indexOfLastDate)")
