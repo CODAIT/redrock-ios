@@ -228,6 +228,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
     }
     
+    func scrubberScrubbed(progress: Float) { //move the timemap scrubber
+        if let vis = visualizationsByType[VisTypes.TimeMap] as! VisNativeViewController? {
+            vis.setTimemapDateBasedOnPercentageProgressOfBar(Double(progress))
+        }
+    }
+    
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {

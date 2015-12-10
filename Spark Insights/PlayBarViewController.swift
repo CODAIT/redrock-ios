@@ -11,6 +11,7 @@ import UIKit
 @objc
 protocol PlayBarViewControllerDelegate {
     optional func playPauseClicked() // Called when play or pause is clicked
+    optional func scrubberScrubbed( progress : Float ) // Called when the scrubber position is changed
 }
 
 enum PlayBarState {
@@ -144,7 +145,7 @@ class PlayBarViewController: UIViewController {
         playAfterGesture()
     }
     
-    func pauseDurringGesture() {
+    func pauseDurringGesture() { //TODO: spelling
         if state == .Playing {
             playOnTouchEnd = true
             delegate?.playPauseClicked!()
@@ -161,7 +162,6 @@ class PlayBarViewController: UIViewController {
     }
     
     @IBAction func sliderValueChanged(sender: UISlider) {
-        // TODO: use the slider.value here and remove the print
-        print("Value Changed to: \(sender.value)")
+        delegate?.scrubberScrubbed!( sender.value )
     }
 }

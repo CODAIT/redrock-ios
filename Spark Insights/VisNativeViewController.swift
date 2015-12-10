@@ -224,32 +224,32 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         }
     }
     
+    func convertDateStringToIntervalSince1970(myDateString : String) -> Double{
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = Config.dateFormat
+        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        
+        let dateForMath = dateStringFormatter.dateFromString(myDateString)
+        return (dateForMath?.timeIntervalSince1970)!
+    }
+    
     func setTimemapDateBasedOnPercentageProgressOfBar(barProgress: Double)
     {
-        // figure out which date is correct for barProgress ratio
-        // then skip to it
-        // do the opposite of the math
-
         // ok, i assume i have bar progress, then I need to find the date
+
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = Config.dateFormat
+        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
+        var weShouldSkipToThisDateAsTimeIntervalSince1970 : Double
         var dateToSkipToAsString : String
         
         if(!timemapDataIsInvalid){
-            let dateStringFormatter = NSDateFormatter()
-            
-            dateStringFormatter.dateFormat = Config.dateFormat
-            
-            dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-
-            
-            let firstDateString = chartData[0][0]
-            let finalDateString = chartData[chartData.count-1][0]
-            
-            let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
-            let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
+            let firstDateInterval = convertDateStringToIntervalSince1970(chartData[0][0])
+            let finalDateInterval = convertDateStringToIntervalSince1970(chartData[chartData.count-1][0])
             
             //timeIntervalSince1970 is in seconds, I believe
-            let weShouldSkipToThisDateAsTimeIntervalSince1970 = (barProgress * ((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)) + (firstDateForMath?.timeIntervalSince1970)!
+            weShouldSkipToThisDateAsTimeIntervalSince1970 = (barProgress * (finalDateInterval-firstDateInterval)) + firstDateInterval
             
             //convert into a date that we can search up and skip to
             
@@ -257,29 +257,33 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             
             dateToSkipToAsString = dateStringFormatter.stringFromDate(dateToSkipTo)
             
-            // set the radii
-            var lastDate :String = "";
-            var currentDate :String = "";
-            // TARGET DATE IS dateToSkipToAsString
+            // TARGET DATE IS weShouldSkipToThisDateAsTimeIntervalSince1970
             var i = indexOfLastDate;
+            var lastDate :Double = 0.0;
+            var currentDate :Double = 0.0;
 
             // skip to where you should be
-            while( currentDate != dateToSkipToAsString && !timemapDataIsInvalid){ // and you're not at the end
+            while( !(lastDate <= weShouldSkipToThisDateAsTimeIntervalSince1970 && currentDate >= weShouldSkipToThisDateAsTimeIntervalSince1970) && !timemapDataIsInvalid){ // we haven't found the win condition
                 
-                lastDate = chartData[i][0]
+                lastDate = convertDateStringToIntervalSince1970(chartData[i][0])
+                
                 i++
                 if( i >= chartData.count ){
                     //Log("Reached the end of timemap data.... it's time to loop.")
                     i = 0
-                    currentDate = chartData[i][0]
+                    currentDate = convertDateStringToIntervalSince1970(chartData[i][0])
                     if lastDate == currentDate {
                         //Log("this dataset doesn't have more than one date!")
                         //break out
                         timemapDataIsInvalid = true
                     }
                 }
-                currentDate = chartData[i][0]
-                if(currentDate == dateToSkipToAsString){
+                
+                currentDate = convertDateStringToIntervalSince1970(chartData[i][0])
+                
+                Log("currentDate... \(currentDate)... dateToSkipToAsString \(dateToSkipToAsString)")
+                
+                if(lastDate <= weShouldSkipToThisDateAsTimeIntervalSince1970 && currentDate >= weShouldSkipToThisDateAsTimeIntervalSince1970){
                     Log("You did it, you made it to the correct location... \(i)")
                 }
             }
