@@ -71,7 +71,7 @@ class PlayBarViewController: UIViewController {
     @IBAction func buttonClicked(sender: UIButton) {
         // self.state = (self.state == .Play) ? .Pause : .Play
         guard delegate != nil else {
-            Log("No deleget set for PlayBarViewController")
+            Log("No delegate set for PlayBarViewController")
             return
         }
         guard playOnTouchEnd == false else {

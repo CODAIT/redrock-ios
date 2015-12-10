@@ -160,7 +160,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         leftViewController.didMoveToParentViewController(self)
     }
     
-    func addBottmDrawerViewController() {
+    func addBottmDrawerViewController() { //TODO: spelling
         bottomDrawerViewController = UIStoryboard.bottomDrawerViewController()
         bottomDrawerHolder.addSubview(bottomDrawerViewController.view)
         addChildViewController(bottomDrawerViewController)
@@ -230,7 +230,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     func scrubberScrubbed(progress: Float) { //move the timemap scrubber
         if let vis = visualizationsByType[VisTypes.TimeMap] as! VisNativeViewController? {
-            vis.setTimemapDateBasedOnPercentageProgressOfBar(Double(progress))
+            vis.setTimemapDateBasedOnPercentageProgressOfBarUsingGuess(Double(progress))
         }
     }
     

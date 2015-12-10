@@ -233,6 +233,18 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         return (dateForMath?.timeIntervalSince1970)!
     }
     
+    func setTimemapDateBasedOnPercentageProgressOfBarUsingGuess(barProgress: Double)
+    {
+        // just guess the index based on the ratio
+        let index : Int = Int(round(barProgress * Double(chartData.count)))
+        indexOfLastDate = index
+        
+        Log("setTimemapDateBasedOnPercentageProgressOfBarUsingGuess... barProgress: \(barProgress)... index: \(index)")
+        
+        self.view.setNeedsDisplay()
+        tickTimemap()
+    }
+    
     func setTimemapDateBasedOnPercentageProgressOfBar(barProgress: Double)
     {
         // ok, i assume i have bar progress, then I need to find the date
@@ -286,6 +298,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
                 if(lastDate <= weShouldSkipToThisDateAsTimeIntervalSince1970 && currentDate >= weShouldSkipToThisDateAsTimeIntervalSince1970){
                     Log("You did it, you made it to the correct location... \(i)")
                 }
+                
             }
             
             if(timemapDataIsInvalid){
