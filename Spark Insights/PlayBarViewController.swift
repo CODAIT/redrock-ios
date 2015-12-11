@@ -114,7 +114,7 @@ class PlayBarViewController: UIViewController {
     @IBAction func sliderPan(gesture: UIPanGestureRecognizer) {
         switch (gesture.state) {
         case .Began:
-            pauseDurringGesture()
+            pauseDuringGesture()
         case .Cancelled, .Ended, .Failed:
             playAfterGesture()
         default:
@@ -138,14 +138,14 @@ class PlayBarViewController: UIViewController {
     }
     
     @IBAction func sliderTouchDown(sender: UISlider) {
-        pauseDurringGesture()
+        pauseDuringGesture()
     }
     
     @IBAction func sliderTouchUp(sender: UISlider) {
         playAfterGesture()
     }
     
-    func pauseDurringGesture() { //TODO: spelling
+    func pauseDuringGesture() {
         if state == .Playing {
             playOnTouchEnd = true
             delegate?.playPauseClicked!()
