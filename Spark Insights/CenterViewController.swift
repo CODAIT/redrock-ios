@@ -833,7 +833,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     func setCountLabelWithJSONKey(json: JSON?, key: String, label: UILabel) {
         if json![key] != nil {
-            label.text = self.formatNumberToDisplay(Int64(json![key].intValue))
+            label.text = self.formatNumberToDisplay(Int64(json![key].int64Value))
         } else {
             label.text = ""
         }
