@@ -1450,6 +1450,7 @@
                                             <action selector="sliderTouchDown:" destination="D99-fH-seQ" eventType="touchDown" id="v4w-jf-b2b"/>
                                             <action selector="sliderTouchUp:" destination="D99-fH-seQ" eventType="touchUpOutside" id="8bJ-sb-6d1"/>
                                             <action selector="sliderTouchUp:" destination="D99-fH-seQ" eventType="touchUpInside" id="QSg-Zy-6dI"/>
+                                            <action selector="sliderTouchUp:" destination="D99-fH-seQ" eventType="touchCancel" id="Xtw-uo-z6g"/>
                                             <action selector="sliderValueChanged:" destination="D99-fH-seQ" eventType="valueChanged" id="ECS-bQ-WsB"/>
                                             <outletCollection property="gestureRecognizers" destination="gwv-1s-mE5" appends="YES" id="mxo-FW-0Mh"/>
                                             <outletCollection property="gestureRecognizers" destination="yxJ-ba-871" appends="YES" id="1aE-yI-4al"/>
