@@ -135,7 +135,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         else{
-            Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Negitive, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
+            Network.sharedInstance.sentimentAnalysisRequest(self.searchText, sentiment: .Negative, startDatetime: selectedDateAsStringWithZero, endDatetime: endDateAsStringWithZero) { (json, error) -> () in
                 if error != nil {
                     return
                 }

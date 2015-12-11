@@ -103,8 +103,8 @@ class Network
         switch sentiment {
         case .Positive:
             sentimentString = "1"
-        case .Negitive: //TODO Negative is spelled wrong
-            sentimentString = "0"
+        case .Negative:
+            sentimentString = "-1"
         }
         
         var parameters = Dictionary<String,String>()
