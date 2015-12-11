@@ -237,7 +237,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     {
         // just guess the index based on the ratio
         let index : Int = Int(round(barProgress * Double(chartData.count)))
-        indexOfLastDate = index
+        indexOfLastDate = (index >= chartData.count) ? chartData.count - 1 : index
         
         Log("setTimemapDateBasedOnPercentageProgressOfBarUsingGuess... barProgress: \(barProgress)... index: \(index)")
         
