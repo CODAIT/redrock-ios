@@ -241,7 +241,8 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         Log("setTimemapDateBasedOnPercentageProgressOfBarUsingGuess... barProgress: \(barProgress)... index: \(index)")
         
-        self.view.setNeedsDisplay()
+        // Need to double tick incase we start in the middle of the list of countries
+        tickTimemap()
         tickTimemap()
     }
     
