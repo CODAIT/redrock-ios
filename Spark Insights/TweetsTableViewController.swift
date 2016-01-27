@@ -202,7 +202,7 @@ class TweetsTableViewController: UITableViewController, TweetTableViewCellDelega
         //let favorite_count = tweets[row]["favorite_count"].stringValue
         let followers_count = tweets[row]["user"]["followers_count"].stringValue
         let text = tweets[row]["text"].stringValue
-        let userID = tweets[row]["user"]["id"].stringValue
+        let userID = tweets[row]["user"]["id"].stringValue.stringByReplacingOccurrencesOfString("id:twitter.com:", withString: "")
         
         let tweet = TwitterTweet()
         tweet.setUserName(user_name)
