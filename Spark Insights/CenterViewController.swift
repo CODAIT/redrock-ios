@@ -153,11 +153,19 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     func addLeftPanelViewController() {
         leftViewController = UIStoryboard.leftViewController()
-        leftViewController.view.frame = CGRectMake(-350, 0, 354, 768)
         leftViewController.delegate = self
         view.addSubview(leftViewController.view)
         addChildViewController(leftViewController)
         leftViewController.didMoveToParentViewController(self)
+        
+        let views = [
+            "leftViewControllerView": leftViewController.view
+        ]
+        leftViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        let viewConst_W = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(-350)-[leftViewControllerView(354@1000)]", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        let viewConst_H = NSLayoutConstraint.constraintsWithVisualFormat("V:|[leftViewControllerView]|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        view.addConstraints(viewConst_W)
+        view.addConstraints(viewConst_H)
     }
     
     func addBottmDrawerViewController() { //TODO: spelling
