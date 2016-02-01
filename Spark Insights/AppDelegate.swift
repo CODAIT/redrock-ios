@@ -119,7 +119,7 @@ extension AppDelegate {
         }
         else
         {
-            searchViewController?.recalculateConstrainstForBakcAnimation()
+            searchViewController?.resetSearchView()
         }
         
         // When returning to search

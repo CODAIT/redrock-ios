@@ -17,21 +17,15 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
 
     weak var delegate: SearchViewControllerDelegate?
     
-    @IBOutlet weak var imageTitleTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageSearchTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var searchHolderTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var searchHolderBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var appTitleTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var appImageTitle: UILabel!
-    @IBOutlet weak var searchTextFieldHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var AppTitleView: UIView!
-    @IBOutlet weak var appTitleLabel: UILabel!
-    @IBOutlet weak var searchHolderView: UIView!
+    @IBOutlet weak var appTitleView: UIView!
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var topImageView: UIImageView!
     @IBOutlet weak var searchButtonView: UIView!
     @IBOutlet weak var liveButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
+    
+    @IBOutlet weak var topImageHolderView: UIView!
+    @IBOutlet weak var contentHolderView: UIView!
     
     private var loadingView: LoadingView!
     private var alert: UIAlertController!
@@ -39,11 +33,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     private var recalculateConstrainstsForSearchView = true
     private var tempUserName: String!
     
-    var imageTitleTopConstraintInitial: CGFloat!
-    var imageSearchTopConstraintInitial: CGFloat!
-    var searchHolderTopConstraintInitial: CGFloat!
-    var searchHolderBottomConstraintInitial: CGFloat!
-    var appTitleTopConstraintInitial: CGFloat!
+    var titleViewTopConstraints: [NSLayoutConstraint]!
+    var contentHolderViewTopConstraints: [NSLayoutConstraint]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,12 +50,6 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         self.textField.returnKeyType = UIReturnKeyType.Search
         setInsetTextField()
         addGestureRecognizerSearchView()
-        imageTitleTopConstraintInitial = self.imageTitleTopConstraint.constant
-        imageSearchTopConstraintInitial = self.imageSearchTopConstraint.constant
-        searchHolderTopConstraintInitial = self.searchHolderTopConstraint.constant
-        searchHolderBottomConstraintInitial = self.searchHolderBottomConstraint.constant
-        appTitleTopConstraintInitial = self.appTitleTopConstraint.constant
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -170,9 +155,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(animated: Bool) {
         self.resetViewController()
-        if (Config.searchViewAnimation) {
-            topImageView.startAnimating()
-        }
+        
         liveButton.setTitle("Live \(Config.liveSearches[Config.liveCurrentSearchIndex])", forState: UIControlState.Normal)
         
         setLoginText()
@@ -260,57 +243,54 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
 
     @IBAction func startedEditing(sender: UITextField) {
-        if self.recalculateConstrainstsForSearchView
-        {
-            if (Config.searchViewAnimation) {
-                topImageView.stopAnimating()
-            }
-            recalculateConstraintsForAnimation()
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
-                self.view.layoutIfNeeded()
-                }, completion: nil)
-            self.textField.font = UIFont (name: "Helvetica Neue", size: 17)
-            self.recalculateConstrainstsForSearchView = false
+        addTopContraints()
+            
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+        
+        if (Config.searchViewAnimation) {
+            topImageView.stopAnimating()
         }
     }
 
     @IBAction func endedEditing(sender: UITextField)
     {
-        recalculateConstrainstForBakcAnimation()
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            }, completion: nil)
+        resetSearchViewWithAnimation()
+    }
+    
+    func addTopContraints() {
+        appTitleView.hidden = false
+        
+        if titleViewTopConstraints == nil {
+            let views = ["appTitleView": appTitleView]
+            let metrics = Dictionary(dictionaryLiteral: ("priority",1000))
+            titleViewTopConstraints =  NSLayoutConstraint.constraintsWithVisualFormat("V:|[appTitleView]", options: NSLayoutFormatOptions.AlignAllCenterX, metrics: metrics, views: views)
+        }
+        
+        view.addConstraints(titleViewTopConstraints)
+    }
+    
+    func resetSearchView() {
+        guard titleViewTopConstraints != nil || contentHolderViewTopConstraints != nil else {
+            return
+        }
+        
+        view.removeConstraints(titleViewTopConstraints)
+        appTitleView.hidden = true
+        searchButtonView.alpha = 1.0
+        
         if (Config.searchViewAnimation) {
             topImageView.startAnimating()
         }
     }
     
-    func recalculateConstraintsForAnimation()
-    {
-        self.imageSearchTopConstraint.constant = -self.topImageView.frame.height
-        self.imageTitleTopConstraint.constant = -self.topImageView.frame.height
-        self.AppTitleView.hidden = false
-        self.appTitleLabel.hidden = false
-        self.appTitleTopConstraint.constant = -UIApplication.sharedApplication().statusBarFrame.height
-        self.searchHolderTopConstraint.constant = self.AppTitleView.frame.height
-        self.searchHolderBottomConstraint.constant = self.searchHolderView.frame.height
-    }
-    
-    func recalculateConstrainstForBakcAnimation()
-    {
-        self.recalculateConstrainstsForSearchView = true
-        self.searchHolderBottomConstraint.constant = self.searchHolderBottomConstraintInitial
-        self.searchHolderTopConstraint.constant = self.searchHolderTopConstraintInitial
-        self.appTitleTopConstraint.constant = self.appTitleTopConstraintInitial
-        self.imageSearchTopConstraint.constant = self.imageSearchTopConstraintInitial
-        self.imageTitleTopConstraint.constant = self.imageTitleTopConstraintInitial
-        self.AppTitleView.hidden = true
-        self.appTitleLabel.hidden = true
-        self.searchButtonView.alpha = 1.0
-        UIView.animateWithDuration(0.7, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
+    func resetSearchViewWithAnimation() {
+        resetSearchView()
+        
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
             self.view.layoutIfNeeded()
             }, completion: nil)
-
     }
 
     func searchClicked(gesture: UIGestureRecognizer?) {
