@@ -142,7 +142,7 @@ function returnColor(parentColor, number){
 function renderChart(data, w, h){
 
     var margin = 0,
-    diameter = 600;
+    diameter = (w > h) ? h : w;
 
     //var optimizedWidth = 1024
     //var optimizedHeight = 624
@@ -158,12 +158,7 @@ height.innerHTML = h
 var shrinkLabel = document.getElementById("shrink");
 shrinkLabel.innerHTML = shrinkConstant
  */
-    var xPadding = 0
-
-    if( w > 1000) // we want to pad it on the left
-    {
-        xPadding = 250
-    }
+    var xPadding = (w - diameter) / 2;
 
     var resizeConstant = 1.43
 
