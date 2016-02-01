@@ -51,6 +51,8 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     var rangeSliderViewController: RangeSliderViewController!
     var playBarViewController: PlayBarViewController!
     
+    var leftPanelInConstraint: [NSLayoutConstraint]?
+    
     // last visited page
     var currentPage : Int = 0
     var previousPage : Int = 0
@@ -162,7 +164,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             "leftViewControllerView": leftViewController.view
         ]
         leftViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        let viewConst_W = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(-350)-[leftViewControllerView(354@1000)]", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        let viewConst_W = NSLayoutConstraint.constraintsWithVisualFormat("H:|-(-350@990)-[leftViewControllerView(354)]", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
         let viewConst_H = NSLayoutConstraint.constraintsWithVisualFormat("V:|[leftViewControllerView]|", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
         view.addConstraints(viewConst_W)
         view.addConstraints(viewConst_H)
@@ -245,12 +247,22 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     // MARK: - LeftViewControllerDelegate
     
     func toggleLeftPanel() {
+        
+        if (leftPanelInConstraint == nil) {
+            let views = [
+                "leftViewControllerView": leftViewController.view
+            ]
+            leftPanelInConstraint = NSLayoutConstraint.constraintsWithVisualFormat("H:|[leftViewControllerView(354)]", options: NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: nil, views: views)
+        }
+        
         if (CenterViewController.leftViewOpen) { //get bigger
             // animate out
+            view.removeConstraints(leftPanelInConstraint!)
             self.animateLeftPanelXPosition(targetPosition: -350)
             CenterViewController.leftViewOpen = false
         } else { //get smaller
             // animate in
+            view.addConstraints(leftPanelInConstraint!)
             self.animateLeftPanelXPosition(targetPosition: 0)
             CenterViewController.leftViewOpen = true
         }
@@ -263,7 +275,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         self.footerViewLeadingEdge.constant = targetPosition + 350
         self.bottomDrawerHolderLeadingEdge.constant = targetPosition + 350
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .CurveEaseInOut, animations: {
-            self.leftViewController.view.frame.origin.x = targetPosition
+            self.leftViewController.view.layoutIfNeeded()
             self.footerView.layoutIfNeeded()
             self.bottomDrawerHolder.layoutIfNeeded()
             }, completion: { finished in
