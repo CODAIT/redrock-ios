@@ -26,6 +26,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var topImageHolderView: UIView!
     @IBOutlet weak var contentHolderView: UIView!
+    @IBOutlet weak var searchTopToBottomRatioConstraint: NSLayoutConstraint!
     
     private var loadingView: LoadingView!
     private var alert: UIAlertController!
@@ -269,6 +270,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         
         view.addConstraints(titleViewTopConstraints)
+        view.addConstraint(searchTopToBottomRatioConstraint)
     }
     
     func resetSearchView() {
@@ -277,6 +279,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
         }
         
         view.removeConstraints(titleViewTopConstraints)
+        view.removeConstraint(searchTopToBottomRatioConstraint)
         appTitleView.hidden = true
         searchButtonView.alpha = 1.0
         
