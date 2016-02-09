@@ -47,6 +47,10 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             let rawData = (message.body as! String)
             
             displayVisOverSentiment(transformDataForDisplayVisOverSentiment(rawData), sentimentIsPositiveMa: isSentimentPositive(rawData));
+        } else if (message.name == "console") {
+            // Use the following method to print console logs from the WKWebView
+            // window.webkit.messageHandlers.console.postMessage({body: "TEST"});
+            print("WKWebView Log: \(message.body)")
         }
     }
     
@@ -162,6 +166,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         //contentController.addUserScript(userScript)
         
         contentController.addScriptMessageHandler(self, name: "callbackHandler") //THIS IS THE WAY WE WILL GET MESSAGES BACK FOR OURSELVES
+        contentController.addScriptMessageHandler(self, name: "console")
         
         let config = WKWebViewConfiguration()
         config.userContentController = contentController
@@ -265,7 +270,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     func transformDataForTreemapping(){
         onLoadingState()
         
-        
+        let viewSize = self.view.bounds.size
         
         let treemapData = json!["profession"].description
         var treemapDataTrimmed : String
@@ -275,7 +280,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             treemapDataTrimmed = treemapDataTrimmed.stringByReplacingOccurrencesOfString("\n", withString: "")
             
-            let script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(self.view.bounds.width); var h = \(self.view.bounds.height); renderChart(data7, w, h);";
+            let script9 = "var data7 = '\(treemapDataTrimmed)'; var w = \(viewSize.width); var h = \(viewSize.height); renderChart(data7, w, h);";
             
             webView.evaluateJavaScript(script9, completionHandler: nil)
             

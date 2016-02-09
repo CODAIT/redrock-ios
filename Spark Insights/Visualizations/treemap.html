@@ -75,18 +75,9 @@ rect.parent,
 
 function renderChart(data, w, h){
 
-    var heightResizeConstant = 1.0
-    // we have a large size chart
-    if(w > 1000){
-        heightResizeConstant = 0.77
-    }
-    else{
-        heightResizeConstant = 1.16
-    }
-
 var margin = {top: 70, right: 0, bottom: 20, left: 0},
     width = 960,
-    height = 760*heightResizeConstant - margin.top - margin.bottom,
+    height = h * 960 / w - margin.top - margin.bottom,
     formatNumber = d3.format(",%"),
     colorDomain = [-.6, 0, .6],
     colorRange = ["#373a93", 'white', "#936638"],
