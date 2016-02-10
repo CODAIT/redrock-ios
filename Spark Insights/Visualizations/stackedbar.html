@@ -120,8 +120,10 @@
                                          var dayNumber = date.getDate()
                                          
                                          var shortDateWithYear = yearNumber+"/"+monthNumber+"/"+dayNumber;
-
-                                         var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + graph.point.x + '</p>';
+                                         
+                                         date.setDate(date.getDate()-1);
+                                         
+                                         var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + date.toISOString() + '</p>';
                                          var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + shortDateWithYear + '</p>';
                                          
                                          talkToApp(coordinatesWithLongDate);
