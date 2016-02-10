@@ -289,6 +289,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.scrollView.viewDidResize()
                 if !Network.waitingForResponse {
                     self.reloadVisualisations()
+                    if (self.rangeSliderViewController != nil) { self.rangeSliderViewController.resetViewController() }
                 }
 
                 // should move slider bar code here to be better
