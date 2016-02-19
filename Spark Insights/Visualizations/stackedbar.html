@@ -141,9 +141,10 @@
                         // TODO: configurable date format
                         
                         var date = new Date(chartData[0].values[d].x);
+                        var gmtDate =  new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
                         
-                        var monthNumber = date.getMonth()+1
-                        var dayNumber = date.getDate()
+                        var monthNumber = gmtDate.getMonth()+1
+                        var dayNumber = gmtDate.getDate()
                         
                         var tickDate =""+monthNumber+"/"+dayNumber
                         
