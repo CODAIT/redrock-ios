@@ -114,14 +114,13 @@
                                          // now you can send something different than what you display
                                          
                                          var date = new Date(graph.point.x);
+                                         var gmtDate =  new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
                                          
-                                         var yearNumber = date.getFullYear()
-                                         var monthNumber = date.getMonth()+1
-                                         var dayNumber = date.getDate()
+                                         var yearNumber = gmtDate.getFullYear()
+                                         var monthNumber = gmtDate.getMonth()+1
+                                         var dayNumber = gmtDate.getDate()
                                          
                                          var shortDateWithYear = yearNumber+"/"+monthNumber+"/"+dayNumber;
-                                         
-                                         date.setDate(date.getDate()-1);
                                          
                                          var coordinatesWithLongDate = '<h3>' + key + '</h3>' +'<p>' + date.toISOString() + '</p>';
                                          var coordinatesWithShortDate = '<h3>' + key + '</h3>' +'<p>' + shortDateWithYear + '</p>';
