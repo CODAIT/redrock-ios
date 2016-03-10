@@ -9,13 +9,25 @@
 
     <style>
 
-    /* NEW STACKED BAR */
-
+/**
+ * (C) Copyright IBM Corp. 2015, 2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
         *{
             -webkit-tap-highlight-color: rgba(0,0,0,0);
         }
-
-
 
         text {
             font: 12px sans-serif;
@@ -35,25 +47,10 @@
             opacity: 0 !important;
         }
 
-        /*
-        .tick {
-          opacity: 0 !important;
-        }
-         */
-
     .nvd3 .nv-groups path.nv-line {
         fill: none;
         stroke-width: 0px;
     }
-
-    /*
-    #chart1 g.nv-scatter g.nv-series-0 path.nv-point
-    {
-        fill-opacity: 1;
-        stroke-opacity: 1;
-    }
-     */
-
 
     .nvd3 .nv-axis.nv-x path.domain {
   stroke-opacity: 0;
@@ -98,7 +95,6 @@
         nv.addGraph(function() {
             chart = nv.models.multiBarChart().showControls(false).stacked(true).showYAxis(false);
             chart.x(function(d,i) {
-                    //return d.x
                     return i;
                     });
             chart.y(function(d) {
@@ -106,13 +102,9 @@
                     });
             chart.color(["#5cc3b8","#a5266d"]);
             chart.margin({left: 0, right:0,top:80,bottom:80});
-            //chart.groupSpacing(-0.001); //full bleed
             chart.tooltips(true);
                     chart.reduceXTicks(true);
                     chart.tooltipContent(function(key, y, e, graph) {
-
-                                         // now you can send something different than what you display
-                                         
                                          var date = new Date(graph.point.x);
                                          var gmtDate =  new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
                                          
@@ -136,9 +128,6 @@
             chart.xAxis
             .axisLabel("")
             .tickFormat(function(d, i) {
-                        
-                        // TODO: configurable date format
-                        
                         var date = new Date(chartData[0].values[d].x);
                         var gmtDate =  new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
                         
@@ -148,13 +137,8 @@
                         var tickDate =""+monthNumber+"/"+dayNumber
                         
                         return tickDate;
-                        
-                        //return chartData[0].values[d].x.substring(0,
-                        //                                          chartData[0].values[d].x.length); //was length-3 to clip some text
             });
-            //chart.xAxis.rotateLabels(-30);
             chart.yAxis
-            //.axisLabel("# of Tweets")
             .tickFormat(d3.format(',.0d'));
 
             d3.select('#chart1 svg')
@@ -167,35 +151,13 @@
         },function(){
           d3.select("#canvas").on('click',
                function(event){
-
-                                  //console.log(event[0]); //pos?
-                                  //console.log(event[1]); //neg?
-
                     var coordinates = d3.mouse(this);
 
                     showClickPoint(coordinates);
 
-                    //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
-
-                    // TODO CONVERT THESE COORDINATES TO THE DATA WE NEED THEN SEND IT
-
-                    //var sentiment = "positive"
-                    //var date = coordinates
-
                     var ratioX = coordinates[0]/width
                     var ratioY = coordinates[1]/height
 
-                      if(ratioY > 0.15){
-
-                    //talkToApp("coordinates[0]: "+coordinates[0] + " coordinates[1]: "+coordinates[1] + " width: "+width+" height: "+height);
-                    //talkToApp(ratioX+","+ratioY)
-                    //talkToApp(ratioX+"")
-                      }
-
-                    //toggle = !toggle;
-                    //chart.showControls(toggle);
-                    //chart.showYAxis(toggle);
-                    //chart.showLegend(toggle);
                     chart.update();
            });
       });
@@ -217,15 +179,12 @@
     }
 
     function talkToApp(coordinates){
-
-        //OK DO THE THING HERE!!!!!
         try {
             var ourmessage = coordinates;
             webkit.messageHandlers.callbackHandler.postMessage(ourmessage);
         } catch(err) {
             console.log('The native context does not exist yet');
         }
-
     }
 
     function transformData(data){
@@ -254,8 +213,6 @@
         }
         return copy;
     }
-
-    //chart = renderChart([{"key": "Tweet Count", "values": [{"x": "11/17", "y":43, "z":33},{"x": "11/18", "y":22, "z":22},{"x": "11/19", "y":99, "z":33},{"x": "2015-11-20T00:00:00.000Z", "y":123, "z":54},{"x": "11/21", "y":15, "z":26},{"x": "11/22", "y":36, "z":12},{"x": "11/23", "y":63, "z":1}]}], 1024, 600);
 
     </script>
 </body>

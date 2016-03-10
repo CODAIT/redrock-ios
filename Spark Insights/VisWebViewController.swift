@@ -23,7 +23,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         case .ForceGraph:
             return "forcegraph.html"
         case .StackedBarDrilldownCirclePacking:
-            return "StackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve.html"
+            return "StackedBarDrilldownCirclepacking.html"
         case .SidewaysBar:
             return "sidewaysbar.html"
         default:

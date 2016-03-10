@@ -2,6 +2,23 @@
 <meta charset="utf-8">
 <style>
 
+/**
+ * (C) Copyright IBM Corp. 2015, 2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 #chart {
   width: 960px;
   height: 760px;
@@ -16,7 +33,6 @@ text {
 }
 
 rect {
-/*  fill: none; */
   stroke: #fff;
   stroke-width: 1px;
 }
@@ -25,12 +41,6 @@ rect.parent,
 .grandparent rect {
   stroke-width: 2px;
 }
-
-/*
-.grandparent:hover rect {
-  fill: blue;
-}
- */
 
 .children rect.parent,
 .grandparent rect {
@@ -69,7 +79,6 @@ rect.parent,
 
 
 <p id="chart">
-<!--<div id="legend"></div>-->
 <script src="d3.min.js" charset="utf-8"></script>
 <script>
 
@@ -98,7 +107,6 @@ var color = d3.scale.linear()
     .range(colorRange);
 
 // introduce color scale here
-
 var treemap = d3.layout.treemap()
     .children(function(d, depth) { return depth ? null : d._children; })
     .sort(function(a, b) { return a.value - b.value; })
@@ -138,65 +146,11 @@ var legend = d3.select("#legend").append("svg")
       .enter()
       .append('g')
 
-// functions
-
-// change top bar to 1C3648
-
-var parentColor = d3.scale.ordinal().range(["1"]); //, "2", "3", "4", "5", "6", "7", "8"]);
-
-var color1 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color2 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color3 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color4 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color5 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color6 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color7 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-var color8 = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
-
-
-/*
-var color1 = d3.scale.ordinal().range(["#c2e4f8","#86c3ea","#69a4d8","#5e93cd","#4278bc", "#325c80"]);
-var color2 = d3.scale.ordinal().range(["#c8df8e","#b4d455","#8ec63e","#59a745","#4b853d", "#2f6632"]);
-var color3 = d3.scale.ordinal().range(["#b2ded7","#85cfc8","#5cc3b8","#00b39f","#018571"]);
-var color4 = d3.scale.ordinal().range(["#e6d1e6","#c7aad1","#a88fc3","#9771b1","#855ca6", "#734098"]);
-var color5 = d3.scale.ordinal().range(["#FFD2FF","#FF9EEE","#FF71D4","#FF3CA0","#DB2780", "#A6266E"]);
-var color6 = d3.scale.ordinal().range(["#FFD2DD","#FFA5B4","#FF7D87","#FF5050","#E71D32", "#AD1625"]);
-var color7 = d3.scale.ordinal().range(["#FFD791","#FFA573","#FF7832","#FF5003","#D74108", "#A53725"]);
-var color8 = d3.scale.ordinal().range(["#FDE876","#FDD600","#EFC100","#BE9B00","#8C7300", "#735F00"]);
- */
-
-
+var parentColor = d3.scale.ordinal().range(["1"]);
+var colorRange = d3.scale.ordinal().range(["#DB2680","#A5266D","#7C1C58","#6D1246","#37112D"]);
 function returnColor(parentColor, number){
-    
-    if(parentColor == "1"){
-        return color1(number);
-    }
-    else if(parentColor == "2"){
-        return color2(number);
-    }
-    else if(parentColor == "3"){
-        return color3(number);
-    }
-    else if(parentColor == "4"){
-        return color4(number);
-    }
-    else if(parentColor == "5"){
-        return color5(number);
-    }
-    else if(parentColor == "6"){
-        return color6(number);
-    }
-    else if(parentColor == "7"){
-        return color7(number);
-    }
-    else if(parentColor == "8"){
-        return color8(number);
-    }
-    else{
-        return "#FF69B4";
-    }
+    return colorRange(number);
 }
-
 
 function initialize(root) {
     root.x = root.y = 0;
@@ -215,8 +169,6 @@ function initialize(root) {
         ? d.value = d.children.reduce(function(p, v) {return p + accumulate(v); }, 0)
         : d.value;
   }
-
-
 
   // Compute the treemap layout recursively such that each group of siblings
   // uses the same size (1×1) rather than the dimensions of the parent cell.
@@ -288,7 +240,7 @@ var root = JSON.parse(data);
     grandparent
       .datum(d.parent)
       .select("rect")
-      .attr("fill", "#1C3648"); // function(){console.log(color(d.rate)); return color(d['rate'])})
+      .attr("fill", "#1C3648"); 
 
     var g1 = svg.insert("g", ".grandparent")
         .datum(d)
@@ -363,7 +315,7 @@ var root = JSON.parse(data);
   function text(text) {
     text.attr("x", function(d) { return x(d.x) + 6; })
         .attr("y", function(d) { return y(d.y) + 6; })
-        .attr("fill", "#fff");// function (d) {return getContrast50(color(parseFloat(d.rate)))});
+        .attr("fill", "#fff");
   }
 
   function rect(rect) {
@@ -371,7 +323,7 @@ var root = JSON.parse(data);
         .attr("y", function(d) { return y(d.y); })
         .attr("width", function(d) { return x(d.x + d.dx) - x(d.x); })
         .attr("height", function(d) { return y(d.y + d.dy) - y(d.y); })
-        .attr("fill", function(d){ return returnColor(3, d.y);} /*returnColor(d.name)}*/); //function(d){return color(parseFloat(d.rate));});
+        .attr("fill", function(d){ return returnColor(3, d.y);}); 
   }
 
   function name(d) {
@@ -381,8 +333,5 @@ var root = JSON.parse(data);
   }
 
 }
-
-//var data = '{ "name": "Animals", "children": [ { "children": [ { "value": 769, "name": "Goats" }, { "value": 935, "name": "Cows" } ], "name": "Ungulates" }, { "children": [ { "value": 253, "name": "Bunny" }, { "value": 307, "name": "Rat" } ], "name": "Rodents" }]}'
-//renderChart(data, 1024, 680);
 
 </script>

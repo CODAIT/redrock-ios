@@ -2,10 +2,26 @@
 <meta charset="utf-8">
 <style>
 
+/**
+ * (C) Copyright IBM Corp. 2015, 2015
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 *{
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
-
 
 .node {
   fill: rgba(92,195,184,1.0);
@@ -27,7 +43,6 @@
 function renderChart(data, w, h) {
 
 var optimizedWidth = 1024
-//var optimizedHeight = 624
 
 var shrinkConstant = w/optimizedWidth
 
@@ -60,17 +75,6 @@ var minLinkLength = d3.min(graph.links, function(d){return d.distance;});
 var radiusScale = d3.scale.linear().domain([0,maxNodeSize]).range([10,65 * resizeConstant * shrinkConstant]);
 
 var linkScale = d3.scale.linear().domain([minLinkLength,maxLinkLength]).range([45,(210*resizeConstant*resizeConstant*shrinkConstant)]);
-
-/*
-var n = graph.nodes.length
-graph.nodes.forEach(function(d, i){
-    d.x = d.y = width / n * i;
-});
-*/
-
-//document.getElementById("test").innerHTML = "width: "+w+"... height: "+h;
-//document.getElementById("test").innerHTML = "max: "+max;
-
 
   force
       .nodes(graph.nodes)
@@ -142,7 +146,5 @@ function startAnimation(){
 function stopAnimation(){
     force.stop();
 }
-
-//renderChart('{"nodes":[    {"name":"Myriel","value":52,"group":1},    {"name":"Labarre","value":5,"group":2},    {"name":"Valjean","value":17,"group":2},    {"name":"Mme.deR","value":55,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":44,"group":2},    {"name":"Mme.deR","value":17,"group":2},    {"name":"Isabeau","value":22,"group":2},    {"name":"Isabeau","value":17,"group":2},    {"name":"Gervais","value":33,"group":2}  ],  "links":[    {"source":0,"target":1,"distance":33},    {"source":0,"target":2,"distance":22},    {"source":0,"target":3,"distance":22},    {"source":0,"target":4,"distance":11},    {"source":0,"target":5,"distance":22},    {"source":0,"target":6,"distance":22},    {"source":0,"target":7,"distance":43},    {"source":0,"target":8,"distance":22},    {"source":0,"target":9,"distance":22}  ]}');
 
 </script>

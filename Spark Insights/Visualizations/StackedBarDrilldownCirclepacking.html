@@ -2,7 +2,22 @@
 <meta charset="utf-8">
     <style>
         
-        /* DRILLDOWN CIRCLEPACKING BY RAPH */
+        /**
+         * (C) Copyright IBM Corp. 2015, 2015
+         *
+         * Licensed under the Apache License, Version 2.0 (the "License");
+         * you may not use this file except in compliance with the License.
+         * You may obtain a copy of the License at
+         *
+         *     http://www.apache.org/licenses/LICENSE-2.0
+         *
+         * Unless required by applicable law or agreed to in writing, software
+         * distributed under the License is distributed on an "AS IS" BASIS,
+         * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         * See the License for the specific language governing permissions and
+         * limitations under the License.
+         *
+         */
         
         *{
             -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -33,10 +48,6 @@
         font: 10px "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-anchor: middle;
         fill: #ffffff;
-        
-        
-        
-        /*text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;*/
     }
     
     .label,
@@ -50,8 +61,6 @@
         </style>
     <body>
         <span id="ruler"></span>
-        <p id="test"></p>
-        <p id="test2"></p>
         <p id="width"></p>
         <p id="height"></p>
         <p id="shrink"></p>
@@ -121,19 +130,6 @@ function renderChart(data, w, h){
     var margin = 0,
     diameter = 600;
     
-    //var optimizedWidth = 1024
-    //var optimizedHeight = 624
-    
-    //var shrinkConstant = w/optimizedWidth
-
-//var ruler = document.getElementById("ruler");
-//var width = document.getElementById("width");
-//width.innerHTML = w
-//var height = document.getElementById("height");
-//height.innerHTML = h
-//var shrinkLabel = document.getElementById("shrink");
-//shrinkLabel.innerHTML = shrinkConstant
-
     var xPadding = 0
     var yPadding = 0
     var resizeConstant = 0.82
@@ -164,8 +160,6 @@ function renderChart(data, w, h){
     zoomedOutSize = resizeConstant * zoomedOutSize
 
     diameter = resizeConstant * diameter
-
-    //var svgContainer = d3.select("body").append("svg").attr("width", w).attr("height", h).style("border", "1px solid black"); // for a visual check of the borders
 
     var svg = d3.select("body").append("svg")
     .attr("width", canvasWidth+canvasWidthAddition)
@@ -201,7 +195,6 @@ function renderChart(data, w, h){
   var appendedText = text.append("text");
       appendedText.attr("class", "label")
       .attr("dy","0.4em")
-      //.attr("opacity",(toggle)?0:1)
       .style("text-anchor", "middle")
       .style("fill-opacity", function(d) { return 0.5;})
       .style("display", function(d) { return 1;})
@@ -224,16 +217,6 @@ function renderChart(data, w, h){
 
   function resize(root){
     var focus0 = focus; focus = root;
-    //alert("zooming in click")
-
-    /*
-    appendedText
-    .filter(function(root){return root.parent === focus;})
-    .style("font-size", function(d){
-
-      return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedInSize) )+"px";
-  });
-  */
   }
 
   function hideThenShow(){
@@ -244,37 +227,7 @@ function renderChart(data, w, h){
   }
 
   function zoom(d, zoomingOutMa) {
-    //if(zoomingOutMa){alert("We are zooming out.")}else{alert("We are zooming in.")}
-
     var focus0 = focus; focus = d;
-
-    /*
-    var transition = d3.transition()
-        .duration(d3.event.altKey ? 7500 : 750)
-        .tween("zoom", function(d) {
-          var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2.3 + margin]);
-          return function(t) { zoomTo(i(t), zoomingOutMa); };
-        });
-
-
-        hideThenShow();
-
-    //Handle on click event
-    svg.on("click",function(){
-      var coordinates = d3.mouse(this);
-      // this is the one that zooms out on user click
-
-      //alert("zooming out click line 269")
-
-      appendedText
-      .filter(function(root){return root.parent === focus;})
-      .style("font-size", function(d){
-        // this happens at the wrong time?
-        return determineFontSizeBasedOnRadiusAndText(d.r, d.name, (d.r*zoomedOutSize) )+"px";
-        //return Math.round(d.r*zoomedOutSize)+"px"
-      });
-
-    })*/
   }
 
   function zoomTo(v, zoomingOutMa) {
@@ -293,29 +246,17 @@ function renderChart(data, w, h){
   }
 
   function determineFontSizeBasedOnRadiusAndText(radius, text, testSize){
-    //var len = text.visualLength();
-
     ruler.style.fontSize = (testSize)+"px";
-    //test.style.fontSize = (testSize)+"px";
-
     if(text.visualLength() > ((radius*2) * 0.90) ){ //it's too big, overflowing bounds
-      //window.alert("The given text... " + text + "... at the font size of... " + testSize + "... is... " + text.visualLength() + " pixels long. The diameter of the circle is " + 2*radius + ". I predict the text will overflow.");
       testSize = testSize * ((radius*2) / text.visualLength() ) * 0.70; // it was too big, so make it smaller
     }
     else if(text.visualLength() < (radius) ) { //it's too small, less than half the diameter
-      //window.alert("The given text... " + text + "... at the font size of... " + testSize + "... is... " + text.visualLength() + " pixels long. The diameter of the circle is " + 2*radius + ". I predict the text is too small.");
       testSize = testSize * 1.5 ; //make it a little bigger
     }
-
-    //document.getElementById("test").innerHTML = "size of the string in pixels is... " + len;
 
     return testSize;
   }
 
-};
-
-function heyRenderThisDataBro(){
-    var data7 = '{"name": " ","children": [{"name": "101", "children": [{"name": "beck/arnley", "size":94},{"name": "ngk", "size":169},{"name": "plug", "size":3663},{"name": "acdelco", "size":246},{"name": "he76", "size":80},{"name": "platinum", "size":880},{"name": "(8034)", "size":80},{"name": "iridium", "size":51},{"name": "airtex", "size":90},{"name": "ignition", "size":265}]},{"name": "108", "children": [{"name": "@itsjaun", "size":284}]},{"name": "11", "children": [{"name": "wires", "size":245},{"name": "plugs", "size":395}]},{"name": "121", "children": [{"name": "conventional", "size":211}]},{"name": "127", "children": [{"name": "flame", "size":725}]},{"name": "2", "children": [{"name": "crib", "size":214},{"name": "blunt", "size":1341}]},{"name": "29", "children": [{"name": "ignited", "size":111}]},{"name": "37", "children": [{"name": "denso", "size":3333}]},{"name": "7", "children": [{"name": "convo", "size":915}]}]}';var w = 671.0; var h = 540.0;  renderChart(data7, w, h);
 };
 
 </script>
