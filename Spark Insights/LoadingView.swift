@@ -31,11 +31,6 @@ class LoadingView: UIView {
         UIView.animateWithDuration(0.2, animations: {
             self.view.alpha = 1
         })
-        
-        // Listen for taps
-        // let tapRec = UITapGestureRecognizer()
-        // tapRec.addTarget(self, action: "viewTapped")
-        // view.addGestureRecognizer(tapRec)
     }
     
     func loadViewFromNib() -> UIView {
