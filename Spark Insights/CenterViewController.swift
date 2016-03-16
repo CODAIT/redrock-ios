@@ -120,7 +120,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         self.headerLabel.setTitle(self.searchText, forState: UIControlState.Normal)
         
         addLeftPanelViewController()
-        addBottmDrawerViewController()
+        addBottomDrawerViewController()
         
         switch Config.appState {
         case .Historic:
@@ -186,7 +186,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         view.addConstraints(viewConst_H)
     }
     
-    func addBottmDrawerViewController() { //TODO: spelling
+    func addBottomDrawerViewController() {
         bottomDrawerViewController = UIStoryboard.bottomDrawerViewController()
         bottomDrawerHolder.addSubview(bottomDrawerViewController.view)
         addChildViewController(bottomDrawerViewController)
