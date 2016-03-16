@@ -64,7 +64,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             displayVisOverSentiment(transformDataForDisplayVisOverSentiment(rawData), sentimentIsPositiveMa: isSentimentPositive(rawData));
         } else if (message.name == "console") {
-            // Use the following method to print console logs from the WKWebView
+            // DEBUG: Use the following method to print console logs from the WKWebView
             // window.webkit.messageHandlers.console.postMessage({body: "TEST"});
             print("WKWebView Log: \(message.body)")
         }

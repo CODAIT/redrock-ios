@@ -33,7 +33,6 @@ protocol NetworkDelegate {
     func handleProfessionCallBack(json:JSON?, error: NSError?)
     func handleWordDistanceCallBack(json:JSON?, error: NSError?)
     func handleWordClusterCallBack(json:JSON?, error: NSError?)
-    //func handleWordCloudCallBack(json:JSON?, error: NSError?)
     func handleTopMetrics(json:JSON?, error: NSError?)
     func displayRequestTime(time: String)
     func responseProcessed()
@@ -189,8 +188,6 @@ class Network
             self.executeWordClusterRequest(encode.include, exclude: encode.exclude) //not imp yet
             self.executeProfessionRequest(encode.include, exclude: encode.exclude)
             self.executeWordDistanceRequest(encode.include, exclude: encode.exclude)
-            //self.executeWordCloudRequest()
-            //TODO: Find out if we have specific request for top metrics
         }
     }
     
@@ -302,17 +299,9 @@ class Network
         executeRequest(req, callBack: self.callWordClusterDelegate)
     }
     
-    /*
-    private func executeWordCloudRequest()
-    {
-        var parameters = Dictionary<String,String>()
-        parameters["user"] = "hao"
-        let req = self.createRequest(Config.serverWordcloudPath, paremeters: parameters)
-        executeRequest(req, callBack: self.callWordCloudDelegate)
-    }
-    */
     
     //MARK: Call Delegates
+    
     private func callFullResponseDelegate(json: JSON?, error: NSError?)
     {
         self.delegate?.handleTweetsCallBack(json, error: error)
@@ -321,7 +310,6 @@ class Network
         self.delegate?.handleProfessionCallBack(json, error: error)
         self.delegate?.handleWordDistanceCallBack(json, error: error)
         self.delegate?.handleWordClusterCallBack(json, error: error)
-        //self.delegate?.handleWordCloudCallBack(json, error: error)
         self.delegate?.handleTopMetrics(json, error: error)
         self.delegate?.responseProcessed()
     }
@@ -355,15 +343,10 @@ class Network
     {
         self.delegate?.handleWordClusterCallBack(json, error: error)
     }
-    
-    /*
-    private func callWordCloudDelegate(json: JSON?, error: NSError?)
-    {
-        self.delegate?.handleWordCloudCallBack(json, error: error)
-    }
-    */
+
 
     //MARK: Server
+    
     private func createRequest(serverPath: String, paremeters: Dictionary<String,String>) -> String{
         self.requestTotal += 1
         var urlPath:String = "\(Config.serverAddress)/\(serverPath)"
@@ -472,6 +455,7 @@ class Network
     }
     
     // MARK: - Utils
+    
     func getIncludeAndExcludeSeparated(searchText: String) -> (include: String, exclude: String)
     {
         let terms = searchText.componentsSeparatedByString(",")

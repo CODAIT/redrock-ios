@@ -152,16 +152,16 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     override func viewDidDisappear(animated: Bool) {
-        stopNetworkTimer() // TODO: stop network call timer
+        stopNetworkTimer()
     }
     
     func applicationWillResignActive(application: UIApplication) {
-        stopNetworkTimer() // TODO: stop network call timer
+        stopNetworkTimer()
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
         switch Config.appState {
-        case .Live: // TODO: start network call timer if .Live
+        case .Live:
             startNetworkTimer()
         default:
             break
@@ -307,8 +307,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                     self.reloadVisualisations()
                     if (self.rangeSliderViewController != nil) { self.rangeSliderViewController.resetViewController() }
                 }
-
-                // should move slider bar code here to be better
         })
     }
     
@@ -322,42 +320,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         if (scrollView != nil) { scrollView.setContentOffset(CGPoint(x: 0,y: 0), animated: false) }
     }
     
-//    func changeLastUpdated(callWaitToSearch: Bool, waitingResponse: Bool)
-//    {
-//        let dateNow = NSDate()
-//        let dateFormat = NSDateFormatter()
-//        dateFormat.dateFormat = "E, MMM d hh:mm aa"
-//        dateFormat.timeZone = NSTimeZone.localTimeZone()
-//        if waitingResponse
-//        {
-//             self.tweetsFooterLabel.text = "Loading ..."
-//        }
-//        else
-//        {
-//           self.tweetsFooterLabel.text = "Last updated: " + dateFormat.stringFromDate(dateNow)
-//        }
-//    }
-//    
-//    func waitToUpdateSearch()
-//    {
-//        // 5min until new update be available
-//        let delay = 300.0 * Double(NSEC_PER_SEC)
-//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-//        dispatch_after(time, dispatch_get_main_queue()) {
-//            self.canUpdateSearch = true
-//            UIView.animateWithDuration(2, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: {
-//                self.tweetsFooterLabel.text = "Refresh Available"
-//                self.tweetsFooterView.backgroundColor = Config.mediumGreen
-//                self.tweetsFooterSeparatorLine.hidden = true
-//                self.view.layoutIfNeeded()
-//                }, completion: nil)
-//        }
-//    }
-    
-    /*
-        TODO: Change name from setupWebViews to something else like setupVisualizations
-        creates the webviews
-    */
     func setupWebViews()
     {
         for visType in Config.visualizationTypes {
@@ -408,7 +370,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             page = Config.getNumberOfVisualizations()-1
         }
         if (currentPage != page && scrollView.endedRelayout) { //page was changed
-            //Log("page was changed from \(previousPage) to \(page)")
             pageChanged = true
             previousPage = currentPage
             currentPage = page
@@ -454,7 +415,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     // MARK: - PageControlDelegate
     
     func pageChanged(index: Int) {
-        //Log("Page Changed to index: \(index)")
         let offset = scrollView.frame.size.width * CGFloat(index)
         scrollView.setContentOffset(CGPointMake(offset, 0), animated: true)
     }
@@ -713,13 +673,11 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                     } catch let error as NSError {
                         parseError = error
                         // Parse error
-                        // TODO: handle error
                         Log("Error Parsing demo data: \(parseError?.localizedDescription)")
                     }
                 } catch let error as NSError {
                     readError = error
                     // Read error
-                    // TODO: handle error
                     Log("Error Reading demo data: \(readError?.localizedDescription)")
                 } catch {
                     fatalError()

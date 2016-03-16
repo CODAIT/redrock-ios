@@ -27,10 +27,6 @@ import UIKit
 class InfoViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //self.tableView.rowHeight = UITableViewAutomaticDimension
-        //self.tableView.estimatedRowHeight = 150
-        
         self.preferredContentSize = CGSizeMake(350,600)
     }
 
@@ -78,7 +74,6 @@ class InfoViewController: UITableViewController {
             cellDescription.chartTitleLabel.text = Config.visualizationTitles[indexPath.row-1]
             cellDescription.chartIconImage.image = UIImage(named: Config.visualizationButtons[indexPath.row-1])
             cellDescription.chartDescriptionLabel.text = Config.visualizationDescription[indexPath.row-1]
-            //cellDescription.chartDescriptionLabel.numberOfLines = 0
             return cellDescription
         }
         else

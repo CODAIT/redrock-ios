@@ -260,7 +260,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     // MARK: - Drag and Drop
     
     func cancelDragging() {
-        // Log(__FUNCTION__)
         if (!dragging) {
             return
         }
@@ -280,11 +279,9 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func startDragging(draggingIndex: Int, draggedName: String, draggedColor: UIColor, location: CGPoint) {
-        // Log(__FUNCTION__)
         dragging = true
         draggedIndex = draggingIndex
         tempView = UIView(frame: CGRectMake(0, 0, 130, 34))
-        //tempView?.alpha = 0.8
         tempView?.backgroundColor = Config.darkBlueColor
         tempView?.layer.borderColor = Config.lightSeaGreen.CGColor
         tempView?.layer.borderWidth = 1
@@ -304,10 +301,7 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func handleSwipe(gestureRecongnizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
         let state = gestureRecongnizer.state
-        
         let loc = gestureRecongnizer.locationInView(table)
-        // Log("SWIPE (\(stateToString(state))) (\(loc.x),\(loc.y))")
-        
         let indexPath = table.indexPathForRowAtPoint(loc)
         
         if (indexPath == nil) {
@@ -340,7 +334,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleSwipeA(gestureRecognizer: UIGestureRecognizer) {
-        // Log(__FUNCTION__)
         fromTable = tableA
         toTable = tableB
         fromList = listA
@@ -349,7 +342,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleSwipeB(gestureRecognizer: UIGestureRecognizer) {
-        // Log(__FUNCTION__)
         fromTable = tableB
         toTable = tableA
         fromList = listB
@@ -358,11 +350,8 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLP(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
-        // Log(__FUNCTION__)
         let state = gestureRecognizer.state
         let loc = gestureRecognizer.locationInView(table)
-        // Log("LP (\(stateToString(state))) (\(loc.x),\(loc.y))")
-        
         let indexPath = table.indexPathForRowAtPoint(loc)
         
         if (indexPath == nil) {
@@ -380,7 +369,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
         let color = label.textColor
         
         if (indexPath!.row >= list.array!.count) {
-            // Log("Non in any row")
             return
         }
         
@@ -398,7 +386,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLPA(gestureRecognizer: UIGestureRecognizer) {
-        // Log(__FUNCTION__)
         fromTable = tableA
         toTable = tableB
         fromList = listA
@@ -407,7 +394,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handleLPB(gestureRecognizer: UIGestureRecognizer) {
-        // Log(__FUNCTION__)
         fromTable = tableB
         toTable = tableA
         fromList = listB
@@ -416,8 +402,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func handlePan(gestureRecognizer: UIGestureRecognizer, table: UITableView, list: RefArray) {
-        // Log(__FUNCTION__)
-        
         let state = gestureRecognizer.state
         let loc = gestureRecognizer.locationInView(self.view)
         
@@ -506,16 +490,6 @@ class RightViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func cancel() {
-        // TODO:Fix animation to return to table if dropped outside a TableView
-//        Log(__FUNCTION__)
-//        Log("frame: \(self.tempView!.frame)")
-//        Log("bgrect: \(beginDraggingRect)")
-//        UIView.animateWithDuration(0.5, animations: {
-//            self.tempView?.frame = beginDraggingRect!
-//            }, completion: {(finished: Bool) in
-//            self.cancelDragging()
-//        })
-        
         self.cancelDragging()
     }
     

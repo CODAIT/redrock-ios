@@ -299,11 +299,8 @@ class VisMasterViewController: UIViewController {
         // populates the 2d array
         for (row, rowJson): (String, JSON) in json[containerName] {
             for (col, cellJson): (String, JSON) in rowJson {
-                //println(row, col, cellJson)
                 let r: Int = Int(row)!
                 let c: Int = Int(col)!
-                //self.tableData[r][c] = cellJson.stringValue
-                //Log(cellJson.stringValue)
                 
                 tableData[r][c] = cellJson.stringValue.stringByReplacingOccurrencesOfString("\"", withString: "").stringByReplacingOccurrencesOfString("'", withString: "").stringByReplacingOccurrencesOfString("\n", withString: "") //remove quotes
             }
