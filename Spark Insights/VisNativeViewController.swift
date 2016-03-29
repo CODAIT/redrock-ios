@@ -40,14 +40,11 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         view.clipsToBounds = true
 
         var mapTopPadding = 0.0
-        //var mapVerticalScaleConstant = 1.0
         if(CenterViewController.leftViewOpen){
             mapTopPadding = Config.smallscreenMapTopPadding
-            //mapVerticalScaleConstant = Config.smallscreenMapVerticalScaleConstant
         }
         else{
             mapTopPadding = Config.fullscreenMapTopPadding
-            //mapVerticalScaleConstant = Config.fullscreenMapVerticalScaleConstant
         }
 
         mapView = TimeMapView()
@@ -72,7 +69,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     }
 
     override func onDataSet() {
-        //Log("onDataSet")
         onLoadingState()
         
         let numberOfColumns = 3        // number of columns
@@ -138,9 +134,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         invalidateTimer()
         
-        //Log("in startTimemap... chartData...")
-        //print(self.chartData)
-        
         if self.chartData.count > 1 && !timemapDataIsInvalid {
             self.timemapTimer = NSTimer.scheduledTimerWithTimeInterval(Config.timemapTimeIntervalInSeconds, target: self, selector: Selector("tickTimemap"), userInfo: nil, repeats: true)
         }
@@ -180,7 +173,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
     }
     
     func transformDataForTimemapIOS(){
-        //Log("transformDataForTimemapIOS")
         
         timemapDataIsInvalid = false
         indexOfLastDate = 0
@@ -197,7 +189,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         mapView.baseMapView!.frame = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height*CGFloat(mapVerticalScaleConstant))
         
-        //TODO only do this once
         var biggestValue = 0.0
         if self.chartData.count > 1
         {
@@ -222,7 +213,7 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         zeroTimemapCircles()
         countryCircleViews.removeAll()
-        if(countryCircleViews.isEmpty){ //initialize it if you havent //this isnt being redone! redo it
+        if(countryCircleViews.isEmpty){ //initialize it if you havent
             for myCountryString in countriesArray{
                 
                 let myCountry : NSDictionary = robinsonProperties![myCountryString]! as! NSDictionary
@@ -255,16 +246,12 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         let index : Int = Int(round(barProgress * Double(chartData.count)))
         indexOfLastDate = (index >= chartData.count) ? chartData.count - 1 : index
         
-        // Log("setTimemapDateBasedOnPercentageProgressOfBarUsingGuess... barProgress: \(barProgress)... index: \(index)")
-        
-        // Need to double tick incase we start in the middle of the list of countries
         tickTimemap()
         tickTimemap()
     }
     
     @objc func tickTimemap()
     {
-        //Log("tickTimemap().... indexOfLastDate is \(indexOfLastDate)")
         let countriesFilePath = NSBundle.mainBundle().pathForResource("VisualizationsNativeData/timemap/CountryList", ofType: "plist")
         let countries = NSDictionary(contentsOfFile: countriesFilePath!)
         let countriesArray : Array = countries?.objectForKey("CountryList") as! Array<String>
@@ -295,7 +282,6 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             lastDate = chartData[i][0]
             i++
             if( i >= chartData.count ){
-                //Log("Reached the end of timemap data.... it's time to loop.")
                 i = 0
                 currentDate = chartData[i][0]
                 if lastDate == currentDate {
@@ -309,15 +295,11 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
         
         if(!timemapDataIsInvalid){
             let dateStringFormatter = NSDateFormatter()
-            //dateStringFormatter.dateFormat = "yyyy MM/dd" //TODO change this to match the other format
             
             dateStringFormatter.dateFormat = Config.dateFormat
             
             dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
             
-            // Aug 10 07
-            // TODO playing with fire, as soon as the year rolls over this breaks
-            // the dates from backend need to be explicit!!
             let firstDateString = chartData[0][0]
             let finalDateString = chartData[chartData.count-1][0]
             let lastDateString = lastDate
@@ -325,21 +307,15 @@ class VisNativeViewController: VisMasterViewController, VisLifeCycleProtocol {
             let firstDateForMath = dateStringFormatter.dateFromString(firstDateString)
             let finalDateForMath = dateStringFormatter.dateFromString(finalDateString)
             let lastDateForMath = dateStringFormatter.dateFromString(lastDateString)
-            
-            //Log("firstDateForMath... \(firstDateForMath)")
-            //Log("finalDateForMath... \(finalDateForMath)")
-            //Log("lastDateForMath... \(lastDateForMath)")
         
             let playBarViewControllerProgress = ((lastDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)/((finalDateForMath?.timeIntervalSince1970)!-(firstDateForMath?.timeIntervalSince1970)!)
             
             self.playBarController?.progress = Float(playBarViewControllerProgress)*100
             self.playBarController?.date = dateStringFormatter.dateFromString(currentDate)!
-            //Log("playBarViewControllerProgress... \(playBarViewControllerProgress)")
         }
         
         indexOfLastDate = i
         self.view.setNeedsDisplay()
-        //Log("end of tickTimemap")
     }
 
 }

@@ -25,7 +25,6 @@
 import UIKit
 import WebKit
 
-// make VisWebViewController handle callbacks
 class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNavigationDelegate, WKScriptMessageHandler {
     
     var mainFile: String {
@@ -64,8 +63,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             displayVisOverSentiment(transformDataForDisplayVisOverSentiment(rawData), sentimentIsPositiveMa: isSentimentPositive(rawData));
         } else if (message.name == "console") {
-            // DEBUG: Use the following method to print console logs from the WKWebView
-            // window.webkit.messageHandlers.console.postMessage({body: "TEST"});
             print("WKWebView Log: \(message.body)")
         }
     }
@@ -86,28 +83,11 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
     }
     
-    // TODO THIS IS USING MAX DATE RANGES INSTEAD OF CURRENT DATE RANGES
     func transformDataForDisplayVisOverSentiment(rawData: String) -> NSDate{
-        
-        
-        //TODO if Steve wants the "inaccurate click with flowy chart" back then we need to revert back into the code approximated the datetime based on the click coordinate
-        
-        //var coordinates = '<h3>' + key + '</h3>' +'<p>' + y + '</p>' ;
-        
-        Log("transformDataForDisplayVisOverSentiment")
-        Log(rawData)
-        
-        //rawData.substringFromIndex(advance(rawData.rangeofString("<p>")))
-        
-        //remove <h3>Positive Sentiment</h3><p>
-        // then remove </p>
-        
         let nsstringDate :NSString = rawData
         
         var dateFromChart = nsstringDate.substringFromIndex(30) //isolate the date
         dateFromChart = String(dateFromChart.characters.dropLast(4)) //isolate the date
-        
-        //Log("dateFromChart \(dateFromChart)")
         
         let dateFormat = NSDateFormatter()
         dateFormat.dateFormat = Config.dateFormat
@@ -115,10 +95,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let myDate = dateFormat.dateFromString(dateFromChart)!
         
-        //Log("myDate: \(myDate)")
-        
         return myDate
-        
     }
     
     func displayVisOverSentiment(selectedDate: NSDate, sentimentIsPositiveMa: Bool) {
@@ -139,7 +116,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let selectedDateAsStringWithZero = "\(selectedDateAsString):00:00.000Z"
         
-        //TODO this is hardcoded to be one hour!! we should change it to be modular
         let timeInterval = NSTimeInterval((Config.dateRangeIntervalForStackedbarDrilldownInSeconds))
         
         let endDateAsString = dateFormat.stringFromDate(selectedDate.dateByAddingTimeInterval(timeInterval))
@@ -173,15 +149,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     func createWKWebViewWithConfigurationForCallback() -> WKWebView{
         let contentController = WKUserContentController();
         
-        // THIS IS ANOTHER WAY TO PASS IN JAVASCRIPT
-        //let userScript = WKUserScript(
-        //    source: "redHeader()", //the name of our function
-        //    injectionTime: WKUserScriptInjectionTime.AtDocumentEnd,
-        //    forMainFrameOnly: true
-        //)
-        //contentController.addUserScript(userScript)
-        
-        contentController.addScriptMessageHandler(self, name: "callbackHandler") //THIS IS THE WAY WE WILL GET MESSAGES BACK FOR OURSELVES
+        contentController.addScriptMessageHandler(self, name: "callbackHandler")
         contentController.addScriptMessageHandler(self, name: "console")
         
         let config = WKWebViewConfiguration()
@@ -189,11 +157,9 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let myWebView = WKWebView(frame: self.view.bounds, configuration: config)
         
-        //WKWebView()
         myWebView.frame = self.view.bounds
         myWebView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         
-        //myWebView.scalesPageToFit = Config.scalePagesToFit[i] //TODO: stackoverflow this, there is a long solution
         myWebView.navigationDelegate = self
         
         // don't let webviews scroll
@@ -211,7 +177,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         switch type! {
         case .StackedBar :
-            if let drilldown = myDrilldown{  //TODO reload my child
+            if let drilldown = myDrilldown{
                 drilldown.onDataSet()
             }
         default:
@@ -276,7 +242,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             case .SidewaysBar:
                 self.transformDataForSidewaysbar()
             case .StackedBarDrilldownCirclePacking:
-                self.transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve()
+                self.transformDataForStackedBarDrilldownCirclepacking()
             default:
                 return
             }
@@ -307,7 +273,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     func transformDataForCirclepacking(){
-        //Log(circlepackingData)
         onLoadingState()
         
         func loadData() {
@@ -320,7 +285,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
                     
-                    var groupName : String = "uninitialized" // this isn't safe, there should be a better way
+                    var groupName : String = "uninitialized"
                     
                     for r in 0..<self.chartData.count{
                         if(groupName != self.chartData[r][2]){
@@ -381,11 +346,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     func makeScriptForSidewaysBar(firstIndex: Int, upperIndex: Int?=nil) -> String {
-        //Log("makeScriptForSidewaysBar")
         var script9 = "var myData = [{\"key\": \"Tweet Count\", \"values\": ["
-        
-        //Log("self.chartData")
-        //print(self.chartData)
         
         for r in firstIndex..<self.chartData.count{
             
@@ -407,29 +368,14 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     func transformDataForSidewaysbar(){
         
-        //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
-        //Log(stackedbarData)
-        
-        //Log("transformDataForSidewaysbar")
-        
         func loadData() {
-            //Log("loadData")
-            //onLoadingState()
-            
             if self.chartData.count > 0
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     
                     let script9 = self.makeScriptForSidewaysBar(0)
                     
-                    //Log("...SCRIPT9....")
-                    //Log(script9)
-                    //Log("....SCRIPT9...")
-                    
-                    //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
-                    
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        //Log("dispatch_async(dispatch_get_main_queue(), { () -> Void in")
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
                         self.onSuccessState()
                         
@@ -444,30 +390,24 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
         
         let numberOfColumns = 2        // number of columns
-        let containerName = "wordCount" // name of container for data //TODO: unknown
+        let containerName = "wordCount" // name of container for data
         
         var contentJson = json
         if contentJson != nil
         {
             contentJson = json![containerName]
             
-            //print(contentJson)
-            
             if contentJson != nil
             {
-                //Log("contentJson != nil")
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    //Log("dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)")
                     let data = self.returnArrayOfLiveData(numberOfColumns, containerName: containerName, json: contentJson!)
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if(data != nil){
-                            //Log("data != nil")
                             self.chartData = data!
                             loadData()
                         }
                         else{
-                            //Log("data == nil")
                             self.errorDescription = Config.serverErrorMessage
                         }
                     })
@@ -475,22 +415,18 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
             else
             {
-                //Log("contentJson == nil?!?!?!???")
                 errorDescription = Config.serverErrorMessage
             }
         }
         else
         {
-            //Log("else")
             errorDescription = Config.serverErrorMessage
         }
     }
     
     
     
-    func transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve(){
-        
-        //Log("transformDataForStackedBarDrilldownCirclepackingInTheVisualizationPanelOfTheRedRockAppThatWeAreMakingForSteve")
+    func transformDataForStackedBarDrilldownCirclepacking(){
         
         onLoadingState()
         
@@ -504,7 +440,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     var script9 = "var data7 = '{\"name\": \" \",\"children\": ["
                     
-                    var groupName : String = "uninitialized" // this isn't safe, there should be a better way
+                    var groupName : String = "uninitialized"
                     
                     for r in 0..<self.chartData.count{
                         if(groupName != self.chartData[r][1]){
@@ -531,8 +467,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                         script9+="}"
                     }
                     script9+="]}]}';var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);"
-                    //script9 = "heyRenderThisDataBro();"
-                    //Log(script9)
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
@@ -568,9 +502,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     
     func transformDataForStackedbar(){
         
-        //[["11/17","43","33"],["11/18","22", "22"],["11/19","22", "22"],["11/20","22", "22"],["11/21","22", "22"],["11/22","22", "22"],["11/23","22", "22"]]
-        //Log(stackedbarData)
-        
         func loadData() {
             onLoadingState()
             
@@ -579,12 +510,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     
                     let script9 = self.makeScriptForStackedBar(0)
-                    
-                    //Log(script9)
-                    
-                    //var script = "var myData = [{\"key\": \"Tweet Count\", \"values\": [  {\"x\":\"11/17\",\"y\":43, \"z\": 33},   {\"x\":\"11/18\",\"y\":22, \"z\": 22},   {\"x\":\"11/19\",\"y\":22, \"z\": 22},   {\"x\":\"11/20\",\"y\":33, \"z\": 11},    {\"x\":\"11/21\",\"y\":333, \"z\": 15},  {\"x\":\"11/22\",\"y\":44, \"z\": 23}, {\"x\":\"11/23\",\"y\":55, \"z\": 44} ] } ]; renderChart(myData);"
-                    
-                    //;var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
@@ -600,7 +525,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         }
         
         let numberOfColumns = 4        // number of columns
-        let containerName = "sentiment" // name of container for data //TODO: unknown
+        let containerName = "sentiment" // name of container for data
         
         var contentJson = json
         if contentJson != nil
@@ -656,8 +581,7 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             
             if let unwrappedUpperIndex = upperIndex {
                 if(self.chartData[r][0] == dateRange[unwrappedUpperIndex]){
-                    
-                    //it's the end of the range //get out of here
+                    //it's the end of the range, get out of here
                     break
                 }
             }
@@ -668,16 +592,12 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
         }
         
-        //;var w = \(viewSize.width); var h = \(viewSize.height);  renderChart(data7, w, h);
-        
         script9+="]}]; renderChart(myData, \(viewSize.width), \(viewSize.height));"
         
         return script9
     }
     
     func getPositiveAndNegativeSentimentValuesForGivenDate(givenDate: NSDate) -> (Double, Double) {
-        //change it into format for chart.... MM/dd hh
-        
         var foundBiggerDate = false
         
         let dateFormat = NSDateFormatter()
@@ -689,23 +609,14 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
         
         let dateWeAreLookingFor = dateFormat.stringFromDate(givenDate)
         
-        Log("dateWeAreLookingFor \(dateWeAreLookingFor)")
-        
-        //Log("self.chartData")
-        //print(self.chartData)
-        
         for r in 0..<self.chartData.count{
             var currentDate = NSDate()
             if(!foundBiggerDate){
-                Log("self.chartData[r][0] \(self.chartData[r][0])")
-                
                 currentDate = dateFormat.dateFromString("2015 \(self.chartData[r][0])")!
             }
             if( !foundBiggerDate && currentDate.compare(givenDate) == .OrderedDescending){ //currentDate is later than givenDate
                 // found a greater date, break out
                 foundBiggerDate = true
-                Log("pos sentiment: \(chartData[r][1])")
-                Log("neg sentiment: \(chartData[r][2])")
                 posValue = (chartData[r][1] as NSString).doubleValue
                 negValue = (chartData[r][2] as NSString).doubleValue
             }
@@ -714,8 +625,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             }
             else if(!foundBiggerDate){ //dates are the same
                 foundBiggerDate = true
-                Log("pos sentiment: \(chartData[r][1])")
-                Log("neg sentiment: \(chartData[r][2])")
                 posValue = (chartData[r][1] as NSString).doubleValue
                 negValue = (chartData[r][2] as NSString).doubleValue
             }
@@ -740,17 +649,13 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
     }
     
     func transformDataForForcegraph(){
-        //Log("transformDataForForcegraph... scrollViewWidth: \(scrollViewWidth)... scrollViewHeight: \(scrollViewHeight)")
-        
         func loadData() {
             onLoadingState()
             if self.chartData.count > 0
             {
                 let viewSize = self.view.bounds.size
-                //TODO: should have searchterm should be from actual searchterm
+                
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    
-                    
                     
                     var script9 = "var myData = '{\"nodes\": [ {\"name\":\"\(self.searchText)\",\"value\":\(self.chartData[0][2]),\"group\":1}, " //the search text just arbitrarily takes the value of the first data point as its value
                     for r in 0..<self.self.chartData.count{
@@ -779,14 +684,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
                     }
                     script9+="]}'; var w = \(viewSize.width); var h = \(viewSize.height); renderChart(myData,w,h);"
                     
-                    //Log("DISTANCE SCRIPT9..... \(script9)")
-                    
-                    //var testscript = "var myData='{\"nodes\":[    {\"name\":\"Myriel\",\"value\":52,\"group\":1},    {\"name\":\"Labarre\",\"value\":5,\"group\":2},    {\"name\":\"Valjean\",\"value\":17,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":55,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":44,\"group\":2},    {\"name\":\"Mme.deR\",\"value\":17,\"group\":2},    {\"name\":\"Isabeau\",\"value\":22,\"group\":2},    {\"name\":\"Isabeau\",\"value\":17,\"group\":2},    {\"name\":\"Gervais\",\"value\":33,\"group\":2}  ],  \"links\":[    {\"source\":0,\"target\":1,\"distance\":33},    {\"source\":0,\"target\":2,\"distance\":22},    {\"source\":0,\"target\":3,\"distance\":22},    {\"source\":0,\"target\":4,\"distance\":11},    {\"source\":0,\"target\":5,\"distance\":22},    {\"source\":0,\"target\":6,\"distance\":22},    {\"source\":0,\"target\":7,\"distance\":43},    {\"source\":0,\"target\":8,\"distance\":22},    {\"source\":0,\"target\":9,\"distance\":22}  ]}'; var w = \(scrollViewWidth); var h = \(scrollViewHeight); renderChart(myData,w,h);";
-                    
-                    //println("TESTSCRIPT..... \(testscript)")
-                    
-                    // println(wordScript)
-                    
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.webView.evaluateJavaScript(script9, completionHandler: nil)
                         self.onSuccessState()
@@ -807,7 +704,6 @@ class VisWebViewController: VisMasterViewController, VisLifeCycleProtocol, WKNav
             let data = self.returnArrayOfData(numberOfColumns, containerName: containerName, json: self.json!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 if(data != nil){
-                    //Log("forcegraph data wasn't nil")
                     self.chartData = data!
                     loadData()
                 }

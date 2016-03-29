@@ -50,7 +50,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
                 self.loadDataFromServer()
             case .Live:
                 startNetworkTimer()
-                //print("Live: \(searchText)")
             }
         }
     }
@@ -74,7 +73,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     var previousPage : Int = 0
     var pageChanged = false
     
-    //Can update search
     var canUpdateSearch = false
     
     @IBOutlet weak var headerLabel: UIButton!
@@ -103,7 +101,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         self.scrollView.delegate = self
 
@@ -136,7 +133,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -606,14 +602,11 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     // X is a number in config
 
     func startNetworkTimer(){
-        //self.networkTimerIsTiming = true
         invalidateNetworkTimer()
-        
-        periodicPowertrackWordcountRequest() //TODO DO ONE REQUEST IMMEDIATELY
+        periodicPowertrackWordcountRequest()
         
         // make a request every X seconds
         self.networkTimer = NSTimer.scheduledTimerWithTimeInterval(Config.networkTimerInterval, target: self, selector: Selector("periodicPowertrackWordcountRequest"), userInfo: nil, repeats: true)
-        
     }
     
     // idempotent function that stops the networktimer from making any further requests
@@ -629,7 +622,6 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
     }
     
     func periodicPowertrackWordcountRequest(){
-        //Log("periodicPowertrackWordcountRequest") //im leaving this logger in for now so we can observe the requests firing off
         Network.sharedInstance.powertrackWordcountRequest(searchText!) { (json, error) -> () in
             self.handleTopMetrics(json, error: error)
             self.handleTweetsCallBack(json, error: error)
@@ -690,7 +682,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         }
     }
 
-    func populateUI(json: JSON){ //THIS IS ONLY USED FOR DUMMY DATA NOW
+    func populateUI(json: JSON){ // This is only used for dummy data
         self.handleTweetsCallBack(json, error: nil)
         self.handleTopMetrics(json, error: nil)
         
@@ -700,9 +692,9 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         
         self.handleSentimentsCallBack(json, error: nil)
         
-        self.handleWordDistanceCallBack(json, error: nil) // "distance" is not being doublepacked
+        self.handleWordDistanceCallBack(json, error: nil)
         
-        self.handleWordClusterCallBack(json, error: nil) // "cluster" but not double-nested
+        self.handleWordClusterCallBack(json, error: nil)
     }
     
     // MARK: - UI Utils
