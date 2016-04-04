@@ -28,7 +28,7 @@
 		CE79DA501B1640C0003F01F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA4E1B1640C0003F01F6 /* Main.storyboard */; };
 		CE79DA521B1640C0003F01F6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA511B1640C0003F01F6 /* Images.xcassets */; };
 		CE79DA551B1640C0003F01F6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA531B1640C0003F01F6 /* LaunchScreen.xib */; };
-		CE79DA611B1640C0003F01F6 /* Spark_InsightsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */; };
+		CE79DA611B1640C0003F01F6 /* RedRockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA601B1640C0003F01F6 /* RedRockTests.swift */; };
 		CE79DA701B177648003F01F6 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */; };
 		CE79DA721B177901003F01F6 /* RightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA711B177901003F01F6 /* RightViewController.swift */; };
 		CE79DA761B17E19A003F01F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA751B17E19A003F01F6 /* SearchViewController.swift */; };
@@ -71,7 +71,7 @@
 			containerPortal = CE79DA3D1B1640C0003F01F6 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CE79DA441B1640C0003F01F6;
-			remoteInfo = "Spark Insights";
+			remoteInfo = "RedRock";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -101,7 +101,7 @@
 		CE79DA541B1640C0003F01F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		CE79DA5A1B1640C0003F01F6 /* RedRockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RedRockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE79DA5F1B1640C0003F01F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spark_InsightsTests.swift; sourceTree = "<group>"; };
+		CE79DA601B1640C0003F01F6 /* RedRockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedRockTests.swift; sourceTree = "<group>"; };
 		CE79DA6A1B1650AA003F01F6 /* DemoData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 		CE79DA6F1B177648003F01F6 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		CE79DA711B177901003F01F6 /* RightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightViewController.swift; sourceTree = "<group>"; };
@@ -207,8 +207,8 @@
 		CE79DA3C1B1640C0003F01F6 = {
 			isa = PBXGroup;
 			children = (
-				CE79DA471B1640C0003F01F6 /* Spark Insights */,
-				CE79DA5D1B1640C0003F01F6 /* Spark InsightsTests */,
+				CE79DA471B1640C0003F01F6 /* RedRock */,
+				CE79DA5D1B1640C0003F01F6 /* RedRockTests */,
 				CE79DA461B1640C0003F01F6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -222,7 +222,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE79DA471B1640C0003F01F6 /* Spark Insights */ = {
+		CE79DA471B1640C0003F01F6 /* RedRock */ = {
 			isa = PBXGroup;
 			children = (
 				F3222DF91B179FE700FDE3B1 /* Visualizations */,
@@ -265,7 +265,7 @@
 				CEDBEAD11B21F27000FB9695 /* LoadingView */,
 				CE79DA481B1640C0003F01F6 /* Supporting Files */,
 			);
-			path = "Spark Insights";
+			path = "RedRock";
 			sourceTree = "<group>";
 		};
 		CE79DA481B1640C0003F01F6 /* Supporting Files */ = {
@@ -276,13 +276,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CE79DA5D1B1640C0003F01F6 /* Spark InsightsTests */ = {
+		CE79DA5D1B1640C0003F01F6 /* RedRockTests */ = {
 			isa = PBXGroup;
 			children = (
-				CE79DA601B1640C0003F01F6 /* Spark_InsightsTests.swift */,
+				CE79DA601B1640C0003F01F6 /* RedRockTests.swift */,
 				CE79DA5E1B1640C0003F01F6 /* Supporting Files */,
 			);
-			path = "Spark InsightsTests";
+			path = "RedRockTests";
 			sourceTree = "<group>";
 		};
 		CE79DA5E1B1640C0003F01F6 /* Supporting Files */ = {
@@ -348,7 +348,7 @@
 			dependencies = (
 			);
 			name = RedRock;
-			productName = "Spark Insights";
+			productName = "RedRock";
 			productReference = CE79DA451B1640C0003F01F6 /* RedRock.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -366,7 +366,7 @@
 				CE79DA5C1B1640C0003F01F6 /* PBXTargetDependency */,
 			);
 			name = RedRockTests;
-			productName = "Spark InsightsTests";
+			productName = "RedRockTests";
 			productReference = CE79DA5A1B1640C0003F01F6 /* RedRockTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -494,7 +494,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE79DA611B1640C0003F01F6 /* Spark_InsightsTests.swift in Sources */,
+				CE79DA611B1640C0003F01F6 /* RedRockTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,7 +617,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Spark Insights/Info.plist";
+				INFOPLIST_FILE = "RedRock/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUGLOG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.ipad.alterj.RedRock;
@@ -632,7 +632,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				INFOPLIST_FILE = "Spark Insights/Info.plist";
+				INFOPLIST_FILE = "RedRock/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ibm.cio.be.ipad.alterj.RedRock;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -652,7 +652,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Spark InsightsTests/Info.plist";
+				INFOPLIST_FILE = "RedRockTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = RedRockTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RedRock.app/RedRock";
@@ -667,7 +667,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Spark InsightsTests/Info.plist";
+				INFOPLIST_FILE = "RedRockTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = RedRockTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RedRock.app/RedRock";

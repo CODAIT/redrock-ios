@@ -1,6 +1,6 @@
 //
 //  SearchViewController.swift
-//  Spark Insights
+//  RedRock
 //
 //  Created by Jonathan Alter on 5/28/15.
 //

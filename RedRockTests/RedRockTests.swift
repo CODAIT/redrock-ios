@@ -1,6 +1,6 @@
 //
-//  Spark_InsightsTests.swift
-//  Spark InsightsTests
+//  RedRockTests.swift
+//  RedRockTests
 //
 //  Created by Jonathan Alter on 5/27/15.
 //
@@ -25,7 +25,7 @@
 import UIKit
 import XCTest
 
-class Spark_InsightsTests: XCTestCase {
+class RedRockTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

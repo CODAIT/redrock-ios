@@ -1,6 +1,6 @@
 //
 //  PageControlView.swift
-//  Spark Insights
+//  RedRock
 //
 //  Created by Jonathan Alter on 5/29/15.
 //

@@ -1,6 +1,6 @@
 //
 //  Network.swift
-//  Spark Insights
+//  RedRock
 //
 //  Created by Barbara Gomes on 6/5/15.
 //

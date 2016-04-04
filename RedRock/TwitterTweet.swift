@@ -1,6 +1,6 @@
 //
 //  TwitterTweet.swift
-//  Spark Insights
+//  RedRock
 //
 //  Created by Barbara Gomes on 5/28/15.
 //

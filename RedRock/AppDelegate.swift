@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Spark Insights
+//  RedRock
 //
 //  Created by Jonathan Alter on 5/27/15.
 //
