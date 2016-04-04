@@ -76,10 +76,6 @@ class Network
             dispatchRequestForResource(path, callBack: callBack)
             return
         }
-//            let dummyResponse = dummyResponses[Int(arc4random_uniform(UInt32(dummyResponses.count)))]
-//            callCallbackAfterDelay(dummyResponse, error: nil, callback: callBack)
-//            return
-//        }
         
         // http://bdavm155.svl.ibm.com:16666/ss/powertrack/wordcount?user=barbara&batchSize=100000&topTweets=10&topWords=5&termsInclude=%23ibm&termsExclude=
         /*
