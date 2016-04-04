@@ -647,7 +647,12 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
+                let fileName = "response_spark"
                 let filePath = NSBundle.mainBundle().pathForResource("response_spark", ofType:"json")
+                guard filePath != nil else {
+                    Log("Error: Dummy Data file \"\(fileName).json\" not found")
+                    return
+                }
                 
                 var readError:NSError?
                 do {
