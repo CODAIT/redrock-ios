@@ -6,7 +6,7 @@ Backend: [https://github.com/SparkTC/redrock](https://github.com/SparkTC/redrock
 
 #### Getting started
 
+0. Setup that backend
 1. Open the project with Xcode 7.1.1
-2. Run the project on a Simulator or iPad
-
-**Note:** Look in `Config.swift` to change the endpoint
+2. Change the `serverAddress` in `Config.swift` to point to the backend
+3. Run the project on a Simulator or iPad
