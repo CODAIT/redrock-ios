@@ -712,7 +712,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         label.center = center
         label.textColor = Config.darkBlueColor
         label.text = Config.noDataMessage
-        label.font = UIFont(name: "HelveticaNeue-Medium", size: 19)
+        label.font = UIFont.init(name: "HelveticaNeue-Medium", size: 19)
         label.textAlignment = NSTextAlignment.Center
         label.hidden = true
         return label
@@ -723,7 +723,7 @@ class CenterViewController: UIViewController, MKMapViewDelegate, UIScrollViewDel
         let titleLabel = UILabel()
         titleLabel.frame = CGRectMake(origin, 0, self.scrollView.frame.size.width, 40);
         titleLabel.numberOfLines = 1
-        titleLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        titleLabel.font = UIFont.init(name: "HelveticaNeue-Medium", size: 16)
         titleLabel.textColor = Config.darkGrayTextColor
         titleLabel.text = text
         titleLabel.textAlignment = NSTextAlignment.Center
