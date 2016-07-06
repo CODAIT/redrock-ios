@@ -44,6 +44,7 @@ class Config {
     static let serverMakeSingleRequest = true
     static let displayRequestTimer = false //Default: false
     static let displayRefreshAvailable = false //enable refresh for streaming data
+    static let validateEmailAccess = false // If true, the login email will be checked for access auth on the RR server
     
     // MARK: - Server
     static let serverAddress = "http://localhost:16666" // Localhost

@@ -126,7 +126,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     
     func sendLoginRequest() {
         // Short circuit login
-        if (tempUserName == Config.redrockPassword) {
+        if (!Config.validateEmailAccess || tempUserName == Config.redrockPassword) {
             Config.userName = self.tempUserName
             self.setLoginText()
             self.hideLoadingView()
