@@ -194,6 +194,10 @@ extension UIStoryboard {
         return mainStoryboard().instantiateViewControllerWithIdentifier("InfoViewController") as? InfoViewController
     }
     
+    class func helpViewController() -> HelpViewController? {
+        return mainStoryboard().instantiateViewControllerWithIdentifier("HelpViewController") as? HelpViewController
+    }
+    
     class func bottomDrawerViewController() -> BottomDrawerViewController? {
         return mainStoryboard().instantiateViewControllerWithIdentifier("BottomDrawerViewController") as? BottomDrawerViewController
     }

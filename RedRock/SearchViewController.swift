@@ -342,6 +342,18 @@ class SearchViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginClicked(sender: UIButton) {
         showLoginAlertWithCancelButton()
     }
+    
+    @IBAction func helpClicked(sender: UIButton) {
+        let controller = UIStoryboard.helpViewController()
+        controller?.modalPresentationStyle = UIModalPresentationStyle.Popover
+        
+        let popover = controller?.popoverPresentationController
+        popover?.sourceView = sender
+        popover?.sourceRect = sender.bounds
+        popover?.permittedArrowDirections = UIPopoverArrowDirection.Any
+        
+        self.presentViewController(controller!, animated: true, completion: nil)
+    }
 
     /* Find at least one include term*/
     func checkIncludeTerms(searchTerms: String) -> Bool

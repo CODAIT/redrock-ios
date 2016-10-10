@@ -34,6 +34,7 @@
 		CE79DA7C1B190081003F01F6 /* PageControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA7B1B190081003F01F6 /* PageControlView.swift */; };
 		CE79DA831B19166C003F01F6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE79DA801B19166C003F01F6 /* LICENSE */; };
 		CE79DA851B19166C003F01F6 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE79DA821B19166C003F01F6 /* UIColorExtension.swift */; };
+		CE81EEFB1DAC09E000D1DFDC /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE81EEFA1DAC09E000D1DFDC /* HelpViewController.swift */; };
 		CE8BE3651BCC5A2B0000E95C /* VisMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BE3641BCC5A2B0000E95C /* VisMasterViewController.swift */; };
 		CE8BE3671BCC5D570000E95C /* VisWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BE3661BCC5D570000E95C /* VisWebViewController.swift */; };
 		CE8BE3691BCD6C6A0000E95C /* VisNativeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8BE3681BCD6C6A0000E95C /* VisNativeViewController.swift */; };
@@ -100,6 +101,7 @@
 		CE79DA801B19166C003F01F6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CE79DA811B19166C003F01F6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CE79DA821B19166C003F01F6 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		CE81EEFA1DAC09E000D1DFDC /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		CE8BE3641BCC5A2B0000E95C /* VisMasterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisMasterViewController.swift; sourceTree = "<group>"; };
 		CE8BE3661BCC5D570000E95C /* VisWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisWebViewController.swift; sourceTree = "<group>"; };
 		CE8BE3681BCD6C6A0000E95C /* VisNativeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisNativeViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				CE79DA751B17E19A003F01F6 /* SearchViewController.swift */,
 				CE79DA7B1B190081003F01F6 /* PageControlView.swift */,
 				41A7C98C1B5F10DD00AD7C6F /* InfoViewController.swift */,
+				CE81EEFA1DAC09E000D1DFDC /* HelpViewController.swift */,
 				41A7C98E1B5F1C5900AD7C6F /* ChartHelpDecriptionTableViewCell.swift */,
 				41E688511B22550000644714 /* LoadingTableViewCell.swift */,
 				41CC75D61B22068600383F13 /* Network.swift */,
@@ -431,6 +434,7 @@
 				41ED94051B179DC400A80447 /* TweetsTableViewController.swift in Sources */,
 				CEA3FCA41BC6F08900DED3D1 /* RangeSliderViewController.swift in Sources */,
 				41ED94171B17DC6A00A80447 /* SwiftyJSON.swift in Sources */,
+				CE81EEFB1DAC09E000D1DFDC /* HelpViewController.swift in Sources */,
 				CED444671BC8747900A0A6EE /* VisHolderViewController.swift in Sources */,
 				CE8BE3651BCC5A2B0000E95C /* VisMasterViewController.swift in Sources */,
 				419F69B41B72B8E40041D682 /* RangeSliderThumbLayer.swift in Sources */,
